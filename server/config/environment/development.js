@@ -8,7 +8,7 @@ module.exports = {
   baseUrl: 'http://localhost:9000/',
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/meanapp-dev'
+    uri: 'mongodb://localhost/health-star-dev'
   },
 
   redis: {

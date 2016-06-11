@@ -36,21 +36,21 @@ var UserSchema = new Schema({
   },
   provider: String,
   salt: String,
-  friends: [{type: mongoose.Types.ObjectId, ref: "User"}],
-  followers: [{type: mongoose.Types.ObjectId, ref: "User"}],
-  likedEvents: [{type: mongoose.Types.ObjectId, ref: "Event"}],
-  joinedEvents: [{type: mongoose.Types.ObjectId, ref: "Event"}], //list of events that has participant in
+  friends: [{type: Schema.Types.ObjectId, ref: "User"}],
+  followers: [{type: Schema.Types.ObjectId, ref: "User"}],
+  likedEvents: [{type: Schema.Types.ObjectId, ref: "Event"}],
+  joinedEvents: [{type: Schema.Types.ObjectId, ref: "Event"}], //list of events that has participant in
   isVisibleFriendsList: {type: Boolean, default: false},
   notificationSetting: {
     invitedToEvent: {type: Boolean, default: true},
     friendInvitation: {type: Boolean, default: true},
     newPost: {type: Boolean, default: true}
   },
-  avatar: {type: mongoose.Types.ObjectId, ref: "Photo"},
-  coverPhoto: {type: mongoose.Types.ObjectId, ref: "Photo"},
+  avatar: {type: Schema.Types.ObjectId, ref: "Photo"},
+  coverPhoto: {type: Schema.Types.ObjectId, ref: "Photo"},
   awardsExhibit: [{
     rank: Number, 
-    award: {type: mongoose.Types.ObjectId, ref: "Award"}
+    award: {type: Schema.Types.ObjectId, ref: "Award"}
   }],
   currentLocation: {
     lng: Number,
@@ -62,6 +62,7 @@ var UserSchema = new Schema({
   // true when admin blocked selected user
   blocked: {type: Boolean, default: false},
   QRCode: String,
+  createdAt: {type: Date, default: new Date()},
   facebook: {},
   twitter: {},
   google: {},

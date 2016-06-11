@@ -6,6 +6,8 @@ mongoose.Promise = require('bluebird');
 import {Schema} from 'mongoose';
 
 var EventSchema = new Schema({
+	name: {type: String, required: true},
+	description: {type: String, required: true},
 	owner: {type: Schema.Types.ObjectId, ref: "User", required: true},
 	category: {type: Schema.Types.ObjectId, ref: "Category", required: true},
 	tags: [String],

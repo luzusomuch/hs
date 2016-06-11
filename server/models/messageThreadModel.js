@@ -22,4 +22,12 @@ var messageThreadSchema = new Schema({
 	updatedAt: {type: Date, default: new Date()}
 });
 
+messageThreadSchema.pre('save', function(next) {
+    this.wasNew = this.isNew;
+    if (!this.isNew){
+        this.updatedAt = new Date();
+    }
+    next();
+});
+
 module.exports = mongoose.model('MessageThreadModel', messageThreadSchema);

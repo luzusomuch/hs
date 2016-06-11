@@ -22,6 +22,7 @@ var EventSchema = new Schema({
 	likedPeople: [{
 		type: Schema.Types.ObjectId, ref: "User"
 	}],
+	sharedPeople: [{type: Schema.Types.ObjectId, ref: "User"}],
 	comments: [{
 		user: {type: Schema.Types.ObjectId, ref: "User", required: true},
 		comment: String,

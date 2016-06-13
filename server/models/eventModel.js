@@ -42,7 +42,7 @@ var EventSchema = new Schema({
 	public: {type: Boolean, default: true},
 	location: {
 		coordinates: [Number], //this will storage lng and lat
-	    index: "2dsphere",
+	    // index: '2dsphere',
 	    type: {type: String} // this maybe a Point or somethings
 	},
 	repeat: {

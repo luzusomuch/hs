@@ -54,7 +54,7 @@ var UserSchema = new Schema({
   }],
   currentLocation: {
     coordinates: [Number], //this will storage lng and lat
-    index: "2dsphere",
+    // index: '2dsphere',
     type: {type: String} // this maybe a Point or somethings
   },
   lastAccess: Date,

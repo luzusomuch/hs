@@ -7,9 +7,9 @@ import {Schema} from 'mongoose';
 
 var messageThreadSchema = new Schema({
 	name: String,
-	participants: [{type: Schema.Types.ObjectId, ref: "User", required: true}],
+	participants: [{type: Schema.Types.ObjectId, ref: 'User', required: true}],
 	messages: [{
-		user: {type: Schema.Types.ObjectId, ref: "User", required:true},
+		user: {type: Schema.Types.ObjectId, ref: 'User', required:true},
 		message: {type: String, required: true},
 		createdAt: Date,
 		// we will hide message if deleted is true

@@ -6,10 +6,10 @@ mongoose.Promise = require('bluebird');
 import {Schema} from 'mongoose';
 
 var InvitationRequestSchema = new Schema({
-	owner: {type: Schema.Types.ObjectId, ref: "User", required: true},
-	fromUser: {type: Schema.Types.ObjectId, ref: "User", required: true},
+	owner: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+	fromUser: {type: Schema.Types.ObjectId, ref: 'User', required: true},
 	message: String,
-	type: {type: String, enum: ["friend", "event"]},
+	type: {type: String, enum: ['friend', 'event']},
 	createdAt: {type: Date, default: new Date()}
 });
 

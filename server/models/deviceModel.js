@@ -6,7 +6,7 @@ mongoose.Promise = require('bluebird');
 import {Schema} from 'mongoose';
 
 var DeviceSchema = new Schema({
-	user: {type: Schema.Types.ObjectId, ref: "User", required: true},
+	user: {type: Schema.Types.ObjectId, ref: 'User', required: true},
 	platform: {type: String, required: true},
 	token: {type: String, required: true},
 	createdAt: {type: Date, default: new Date()}

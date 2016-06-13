@@ -6,21 +6,22 @@ mongoose.Promise = require('bluebird');
 import {Schema} from 'mongoose';
 
 var PhotoSchema = new Schema({
-	owner: {type: Schema.Types.ObjectId, ref: "User", required: true},
+	owner: {type: Schema.Types.ObjectId, ref: 'User', required: true},
 	blocked: {type: Boolean, default: false},
+	// metadata maybe include multiple sizes of image ex: thumbnail, avatar...
 	metadata: {},
-	likedPeople: [{type:Schema.Types.ObjectId, ref: "User", required: true}],
-	sharedPeople: [{type: Schema.Types.ObjectId, ref: "User"}],
+	likedPeople: [{type:Schema.Types.ObjectId, ref: 'User', required: true}],
+	sharedPeople: [{type: Schema.Types.ObjectId, ref: 'User'}],
 	comments: [{
-		user: {type: Schema.Types.ObjectId, ref: "User", required: true},
+		user: {type: Schema.Types.ObjectId, ref: 'User', required: true},
 		comment: String,
-		likedPeople: [{type: Schema.Types.ObjectId, ref: "User"}],
-		sharedPeople: [{type: Schema.Types.ObjectId, ref: "User"}],
+		likedPeople: [{type: Schema.Types.ObjectId, ref: 'User'}],
+		sharedPeople: [{type: Schema.Types.ObjectId, ref: 'User'}],
 		subComment: [{
-			user: {type: Schema.Types.ObjectId, ref: "User", required: true},
+			user: {type: Schema.Types.ObjectId, ref: 'User', required: true},
 			comment: String,
-			likedPeople: [{type: Schema.Types.ObjectId, ref: "User"}],
-			sharedPeople: [{type: Schema.Types.ObjectId, ref: "User"}],
+			likedPeople: [{type: Schema.Types.ObjectId, ref: 'User'}],
+			sharedPeople: [{type: Schema.Types.ObjectId, ref: 'User'}],
 			createdAt: {type: Date},
 		}],
 		createdAt: {type: Date},

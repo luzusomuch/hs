@@ -36,32 +36,33 @@ var UserSchema = new Schema({
   },
   provider: String,
   salt: String,
-  friends: [{type: Schema.Types.ObjectId, ref: "User"}],
-  followers: [{type: Schema.Types.ObjectId, ref: "User"}],
-  likedEvents: [{type: Schema.Types.ObjectId, ref: "Event"}],
-  joinedEvents: [{type: Schema.Types.ObjectId, ref: "Event"}], //list of events that has participant in
-  isVisibleFriendsList: {type: Boolean, default: false},
+  friends: [{type: Schema.Types.ObjectId, ref: 'User'}],
+  followers: [{type: Schema.Types.ObjectId, ref: 'User'}],
+  // likedEvents: [{type: Schema.Types.ObjectId, ref: "Event"}],
+  // joinedEvents: [{type: Schema.Types.ObjectId, ref: "Event"}], //list of events that has participant in
   notificationSetting: {
+    isVisibleFriendsList: {type: Boolean, default: false},
     invitedToEvent: {type: Boolean, default: true},
     friendInvitation: {type: Boolean, default: true},
     newPost: {type: Boolean, default: true}
   },
-  avatar: {type: Schema.Types.ObjectId, ref: "Photo"},
-  coverPhoto: {type: Schema.Types.ObjectId, ref: "Photo"},
+  avatar: {type: Schema.Types.ObjectId, ref: 'Photo'},
+  coverPhoto: {type: Schema.Types.ObjectId, ref: 'Photo'},
   awardsExhibit: [{
     rank: Number, 
-    award: {type: Schema.Types.ObjectId, ref: "Award"}
+    award: {type: Schema.Types.ObjectId, ref: 'Award'}
   }],
   currentLocation: {
-    lng: Number,
-    lat: Number
+    coordinates: [Number], //this will storage lng and lat
+    index: "2dsphere",
+    type: {type: String} // this maybe a Point or somethings
   },
   lastAccess: Date,
   // true when user change his profile as deleted
   deleted: {type: Boolean, default: false},
   // true when admin blocked selected user
   blocked: {type: Boolean, default: false},
-  QRCode: String,
+  // QRCode: String,
   createdAt: {type: Date, default: new Date()},
   facebook: {},
   twitter: {},

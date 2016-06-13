@@ -8,41 +8,42 @@ import {Schema} from 'mongoose';
 var EventSchema = new Schema({
 	name: {type: String, required: true},
 	description: {type: String, required: true},
-	owner: {type: Schema.Types.ObjectId, ref: "User", required: true},
-	category: {type: Schema.Types.ObjectId, ref: "Category", required: true},
+	owner: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+	category: {type: Schema.Types.ObjectId, ref: 'Category', required: true},
 	tags: [String],
-	organizer: {type: Schema.Types.ObjectId, ref: "User"},
+	organizer: {type: Schema.Types.ObjectId, ref: 'User'},
 	awards: [{
-		type: Schema.Types.ObjectId, ref: "Award", required: true
+		type: Schema.Types.ObjectId, ref: 'Award', required: true
 	}],
 	participants: [{
-		type: Schema.Types.ObjectId, ref: "User"
+		type: Schema.Types.ObjectId, ref: 'User'
 	}],
 	photo: [{
-		type: Schema.Types.ObjectId, ref: "Photo"
+		type: Schema.Types.ObjectId, ref: 'Photo'
 	}],
 	likedPeople: [{
-		type: Schema.Types.ObjectId, ref: "User"
+		type: Schema.Types.ObjectId, ref: 'User'
 	}],
-	sharedPeople: [{type: Schema.Types.ObjectId, ref: "User"}],
+	sharedPeople: [{type: Schema.Types.ObjectId, ref: 'User'}],
 	comments: [{
-		user: {type: Schema.Types.ObjectId, ref: "User", required: true},
+		user: {type: Schema.Types.ObjectId, ref: 'User', required: true},
 		comment: String,
-		likedPeople: [{type: Schema.Types.ObjectId, ref: "User"}],
-		sharedPeople: [{type: Schema.Types.ObjectId, ref: "User"}],
+		likedPeople: [{type: Schema.Types.ObjectId, ref: 'User'}],
+		sharedPeople: [{type: Schema.Types.ObjectId, ref: 'User'}],
 		subComment: [{
-			user: {type: Schema.Types.ObjectId, ref: "User", required: true},
+			user: {type: Schema.Types.ObjectId, ref: 'User', required: true},
 			comment: String,
-			likedPeople: [{type: Schema.Types.ObjectId, ref: "User"}],
-			sharedPeople: [{type: Schema.Types.ObjectId, ref: "User"}],
+			likedPeople: [{type: Schema.Types.ObjectId, ref: 'User'}],
+			sharedPeople: [{type: Schema.Types.ObjectId, ref: 'User'}],
 			createdAt: {type: Date},
 		}],
 		createdAt: {type: Date},
 	}],
 	public: {type: Boolean, default: true},
 	location: {
-		lng: Number,
-		lat: Number
+		coordinates: [Number], //this will storage lng and lat
+	    index: "2dsphere",
+	    type: {type: String} // this maybe a Point or somethings
 	},
 	repeat: {
 		weekly: {type: Boolean, default: false},

@@ -6,10 +6,10 @@ mongoose.Promise = require('bluebird');
 import {Schema} from 'mongoose';
 
 var AwardSchema = new Schema({
-	owner: {type: Schema.Types.ObjectId, ref: "User", required: true},
+	owner: {type: Schema.Types.ObjectId, ref: 'User', required: true},
 	name: {type: String, required: true},
 	description: String,
-	photo: {type: Schema.Types.ObjectId, ref: "Photo"},
+	photo: {type: Schema.Types.ObjectId, ref: 'Photo'},
 	createdAt: {type: Date, default: new Date()}
 });
 

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('meanAppApp')
+angular.module('meanApp')
   .directive('footer', function() {
     return {
       templateUrl: 'components/footer/footer.html',

@@ -1,6 +1,6 @@
 'use strict';
 /* jshint ignore:start */
-angular.module('meanAppApp.util').directive('autoFrameHeight', ($) => ({
+angular.module('meanApp.util').directive('autoFrameHeight', ($) => ({
   restrict: 'A',
   link: (scope, element) => {
     $(element).load(function(){$(this).height($(this).contents().outerHeight());});

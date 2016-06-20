@@ -13,7 +13,7 @@
     }
   }
 
-  angular.module('meanAppApp')
+  angular.module('meanApp')
     .component('main', {
       templateUrl: 'app/main/main.html',
       controller: MainController

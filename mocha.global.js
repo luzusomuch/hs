@@ -1,8 +1,9 @@
-import app from './';
+import kernel from './';
 import mongoose from 'mongoose';
+var app = kernel.app;
 
 after(function(done) {
-  app.angularFullstack.on('close', () => done());
+  app.meanStack.on('close', () => done());
   mongoose.connection.close();
-  app.angularFullstack.close();
+  app.meanStack.close();
 });

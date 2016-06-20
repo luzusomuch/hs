@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('meanAppApp.auth', ['meanAppApp.constants', 'meanAppApp.util', 'ngCookies',
+angular.module('meanApp.auth', ['meanApp.constants', 'meanApp.util', 'ngCookies',
     'ui.router'
   ])
   .config(function($httpProvider) {

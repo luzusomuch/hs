@@ -28,32 +28,23 @@ var all = {
   seedDB: false,
 
   // Secret for session, you will want to change this and make it an environment variable
-  secrets: {
-    session: 'mean-app-secret'
+  SECRETS: {
+    session: 'app-secret'
   },
 
-  // MongoDB connection options
-  mongo: {
-    options: {
-      db: {
-        safe: true
-      }
-    }
-  },
-
-  facebook: {
+  FACEBOOK: {
     clientID:     process.env.FACEBOOK_ID || 'id',
     clientSecret: process.env.FACEBOOK_SECRET || 'secret',
     callbackURL:  (process.env.DOMAIN || '') + '/auth/facebook/callback'
   },
 
-  twitter: {
+  TWITTER: {
     clientID:     process.env.TWITTER_ID || 'id',
     clientSecret: process.env.TWITTER_SECRET || 'secret',
     callbackURL:  (process.env.DOMAIN || '') + '/auth/twitter/callback'
   },
 
-  google: {
+  GOOGLE: {
     clientID:     process.env.GOOGLE_ID || 'id',
     clientSecret: process.env.GOOGLE_SECRET || 'secret',
     callbackURL:  (process.env.DOMAIN || '') + '/auth/google/callback'

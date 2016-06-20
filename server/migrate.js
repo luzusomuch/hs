@@ -14,7 +14,7 @@ mongoose.Promise = require('bluebird');
 var config = require('./config/environment');
 
 // Connect to MongoDB
-mongoose.connect(config.mongo.uri, config.mongo.options);
+mongoose.connect(config.MONGO_URL);
 mongoose.connection.on('error', function(err) {
   console.error('MongoDB connection error: ' + err);
   process.exit(-1);

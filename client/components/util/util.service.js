@@ -50,7 +50,7 @@
         origins = origins.filter(function(o) {
           let hostnameCheck = url.hostname === o.hostname;
           let protocolCheck = url.protocol === o.protocol;
-          // 2nd part of the special treatment for IE fix (see above): 
+          // 2nd part of the special treatment for IE fix (see above):
           // This part is when using well-known ports 80 or 443 with IE,
           // when $window.location.port==='' instead of the real port number.
           // Probably the same cause as this IE bug: https://goo.gl/J9hRta
@@ -65,6 +65,6 @@
     return Util;
   }
 
-  angular.module('meanAppApp.util')
+  angular.module('meanApp.util')
     .factory('Util', UtilService);
 })();

@@ -1,24 +1,39 @@
 'use strict';
 
-// Production specific configuration
-// =================================
+import path from 'path';
+
+// Development specific configuration
+// ==================================
 module.exports = {
-  // Server IP
-  ip:     process.env.OPENSHIFT_NODEJS_IP ||
-          process.env.IP ||
-          undefined,
-
-  // Server port
-  port:   process.env.OPENSHIFT_NODEJS_PORT ||
-          process.env.PORT ||
-          8080,
-
   // MongoDB connection options
-  mongo: {
-    uri:  process.env.MONGODB_URI ||
-          process.env.MONGOHQ_URL ||
-          process.env.OPENSHIFT_MONGODB_DB_URL +
-          process.env.OPENSHIFT_APP_NAME ||
-          'mongodb://localhost/meanapp'
+  MONGO_URL: 'mongodb://localhost/meanstack-dev',
+  MONGO_REPLICAS_NUMBER: null,
+  HTTP_PORT: 8080,
+  PUBLIC_PATHS: [
+    path.resolve('./client')
+  ],
+
+  REDIS: {
+    port: 6379,
+    host: '127.0.0.1',
+    db: 3, // if provided select a non-default redis db
+    options: {
+      // see https://github.com/mranney/node_redis#rediscreateclient
+    }
+  },
+  SECRETS: {
+    session: 'app-secret'
+  },
+  REST_PREFIX: '/api/v1/',
+
+  QUEUE_NAME: 'mean',
+  QUEUE_CONFIG: {
+    prefix: 'q',
+    redis: {
+      host: '127.0.0.1',
+      port: 6379,
+      db: 0,
+      options: {}
+    }
   }
 };

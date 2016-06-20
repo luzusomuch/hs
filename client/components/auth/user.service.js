@@ -21,6 +21,6 @@
     });
   }
 
-  angular.module('meanAppApp.auth')
+  angular.module('meanApp.auth')
     .factory('User', UserResource);
 })();

@@ -6,10 +6,7 @@ import ES from './ES';
 import Mailer from './Mailer';
 
 module.exports = {
-  Queue,
-  RedisClient,
   S3,
   GM,
-  ES,
-  Mailer
+  ES
 };

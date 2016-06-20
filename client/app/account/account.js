@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('meanAppApp')
+angular.module('meanApp')
   .config(function($stateProvider) {
     $stateProvider.state('login', {
         url: '/login',

@@ -1,44 +1,34 @@
-/**
- * Main application file
- */
-
 'use strict';
 
-import express from 'express';
-import mongoose from 'mongoose';
-mongoose.Promise = require('bluebird');
-import config from './config/environment';
-import http from 'http';
+import KernelFactory from './kernel';
+import path from 'path';
 
-// Connect to MongoDB
-mongoose.connect(config.mongo.uri, config.mongo.options);
-mongoose.connection.on('error', function(err) {
-  console.error('MongoDB connection error: ' + err);
-  process.exit(-1);
-});
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+let config = require('./config/environment');
+let kernel = new KernelFactory(config);
 
-// Setup server
-var app = express();
-var server = http.createServer(app);
-var socketio = require('socket.io')(server, {
-  serveClient: config.env !== 'production',
-  path: '/socket.io-client'
-});
-require('./sockets')(socketio);
-require('./config/express')(app);
-require('./routes').default(app);
+//load custom module
+kernel.loadModule(require('./modules/mailer'));
+kernel.loadModule(require('./modules/socket-io'));
+kernel.loadModule(require('./modules/user'));
+kernel.loadModule(require('./modules/thing'));
+//compose then start server
+kernel.compose();
 
-//setup queues as a worker
-require('./queues');
+//custom app path
+//TODO - can move to kernel?
+// All undefined asset or api routes should return a 404
+kernel.app.route('/:url(api|auth|components|app|bower_components|assets|lib|styles)/*')
+ .get((req, res) => { res.status(404).send('Not found!'); });
 
-// Start server
-function startServer() {
-  app.angularFullstack = server.listen(config.port, config.ip, function() {
-    console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+// All other routes should redirect to the index.html
+kernel.app.route('/*')
+  .get((req, res) => {
+    //TODO - get app path base on env
+    res.sendFile(path.resolve('client/index.html'));
   });
-}
 
-setImmediate(startServer);
+kernel.startHttpServer();
 
-// Expose app
-exports = module.exports = app;
+// Expose kernel
+exports = module.exports = kernel;

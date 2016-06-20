@@ -12,5 +12,5 @@ class NavbarController {
 
 }
 
-angular.module('meanAppApp')
+angular.module('meanApp')
   .controller('NavbarController', NavbarController);

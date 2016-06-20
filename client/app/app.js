@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('meanAppApp', ['meanAppApp.auth', 'meanAppApp.admin', 'meanAppApp.constants',
+angular.module('meanApp', ['meanApp.auth', 'meanApp.admin', 'meanApp.constants',
     'ngCookies', 'ngResource', 'ngSanitize', 'btford.socket-io', 'ui.router', 'ui.bootstrap',
     'validation.match', 'angular-growl', 'angular-loading-bar', 'ngAnimate'
   ])

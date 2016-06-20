@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('meanAppApp.util', []);
+angular.module('meanApp.util', []);

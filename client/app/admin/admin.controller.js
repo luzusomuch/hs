@@ -14,6 +14,6 @@
     }
   }
 
-  angular.module('meanAppApp.admin')
+  angular.module('meanApp.admin')
     .controller('AdminController', AdminController);
 })();

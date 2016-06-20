@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('meanAppApp')
+angular.module('meanApp')
 .filter('removeSpaces', function() {
   return function(string) {
     return angular.isDefined(string) ? string.replace(/\s/g, '') : '';

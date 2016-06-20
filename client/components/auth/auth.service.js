@@ -185,6 +185,6 @@
     return Auth;
   }
 
-  angular.module('meanAppApp.auth')
+  angular.module('meanApp.auth')
     .factory('Auth', AuthService);
 })();

@@ -23,5 +23,5 @@ class SettingsController {
   }
 }
 
-angular.module('meanAppApp')
+angular.module('meanApp')
   .controller('SettingsController', SettingsController);

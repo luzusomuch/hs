@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('meanAppApp.admin', ['meanAppApp.auth', 'ui.router']);
+angular.module('meanApp.admin', ['meanApp.auth', 'ui.router']);

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('meanAppApp.admin')
+angular.module('meanApp.admin')
   .config(function($stateProvider) {
     $stateProvider.state('admin', {
       url: '/admin',

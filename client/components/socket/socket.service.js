@@ -1,7 +1,7 @@
 /* global io */
 'use strict';
 
-angular.module('meanAppApp')
+angular.module('meanApp')
   .factory('socket', function(socketFactory) {
     // socket.io now auto-configures its connection when we ommit a connection url
     var ioSocket = io('', {

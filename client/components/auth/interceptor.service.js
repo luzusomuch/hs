@@ -27,6 +27,6 @@
     };
   }
 
-  angular.module('meanAppApp.auth')
+  angular.module('meanApp.auth')
     .factory('authInterceptor', authInterceptor);
 })();

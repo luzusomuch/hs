@@ -4,7 +4,7 @@
  * Removes server error when user updates input
  */
 
-angular.module('meanApp')
+angular.module('healthStarsApp')
   .directive('mongooseError', function() {
     return {
       restrict: 'A',

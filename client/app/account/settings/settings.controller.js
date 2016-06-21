@@ -23,5 +23,5 @@ class SettingsController {
   }
 }
 
-angular.module('meanApp')
+angular.module('healthStarsApp')
   .controller('SettingsController', SettingsController);

@@ -29,5 +29,5 @@ class LoginController {
   }
 }
 
-angular.module('meanApp')
+angular.module('healthStarsApp')
   .controller('LoginController', LoginController);

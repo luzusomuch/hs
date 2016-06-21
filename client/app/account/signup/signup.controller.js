@@ -37,5 +37,5 @@ class SignupController {
   }
 }
 
-angular.module('meanApp')
+angular.module('healthStarsApp')
   .controller('SignupController', SignupController);

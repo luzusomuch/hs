@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('meanApp.util', []);
+angular.module('healthStarsApp.util', []);

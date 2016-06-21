@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('meanApp.auth', ['meanApp.constants', 'meanApp.util', 'ngCookies',
+angular.module('healthStarsApp.auth', ['healthStarsApp.constants', 'healthStarsApp.util', 'ngCookies',
     'ui.router'
   ])
   .config(function($httpProvider) {

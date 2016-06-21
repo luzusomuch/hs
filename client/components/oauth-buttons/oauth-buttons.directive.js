@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('meanApp')
+angular.module('healthStarsApp')
   .directive('oauthButtons', function() {
     return {
       templateUrl: 'components/oauth-buttons/oauth-buttons.html',

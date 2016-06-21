@@ -204,11 +204,9 @@ gulp.task('env:prod', () => {
 ********************/
 
 gulp.task('inject', cb => {
-  runSequence([
-    'inject:js', 'inject:js:backend',
-    'inject:css', 'inject:css:backend',
-    'inject:scss', 'inject:scss:backend'
-  ], cb);
+  runSequence(['inject:js', 'inject:js:backend'],
+    ['inject:css', 'inject:css:backend'],
+    ['inject:scss', 'inject:scss:backend'], cb);
 });
 
 gulp.task('inject:js', () => {
@@ -248,7 +246,7 @@ gulp.task('inject:js:backend', () => {
 gulp.task('inject:css', () => {
   return gulp.src(paths.client.mainView)
     .pipe(plugins.inject(
-      gulp.src(`${clientPath}/{app,components}/**/*.css`, {read: false})
+      gulp.src([`${clientPath}/{app,components}/**/*.css`, `${clientPath}/assets/css/app/**/*.css`], {read: false})
         .pipe(plugins.sort()),
       {
         starttag: '<!-- injector:css -->',
@@ -261,7 +259,7 @@ gulp.task('inject:css', () => {
 gulp.task('inject:css:backend', () => {
   return gulp.src(paths.client.backendView)
     .pipe(plugins.inject(
-      gulp.src(`${clientPath}/{backend,components}/**/*.css`, {read: false})
+      gulp.src([`${clientPath}/{backend,components}/**/*.css`, `${clientPath}/assets/css/backend/**/*.css`], {read: false})
         .pipe(plugins.sort()),
       {
         starttag: '<!-- injector:css -->',

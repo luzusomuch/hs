@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('meanApp', ['meanApp.auth', 'meanApp.admin', 'meanApp.constants',
+angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.admin', 'healthStarsApp.constants',
     'ngCookies', 'ngResource', 'ngSanitize', 'btford.socket-io', 'ui.router', 'ui.bootstrap',
     'validation.match', 'angular-growl', 'angular-loading-bar', 'ngAnimate'
   ])

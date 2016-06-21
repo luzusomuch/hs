@@ -185,6 +185,6 @@
     return Auth;
   }
 
-  angular.module('meanApp.auth')
+  angular.module('healthStarsApp.auth')
     .factory('Auth', AuthService);
 })();

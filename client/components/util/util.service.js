@@ -65,6 +65,6 @@
     return Util;
   }
 
-  angular.module('meanApp.util')
+  angular.module('healthStarsApp.util')
     .factory('Util', UtilService);
 })();

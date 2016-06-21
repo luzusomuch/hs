@@ -12,5 +12,5 @@ class NavbarController {
 
 }
 
-angular.module('meanApp')
+angular.module('healthStarsApp')
   .controller('NavbarController', NavbarController);

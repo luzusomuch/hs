@@ -1,0 +1,365 @@
+
+@media all and (min-width: 320px) and (max-width: 1400px) {
+    .container {
+        width:auto;
+        padding: 0px 15px;
+    }
+}
+@media all and (min-width: 320px) and (max-width: 767px) {
+    .container-fluid {
+        padding: 0px 10px;
+    }
+    .logo-login {
+        text-align: center;
+        margin-bottom: 30px;
+        float: none;
+    }
+    .logo-login img {
+        width: 250px;
+    }
+    .box-login {
+        width: auto;
+        float: none;
+    }
+    .form-signup .row {
+        margin: 0px;
+    }
+    .form-signup .col-sm-6, .form-signup .col-sm-12 {
+        padding: 0px;
+    }
+    .signup-page h1 {
+        text-align: center;
+        font-size: 30px;
+        float: none;
+    }
+    .signup-page .logo-login {
+        float: none;
+    }
+    .sign-social a {
+        padding: 8px; 10px;
+    }
+    .sign-social a {
+        margin-right: 10px;
+    }
+    .grid-sizer, .grid-item {
+        width: 100%;
+        padding: 0px;
+    }
+    .grid {
+        margin-top: 15px;
+    }
+    .menu-home li a span {
+        font-size: 11px;
+    }
+    .menu-home li a img {
+        width: 40px;
+    }
+    .line-menu-home .create-event {
+        margin-top: 20px;
+    }
+    .line-menu-home .checkbox-l {
+        margin-top: 0px;
+    }
+    .header .logo {
+        position: relative;
+        left: 0px;
+    }
+
+    .search-top {
+        padding: 0px;
+    }
+    .box-search {
+        display: block;
+    }
+    .input-search, .bootstrap-tagsinput {
+        width: 100%;
+    }
+    .header .menu {
+        right: 15px;
+        z-index: 10;
+    }
+    .toggle-menu {
+        display: block;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        font-size: 20px;
+    }
+    .menu > ul {
+        position: absolute;
+        top: 30px;
+        left: -250px;
+        width: 250px;
+        background: #2d3747;
+        z-index: 10;
+        display: none;
+    }
+    .menu ul li {
+        float: none;
+    }
+    .menu li a {
+        border-bottom: 1px solid rgba(255,255,255,0.3);
+        padding: 10px 15px;
+    }
+    .menu ul li.profile-top > a {
+        padding-left: 45px !important;
+    }
+    .profile-top > a img {
+        left: 15px;
+    }
+    .logo img {
+        width: 200px;
+    }
+    .box-user-main {
+        margin-top: -100px;
+    }
+    .img-timline {
+        height: 300px;
+    }
+    .text-top-detail {
+        bottom: 100px;
+    }
+    .title-detail {
+        font-size: 20px;
+    }
+    .last-online {
+        margin-top: 0px;
+        margin-bottom: 15px;
+    }
+    .footer img, .footer .list-social {
+        position: relative;
+        top: 0px;
+    }
+    .footer img {
+        display: block;
+        margin: auto;
+        margin-bottom: 10px;
+    }
+    .action-event {
+        margin-top: 0px;
+        margin-bottom: 10px;
+    }
+    .title-detail img {
+        width: 40px;
+    }
+    .grid {
+        margin: 0px;
+    }
+    .mobile-show {
+        display: block;
+    }
+    .pc-show {
+        display: none;
+    }
+    .box-event-li {
+        position: relative;
+        overflow: hidden;
+    }
+    .box-event-li .img-eventbox {
+        float: left;
+        width: 40%;
+        display: block;
+    }
+    .box-event-li .img-eventbox img {
+        height: 110px;
+        object-fit: cover;
+    }
+    .box-event-li .text-li-event {
+        width: 60%;
+        float: left;
+    }
+    .top-li-event {
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+    .toogle-menu-account {
+        display: block;
+        background: rgba(255,255,255,0.19);
+        padding: 5px 20px;
+        display: block;
+        color: #fff;
+        border-radius: 5px;
+        margin: 15px;
+    }
+    .toogle-menu-account i {
+        width: 20px;
+    }
+    .menu-account  {
+        float: none;
+
+    }
+    .menu-account ul  {
+        display: none;
+    }
+    .menu-account ul li {
+        float: none;
+    }
+    .menu-account ul li a {
+        padding: 10px 15px;
+        border: 0px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        text-align: left;
+    }
+    .menu-account ul li a span {
+        display: inline-block;
+    }
+    .menu-account ul li i {
+        font-size: 14px;
+        margin-right: 5px;
+    }
+    .hea-account .pull-right {
+        margin: 15px;
+        float: none !important;
+    }
+    .hea-account .create-event {
+        margin: 0px;
+        display: block;
+    }
+    .top-message .pull-left, .top-message .pull-right {
+        float: none !important;
+    }
+    .top-message .search-main {
+        width: auto;
+        max-width: none;
+        margin-top: 10px;
+    }
+    .btn-create {
+        display: block;
+    }
+    .profile-top ul {
+        position: relative;
+        top: 0px;
+        right: 0px;
+        width: auto;
+    }
+    .profile-top ul li a {
+        padding-left: 15px;
+    }
+    .form-account {
+        border: 0px;
+        padding: 0px;
+        margin-top: 15px;
+    }
+    .upload-img {
+        border: 0px;
+    }
+    .upload-avatar {
+        position: relative;
+        bottom: 0px;
+        left: 0px;
+        margin: auto;
+        margin-top: 10px;
+    }
+    .exhibit-award {
+        width: 250px;
+    }
+    .award-step1, .award-step2, .award-step3 {
+        width: 34px;
+        height: 45px;
+        line-height: 45px;
+        top: 81px;
+        left: 50px;
+    }
+    .award-step2 {
+        top: 67px;
+        left: 111px;
+    }
+    .award-step3 {
+        top: 90px;
+        left: 172px;
+    }
+    .box-frends {
+        padding-right: 15px;
+    }
+    .unfriend {
+        position: relative;
+        top: 0px;
+        right: 0px;
+        display: inline-block;
+    }
+    .text-mo {
+        display: block;
+    }
+    .photos-show li {
+        width: 50%;
+    }
+    .action-user-detail .btn {
+        padding-left: 5px;
+        padding-right: 5px;
+        font-size: 12px;
+    }
+}
+
+@media all and (min-width: 768px) and (max-width: 1024px) {
+    .action-user-detail .btn {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    .exhibit-user span {
+        width: 31px;
+        height: 43px;
+        line-height: 43px;
+        top: 0px;
+        left: 8px;
+    }
+    .exhibit-user {
+        width: 45px;
+    }
+    .photos-show li {
+        width: 33.33%;
+    }
+    .form-signup .row {
+        margin: 0px -10px;
+    }
+    .form-signup .col-sm-6, .form-signup .col-sm-12 {
+        padding: 0px 10px;
+    }
+    .menu-account li a {
+        padding: 20px;
+    }
+    .menu-account span {
+        display: block;
+    }
+    .container-fluid {
+        padding: 0px 10px;
+    }
+    .grid-sizer, .grid-item {
+        width: 50%;
+    }
+    .header {
+        padding-top: 80px;
+    }
+    .search-top {
+        padding: 0px;
+        width: 90%;
+        margin: auto;
+    }
+    .box-search {
+        display: block;
+    }
+    .input-search, .bootstrap-tagsinput {
+        width: 100%;
+    }
+    .header .logo {
+        left: 20px;
+    }
+    .menu-home li a span {
+        font-size: 13px;
+    }
+    .menu-home li a img {
+        width: 50px;
+    }
+
+}
+@media all and (min-width: 320px) and (max-width: 1100px) {
+    .signup-page .container-fluid {
+        width: auto;
+    }
+    .bottom-user-main .pull-left div {
+        margin-right: 10px;
+    }
+}
+@media all and (min-width: 1024px) and (max-width: 1380px) {
+    .grid-sizer, .grid-item {
+        width: 33.33%;
+    }
+}

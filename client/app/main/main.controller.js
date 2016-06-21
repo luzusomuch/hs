@@ -13,7 +13,7 @@
     }
   }
 
-  angular.module('meanApp')
+  angular.module('healthStarsApp')
     .component('main', {
       templateUrl: 'app/main/main.html',
       controller: MainController

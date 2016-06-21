@@ -14,6 +14,6 @@
     }
   }
 
-  angular.module('meanApp.admin')
+  angular.module('healthStarsApp.admin')
     .controller('AdminController', AdminController);
 })();

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('meanApp')
+angular.module('healthStarsApp')
   .directive('footer', function() {
     return {
       templateUrl: 'components/footer/footer.html',

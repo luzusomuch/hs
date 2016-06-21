@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('meanApp')
+angular.module('healthStarsApp')
 .filter('removeSpaces', function() {
   return function(string) {
     return angular.isDefined(string) ? string.replace(/\s/g, '') : '';

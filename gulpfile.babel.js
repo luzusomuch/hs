@@ -655,7 +655,7 @@ gulp.task('html:backend', function() {
 gulp.task('constant', function() {
 let sharedConfig = require(`./${serverPath}/config/environment/shared`);
 return plugins.ngConstant({
-  name: 'meanApp.constants',
+  name: 'healthStarsApp.constants',
   deps: [],
   wrap: true,
   stream: true,

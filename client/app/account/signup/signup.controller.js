@@ -1,6 +1,6 @@
 'use strict';
 
-class SignupController {
+class SignupCtrl {
   //end-non-standard
 
   constructor(Auth, $state) {
@@ -36,6 +36,3 @@ class SignupController {
     }
   }
 }
-
-angular.module('healthStarsApp')
-  .controller('SignupController', SignupController);

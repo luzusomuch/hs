@@ -99,7 +99,7 @@ img {
 }
 .container {
     position:relative;
-    width:1400px;
+    /*width:1400px;*/
 }
 .login-page {
     padding: 40px 0px;
@@ -498,6 +498,7 @@ label .note-form {
     background: rgba(22,30,44,0.68);
     border-bottom: 3px solid rgba(255,255,255,0.2);
     padding: 20px 0px 5px 0px;
+    margin-bottom: 20px;
 }
 .menu-home ul {
     display: table;
@@ -554,7 +555,7 @@ label .note-form {
     margin-top: 65px;
 }
 .content-home {
-    padding: 20px 0px;
+    /*padding: 20px 0px;*/
     min-height: 650px;
 }
 .box-1 {

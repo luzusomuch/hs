@@ -1,6 +1,6 @@
 'use strict';
 
-class LoginController {
+class LoginCtrl {
   constructor(Auth, $state) {
     this.user = {};
     this.errors = {};
@@ -28,6 +28,3 @@ class LoginController {
     }
   }
 }
-
-angular.module('healthStarsApp')
-  .controller('LoginController', LoginController);

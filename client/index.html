@@ -15,6 +15,7 @@
       <!-- bower:css -->
       <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
       <link rel="stylesheet" href="bower_components/angular-growl-v2/build/angular-growl.css" />
+      <link rel="stylesheet" href="bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" />
       <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
@@ -31,9 +32,9 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <navbar></navbar>
-    <div ui-view=""></div>
-    <footer></footer>
+    <hs-header></hs-header>
+    <div ui-view class="content-home"></div>
+    <hs-footer></hs-footer>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
@@ -65,24 +66,24 @@
       <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
       <script src="bower_components/angular-growl-v2/build/angular-growl.js"></script>
       <script src="bower_components/angular-animate/angular-animate.js"></script>
+      <script src="bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"></script>
+      <script src="bower_components/ngstorage/ngStorage.js"></script>
       <!-- endbower -->
       <script src="socket.io-client/socket.io.js"></script>
     <!-- endbuild -->
     <!-- build:js(.tmp) app/app.js -->
       <script src="app/app.js"></script>
       <!-- injector:js -->
-      <script src="app/admin/admin.module.js"></script>
       <script src="components/auth/auth.module.js"></script>
       <script src="components/util/util.module.js"></script>
       <script src="app/account/account.js"></script>
       <script src="app/account/login/login.controller.js"></script>
-      <script src="app/account/settings/settings.controller.js"></script>
       <script src="app/account/signup/signup.controller.js"></script>
-      <script src="app/admin/admin.controller.js"></script>
-      <script src="app/admin/admin.router.js"></script>
       <script src="app/app.constant.js"></script>
-      <script src="app/main/main.controller.js"></script>
-      <script src="app/main/main.js"></script>
+      <script src="app/footer/footer.controller.js"></script>
+      <script src="app/header/header.controller.js"></script>
+      <script src="app/home/home.controller.js"></script>
+      <script src="app/home/home.js"></script>
       <script src="components/auth/auth.service.js"></script>
       <script src="components/auth/interceptor.service.js"></script>
       <script src="components/auth/router.decorator.js"></script>

@@ -5,7 +5,7 @@ angular.module('healthStarsApp')
     $stateProvider.state('login', {
         url: '/login',
         templateUrl: 'app/account/login/login.html',
-        controller: 'LoginController',
+        controller: LoginCtrl,
         controllerAs: 'vm'
       })
       .state('logout', {
@@ -21,16 +21,9 @@ angular.module('healthStarsApp')
       .state('signup', {
         url: '/signup',
         templateUrl: 'app/account/signup/signup.html',
-        controller: 'SignupController',
+        controller: SignupCtrl,
         controllerAs: 'vm'
       })
-      .state('settings', {
-        url: '/settings',
-        templateUrl: 'app/account/settings/settings.html',
-        controller: 'SettingsController',
-        controllerAs: 'vm',
-        authenticate: true
-      });
   })
   .run(function($rootScope) {
     $rootScope.$on('$stateChangeStart', function(event, next, nextParams, current) {

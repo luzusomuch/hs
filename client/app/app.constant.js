@@ -1,5 +1,5 @@
 (function(angular, undefined) {
-  angular.module("meanApp.constants", [])
+  angular.module("healthStarsApp.constants", [])
 
 .constant("appConfig", {
 	"userRoles": [

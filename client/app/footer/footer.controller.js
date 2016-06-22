@@ -2,16 +2,8 @@
 
 class HsFooterCtrl {
 	constructor() {
-		console.log('footer');
+		console.log('footer controller');
 	}
 }
 
-
-angular.module('healthStarsApp').directive('hsFooter', () => {
-	return {
-		restrict: 'E',
-		controller: HsFooterCtrl,
-		controllerAs: 'vm',
-		templateUrl: 'app/footer/footer.html'
-	}
-})
+angular.module('healthStarsApp').controller('HsFooterCtrl', HsFooterCtrl);

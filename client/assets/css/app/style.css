@@ -128,7 +128,7 @@ img {
     text-transform: uppercase;
     text-align: center;
     position: relative;
-    background: url(../images/bg-line.png) no-repeat center;
+    background: url(/assets/images/bg-line.png) no-repeat center;
 }
 .form-login label {
     font-weight: normal;
@@ -166,7 +166,7 @@ img {
     text-align: center;
     position: relative;
     margin: 15px 0px;
-    background: url(../images/bg-line1.png) no-repeat center;
+    background: url(/assets/images/bg-line1.png) no-repeat center;
 }
 .list-social li {
     display: inline-block;
@@ -416,6 +416,7 @@ label .note-form {
     width: 180px;
     display: none;
     z-index: 100;
+    left: auto;
 }
 .profile-top ul li {
     float: none;
@@ -844,10 +845,10 @@ label .note-form {
     vertical-align: middle;
 }
 .user-i {
-    background-image: url('../images/user.png');
+    background-image: url('/assets/images/user.png');
 }
 .user-i-1 {
-    background-image: url('../images/user1.png');
+    background-image: url('/assets/images/user1.png');
 }
 .row-small {
     margin: 0px -3px;
@@ -897,13 +898,13 @@ label {
     font-size: 30px;
 }
 .map-i {
-    background-image: url('../images/icon.png');
+    background-image: url('/assets/images/icon.png');
 }
 .achive-i {
-    background-image: url('../images/icon2.png');
+    background-image: url('/assets/images/icon2.png');
 }
 .business-i {
-    background-image: url('../images/icon1.png');
+    background-image: url('/assets/images/icon1.png');
 }
 .list-info-user li {
     margin-bottom: 5px;

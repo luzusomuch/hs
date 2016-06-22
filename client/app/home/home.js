@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('healthStarsApp').config(function($stateProvider) {
-  $stateProvider.state('main', {
-    url: '/',
+  $stateProvider.state('home', {
+    url: '/home',
     templateUrl: 'app/home/home.html',
-    controller: HomeCtrl,
+    controller: 'HomeCtrl',
     controllerAs: 'vm',
-    options: {
+    settings: {
     	footer: false,
-    	header: true
+      pageTitle: 'HealthStars | Home'
     }
   });
 });

@@ -28,3 +28,5 @@ class LoginCtrl {
     }
   }
 }
+
+angular.module('healthStarsApp').controller('LoginCtrl', LoginCtrl);

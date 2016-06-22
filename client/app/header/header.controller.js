@@ -2,15 +2,8 @@
 
 class HsHeaderCtrl {
 	constructor() {
-		console.log('header');
+		console.log('header controller');
 	}
 }
 
-angular.module('healthStarsApp').directive('hsHeader', () => {
-	return {
-		restrict: 'E',
-		controller: HsHeaderCtrl,
-		controllerAs: 'vm',
-		templateUrl: 'app/header/header.html'
-	}
-})
+angular.module('healthStarsApp').controller('HsHeaderCtrl', HsHeaderCtrl);

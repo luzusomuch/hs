@@ -1,11 +1,12 @@
 'use strict';
 
 class HomeCtrl {
-
-  constructor($http, $scope) {
+	constructor($http, $scope) {
     this.$http = $http;
     $scope.$on('$destroy', function() {
       //do anything such as remove socket
     });
   }
 }
+
+angular.module('healthStarsApp').controller('HomeCtrl', HomeCtrl);

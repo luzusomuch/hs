@@ -1,6 +1,6 @@
 'use strict';
 
-class SignupCtrl {
+class RegisterCtrl {
   //end-non-standard
 
   constructor(Auth, $state) {
@@ -36,3 +36,5 @@ class SignupCtrl {
     }
   }
 }
+
+angular.module('healthStarsApp').controller('RegisterCtrl', RegisterCtrl);

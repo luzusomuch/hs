@@ -5,12 +5,12 @@
         <div class="menu">
             <a href="#" class="toggle-menu"><i class="fa fa-bars"></i></a>
             <ul>
-                <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                <li><a ui-sref="home"><i class="fa fa-home"></i> Home</a></li>
                 <li><a href="#"><i class="fa fa-calendar-check-o"></i> Events</a></li>
                 <li><a href="#"><i class="fa fa-exclamation-circle"></i> About</a></li>
-                <li class="profile-top">
-                    <a href="#"><img src="/assets/images/48.jpg"><i class="fa fa-angle-down"></i></a>
-                    <ul>
+                <li class="profile-top" uib-dropdown>
+                    <a href="#" uib-dropdown-toggle><img src="/assets/images/48.jpg"><i class="fa fa-angle-down"></i></a>
+                    <ul uib-dropdown-menu>
                         <li><a href="#"><i class="fa fa-home"></i> <span>Home</span></a></li>
                         <li><a href="#"><i class="fa fa-calendar"></i> <span>My Calendar</span></a></li>
                         <li><a href="#"><i class="fa fa-trophy"></i> <span>My Awards</span></a></li>

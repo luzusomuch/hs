@@ -2,12 +2,12 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" ng-app="healthStarsApp"> <!--<![endif]-->
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <base href="/">
-    <title></title>
+    <title>{{ appSettings.get('pageTitle') || 'HealthStars'}}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -26,15 +26,14 @@
       <!-- endinjector -->
     <!-- endbuild -->
   </head>
-  <body ng-app="healthStarsApp">
+  <body>
     <!--[if lt IE 7]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-
     <!-- Add your site or application content here -->
-    <hs-header></hs-header>
+    <hs-header ng-if="appSettings.get('header')"></hs-header>
     <div ui-view class="content-home"></div>
-    <hs-footer></hs-footer>
+    <hs-footer ng-if="appSettings.get('footer')"></hs-footer>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
@@ -78,10 +77,12 @@
       <script src="components/util/util.module.js"></script>
       <script src="app/account/account.js"></script>
       <script src="app/account/login/login.controller.js"></script>
-      <script src="app/account/signup/signup.controller.js"></script>
+      <script src="app/account/register/register.controller.js"></script>
       <script src="app/app.constant.js"></script>
       <script src="app/footer/footer.controller.js"></script>
+      <script src="app/footer/footer.js"></script>
       <script src="app/header/header.controller.js"></script>
+      <script src="app/header/header.js"></script>
       <script src="app/home/home.controller.js"></script>
       <script src="app/home/home.js"></script>
       <script src="components/auth/auth.service.js"></script>

@@ -5,8 +5,13 @@ angular.module('healthStarsApp')
     $stateProvider.state('login', {
         url: '/login',
         templateUrl: 'app/account/login/login.html',
-        controller: LoginCtrl,
-        controllerAs: 'vm'
+        controller: 'LoginCtrl',
+        controllerAs: 'vm',
+        settings: {
+          footer: false,
+          header: false,
+          pageTitle: 'HealthStars | Login'
+        }
       })
       .state('logout', {
         url: '/logout?referrer',
@@ -18,12 +23,17 @@ angular.module('healthStarsApp')
           $state.go(referrer);
         }
       })
-      .state('signup', {
-        url: '/signup',
-        templateUrl: 'app/account/signup/signup.html',
-        controller: SignupCtrl,
-        controllerAs: 'vm'
-      })
+      .state('register', {
+        url: '/register',
+        templateUrl: 'app/account/register/register.html',
+        controller: 'RegisterCtrl',
+        controllerAs: 'vm',
+        settings: {
+          footer: false,
+          header: false,
+          pageTitle: 'HealthStars | Register'
+        }
+      });
   })
   .run(function($rootScope) {
     $rootScope.$on('$stateChangeStart', function(event, next, nextParams, current) {

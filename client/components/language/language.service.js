@@ -5,8 +5,6 @@ class Language {
 		this.APP_CONFIG = APP_CONFIG;
 		this.$translate = $translate;
 		this.$localStorage = $localStorage;
-		let lang = $localStorage.language || 'en';
-		this.set(lang);
 	}
 
 	set(lang) {

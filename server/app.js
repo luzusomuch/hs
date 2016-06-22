@@ -12,6 +12,8 @@ kernel.loadModule(require('./modules/mailer'));
 kernel.loadModule(require('./modules/socket-io'));
 kernel.loadModule(require('./modules/user'));
 kernel.loadModule(require('./modules/lang'));
+kernel.loadModule(require('./modules/award'));
+kernel.loadModule(require('./modules/photo'));
 //compose then start server
 kernel.compose();
 

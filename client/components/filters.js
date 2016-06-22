@@ -85,8 +85,10 @@ angular.module('healthStarsApp')
         avatarUrl = profile.google.image.url;
         break;
       case 'facebook':
+        avatarUrl = `http://graph.facebook.com/${profile.facebook.id}/picture?type=square`;
         break;
       case 'twitter':
+        avatarUrl = profile.twitter.profile_image_url_https;
         break;
       default:
         avatarUrl = profile.avatar || avatarUrl;

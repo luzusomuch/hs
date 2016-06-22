@@ -1,6 +1,7 @@
 'use strict';
 
 import express from 'express';
+import session from 'express-session';
 import http from 'http';
 import morgan from 'morgan';
 import compression from 'compression';
@@ -26,6 +27,14 @@ exports.core = (kernel) => {
   kernel.app.use(bodyParser.json());
   kernel.app.use(methodOverride());
   kernel.app.use(cookieParser());
+
+  kernel.app.use(session({
+    secret: kernel.config.SECRETS.session,
+    saveUninitialized: false,
+    resave: false
+  }));
+
+
   //public folders
   let publicFolders = typeof kernel.config.PUBLIC_PATHS === 'string' ? [kernel.config.PUBLIC_PATHS] : kernel.config.PUBLIC_PATHS;
   kernel.config.PUBLIC_PATHS.forEach(folderPath => {

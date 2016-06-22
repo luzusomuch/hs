@@ -1,4 +1,4 @@
-
+'use strict';
 class Language {
 	constructor($http, APP_CONFIG, $localStorage, $translate) {
 		this.$http = $http;

@@ -7,7 +7,7 @@
 		"user",
 		"admin"
 	],
-	"baseUrl": "http://localhost:9000/",
+	"baseUrl": "http://healthstars.dev/",
 	"apiVer": "v1"
 })
 

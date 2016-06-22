@@ -35,7 +35,7 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
   		}
   	};
   })
-  .run(function($rootScope, $state, Auth, AppSettings, Language) {
+  .run(function($rootScope, $state, Auth, AppSettings) {
   	$rootScope.appSettings = AppSettings;																		
     $rootScope.$on('$stateChangeStart', function(event, next) {
     	for(let key in AppSettings.getSettings()) {

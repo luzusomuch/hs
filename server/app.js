@@ -11,7 +11,7 @@ let kernel = new KernelFactory(config);
 kernel.loadModule(require('./modules/mailer'));
 kernel.loadModule(require('./modules/socket-io'));
 kernel.loadModule(require('./modules/user'));
-kernel.loadModule(require('./modules/thing'));
+kernel.loadModule(require('./modules/lang'));
 //compose then start server
 kernel.compose();
 

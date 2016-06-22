@@ -88,85 +88,81 @@
  <div class="signup-page">
     <div class="container-fluid">
         <div class="logo-login"><img src="/assets/images/logo-login.png"></div>
-        <h1>Sign Up</h1>
+        <h1>{{'REGISTER' | translate}}</h1>
         <div class="clear"></div>
         <div class="form-signup">
             <form>
                 <div class="row">
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group">
-                            <label>First Name</label>
+                            <label>{{'FIRST_NAME' | translate}}</label>
                             <input type="text" class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group">
-                            <label>Last Name</label>
+                            <label>{{'LAST_NAME' | translate}}</label>
                             <input type="text" class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group">
-                            <label>Location</label>
-                            <select class="form-control"><option>Select Your Location</option></select>
+                            <label>{{'LOCATION' | translate}}</label>
+                            <select class="form-control"><option>{{'SELECT_LOCATION' | translate}}</option></select>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group">
-                            <label>e-mail</label>
+                            <label>{{'EMAIL' | translate}}</label>
                             <input type="text" class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group">
-                            <label>Phone</label>
+                            <label>{{'PHONE' | translate}}</label>
                             <input type="text" class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group">
-                            <label>Zip Code</label>
+                            <label>{{'ZIP_CODE' | translate}}</label>
                             <input type="text" class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group">
-                            <label>Password <span class="note-form">8 symbols min</span></label>
+                            <label>{{'PASSWORD' | translate}} <span class="note-form">8 symbols min</span></label>
                             <input type="text" class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group">
-                            <label>Confirm Password</label>
+                            <label>{{'CONFIRM_PASSWORD' | translate}}</label>
                             <input type="text" class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group">
-                            <label style="margin-bottom: 10px;">COMPANY ACCOUNT</label>
+                            <label style="margin-bottom: 10px;">{{'COMPANY_ACCOUNT' | translate}}</label>
                             <div class="radio-l">
                                 <input id="radio1" type="radio" name="radio" value="radio1" checked="">
-                                <label for="radio1"> Yes</label>
+                                <label for="radio1"> {{'YES' | translate}}</label>
                             </div>
                             <div class="radio-l">
                                 <input id="radio2" type="radio" name="radio" value="radio2">
-                                <label for="radio2"> No</label>
+                                <label for="radio2"> {{'NO' | translate}}</label>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-12 col-lg-8">
                         <div class="form-group">
-                            <label>OR Sign up with</label>
-                            <div class="sign-social">
-                                <a href="#" class="twitter-sign"><i class="fa fa-twitter"></i> Twitter </a>
-                                <a href="#" class="facebook-sign"><i class="fa fa-facebook"></i> Facebook </a>
-                                <a href="#" class="google-sign"><i class="fa fa-google-plus"></i> Google </a>
-                            </div>
+                            <label>{{'OR' | translate}} {{'REGISTER_WITH' | translate}}</label>
+                            <oauth-buttons theme="text"></oauth-buttons>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group">
-                            <button class="btn btn-block btn-success" style="margin-top: 20px;">Get started</button>
+                            <button class="btn btn-block btn-success" style="margin-top: 20px;">{{'GET_STARTED' | translate}}</button>
                         </div>
                     </div>
                 </div>

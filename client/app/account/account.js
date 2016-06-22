@@ -15,10 +15,10 @@ angular.module('healthStarsApp')
       })
       .state('logout', {
         url: '/logout?referrer',
-        referrer: 'main',
+        referrer: 'home',
         template: '',
         controller: function($state, Auth) {
-          var referrer = $state.params.referrer || $state.current.referrer || 'main';
+          var referrer = $state.params.referrer || $state.current.referrer || 'home';
           Auth.logout();
           $state.go(referrer);
         }

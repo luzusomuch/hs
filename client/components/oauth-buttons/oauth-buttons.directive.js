@@ -8,7 +8,8 @@ angular.module('healthStarsApp')
       controller: 'OauthButtonsCtrl',
       controllerAs: 'OauthButtons',
       scope: {
-        classes: '@'
+        classes: '@',
+        theme: '@'
       }
     };
   });

@@ -1,8 +1,15 @@
 'use strict';
 
 class HsHeaderCtrl {
-	constructor() {
-		console.log('header controller');
+	constructor($scope, $localStorage) {
+		this.user = {};
+		$scope.$watch(() => {
+			return $localStorage.authUser;
+		}, nv => {
+			if(nv) {
+				this.user = nv;
+			}
+		});
 	}
 }
 

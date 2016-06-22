@@ -659,7 +659,7 @@ return plugins.ngConstant({
   deps: [],
   wrap: true,
   stream: true,
-  constants: { appConfig: sharedConfig }
+  constants: { APP_CONFIG: sharedConfig }
 })
   .pipe(plugins.rename({
     basename: 'app.constant'

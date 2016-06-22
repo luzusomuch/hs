@@ -13,10 +13,10 @@ exports.core = (kernel) => {
 };
 
 exports.routes = (kernel) => {
-  kernel.app.use('/api/auth/local', require('./local').default);
-  kernel.app.use('/api/auth/facebook', require('./facebook').default);
-  kernel.app.use('/api/auth/twitter', require('./twitter').default);
-  kernel.app.use('/api/auth/google', require('./google').default);
+  kernel.app.use('/auth/local', require('./local').default);
+  kernel.app.use('/auth/facebook', require('./facebook').default);
+  kernel.app.use('/auth/twitter', require('./twitter').default);
+  kernel.app.use('/auth/google', require('./google').default);
 };
 
 exports.config = {

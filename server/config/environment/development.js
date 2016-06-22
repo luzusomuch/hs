@@ -6,7 +6,7 @@ import path from 'path';
 // ==================================
 module.exports = {
   // MongoDB connection options
-  MONGO_URL: 'mongodb://localhost/meanstack-dev',
+  MONGO_URL: 'mongodb://localhost/healthstars-dev',
   MONGO_REPLICAS_NUMBER: null,
   HTTP_PORT: 9000,
   PUBLIC_PATHS: [

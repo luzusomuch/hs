@@ -2,23 +2,13 @@
 
 (function() {
 
-  function UserResource($resource) {
-    return $resource('/api/v1/users/:id/:controller', {
-      id: '@_id'
-    }, {
-      changePassword: {
-        method: 'PUT',
-        params: {
-          controller: 'password'
-        }
-      },
-      get: {
-        method: 'GET',
-        params: {
-          id: 'me'
-        }
+  function UserResource($http, APP_CONFIG) {
+    return {
+      get(id) {
+        id = id || 'me';
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/${id}`);
       }
-    });
+    }
   }
 
   angular.module('healthStarsApp.auth')

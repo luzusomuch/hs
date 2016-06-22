@@ -6,6 +6,7 @@ angular.module('healthStarsApp').config(function($stateProvider) {
     templateUrl: 'app/home/home.html',
     controller: 'HomeCtrl',
     controllerAs: 'vm',
+    authenticate: true,
     settings: {
     	footer: false,
       pageTitle: 'HealthStars | Home'

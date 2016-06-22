@@ -2,7 +2,7 @@
 
 (function() {
 
-  function AuthService($location, $http, $cookies, $q, APP_CONFIG, Util, User) {
+  function AuthService($location, $http, $cookies, $q, APP_CONFIG, Util, User, $localStorage) {
     var safeCb = Util.safeCb;
     var currentUser = {};
     var userRoles = APP_CONFIG.userRoles || [];
@@ -129,8 +129,10 @@
         }
 
         return Auth.getCurrentUser(null)
-          .then(user => {
+          .then(resp => {
+            var user = resp.data || {};
             var is = user.hasOwnProperty('role');
+            $localStorage.authUser = user;
             safeCb(callback)(is);
             return is;
           });

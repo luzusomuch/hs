@@ -76,7 +76,23 @@ angular.module('healthStarsApp')
 })
 .filter('avatarUrl', function(){
   return function(profile){
-    return profile && profile.avatarUrl ? profile.avatarUrl : '/assets/images/no-avatar.jpg';
+    let avatarUrl = '/assets/images/no-avatar.jpg';
+    if(!profile || !profile.provider) {
+      return avatarUrl;
+    }
+    switch(profile.provider) {
+      case 'google':
+        avatarUrl = profile.google.image.url;
+        break;
+      case 'facebook':
+        break;
+      case 'twitter':
+        break;
+      default:
+        avatarUrl = profile.avatar || avatarUrl;
+        break;
+    }
+    return avatarUrl;
   };
 })
 .filter('name', function() {

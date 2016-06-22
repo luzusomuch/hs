@@ -5,17 +5,17 @@
         <div class="menu">
             <a href="#" class="toggle-menu"><i class="fa fa-bars"></i></a>
             <ul>
-                <li><a ui-sref="home"><i class="fa fa-home"></i> Home</a></li>
-                <li><a href="#"><i class="fa fa-calendar-check-o"></i> Events</a></li>
-                <li><a href="#"><i class="fa fa-exclamation-circle"></i> About</a></li>
+                <li><a ui-sref="home"><i class="fa fa-home"></i> {{'MENU_HOME' | translate}}</a></li>
+                <li><a href="#"><i class="fa fa-calendar-check-o"></i> {{'MENU_EVENTS' | translate}}</a></li>
+                <li><a href="#"><i class="fa fa-exclamation-circle"></i> {{'MENU_ABOUT' | translate}}</a></li>
                 <li class="profile-top" uib-dropdown>
-                    <a href="#" uib-dropdown-toggle><img src="/assets/images/48.jpg"><i class="fa fa-angle-down"></i></a>
+                    <a href="#" uib-dropdown-toggle><img ng-src="{{vm.user | avatarUrl}}"><i class="fa fa-angle-down"></i></a>
                     <ul uib-dropdown-menu>
-                        <li><a href="#"><i class="fa fa-home"></i> <span>Home</span></a></li>
-                        <li><a href="#"><i class="fa fa-calendar"></i> <span>My Calendar</span></a></li>
-                        <li><a href="#"><i class="fa fa-trophy"></i> <span>My Awards</span></a></li>
-                        <li><a href="#"><i class="fa fa-envelope-o"></i> <span>My Messager</span></a></li>
-                        <li><a href="#"><i class="fa fa-cog"></i> <span>Settings</span></a></li>
+                        <li><a href="#"><i class="fa fa-home"></i> <span>{{'MENU_HOME' | translate}}</span></a></li>
+                        <li><a href="#"><i class="fa fa-calendar"></i> <span>{{'MENU_MY_CALENDAR' | translate}}</span></a></li>
+                        <li><a href="#"><i class="fa fa-trophy"></i> <span>{{'MENU_MY_AWARDS' | translate}}</span></a></li>
+                        <li><a href="#"><i class="fa fa-envelope-o"></i> <span>{{'MENU_MY_MESSAGER' | translate}}</span></a></li>
+                        <li><a href="#"><i class="fa fa-cog"></i> <span>{{'MENU_SETTINGS' | translate}}</span></a></li>
                     </ul>
                 </li>
             </ul>

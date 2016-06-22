@@ -2,7 +2,7 @@
 
 angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constants',
     'ngCookies', 'ngResource', 'ngSanitize', 'btford.socket-io', 'ui.router', 'ui.bootstrap',
-    'validation.match', 'angular-growl', 'angular-loading-bar', 'ngAnimate', 'ngStorage'
+    'validation.match', 'angular-growl', 'angular-loading-bar', 'ngAnimate', 'ngStorage', 'healthStarsApp.language'
   ])
   .config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
     $urlRouterProvider.otherwise('/home');
@@ -35,7 +35,7 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
   		}
   	};
   })
-  .run(function($rootScope, $state, Auth, AppSettings) {
+  .run(function($rootScope, $state, Auth, AppSettings, Language) {
   	$rootScope.appSettings = AppSettings;																		
     $rootScope.$on('$stateChangeStart', function(event, next) {
     	for(let key in AppSettings.getSettings()) {

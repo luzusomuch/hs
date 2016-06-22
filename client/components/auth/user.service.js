@@ -7,8 +7,12 @@
       get(id) {
         id = id || 'me';
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/${id}`);
+      },
+
+      create(user) {
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users`, user);
       }
-    }
+    };
   }
 
   angular.module('healthStarsApp.auth')

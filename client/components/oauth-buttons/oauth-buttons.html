@@ -1,5 +1,11 @@
-<ul class="list-social">
+<ul class="list-social" ng-if="!theme || theme === 'icon'">
     <li><a href="#" ng-click="OauthButtons.loginOauth('twitter')"><i class="fa fa-twitter"></i></a></li>
     <li><a href="#" ng-click="OauthButtons.loginOauth('facebook')"><i class="fa fa-facebook"></i></a></li>
     <li><a href="#" ng-click="OauthButtons.loginOauth('google')"><i class="fa fa-google-plus"></i></a></li>
 </ul>
+
+<div class="sign-social" ng-if="theme === 'text'">
+    <a href="#" ng-click="OauthButtons.loginOauth('twitter')" class="twitter-sign"><i class="fa fa-twitter"></i> Twitter </a>
+    <a href="#" ng-click="OauthButtons.loginOauth('facebook')" class="facebook-sign"><i class="fa fa-facebook"></i> Facebook </a>
+    <a href="#" ng-click="OauthButtons.loginOauth('google')" class="google-sign"><i class="fa fa-google-plus"></i> Google </a>
+</div>

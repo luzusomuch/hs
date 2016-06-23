@@ -1703,7 +1703,15 @@ label {
     position: absolute;
     left: 15px;
 }
-
 .relative-div {
     position: relative;
+}
+.verify-page {
+    padding: 40px 0px;
+}
+.verify-modal {
+    width: 300px;
+    margin: auto;
+    background: rgba(3,12,41,0.5);
+    padding: 20px
 }

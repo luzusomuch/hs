@@ -33,6 +33,17 @@ angular.module('healthStarsApp')
           header: false,
           pageTitle: 'HealthStars | Register'
         }
+      })
+      .state('verifyAccount', {
+        url: '/verify/:token',
+        templateUrl: 'app/account/verify/verify.html',
+        controller: 'VerifyAccountCtrl',
+        controllerAs: 'vm',
+        settings: {
+          footer: false,
+          header: false,
+          pageTitle: 'HealthStars | Verify Account'
+        }
       });
   })
   .run(function($rootScope) {

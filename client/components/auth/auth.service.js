@@ -70,6 +70,15 @@
           });
       },
 
+      /*verify account*/
+      verifyAccount(token, callback) {
+        return User.verifyAccount({token: token}, (success) => {
+          return safeCb(callback)(null, success);
+        }, error => {
+          return safeCb(callback)(error);
+        });
+      },
+
       /**
        * Change password
        *
@@ -180,7 +189,7 @@
        */
       getToken() {
         return $cookies.get('token');
-      }
+      },
     };
 
     return Auth;

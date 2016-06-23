@@ -11,6 +11,10 @@
 
       save: (user) => {
         return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users`, user);
+      },
+
+      verifyAccount: (token) => {
+        return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/verify-account`, token);
       }
     };
   }

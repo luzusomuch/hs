@@ -1,5 +1,7 @@
 {% extends 'layouts/default.html' %}
 
 {% block content %}
-<p>Hello</p>
+<p>Hello <%= user.name%></p>
+<p>Welcome to Health Starts</p>
+<p>Please click <a href="<%= url %>">here</a> to verify your account</p>
 {% endblock %}

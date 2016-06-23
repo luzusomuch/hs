@@ -26,7 +26,7 @@ module.exports = exports = function(kernel) {
         rank: Number,
         awardId: Schema.Types.ObjectId
       }],
-      currentLocation: {
+      location: {
         coordinates: [Number],
         fullAddress: String,
         country: String,

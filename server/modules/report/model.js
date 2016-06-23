@@ -4,9 +4,8 @@ module.exports = {
     let reportSchema = new Schema({
     	reporterId: kernel.mongoose.Schema.Types.ObjectId,
     	description: String,
-    	eventId: kernel.mongoose.Schema.Types.ObjectId,
-    	userId: kernel.mongoose.Schema.Types.ObjectId,
-    	type: {type: String, enum: ['user', 'event']},
+    	reportedItemId: kernel.mongoose.Schema.Types.ObjectId,
+    	type: {type: String, enum: ['user', 'event', 'photo', 'comment']},
     	checked: {
     		status: {type: Boolean, default: false},
     		by: kernel.mongoose.Schema.Types.ObjectId

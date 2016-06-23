@@ -7,15 +7,30 @@ module.exports = {
     	description: String,
     	category: kernel.mongoose.Schema.Types.ObjectId,
     	tags: [String],
+    	startDateTime: Date,
+    	endDateTime: Date,
     	organizerId: kernel.mongoose.Schema.Types.ObjectId,
     	awardsId: [kernel.mongoose.Schema.Types.ObjectId],
     	participantsId: [kernel.mongoose.Schema.Types.ObjectId],
     	photosId: [kernel.mongoose.Schema.Types.ObjectId],
-    	type: {type: String, enum: ['user', 'event']},
-    	checked: {
-    		status: {type: Boolean, default: false},
+    	public: {
+    		type: {type: Boolean, default: true},
     		by: kernel.mongoose.Schema.Types.ObjectId
-    	}
+    	},
+    	location: {
+        coordinates: [Number],
+        fullAddress: String,
+        country: String,
+        countryCode: String,
+        city: String,
+        state: String,
+        zipCode: String
+      },
+      blocked: {
+      	status: {type: Boolean, default: false},
+      	by: kernel.mongoose.Schema.Types.ObjectId
+      },
+
     });
 
     //import timestamp for auto create updatedAt, createdAt field manually

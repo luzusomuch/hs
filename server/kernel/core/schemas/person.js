@@ -47,7 +47,10 @@ module.exports = exports = function(kernel) {
       blocked: {
         status: {type: Boolean, default: false},
         by: Schema.Types.ObjectId
-      }
+      },
+      emailVerified: {type: Boolean, default: false},
+      emailVerifiedToken: String,
+      passwordResetToken: String
     });
   };
 

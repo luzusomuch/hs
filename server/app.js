@@ -14,6 +14,7 @@ kernel.loadModule(require('./modules/user'));
 kernel.loadModule(require('./modules/lang'));
 kernel.loadModule(require('./modules/award'));
 kernel.loadModule(require('./modules/photo'));
+kernel.loadModule(require('./modules/report'));
 //compose then start server
 kernel.compose();
 

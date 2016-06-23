@@ -15,6 +15,10 @@ kernel.loadModule(require('./modules/lang'));
 kernel.loadModule(require('./modules/award'));
 kernel.loadModule(require('./modules/photo'));
 kernel.loadModule(require('./modules/report'));
+kernel.loadModule(require('./modules/thread'));
+kernel.loadModule(require('./modules/invitation-request'));
+kernel.loadModule(require('./modules/category'));
+kernel.loadModule(require('./modules/device-token'));
 //compose then start server
 kernel.compose();
 

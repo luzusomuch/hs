@@ -67,8 +67,7 @@
           }, function(err) {
             Auth.logout();
             return safeCb(callback)(err);
-          })
-          .$promise;
+          });
       },
 
       /**

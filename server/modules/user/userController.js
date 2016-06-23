@@ -48,6 +48,8 @@ class UserController {
    */
   create(req, res) {
     //TODO - add validator layer for that
+    req.body.location.coordinates = [106.647800, 10.807084];
+    req.body.location.type = 'Point';
     var newUser = new this.kernel.model.User(req.body);
     newUser.provider = 'local';
     newUser.role = 'user';

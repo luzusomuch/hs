@@ -12,8 +12,6 @@ module.exports = exports = function(kernel) {
   var person = function (schema, options) {
     schema.defaults({
       address: Schema.Types.Mixed,
-      friends: Schema.Types.ObjectId,
-      followers: Schema.Types.ObjectId,
       notificationSetting: {
         isVisibleFriendsList: {type: Boolean, defaults: false},
         invitedToEvent: {type: Boolean, defaults: true},
@@ -27,6 +25,7 @@ module.exports = exports = function(kernel) {
         awardId: Schema.Types.ObjectId
       }],
       location: {
+        type: {type: String}, //this type only use for mongoDB geoJSON, maybe a Point or somethings
         coordinates: [Number],
         fullAddress: String,
         country: String,

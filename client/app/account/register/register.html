@@ -91,65 +91,78 @@
         <h1>{{'REGISTER' | translate}}</h1>
         <div class="clear"></div>
         <div class="form-signup">
-            <form>
+            <form ng-submit="vm.register(form)" name="form" novalidate>
                 <div class="row">
                     <div class="col-sm-6 col-lg-4">
-                        <div class="form-group">
+                        <div class="form-group relative-div">
                             <label>{{'FIRST_NAME' | translate}}</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" ng-model="vm.user.firstName" name="firstName" required ng-class="{'error-input': form.firstName.$error.required && vm.submitted}">
+
+                            <p ng-show="form.firstName.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
-                        <div class="form-group">
+                        <div class="form-group relative-div">
                             <label>{{'LAST_NAME' | translate}}</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" ng-model="vm.user.lastName" name="lastName" required ng-class="{'error-input': form.lastName.$error.required && vm.submitted}">
+
+                            <p ng-show="form.lastName.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
-                        <div class="form-group">
+                        <div class="form-group relative-div">
                             <label>{{'LOCATION' | translate}}</label>
-                            <select class="form-control"><option>{{'SELECT_LOCATION' | translate}}</option></select>
+                            <select class="form-control" ng-model="vm.user.location.country"><option>{{'SELECT_LOCATION' | translate}}</option></select>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
-                        <div class="form-group">
+                        <div class="form-group relative-div">
                             <label>{{'EMAIL' | translate}}</label>
-                            <input type="text" class="form-control">
+                            <input type="email" class="form-control" ng-model="vm.user.email" name="email" required ng-class="{'error-input': form.email.$error.email || form.email.$error.required && vm.submitted}">
+
+                            <p ng-show="form.email.$error.email && vm.submitted" class="error-text">{{'EMAIL_TYPE_ERROR' | translate}}</p>
+                            <p ng-show="form.email.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
-                        <div class="form-group">
+                        <div class="form-group relative-div">
                             <label>{{'PHONE' | translate}}</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" ng-model="vm.user.phoneNumber" name="phoneNumber">
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
-                        <div class="form-group">
+                        <div class="form-group relative-div">
                             <label>{{'ZIP_CODE' | translate}}</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" ng-model="vm.user.location.zipCode" name="zipCode">
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
-                        <div class="form-group">
+                        <div class="form-group relative-div">
                             <label>{{'PASSWORD' | translate}} <span class="note-form">8 symbols min</span></label>
-                            <input type="text" class="form-control">
+                            <input type="password" class="form-control" ng-model="vm.user.password" name="password" required ng-minlength="8" ng-class="{'error-input': form.password.$error.minlength || form.password.$error.required && vm.submitted}">
+
+                            <p ng-show="form.password.$error.minlength && vm.submitted" class="error-text">{{'PASSWORD_MIN_LENGTH_ERROR' | translate}}</p>
+                            <p ng-show="form.password.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
-                        <div class="form-group">
+                        <div class="form-group relative-div">
                             <label>{{'CONFIRM_PASSWORD' | translate}}</label>
-                            <input type="text" class="form-control">
+                            <input type="password" class="form-control" ng-model="vm.user.repassword" name="repassword" required compare-to="vm.user.password" ng-class="{'error-input': form.repassword.$error.compareTo || form.password.$error.required && vm.submitted}">
+                            
+                            <p ng-show="form.repassword.$error.compareTo && vm.submitted" class="error-text">{{'CONFIRM_PASSWORD_NOT_MATCH' | translate}}</p>
+                            <p ng-show="form.password.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group">
                             <label style="margin-bottom: 10px;">{{'COMPANY_ACCOUNT' | translate}}</label>
                             <div class="radio-l">
-                                <input id="radio1" type="radio" name="radio" value="radio1" checked="">
+                                <input id="radio1" type="radio" name="radio" ng-value="true" ng-model="vm.user.isCompanyAccount">
                                 <label for="radio1"> {{'YES' | translate}}</label>
                             </div>
                             <div class="radio-l">
-                                <input id="radio2" type="radio" name="radio" value="radio2">
+                                <input id="radio2" type="radio" name="radio" ng-value="false" ng-model="vm.user.isCompanyAccount">
                                 <label for="radio2"> {{'NO' | translate}}</label>
                             </div>
                         </div>
@@ -162,7 +175,7 @@
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group">
-                            <button class="btn btn-block btn-success" style="margin-top: 20px;">{{'GET_STARTED' | translate}}</button>
+                            <button type="submit" class="btn btn-block btn-success" style="margin-top: 20px;">{{'GET_STARTED' | translate}}</button>
                         </div>
                     </div>
                 </div>

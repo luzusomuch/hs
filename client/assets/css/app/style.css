@@ -1694,3 +1694,16 @@ label {
 .choose-category .radio-l label:before {
     top: 7px;
 }
+
+.error-input {
+    border: 3px solid red
+}
+.error-text {
+    color: red;
+    position: absolute;
+    left: 15px;
+}
+
+.relative-div {
+    position: relative;
+}

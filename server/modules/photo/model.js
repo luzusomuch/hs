@@ -5,9 +5,6 @@ module.exports = {
       objectId: kernel.mongoose.Schema.Types.ObjectId,
       ownerId: kernel.mongoose.Schema.Types.ObjectId,
       metadata: {},
-      liked: kernel.mongoose.Schema.Types.ObjectId,
-      shared: kernel.mongoose.Schema.Types.ObjectId,
-      comments: kernel.mongoose.Schema.Types.ObjectId,
       blocked: {
       	status: {type: Boolean, default: false},
       	byUserId: kernel.mongoose.Schema.Types.ObjectId

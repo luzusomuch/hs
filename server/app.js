@@ -19,6 +19,7 @@ kernel.loadModule(require('./modules/thread'));
 kernel.loadModule(require('./modules/invitation-request'));
 kernel.loadModule(require('./modules/category'));
 kernel.loadModule(require('./modules/device-token'));
+kernel.loadModule(require('./modules/event'));
 //compose then start server
 kernel.compose();
 

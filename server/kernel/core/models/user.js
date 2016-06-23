@@ -46,6 +46,11 @@ exports.model = {
       minimize: false
     });
 
+    // import more field for user
+    UserSchema.plugin(kernel.schema.person);
+    //import timestamp for auto create updatedAt, createdAt field manually
+    UserSchema.plugin(kernel.schema.timestamp);
+
     /**
      * Virtuals
      */
@@ -126,6 +131,7 @@ exports.model = {
      */
     UserSchema
       .pre('save', function(next) {
+        this.lastAccess = new Date();
         // Handle new/update passwords
         if (!this.isModified('password')) {
           return next();

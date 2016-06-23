@@ -11,49 +11,43 @@ module.exports = exports = function(kernel) {
    */
   var person = function (schema, options) {
     schema.defaults({
-      additionalName: String,
       address: Schema.Types.Mixed,
-      affiliation: Schema.Types.Mixed,
-      alumniOf: Schema.Types.Mixed,
-      award: String,
+      friends: Schema.Types.ObjectId,
+      followers: Schema.Types.ObjectId,
+      notificationSetting: {
+        isVisibleFriendsList: {type: Boolean, defaults: false},
+        invitedToEvent: {type: Boolean, defaults: true},
+        friendInvitation: {type: Boolean, defaults: true},
+        newPost: {type: Boolean, defaults: true},
+      },
+      avatar: Schema.Types.ObjectId,
+      coverPhoto: Schema.Types.ObjectId,
+      awardsExhibits: [{
+        rank: Number,
+        awardId: Schema.Types.ObjectId
+      }],
+      currentLocation: {
+        coordinates: [Number],
+        fullAddress: String,
+        country: String,
+        countryCode: String,
+        city: String,
+        state: String,
+        zipCode: String
+      },
+      about: String,
+      gender: {type: String, enum: ['male', 'female', 'others']},
       birthDate: Date,
-      brand: Schema.Types.Mixed,
-      children: Schema.Types.Mixed,
-      colleague: Schema.Types.Mixed,
-      contactPoint: Schema.Types.Mixed,
-      deathDate: Date,
-      duns: String,
-      email: String,
-      familyName: String,
-      faxNumber: String,
-      follows: Schema.Types.Mixed,
-      gender: String,
-      givenName: String,
-      globalLocationNumber: String,
-      hasPOS: Schema.Types.Mixed,
-      homeLocation: Schema.Types.Mixed,
-      honorificPrefix: String,
-      honorificSuffix: String,
-      interactionCount: String,
-      isicV4: String,
-      jobTitle: String,
-      knows: Schema.Types.Mixed,
-      makesOffer: Schema.Types.Mixed,
-      memberOf: Schema.Types.Mixed,
-      naics: String,
-      nationality: Schema.Types.Mixed,
-      owns: Schema.Types.Mixed,
-      parent: Schema.Types.Mixed,
-      performerIn: Schema.Types.Mixed,
-      relatedTo: Schema.Types.Mixed,
-      seeks: Schema.Types.Mixed,
-      sibling: Schema.Types.Mixed,
-      spouse: Schema.Types.Mixed,
-      taxID: String,
-      telephone: String,
-      vatID: String,
-      workLocation: Schema.Types.Mixed,
-      worksFor: Schema.Types.Mixed
+      phoneNumber: String,
+      lastAccess: Date,
+      deleted: {
+        status: {type: Boolean, default: false},
+        by: Schema.Types.ObjectId
+      },
+      blocked: {
+        status: {type: Boolean, default: false},
+        by: Schema.Types.ObjectId
+      }
     });
   };
 

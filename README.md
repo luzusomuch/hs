@@ -31,3 +31,9 @@ Run `grunt build` for building and `grunt serve` for preview.
 ## Testing
 
 Running `npm test` will run the unit tests with karma.
+
+#Adding 2dsphere Indexes by
+open use mongo cmd then switch to use currently database
+after that type 
+db.users.createIndex({location: "2dsphere"})
+db.events.createIndex({location: "2dsphere"})

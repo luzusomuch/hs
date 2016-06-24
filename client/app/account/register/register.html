@@ -112,7 +112,15 @@
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group relative-div">
                             <label>{{'LOCATION' | translate}}</label>
-                            <select class="form-control" ng-model="vm.user.location.country"><option>{{'SELECT_LOCATION' | translate}}</option></select>
+                            <ui-select ng-model="vm.address.selected" theme="bootstrap" append-to-body="true" reset-search-input="false">
+                              <ui-select-match>{{$select.selected.formatted_address}}</ui-select-match>
+                              <ui-select-choices repeat="address in vm.addresses track by $index" refresh="vm.refreshAddresses($select.search)" refresh-delay="0">
+                                <div ng-bind-html="address.formatted_address"></div>
+                              </ui-select-choices>
+                            </ui-select>
+
+                            <p ng-show="!this.address.selected && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+                            <!-- <select class="form-control" ng-model="vm.user.location.country"><option>{{'SELECT_LOCATION' | translate}}</option></select> -->
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
@@ -127,7 +135,9 @@
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group relative-div">
                             <label>{{'PHONE' | translate}}</label>
-                            <input type="text" class="form-control" ng-model="vm.user.phoneNumber" name="phoneNumber">
+                            <input type="text" class="form-control" ng-model="vm.user.phoneNumber" name="phoneNumber" ng-pattern="/^[0-9]{1,15}$/" ng-class="{'error-input': form.phoneNumber.$error.pattern && vm.submitted}">
+
+                            <p class="error-text" ng-show="form.phoneNumber.$error.pattern">{{'PHONE_NUMBER_TYPE_ERROR' | translate}}</p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">

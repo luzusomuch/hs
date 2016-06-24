@@ -2,7 +2,7 @@
 
 angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constants',
     'ngCookies', 'ngResource', 'ngSanitize', 'btford.socket-io', 'ui.router', 'ui.bootstrap',
-    'validation.match', 'angular-growl', 'angular-loading-bar', 'ngAnimate', 'ngStorage', 'healthStarsApp.language'
+    'validation.match', 'angular-growl', 'angular-loading-bar', 'ngAnimate', 'ngStorage', 'healthStarsApp.language', 'ui.select'
   ])
   .config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
     $urlRouterProvider.otherwise('/home');

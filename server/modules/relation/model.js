@@ -4,7 +4,7 @@ module.exports = {
     let relationSchema = new Schema({
     	fromUserId: kernel.mongoose.Schema.Types.ObjectId,
     	toUserId: kernel.mongoose.Schema.Types.ObjectId,
-    	type: {type: String, enum: ['friends', 'follow']},
+    	type: {type: String, enum: ['friend', 'follow']},
     	status: {type: String, enum: ['pending', 'completed']}
     });
 

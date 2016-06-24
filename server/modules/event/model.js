@@ -5,7 +5,7 @@ module.exports = {
     	ownerId: kernel.mongoose.Schema.Types.ObjectId,
     	name: String,
     	description: String,
-    	category: kernel.mongoose.Schema.Types.ObjectId,
+    	categoryId: kernel.mongoose.Schema.Types.ObjectId,
     	tags: [String],
     	startDateTime: Date,
     	endDateTime: Date,
@@ -24,7 +24,8 @@ module.exports = {
         countryCode: String,
         city: String,
         state: String,
-        zipCode: String
+        zipCode: String,
+        type: {type: String, default: 'Point'}
       },
       blocked: {
       	status: {type: Boolean, default: false},

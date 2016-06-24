@@ -133,7 +133,9 @@
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group relative-div">
                             <label>{{'PHONE' | translate}}</label>
-                            <input type="text" class="form-control" ng-model="vm.user.phoneNumber" name="phoneNumber">
+                            <input type="text" class="form-control" ng-model="vm.user.phoneNumber" name="phoneNumber" ng-pattern="/^[0-9]{1,15}$/" ng-class="{'error-input': form.phoneNumber.$error.pattern && vm.submitted}">
+
+                            <p class="error-text" ng-show="form.phoneNumber.$error.pattern">{{'PHONE_NUMBER_TYPE_ERROR' | translate}}</p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">

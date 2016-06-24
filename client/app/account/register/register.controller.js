@@ -3,23 +3,40 @@
 class RegisterCtrl {
   //end-non-standard
 
-  constructor(Auth, $state) {
+  constructor(Auth, $state, $http) {
     this.Auth = Auth;
     this.$state = $state;
+    this.$http = $http;
     this.user = {
       isCompanyAccount: false,
       location: {}
     };
+    
+    this.address = {};
+    this.addresses = [];
   }
   //start-non-standard
 
+  refreshAddresses(address) {
+    var params = {address: address, sensor: false};
+    return this.$http.get(
+      'http://maps.googleapis.com/maps/api/geocode/json',
+      {params: params}
+    ).then( (response) => {
+      this.addresses = response.data.results;
+    });
+  }
 
   register(form) {
     this.submitted = true;
-    console.log(form);
-    if (form.$valid) {
-      // TODO - need an API to find out lng, lat and zipcode when user select location
+    if (form.$valid && this.address.selected) {
+      var selectedAddress = this.address.selected;
+      this.user.location.coordinates = [selectedAddress.geometry.location.lng, selectedAddress.geometry.location.lat];
+      this.user.location.country = selectedAddress.address_components[selectedAddress.address_components.length -1].long_name;
+      this.user.location.countryCode = selectedAddress.address_components[selectedAddress.address_components.length -1].short_name;
+      this.user.location.fullAddress = selectedAddress.formatted_address;
       this.user.name = this.user.firstName +" "+ this.user.lastName;
+
       this.Auth.createUser({
           name: this.user.name,
           email: this.user.email,
@@ -29,7 +46,7 @@ class RegisterCtrl {
         })
         .then(() => {
           // Account created, redirect to home
-          this.$state.go('main');
+          this.$state.go('home');
         })
         .catch(err => {
           err = err.data;

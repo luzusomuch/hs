@@ -99,7 +99,7 @@ class UserController {
    * restriction: 'admin'
    */
   destroy(req, res) {
-    return this.kernel.model.Userg.removeById(req.params.id)
+    return this.kernel.model.User.removeById(req.params.id)
       .then(function() {
         res.status(204).end();
       })

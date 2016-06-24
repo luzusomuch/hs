@@ -59,6 +59,10 @@
           return hostnameCheck && protocolCheck && portCheck;
         });
         return origins.length >= 1;
+      },
+      
+      emailPattern() {
+        return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       }
     };
 

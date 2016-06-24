@@ -21,6 +21,7 @@ kernel.loadModule(require('./modules/category'));
 kernel.loadModule(require('./modules/device-token'));
 kernel.loadModule(require('./modules/event'));
 kernel.loadModule(require('./modules/relation'));
+kernel.loadModule(require('./modules/auth'));
 //compose then start server
 kernel.compose();
 

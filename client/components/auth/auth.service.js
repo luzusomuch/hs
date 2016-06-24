@@ -101,6 +101,41 @@
           .$promise;
       },
 
+      forgotPassword(email) {
+        var deferred = $q.defer();
+        $http.post(`/api/${APP_CONFIG.apiVer}/auth/forgotpw`, {
+          email: email
+        }).then(function(response){
+          return deferred.resolve(response);
+        }, function(error){
+          return deferred.reject(error);
+        });
+
+        return deferred.promise;
+      },
+
+      forgotPasswordCheckToken(token) {
+        var deferred = $q.defer();
+        $http.get(`/api/${APP_CONFIG.apiVer}/auth/forgotpw/checkToken/${token}`).then(function(response){
+          return deferred.resolve(response);
+        }, function(error){
+          return deferred.reject(error);
+        });
+
+        return deferred.promise;
+      },
+
+      resetPassword(user) {
+        var deferred = $q.defer();
+        $http.post(`/api/${APP_CONFIG.apiVer}/auth/resetpw`, user).then(function(response){
+          return deferred.resolve(response);
+        }, function(error){
+          return deferred.reject(error);
+        });
+
+        return deferred.promise;
+      },
+
       /**
        * Gets all available info on a user
        *   (synchronous|asynchronous)

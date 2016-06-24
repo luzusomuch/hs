@@ -8,7 +8,8 @@ export function setup(User, config) {
     callbackURL: config.TWITTER.callbackURL
   },
   function(token, tokenSecret, profile, done) {
-    User.findOne({'twitter.id': profile.id}).exec()
+    console.log(profile);
+    User.findOne({'twitter.id_str': profile.id}).exec()
       .then(user => {
         if (user) {
           return done(null, user);

@@ -44,6 +44,39 @@ angular.module('healthStarsApp')
           header: false,
           pageTitle: 'HealthStars | Verify Account'
         }
+      })
+      .state('forgotPw', {
+        url: '/forgotpw',
+        templateUrl: 'app/account/forgotpw/forgotpw.html',
+        controller: 'ForgotPwCtrl',
+        controllerAs: 'vm',
+        settings: {
+          footer: false,
+          header: false,
+          pageTitle: 'HealthStars | Forgot Password'
+        }
+      }).state('resetPw', {
+        url: '/resetpw/:token',
+        templateUrl: 'app/account/resetpw/resetpw.html',
+        controller: 'ResetPwCtrl',
+        controllerAs: 'vm',
+        settings: {
+          footer: false,
+          header: false,
+          pageTitle: 'HealthStars | Reset Password'
+        },
+        resolve: {
+          resetData: ['$stateParams', 'Auth', function($stateParams, Auth){
+            return Auth.forgotPasswordCheckToken($stateParams.token).then(
+              () => {
+               return { token: $stateParams.token };
+              },
+              err => {
+                return { error : err.data };
+              }
+            );
+          }],
+        }
       });
   })
   .run(function($rootScope) {

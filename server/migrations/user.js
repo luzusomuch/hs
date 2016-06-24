@@ -16,6 +16,11 @@ module.exports = (UserModel, cb) => {
           name: 'Test User',
           email: 'test@example.com',
           password: 'test'
+        },{
+          provider: 'local',
+          name: 'Trung Le',
+          email: 'htle1810@gmail.com',
+          password: '123456'
         }, {
           provider: 'local',
           role: 'admin',

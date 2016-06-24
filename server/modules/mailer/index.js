@@ -26,6 +26,8 @@ Mailer.prototype.send = function(options, callback) {
   // });
 
   this.transport.sendMail(options, function(err, data){
+    console.log(err);
+    console.log(data);
     callback && callback(null, data);
   });
 };
@@ -51,18 +53,22 @@ let mailer = null;
 
 exports.config = {
   MAILER: {
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // use SSL
+    //host: 'smtp.gmail.com',
+    service: 'mailgun',
+    //port: 465,
+    //secure: true, // use SSL
     auth: {
-      user: 'xxx@xxx.com',
-      pass: 'xxx@xxx.com'
+      // user: 'noreply@chiiz.com',
+      // pass: 'lee@mansainc.com'
+      user: 'postmaster@sandboxf33fddc2f2f8469fb38592948a17b274.mailgun.org',
+      pass: '47dcb8182067dd4e4286c9c05e29a8c3'
     }
   },
   EMAIL_FROM: 'admin@app.com'
 };
 
 exports.core = (kernel) => {
+  console.log(kernel.config.MAILER);
   mailer = new Mailer(kernel.config.MAILER);
 
   kernel.mailer = mailer;

@@ -76,7 +76,7 @@ angular.module('healthStarsApp')
 })
 .filter('avatarUrl', function(){
   return function(profile){
-    let avatarUrl = '/assets/images/no-avatar.jpg';
+    let avatarUrl = '/assets/images/no-avatar.png';
     if(!profile || !profile.provider) {
       return avatarUrl;
     }

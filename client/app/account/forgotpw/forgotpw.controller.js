@@ -23,7 +23,7 @@ class ForgotPwCtrl {
     if (form.$valid) {
       this.loading = true;
       this.Auth.forgotPassword(this.user.email)
-      .then(response => {
+      .then(() => {
         // alert to user to know/check mail
         this.success = true;
         this.loading = false;

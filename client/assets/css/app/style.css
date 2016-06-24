@@ -137,6 +137,10 @@ img {
     color: #fff;
     font-family: 'proxima_novasemibold';
 }
+.form-login label.help-block {
+    font-size: 13px;
+    text-transform: none;
+}
 .form-group .form-control {
     border-radius: 30px;
 }

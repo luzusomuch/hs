@@ -34,7 +34,8 @@ let Language = {
 		REQUIRED_ERROR: 'This field is required',
 		EMAIL_TYPE_ERROR: 'Your email is not valid',
 		PASSWORD_MIN_LENGTH_ERROR: 'Minimun length of password is 8 characters',
-		CONFIRM_PASSWORD_NOT_MATCH: 'Password and confirm password not match'
+		CONFIRM_PASSWORD_NOT_MATCH: 'Password and confirm password not match',
+		SIGN_IN_ERROR: 'Password or email not correct'
 	},
 	de: {
 

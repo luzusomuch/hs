@@ -2,18 +2,26 @@
   <div class="container-fluid">
   <div class="logo-login"><img src="/assets/images/logo-login.png"></div>
   <div class="box-login">
-      <form class="form-login">
+      <form class="form-login" ng-submit="vm.login(form)" name="form">
           <h2><span>{{'SIGN_IN' | translate}}</span></h2>
           <div class="form-group">
               <label>{{'USERNAME_EMAIL' | translate}}</label>
-              <input type="text" class="form-control" placeholder="Your Username">
+              <input type="email" ng-model="vm.user.email" class="form-control" placeholder="Your Username" required name="email" ng-class="{'error-input': form.email.$error.email || form.email.$error.required && vm.submitted}">
+
+              <p ng-show="form.email.$error.email && vm.submitted" class="error-text">{{'EMAIL_TYPE_ERROR' | translate}}</p>
+              <p ng-show="form.email.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
           </div>
           <div class="form-group">
               <label>{{'PASSWORD' | translate}}</label>
-              <input type="text" class="form-control" placeholder="Your Password">
+              <input type="password" ng-model="vm.user.password" class="form-control" placeholder="Your Password" required name="password" ng-class="{'error-input': form.password.$error.required && vm.submitted}">
+
+              <p ng-show="form.password.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
           </div>
           <div class="form-group">
-              <button class="btn btn-lg btn-primary btn-block">{{'SIGN_IN' | translate}}</button>
+            <p ng-show="vm.errors.error" style="text-align:center; color: red">{{'SIGN_IN_ERROR' | translate}}</p>
+          </div>
+          <div class="form-group">
+              <button type="submit" class="btn btn-lg btn-primary btn-block">{{'SIGN_IN' | translate}}</button>
           </div>
           <a href="#" class="forgot-pass">{{'FORGOT_PASSWORD' | translate}}</a>
           <div class="or-login"><span>{{'OR' | translate}}</span></div>

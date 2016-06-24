@@ -53,15 +53,12 @@ let mailer = null;
 
 exports.config = {
   MAILER: {
-    //host: 'smtp.gmail.com',
-    service: 'mailgun',
-    //port: 465,
-    //secure: true, // use SSL
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // use SSL
     auth: {
-      // user: 'noreply@chiiz.com',
-      // pass: 'lee@mansainc.com'
-      user: 'postmaster@sandboxf33fddc2f2f8469fb38592948a17b274.mailgun.org',
-      pass: '47dcb8182067dd4e4286c9c05e29a8c3'
+      user: 'suportcontest@gmail.com',
+          pass: 'vqdfloyvrvvxihdu'
     }
   },
   EMAIL_FROM: 'admin@app.com'

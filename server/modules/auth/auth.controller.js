@@ -39,13 +39,15 @@ class AuthController {
 	  		let token = jwt.sign({id: user._id}, this.secret, { expiresIn: 60 * 60 * 2});
 	  		user.set('passwordResetToken', token);
 	  		user.save().then(user => {
-	  			let url = config.baseUrl + 'resetpw/' + user.passwordResetToken;
+	  			let baseUrl = config.baseUrl;
+	  			let url = baseUrl + 'resetpw/' + user.passwordResetToken;
 	  			this.kernel.emit('SEND_MAIL', {
 		        template: 'forgotPassword.html',
 		        subject: 'Recover email from HealthStars',
 		        data: {
 		          user: user, 
-		          url: url
+		          url: url,
+		          baseUrl: baseUrl
 		        },
 		        to: user.email
 			    });

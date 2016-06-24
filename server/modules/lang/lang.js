@@ -9,6 +9,7 @@ let Language = {
 		MENU_MY_AWARDS: 'My awards',
 		MENU_MY_MESSAGER: 'My messager',
 		MENU_SETTINGS: 'My settings',
+		MENU_LOGOUT: 'Logout',
 		/*SIGNIN/REGISTER FORM*/
 		SIGN_IN: 'Sign in',
 		REGISTER: 'Register',

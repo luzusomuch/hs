@@ -22,7 +22,7 @@ class LoginCtrl {
           // Logged in, redirect to home
           this.$state.go('home');
         })
-        .catch(err => {
+        .catch(() => {
           this.errors.error = true;
         });
     }

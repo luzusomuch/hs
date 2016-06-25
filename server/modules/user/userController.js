@@ -4,6 +4,8 @@ import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import { StringHelper } from '../../kernel/helpers';
 import config from '../../config/environment';
+import Joi from 'joi';
+import _ from 'lodash';
 
 function validationError(res, statusCode) {
   statusCode = statusCode || 422;
@@ -15,7 +17,7 @@ function validationError(res, statusCode) {
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
   return function(err) {
-    res.status(statusCode).send(err);
+    res.status(statusCode).json({type: 'SERVER_ERROR'});
   };
 }
 
@@ -51,7 +53,46 @@ class UserController {
    */
   create(req, res) {
     //TODO - add validator layer for that
-    // req.body.location.coordinates = [106.647800, 10.807084];
+    var schema = Joi.object().keys({
+      name: Joi.string().required(),
+      email: Joi.string().email().required().options({
+        language: {
+          key: 'Email '
+        }
+      }),
+      password: Joi.string().min(8).required().options({
+        language: {
+          key: 'Password ',
+          string: {
+            min: 'must be greater than or equal to 8 characters'
+          }
+        }
+      })
+    });
+    var result = Joi.validate(req.body, schema, {
+      stripUnknown: true,
+      abortEarly: false,
+      allowUnknown: true
+    });
+    if (result.error) {
+      var err = [];
+      _.each(result.error.details, (error) => {
+        let type;
+        switch(error.type) {
+          case 'string.email' :
+            type = 'EMAIL_INVALID';
+            break;
+          case 'string.min': 
+            type = 'PASSWORD_MIN_LENGTH_ERROR';
+            break;
+          default:
+            break;
+        }
+        err.push({type: type, path: error.path, message: error.message});
+      });
+      return res.status(422).json(err);
+    }
+
     req.body.location.type = 'Point';
     var newUser = new this.kernel.model.User(req.body);
     newUser.provider = 'local';
@@ -86,7 +127,7 @@ class UserController {
     this.kernel.model.User.findOne({_id: req.params.ud})
     .then(user => {
       if (!user) {
-        return res.status(404).end();
+        return res.status(404).json({type: 'EMAIL_NOT_FOUND', message: 'This email is not registered'});
       }
 
       res.json(user.profile);
@@ -148,24 +189,20 @@ class UserController {
   verify account
   */
   verifyAccount(req, res) {
-    console.log(req.body);
     if (!req.body.token) {
-      console.log("AAAAAAAAA");
       return res.status(500).json({message: "Your token is not valid"});
     }
     this.kernel.model.User.findOne({emailVerifiedToken: req.body.token}).then(user => {
       if (!user) {
-        console.log("BBBBBBBBBBBB");
         return res.status(500).json({message: "Your token is not valid"});
       }
       if (user.emailVerified) {
-        console.log("CCCCCCCCCCCC");
         return res.status(500).json({message: "This user is already verified"});
       }
       this.kernel.model.User.update({_id: user._id}, {$set: {emailVerified: true}}).then(() => {
         return res.status(200).end();
-      }).catch(err => {console.log(err); return res.status(500).json(err); });
-    }).catch(err => {console.log(err); return res.status(500).json(err); });
+      }).catch(err => {return res.status(500).json(err); });
+    }).catch(err => {return res.status(500).json(err); });
   }
 
   /**

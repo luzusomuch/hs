@@ -35,29 +35,34 @@ class RegisterCtrl {
       this.user.location.country = selectedAddress.address_components[selectedAddress.address_components.length -1].long_name;
       this.user.location.countryCode = selectedAddress.address_components[selectedAddress.address_components.length -1].short_name;
       this.user.location.fullAddress = selectedAddress.formatted_address;
-      this.user.name = this.user.firstName +" "+ this.user.lastName;
+      this.user.name = this.user.firstName +' '+ this.user.lastName;
 
       this.Auth.createUser({
-          name: this.user.name,
-          email: this.user.email,
-          password: this.user.password,
-          phoneNumber: this.user.phoneNumber,
-          location: this.user.location
-        })
-        .then(() => {
-          // Account created, redirect to home
-          this.$state.go('home');
-        })
-        .catch(err => {
-          err = err.data;
-          this.errors = {};
+        name: this.user.name,
+        email: this.user.email,
+        password: this.user.password,
+        phoneNumber: this.user.phoneNumber,
+        location: this.user.location
+      })
+      .then(() => {
+        // Account created, redirect to home
+        this.$state.go('home');
+      })
+      .catch(err => {
+        this.errors = {};
 
-          // Update validity of form fields that match the mongoose errors
-          angular.forEach(err.errors, (error, field) => {
-            form[field].$setValidity('mongoose', false);
-            this.errors[field] = error.message;
-          });
+        angular.forEach(err.data, (err) => {
+          form[err.path].$setValidity(err.path, false);
+          this.errors[err.path] = err.type;
         });
+
+        // Update validity of form fields that match the mongoose errors
+        err = err.data;
+        angular.forEach(err.errors, (error, field) => {
+          form[field].$setValidity('mongoose', false);
+          this.errors[field] = error.message;
+        });
+      });
     }
   }
 }

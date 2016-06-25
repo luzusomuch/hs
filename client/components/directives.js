@@ -1,18 +1,18 @@
 'use strict';
 angular.module('healthStarsApp')
-.directive("compareTo", function() {
+.directive('compareTo', function() {
   return {
-    require: "ngModel",
+    require: 'ngModel',
     scope: {
-      confirmPassword: "=compareTo"
+      confirmPassword: '=compareTo'
     },
     link: function(scope, element, attributes, modelVal) {
 
       modelVal.$validators.compareTo = function(val) {
-        return val == scope.confirmPassword;
+        return val === scope.confirmPassword;
       };
 
-      scope.$watch("confirmPassword", function() {
+      scope.$watch('confirmPassword', function() {
         modelVal.$validate();
       });
     }

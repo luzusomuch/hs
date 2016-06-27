@@ -8,7 +8,8 @@ function localAuthenticate(User, email, password, done) {
     .then(user => {
       if (!user) {
         return done(null, false, {
-          message: 'This email is not registered.'
+          message: 'This email is not registered.',
+          error: 'SIGN_IN_ERROR'
         });
       }
       user.authenticate(password, function(authError, authenticated) {
@@ -16,7 +17,12 @@ function localAuthenticate(User, email, password, done) {
           return done(authError);
         }
         if (!authenticated) {
-          return done(null, false, { message: 'This password is not correct.' });
+          return done(null, false, { message: 'This password is not correct.', error: 'SIGN_IN_ERROR' });
+        } else if (user.blocked && user.blocked.status) {
+          return done(null, false, {
+            message: 'This email was blocked',
+            error: 'EMAIL_BLOCKED'
+          });
         } else {
           return done(null, user);
         }

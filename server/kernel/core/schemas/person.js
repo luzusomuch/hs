@@ -41,11 +41,11 @@ module.exports = exports = function(kernel) {
       lastAccess: Date,
       deleted: {
         status: {type: Boolean, default: false},
-        by: Schema.Types.ObjectId
+        byUserId: Schema.Types.ObjectId
       },
       blocked: {
         status: {type: Boolean, default: false},
-        by: Schema.Types.ObjectId
+        byUserId: Schema.Types.ObjectId
       },
       emailVerified: {type: Boolean, default: false},
       emailVerifiedToken: String,

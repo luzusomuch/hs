@@ -14,7 +14,7 @@ module.exports = {
     	participantsId: [kernel.mongoose.Schema.Types.ObjectId],
     	photosId: [kernel.mongoose.Schema.Types.ObjectId],
     	public: {
-    		type: {type: Boolean, default: true},
+    		status: {type: Boolean, default: true},
     		by: kernel.mongoose.Schema.Types.ObjectId
     	},
     	location: {

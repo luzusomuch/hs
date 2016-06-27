@@ -98,6 +98,8 @@ class UserController {
     newUser.provider = 'local';
     newUser.role = 'user';
     newUser.emailVerifiedToken = StringHelper.randomString(10);
+    newUser.deleted.status = false;
+    newUser.blocked.status = false;
 
     newUser.save()
     .then((user) => {

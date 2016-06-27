@@ -18,7 +18,7 @@
               <label ng-show="form.password.$error.required && vm.submitted" class="help-block">{{'REQUIRED_ERROR' | translate}}</label>
           </div>
           <div class="form-group has-error" ng-show="vm.errors.error">
-            <label class="help-block">{{'SIGN_IN_ERROR' | translate}}</label>
+            <label class="help-block">{{vm.errors.error | translate}}</label>
           </div>
           <div class="form-group">
               <button type="submit" class="btn btn-lg btn-primary btn-block">{{'SIGN_IN' | translate}}</button>

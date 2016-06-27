@@ -88,6 +88,7 @@ class AuthController {
   				return res.status(403).json({type: 'TOKEN_INVALID', message: 'Token is invalid or expired'});
   			}
   			user.set('password', req.body.password);
+  			user.set('passwordResetToken', '');
   			user.save().then(
   				() => res.status(200).json({type: 'RESET_PASSWORD_SUCCESS'}),
   				err => res.status(500).json({type: 'SERVER_ERROR'})

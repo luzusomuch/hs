@@ -1,5 +1,7 @@
 import Joi from 'joi';
 import _ from 'lodash';
+import async from 'async';
+import config from '../../config/environment';
 
 module.exports = function(kernel) {
 	kernel.app.post('/api/v1/events/', kernel.middleware.isAuthenticated(), (req, res) => {
@@ -93,9 +95,29 @@ module.exports = function(kernel) {
       
     let model = new kernel.model.Event(data);
     model.save().then(event => {
-      res.status(200).json(event);
-    })
-    .catch(err => {
+    	// TODO - send notification email to participants
+  		var url = config.baseUrl + 'event/'+event._id;
+    	async.each(event.participantsId, (id, cb) => {
+    		kernel.model.User.findById(id, (err, user) => {
+    			if (err || ! user) {return cb();}
+    			else {
+			      this.kernel.emit('SEND_MAIL', {
+			        template: 'event-created.html',
+			        subject: 'New Event Created Named ' + event.name,
+			        data: {
+			          user: user, 
+			          url: url,
+			          event: event
+			        },
+			        to: user.email
+			      });
+			      cb();
+    			}
+    		});
+    	}, () => {
+    		res.status(200).json(event);
+    	});
+    }).catch(err => {
       //TODO - handle error
       res.status(500).json({type: 'SERVER_ERROR'});
     });

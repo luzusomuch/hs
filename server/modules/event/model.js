@@ -13,10 +13,8 @@ module.exports = {
     	awardsId: [kernel.mongoose.Schema.Types.ObjectId],
     	participantsId: [kernel.mongoose.Schema.Types.ObjectId],
     	photosId: [kernel.mongoose.Schema.Types.ObjectId],
-    	public: {
-    		status: {type: Boolean, default: true},
-    		by: kernel.mongoose.Schema.Types.ObjectId
-    	},
+    	public: Boolean,
+      publicStatusBy: kernel.mongoose.Schema.Types.ObjectId,
     	location: {
         coordinates: [Number],
         fullAddress: String,
@@ -27,10 +25,8 @@ module.exports = {
         zipCode: String,
         type: {type: String, default: 'Point'}
       },
-      blocked: {
-      	status: {type: Boolean, default: false},
-      	by: kernel.mongoose.Schema.Types.ObjectId
-      },
+      blocked: {type: Boolean, default: false},
+      blockedByUserId : kernel.mongoose.Schema.Types.ObjectId,
       repeat: {
       	weekly: {
       		repeating: {type: Boolean, default: false},

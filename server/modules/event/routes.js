@@ -1,7 +1,6 @@
 import Joi from 'joi';
 import _ from 'lodash';
 import async from 'async';
-import config from '../../config/environment';
 
 module.exports = function(kernel) {
 	kernel.app.post('/api/v1/events/', kernel.middleware.isAuthenticated(), (req, res) => {
@@ -13,11 +12,9 @@ module.exports = function(kernel) {
 		}
   	// TODO - storage all uploaded photos to PHOTO SCHEMA and then push its ID to photosId field
 
-    //TODO - validator
     var data = req.body;
     data.ownerId = req.user._id;
     data.organizerId = req.user._id;
-    data.public = {status: true};
     data.blocked = {status: false};
 
     var schema = Joi.object().keys({
@@ -54,7 +51,12 @@ module.exports = function(kernel) {
       		}
       	}
       }),
-      participantsId: Joi.array(Joi.string()).default([])
+      participantsId: Joi.array(Joi.string()).default([]),
+      status: Joi.boolean().required().options({
+        language: {
+          key: 'status'
+        }
+      })
     });
     var result = Joi.validate(data, schema, {
       stripUnknown: true,
@@ -64,7 +66,7 @@ module.exports = function(kernel) {
 
     if (result.error) {
     	var errors = [];
-    	_.each(result.error.details, (error) => {
+    	result.error.details.forEach(error => {
     		var type;
     		switch (error.type) {
     			case 'string.name': 
@@ -85,34 +87,36 @@ module.exports = function(kernel) {
     			case 'string.min':
     				type = 'EVENT_AWARDS_REQUIRED';
     				break;
+          case 'string.status':
+            type = 'EVENT_STATUS';
+            break;
     			default:
     				break;
     		}
     		errors.push({type: type, path: error.path, message: error.message});
     	});
+      // return kernel.errorsHandler.parseError(errors);
       return res.status(422).json(errors);
     }
       
     let model = new kernel.model.Event(data);
     model.save().then(event => {
     	// TODO - send notification email to participants
-  		var url = config.baseUrl + 'event/'+event._id;
+  		var url = kernel.config.baseUrl + 'event/'+event._id;
     	async.each(event.participantsId, (id, cb) => {
     		kernel.model.User.findById(id, (err, user) => {
     			if (err || ! user) {return cb();}
-    			else {
-			      this.kernel.emit('SEND_MAIL', {
-			        template: 'event-created.html',
-			        subject: 'New Event Created Named ' + event.name,
-			        data: {
-			          user: user, 
-			          url: url,
-			          event: event
-			        },
-			        to: user.email
-			      });
-			      cb();
-    			}
+		      this.kernel.emit('SEND_MAIL', {
+		        template: 'event-created.html',
+		        subject: 'New Event Created Named ' + event.name,
+		        data: {
+		          user: user, 
+		          url: url,
+		          event: event
+		        },
+		        to: user.email
+		      });
+		      cb();
     		});
     	}, () => {
     		res.status(200).json(event);

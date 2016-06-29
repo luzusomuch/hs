@@ -143,7 +143,7 @@ exports.core = (kernel) => {
 
 	/**
 	* Remove document from elastic-search
-	* ex: kernel.queue.create(kernel.config.ES.events.REMOVE, {type: 'user', id: 'objectId'}).save();
+	* ex: kernel.queue.create(kernel.config.ES.events.REMOVE, {type: kernel.config.ES.mapping.userType, id: 'objectId'}).save();
 	*/
 	kernel.queue.process(kernel.config.ES.events.REMOVE, (job, done) => {
 		kernel.ES.delete(job.data, err => {

@@ -7,7 +7,7 @@ angular.module('healthStarsApp').config(function($stateProvider) {
     abstract: true
   }).state('event.create', {
   	url: '/create',
-  	templateUrl: 'app/event/create-event/create-event.html',
+  	templateUrl: 'app/event/create/create-event.html',
   	controller: 'CreateEventCtrl',
     controllerAs: 'vm',
     authenticate: true,

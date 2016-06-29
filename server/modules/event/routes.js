@@ -52,9 +52,9 @@ module.exports = function(kernel) {
       	}
       }),
       participantsId: Joi.array(Joi.string()).default([]),
-      status: Joi.boolean().required().options({
+      public: Joi.boolean().required().options({
         language: {
-          key: 'status'
+          key: 'public'
         }
       })
     });
@@ -87,7 +87,7 @@ module.exports = function(kernel) {
     			case 'string.min':
     				type = 'EVENT_AWARDS_REQUIRED';
     				break;
-          case 'string.status':
+          case 'string.public':
             type = 'EVENT_STATUS';
             break;
     			default:

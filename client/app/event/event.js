@@ -14,5 +14,14 @@ angular.module('healthStarsApp').config(function($stateProvider) {
     settings: {
       pageTitle: 'HealthStars | Create Event'
     }
+  }).state('event.detail', {
+    url: '/detail/:id',
+    templateUrl: 'app/event/detail/detail.html',
+    controller: 'EventDetailCtrl',
+    controllerAs: 'vm',
+    authenticate: true,
+    settings: {
+      pageTitle: 'HealthStars | Event Detail'
+    }
   });
 });

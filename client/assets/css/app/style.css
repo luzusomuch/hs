@@ -962,6 +962,8 @@ label {
     height: 100px;
     background: rgba(15,24,56,0.87);
     border-bottom: 1px solid rgba(255,255,255,0.1);
+    resize: none;
+    outline: none;
 }
 .bottom-post {
     padding: 17px 80px 17px 80px;

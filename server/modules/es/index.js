@@ -14,7 +14,7 @@ class HealthStarsES {
 		this.init();
 	}
 
-	init(initCb) {
+	init() {
 		async.series([
 			(cb) => {
 				this.es.exists(this.indexName, (err, exists) => {

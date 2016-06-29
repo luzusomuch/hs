@@ -2,19 +2,19 @@ module.exports = {
   Event(kernel) {
     let Schema = kernel.mongoose.Schema;
     let eventSchema = new Schema({
-    	ownerId: kernel.mongoose.Schema.Types.ObjectId,
+    	ownerId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
     	name: String,
     	description: String,
-    	categoryId: kernel.mongoose.Schema.Types.ObjectId,
+    	categoryId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Category'},
     	tags: [String],
     	startDateTime: Date,
     	endDateTime: Date,
-    	organizerId: kernel.mongoose.Schema.Types.ObjectId,
-    	awardsId: [kernel.mongoose.Schema.Types.ObjectId],
-    	participantsId: [kernel.mongoose.Schema.Types.ObjectId],
-    	photosId: [kernel.mongoose.Schema.Types.ObjectId],
+    	// organizerId: kernel.mongoose.Schema.Types.ObjectId,
+    	awardId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Award'},
+    	participantsId: [{type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}],
+    	photosId: [{type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}],
     	public: Boolean,
-      publicStatusBy: kernel.mongoose.Schema.Types.ObjectId,
+      publicStatusBy: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
     	location: {
         coordinates: [Number],
         fullAddress: String,
@@ -26,7 +26,7 @@ module.exports = {
         type: {type: String, default: 'Point'}
       },
       blocked: {type: Boolean, default: false},
-      blockedByUserId : kernel.mongoose.Schema.Types.ObjectId,
+      blockedByUserId : {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
       repeat: {
       	weekly: {
       		repeating: {type: Boolean, default: false},

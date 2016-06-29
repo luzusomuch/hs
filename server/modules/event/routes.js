@@ -101,7 +101,6 @@ module.exports = function(kernel) {
       
     let model = new kernel.model.Event(data);
     model.save().then(event => {
-    	// TODO - send notification email to participants
   		var url = kernel.config.baseUrl + 'event/'+event._id;
     	async.each(event.participantsId, (id, cb) => {
     		kernel.model.User.findById(id, (err, user) => {
@@ -122,8 +121,64 @@ module.exports = function(kernel) {
     		res.status(200).json(event);
     	});
     }).catch(err => {
-      //TODO - handle error
       res.status(500).json({type: 'SERVER_ERROR'});
+    });
+  });
+
+  /*
+  Get Event Detail
+  */
+  kernel.app.get('/api/v1/events/:id', kernel.middleware.isAuthenticated(), (req, res) => {
+    kernel.model.Event.findById(req.params.id)
+    .populate('ownerId', '-hashedPassword -salt')
+    .populate('categoryId')
+    .populate('awardId')
+    .populate('photosId')
+    .populate('participantsId', '-hashedPassword - salt')
+    .exec().then(event => {
+      if (!event) {
+        return res.status(404).json({type: 'EVENT_NOT_FOUND', message: 'Event not found'});
+      }
+      return res.status(200).json(event);
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+  });
+
+  /*Update event*/
+  kernel.app.put('/api/v1/events/:id', kernel.middleware.isAuthenticated(), (req, res) => {
+    kernel.model.Event.findById(req.params.id).then(event => {
+      if (!event) {
+       return res.status(404).json({type: 'EVENT_NOT_FOUND', message: 'Event not found'}); 
+      }
+      // TODO - Update data
+      return res.status(200).json({type: 'EVENT_UPDATE_SUCCESS', message: 'Event updated'});
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+  });
+
+  /*
+  Delete an event
+  */
+  kernel.app.delete('/api/v1/events/:id', kernel.middleware.isAuthenticated(), (req, res) => {
+    kernel.model.Event.findById(req.params.id).then(event => {
+      if (!event) {
+       return res.status(404).json({type: 'EVENT_NOT_FOUND', message: 'Event not found'}); 
+      }
+      if (event.ownerId===req.user._id || req.user.role==='admin') {
+        event.blocked = true;
+        event.blockedByUserId = req.user._id;
+        event.save().then(() => {
+          return res.status(200).end();
+        }).catch(err => {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        });
+      } else {
+        return res.status(403).end();
+      }
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
     });
   });
 };

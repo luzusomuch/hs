@@ -65,7 +65,6 @@ exports.config = {
 };
 
 exports.core = (kernel) => {
-  console.log(kernel.config.MAILER);
   mailer = new Mailer(kernel.config.MAILER);
 
   kernel.mailer = mailer;

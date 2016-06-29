@@ -812,6 +812,7 @@ label .note-form {
 .top-detail {
     position: relative;
     background: #141c2e;
+    margin-bottom: 20px;
 }
 .img-timline {
     height: 350px;
@@ -962,6 +963,8 @@ label {
     height: 100px;
     background: rgba(15,24,56,0.87);
     border-bottom: 1px solid rgba(255,255,255,0.1);
+    resize: none;
+    outline: none;
 }
 .bottom-post {
     padding: 17px 80px 17px 80px;

@@ -1,22 +1,47 @@
-import {ES} from '../components';
-import searchKeys from '../config/search';
+'use strict';
 
-var userTemplate = {
-  "template": "user*",
-  "mappings": {}
-};
-userTemplate.mappings[searchKeys.user.type] = {
-  "properties": {
-    _id : {'type' : 'string', 'index' : 'not_analyzed'}
+class Mapping {
+  constructor(config) {
+    this.config = config;
+    this.mapping = {};
+    this.mapping[this.config.mapping.userType] = this.userMapping();
+    this.mapping[this.config.mapping.eventType] = this.eventMapping();
+    this.mapping[this.config.mapping.commentType] = this.commentMapping();
   }
-};
 
-module.exports = () => {
-  ES.indices.putTemplate({
-    name: 'usertemplate',
-    body: userTemplate
-  })
-  .catch(err => {
-    console.log('Create mappings error for user');
-  });
-};
+  userMapping() {
+    let mapping = {};
+    mapping[this.config.mapping.userType] = {
+      properties: {
+        // put mapping for user properties here
+      }
+    };
+
+    return mapping;
+  }
+
+  eventMapping() {
+    let mapping = {};
+    mapping[this.config.mapping.eventType] = {
+      properties: {
+        // put mapping for event properties here
+      }
+    };
+
+    return mapping;
+  }
+
+  commentMapping() {
+    let mapping = {};
+    mapping[this.config.mapping.commentType] = {
+      properties: {
+        // put mapping for comment properties here
+      }
+    };
+
+    return mapping;
+  }
+
+  // add more mapping
+}
+module.exports = Mapping;

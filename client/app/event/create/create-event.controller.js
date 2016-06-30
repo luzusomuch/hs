@@ -1,15 +1,20 @@
 'use strict';
 
 class CreateEventCtrl {
-	constructor($http, $scope, $uibModal, EventService, RelationService, $localStorage) {
+	constructor($http, $scope, $uibModal, EventService, RelationService, AwardService, $localStorage) {
 		this.user = $localStorage.authUser;
 		this.event = {
 			repeat: {},
-			participants: []
+			participants: [],
+			location: {}
 		};
     this.$http = $http;
     this.RelationService = RelationService;
+    this.AwardService = AwardService;
     this.$uibModal = $uibModal;
+    this.address = {};
+    this.addresses = [];
+
     $scope.$on('$destroy', function() {
       //do anything such as remove socket
     });
@@ -33,6 +38,21 @@ class CreateEventCtrl {
     		});
     	}
     });
+
+    this.friends = [];
+    this.RelationService.getAll({id: this.user._id, type: 'friend'}).then(resp => {
+    	this.friends = resp.data.items;
+    });
+  }
+
+  refreshAddresses(address) {
+    var params = {address: address, sensor: false};
+    return this.$http.get(
+      'http://maps.googleapis.com/maps/api/geocode/json',
+      {params: params}
+    ).then( (response) => {
+      this.addresses = response.data.results;
+    });
   }
 
   showAddParticipantsModal() {
@@ -43,7 +63,7 @@ class CreateEventCtrl {
     	controllerAs: 'vm',
     	resolve: {
     		friends: () => {
-    			return this.RelationService.getAll({id: this.user._id, type: 'friend'});
+    			return this.friends;
     		},
     		participants: () => {
     			return this.event.participants;
@@ -51,7 +71,7 @@ class CreateEventCtrl {
     	}
     });
 		modalInstance.result.then(data => {
-			this.event.participants = _.union(this.event.participants, data);
+			this.event.participants = data;
 		}, err => {
 			console.log(err);
 		});
@@ -61,10 +81,37 @@ class CreateEventCtrl {
   	this.event.participants.splice(index, 1);
   }
 
-  create(form) {
-  	console.log(form);
-  	console.log(this.event);
+  showAddAwardModal() {
+  	let modalInstance = this.$uibModal.open({
+    	animation: true,
+    	templateUrl: 'app/event/modal/add-award.html',
+    	controller: 'AddAwardCtrl',
+    	controllerAs: 'vm',
+    	resolve: {
+    		awards: () => {
+    			return this.AwardService.getAll();
+    		},
+    		selectedAward: () => {
+    			return this.event.award;
+    		}
+    	}
+    });
+		modalInstance.result.then(data => {
+			this.event.award = data;
+		}, err => {
+			console.log(err);
+		});
+  }
 
+  create(form) {
+  	if (form.$valid && this.address.selected) {
+  		var selectedAddress = this.address.selected;
+      this.event.location.coordinates = [selectedAddress.geometry.location.lng, selectedAddress.geometry.location.lat];
+      this.event.location.country = selectedAddress.address_components[selectedAddress.address_components.length -1].long_name;
+      this.event.location.countryCode = selectedAddress.address_components[selectedAddress.address_components.length -1].short_name;
+      this.event.location.fullAddress = selectedAddress.formatted_address;
+
+  	}
   }
 }
 

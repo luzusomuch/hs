@@ -48,7 +48,8 @@ let Language = {
 		SIGN_IN_ERROR: 'Password or email not correct',
 		EMAIL_BLOCKED: 'This user email has blocked',
 		EMAIL_DELETED: 'This user email has deleted',
-		EVENT_NOT_FOUND: 'Event not found'
+		EVENT_NOT_FOUND: 'Event not found',
+		EMPTY_PARTICIPANTS: 'Participants list is empty'
 	},
 	de: {
 

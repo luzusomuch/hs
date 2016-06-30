@@ -1,6 +1,6 @@
 class AddParticipantsCtrl {
 	constructor($uibModalInstance, growl, friends, participants) {
-		this.friends = friends.data.relations;
+		this.friends = friends;
 		this.participants = participants;
 		_.each(this.participants, (participant) => {
 			let index = _.findIndex(this.friends, (friend) => {
@@ -16,11 +16,7 @@ class AddParticipantsCtrl {
 
 	submit() {
 		let selectedParticipants = _.filter(this.friends, {select: true});
-		if (selectedParticipants.length > 0) {
-			this.$uibModalInstance.close(selectedParticipants);
-		} else {
-			this.growl.error('Select At Least 1 Friend');
-		}
+		this.$uibModalInstance.close(selectedParticipants);
 	}
 }
 

@@ -95,7 +95,13 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Venue">
+                    <label>{{'LOCATION' | translate}}</label>
+                    <ui-select ng-model="vm.address.selected" theme="bootstrap" append-to-body="true" reset-search-input="false">
+                      <ui-select-match>{{$select.selected.formatted_address}}</ui-select-match>
+                      <ui-select-choices repeat="address in vm.addresses track by $index" refresh="vm.refreshAddresses($select.search)" refresh-delay="0">
+                        <div ng-bind-html="address.formatted_address"></div>
+                      </ui-select-choices>
+                    </ui-select>
                   </div>
               </div>
 
@@ -138,6 +144,9 @@
                       <a href="#">{{participant.name}}</a>
                       <a href="#" class="delete-list" ng-click="vm.removeParticipant($index)"><i class="fa fa-trash-o"></i></a>
                     </li>
+                    <li ng-show="vm.event.participants.length==0">
+                      {{'EMPTY_PARTICIPANTS' | translate}}
+                    </li>
                   </ul>
                 </div>
 
@@ -162,9 +171,11 @@
                 <label>Award For Event </label>
                 <div class="add-award-event">
                   <div class="row">
-                    <div class="col-xs-3 col-sm-2"><img src="images/award.png" width="100%"></div>
+                    <div class="col-xs-3 col-sm-2">
+                      <img ng-show="vm.event.award" ng-src="vm.event.award.objectPhotoId.metadata.small" width="100%">
+                    </div>
                     <div class="col-xs-9 col-sm-10 text-center" style="margin-top: 10px">
-                      <button class="btn btn-danger btn-sm">ADD AWARD</button>
+                      <button class="btn btn-danger btn-sm" type="button" ng-click="vm.showAddAwardModal()">ADD AWARD</button>
                     </div>
                   </div>
                 </div>
@@ -179,42 +190,13 @@
 		</div>
     <div class="col-sm-4 col-lg-3 pc-show">
       <div class="box-blue p15">
-        <div class="title-blue">Who Are Attending  (652) <a href="#" class="show-all-box">Show all</a></div>
+        <div class="title-blue">Friends List ({{vm.friends.length}}) <a href="#" class="show-all-box">Show all</a></div>
         <ul class="list-media list-friend list-friend-1">
-          <li>
+          <li ng-repeat="friend in vm.friends">
             <div class="img-media">
-              <a href="#"></a><a href="#"><img src="images/48.jpg"></a>
+              <a href="#"></a><a href="#"><img ng-src="friend.avatar.metadata.small"></a>
             </div>
-            <h4><a href="#">Caroline Sanders @Barbara</a></h4>
-            <span class="text-mo">Your Friend</span>
-          </li>
-          <li>
-            <div class="img-media">
-              <a href="#"></a><a href="#"><img src="images/48.jpg"></a>
-            </div>
-            <h4><a href="#">Caroline Sanders @Barbara</a></h4>
-            <a href="#" class="btn-follow"><i class="i-new user-i-1"></i> Follow</a>
-          </li>
-          <li>
-            <div class="img-media">
-              <a href="#"></a><a href="#"><img src="images/48.jpg"></a>
-            </div>
-            <h4><a href="#">Caroline Sanders @Barbara</a></h4>
-            <a href="#" class="btn-follow"><i class="i-new user-i-1"></i> Follow</a>
-          </li>
-          <li>
-            <div class="img-media">
-              <a href="#"></a><a href="#"><img src="images/48.jpg"></a>
-            </div>
-            <h4><a href="#">Caroline Sanders @Barbara</a></h4>
-            <a href="#" class="btn-follow"><i class="i-new user-i-1"></i> Follow</a>
-          </li>
-          <li>
-            <div class="img-media">
-              <a href="#"></a><a href="#"><img src="images/48.jpg"></a>
-            </div>
-            <h4><a href="#">Caroline Sanders @Barbara</a></h4>
-            <a href="#" class="btn-follow"><i class="i-new user-i-1"></i> Follow</a>
+            <h4><a href="#">{{friend.name}}</a></h4>
           </li>
         </ul>
     </div>

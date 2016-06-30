@@ -6,7 +6,7 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
     'healthStarsApp.language', 'ui.select', 'ngFileUpload'
   ])
   .config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise('/404');
     cfpLoadingBarProvider.includeSpinner = false;
     $locationProvider.html5Mode(true);
   })

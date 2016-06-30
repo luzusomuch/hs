@@ -1,7 +1,7 @@
 'use strict';
 
 class CreateEventCtrl {
-	constructor($http, $scope, $uibModal, EventService, RelationService, AwardService, $localStorage) {
+	constructor($http, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage) {
 		this.user = $localStorage.authUser;
 		this.event = {
 			repeat: {},
@@ -42,6 +42,11 @@ class CreateEventCtrl {
     this.friends = [];
     this.RelationService.getAll({id: this.user._id, type: 'friend'}).then(resp => {
     	this.friends = resp.data.items;
+    });
+
+    this.categories = [];
+    CategoryService.getAll().then(resp => {
+    	this.categories = resp.data.items;
     });
   }
 
@@ -104,6 +109,7 @@ class CreateEventCtrl {
   }
 
   create(form) {
+  	console.log(form);
   	if (form.$valid && this.address.selected) {
   		var selectedAddress = this.address.selected;
       this.event.location.coordinates = [selectedAddress.geometry.location.lng, selectedAddress.geometry.location.lat];
@@ -111,6 +117,7 @@ class CreateEventCtrl {
       this.event.location.countryCode = selectedAddress.address_components[selectedAddress.address_components.length -1].short_name;
       this.event.location.fullAddress = selectedAddress.formatted_address;
 
+      console.log(this.event);
   	}
   }
 }

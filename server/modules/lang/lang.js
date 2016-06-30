@@ -68,7 +68,6 @@ let Language = {
 		FILE_REQUIREMENT: 'Maximum file size 5Mb, Only files ( JPG/JPEG )',
 		ADD_PARTICIPANTS: 'Add Participants',
 		ADD_AWARD: 'Add award',
-		CREATE_EVENT: 'Create event',
 		FRIENDS_LIST: 'Friends list',
 		SELECT_AWARD_FOR_EVENT: 'Select award for an event',
 		AWARDS_LIST: 'Awards list',

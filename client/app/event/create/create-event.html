@@ -13,11 +13,11 @@
               <div class="form-group">
                 <label>{{'CATEGORY' | translate}} </label>
                 <div class="choose-category">
-                  <div class="radio-l">
-                    <input id="radio-sport" type="radio" name="category" value="radio-sport" checked="">
-                    <label for="radio-sport"> <img src="/assets/images/star.png" ></label>
+                  <div class="radio-l" ng-repeat="category in vm.categories">
+                    <input id="{{category._id}}" type="radio" name="category" value="{{category._id}}" ng-model="vm.event.categoryId">
+                    <label for="{{category._id}}"> <img ng-src="{{category | categoryImagePath}}" ></label>
                   </div>
-                  <div class="radio-l">
+                  <!-- <div class="radio-l">
                     <input id="radio-food" type="radio" name="category" value="radio-food">
                     <label for="radio-food"> <img src="/assets/images/star1.png" ></label>
                   </div>
@@ -32,7 +32,7 @@
                   <div class="radio-l">
                     <input id="radio-action" type="radio" name="category" value="radio-action" >
                     <label for="radio-action"> <img src="/assets/images/star4.png" ></label>
-                  </div>
+                  </div> -->
                 </div>
               </div>
               <div class="form-group">

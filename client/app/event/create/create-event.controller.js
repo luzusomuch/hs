@@ -57,6 +57,10 @@ class CreateEventCtrl {
 		});
   }
 
+  removeParticipant(index) {
+  	this.event.participants.splice(index, 1);
+  }
+
   create(form) {
   	console.log(form);
   	console.log(this.event);

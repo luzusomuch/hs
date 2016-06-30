@@ -6,7 +6,7 @@ import { StringHelper } from '../../kernel/helpers';
 import config from '../../config/environment';
 import Joi from 'joi';
 import _ from 'lodash';
-
+import async from 'async';
 function validationError(res, statusCode) {
   statusCode = statusCode || 422;
   return function(err) {
@@ -33,6 +33,7 @@ class UserController {
     this.changePassword = this.changePassword.bind(this);
     this.verifyAccount = this.verifyAccount.bind(this);
     this.authCallback = this.authCallback.bind(this);
+    this.info = this.info.bind(this);
   }
 
   /**
@@ -177,7 +178,7 @@ class UserController {
    * Get my info
    */
   me(req, res, next) {
-    this.kernel.model.User.findOne({ _id: req.user._id })
+    this.kernel.model.User.findOne({ _id: req.user._id }, '-salt -password')
     .then(user => { // don't ever give out the password or salt
       if (!user) {
         return res.status(401).end();
@@ -205,6 +206,51 @@ class UserController {
         return res.status(200).end();
       }).catch(err => {return res.status(500).json(err); });
     }).catch(err => {return res.status(500).json(err); });
+  }
+
+  info(req, res) {
+    if(!this.kernel.mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({type: 'BAD_REQUEST'});
+    }
+    this.kernel.model.User.findById(req.params.id, '-password -salt')
+    .then(user => {
+      if(!user) {
+        return res.status(400).json({type: 'NOT_FOUND'});
+      }
+      async.parallel([
+        (cb) => {
+          // count award here
+          cb(null, 0);
+        },
+        (cb) => {
+          // count event
+          this.kernel.model.Event.count({
+            ownerId: user.id,
+            blocked: false,
+            $or : [
+              { private : false },
+              { private : { $exists: false } }
+            ]
+          }, cb);
+        },
+        (cb) => {
+          // count follwers
+          this.kernel.model.Relation.count({
+            toUserId: user.id,
+            type: 'follow'
+          }, cb);        
+        }
+      ], (err, result) => {
+        if(err) {
+          return res.status(500).json({type: 'SERVER_ERROR', message: JSON.stringify(err)}); 
+        }
+        let data = user.toJSON();
+        data.awards = result[0];
+        data.posts = result[1];
+        data.followers = result[2];
+        return res.status(200).json(data);
+      });
+    }, err => res.status(500).json({type: 'SERVER_ERROR', message: JSON.stringify(err)}))
   }
 
   /**

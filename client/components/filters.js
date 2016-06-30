@@ -157,7 +157,7 @@ angular.module('healthStarsApp')
     return text;
   };
 })
-.filter('chiizDate', function(){
+.filter('hsDate', function(){
   return function(time, format) {
     var date = new Date(time);
     if(typeof date !== 'object') {

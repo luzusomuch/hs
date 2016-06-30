@@ -36,5 +36,6 @@ module.exports = {
       db: 0,
       options: {}
     }
-  }
+  },
+  tmpFolder: path.resolve(__dirname, '../..//assets/.tmp'),
 };

@@ -1,8 +1,9 @@
 'use strict';
 
 class CreateEventCtrl {
-	constructor(Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage) {
+	constructor(Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies) {
 		this.Upload = Upload;
+		this.$cookies = $cookies;
 		this.files = [];
 		this.user = $localStorage.authUser;
 		this.event = {
@@ -32,8 +33,8 @@ class CreateEventCtrl {
 		    	controllerAs: 'vm'
 		    });
     		modalInstance.result.then(data => {
-    			this.event.repeat[data.type] = {
-    				repeating: true,
+    			this.event.repeat = {
+    				type: data.type,
     				startDate: data.startDate,
     				endDate: data.endDate
     			};
@@ -133,18 +134,24 @@ class CreateEventCtrl {
       this.event.location.countryCode = selectedAddress.address_components[selectedAddress.address_components.length -1].short_name;
       this.event.location.fullAddress = selectedAddress.formatted_address;
 
-      if (this.files.length > 0) {
-      	this.event.files = this.files;
-      }
-
   		this.event.startDateTime = new Date(moment(this.event.startDate).hours(moment(this.event.startTime).hours()).minutes(moment(this.event.startTime).minutes()));
   		this.event.endDateTime = new Date(moment(this.event.endDate).hours(moment(this.event.endTime).hours()).minutes(moment(this.event.endTime).minutes()));
 
-      this.EventService.create(this.event).then(resp => {
-      	this.$state.go('event.detail', {id: resp._id});
-      }).catch(err => {
-      	console.log(err);
-      });
+  		this.Upload.upload({
+	      url: '/api/v1/events',
+	      arrayKey: '',
+	      data: {file: this.files, event: this.event},
+	      headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
+	    }).then(resp =>{
+	    	this.$state.go('event.detail', {id: resp._id});
+	    }, (err) => {
+	    	console.log(err);
+	    });
+      // this.EventService.create(this.event).then(resp => {
+      // 	this.$state.go('event.detail', {id: resp._id});
+      // }).catch(err => {
+      // 	console.log(err);
+      // });
   	}
   }
 }

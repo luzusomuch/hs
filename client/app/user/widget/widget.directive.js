@@ -5,8 +5,7 @@ class UserWidgetCtrl {
 		this.user = {};
 		if($scope.uId) {
 			User.getInfo($scope.uId).then(
-				res => console.log(res),
-				err => console.log(err)
+				res => this.user = res.data
 			);
 		}
 	}

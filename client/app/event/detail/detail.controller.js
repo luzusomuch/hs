@@ -1,7 +1,9 @@
 'use strict';
 
 class EventDetailCtrl {
-	constructor() {}
+	constructor(event) {
+		this.event = event;
+	}
 }
 
 angular.module('healthStarsApp').controller('EventDetailCtrl', EventDetailCtrl);

@@ -5,15 +5,16 @@
             <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm-9">
-                    <h2 class="title-detail"><img src="assets/images/star1.png" width="60"> Cooking With Natascha</h2>
+                    <h2 class="title-detail"><img src="assets/images/star1.png" width="60"> {{vm.event.name}}</h2>
                     <div class="row ">
                         <div class="col-sm-6 col-lg-8">
                             <div class="action-event">
-                                <span><i class="fa fa-user"></i> by Natascha Lang</span>
-                                <span><i class="fa fa-clock-o"></i> July 04, 2016 10:11 pm</span>
+                                <span><i class="fa fa-user"></i> by {{vm.event.ownerId.name}}</span>
+                                <span><i class="fa fa-clock-o"></i> {{vm.event.createdAt | hsDate: 'MMMM DD, YYYY HH:mm a'}}</span>
                                 <span><i class="fa fa-heart"></i> 5472</span>
                                 <span><i class="fa fa-comment"></i> 42</span>
-                                <span><i class="fa fa-unlock"></i> Public Event</span>
+                                <span ng-if="!event.private"><i class="fa fa-unlock"></i> Public Event</span>
+                                <span ng-if="event.private"><i class="fa fa-lock"></i> Private Event</span>
                             </div>
                         </div>
                         <div class="col-sm-6 col-lg-4">
@@ -32,7 +33,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-3">
-         <hs-user-widget u-id="vm.event.ownerId"></hs-user-widget>
+         <hs-user-widget u-id="vm.event.ownerId._id"></hs-user-widget>
           <div class="box-blue p15">
               <div class="title-blue">Best Pictures for Event</div>
               <ul class="row row-small list-photo">
@@ -54,17 +55,7 @@
 
             <div class="box-blue p15">
                 <div class="title-blue">Event Detail</div>
-                A west London celebration of culinary delights in support of the Open Air Classroom project for ARK Franklin Primary Academy. Featuring some of London’s most talented chefs, restaurateurs and producers in a family friendly, festive environment. Food stalls, talks and tastings, craft beer, great wine and artisan spirits, live music, picnic garden, world fete area and kids zone and an incredible line up of raffle prizes.
-                <br>
-                We have the most amazing line up over 30 restaurants signed up already, including The Ledbury, Ottolenghi, Barrafina, Pied a Terre, Modern Pantry, Granger & Co, Polpo, One Kensington Place, Bone Daddies, Hereford Road, Hoppers, Iberica, Jose Pizarro, Tom Aikens, Wahaca and Caravan.
-                <br><br>
-                Food stalls open: 12.15pm - 4pm<br>
-                Live music, kids activities, world fete, bar, picnic area open all day<br>
-                <br>
-                Raffle prizes, including restaurant vouchers, cook books, boutique hotel stays, adult & kids bike, BFI membership, hampers, cosmetics and designer bags. Buy your tickets for £2 each on the day with a chance to win!
-                <br><br>
-                Children under 12 free.<br>
-                The event was so popular last year and we have a limited number of tickets this year and cannot guarantee there will be door sales, so buy your tickets today!
+                {{vm.event.description}}
             </div>
 
 
@@ -213,23 +204,7 @@
                 </ul>
             </div>
 
-            <div class="box-blue p15">
-                <div class="title-blue">RELATED EVENTS <a href="#" class="show-all-box">Show all</a></div>
-                <ul class="list-my-event">
-                    <li>
-                        <p><a href="#">A couple of the objects that live on my bedside table are some Aesop hand cream.</a></p>
-                        July 04,2016 / Comments 4
-                    </li>
-                    <li>
-                        <p><a href="#">A couple of the objects that live on my bedside table are some Aesop hand cream.</a></p>
-                        July 04,2016 / Comments 4
-                    </li>
-                    <li>
-                        <p><a href="#">A couple of the objects that live on my bedside table are some Aesop hand cream.</a></p>
-                        July 04,2016 / Comments 4
-                    </li>
-                </ul>
-            </div>
+            <hs-related-events e-id="vm.event.id"></hs-related-events>
 
         </div>
     </div>

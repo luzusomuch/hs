@@ -9,4 +9,5 @@ exports.routes = (kernel) => {
   kernel.app.post('/api/v1/users/verify-account', userController.verifyAccount);
   kernel.app.delete('/api/v1/users/:id', kernel.middleware.hasRole('admin'), userController.destroy);
   kernel.app.get('/api/v1/users', kernel.middleware.hasRole('admin'), userController.index);
+  kernel.app.get('/api/v1/users/:id/info', kernel.middleware.isAuthenticated(), userController.info);
 };

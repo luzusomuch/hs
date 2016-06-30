@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <base href="/">
-    <title>{{ appSettings.get('pageTitle') || 'HealthStars'}}</title>
+    <title ng-bind-html="appSettings.get('pageTitle') || 'HealthStars'"></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -91,11 +91,13 @@
       <script src="app/account/resetpw/resetpw.controller.js"></script>
       <script src="app/account/verify/verifyAccount.controller.js"></script>
       <script src="app/app.constant.js"></script>
+      <script src="app/error/error.js"></script>
       <script src="app/event/create/create-event.controller.js"></script>
       <script src="app/event/detail/detail.controller.js"></script>
       <script src="app/event/event.js"></script>
       <script src="app/event/modal/add-award.controller.js"></script>
       <script src="app/event/modal/add-participants.controller.js"></script>
+      <script src="app/event/related/related.directive.js"></script>
       <script src="app/footer/footer.controller.js"></script>
       <script src="app/footer/footer.js"></script>
       <script src="app/header/header.controller.js"></script>

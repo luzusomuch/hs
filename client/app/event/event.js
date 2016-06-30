@@ -22,6 +22,18 @@ angular.module('healthStarsApp').config(function($stateProvider) {
     authenticate: true,
     settings: {
       pageTitle: 'HealthStars | Event Detail'
+    },
+    resolve: {
+      event: (EventService, $stateParams, $location) => {
+        if(!$stateParams.id) {
+          $location.path('404');
+          return false;
+        }
+        return EventService.get($stateParams.id).then(
+          res => res.data,
+          err => $location.path('404')
+        );
+      }
     }
   });
 });

@@ -2,7 +2,7 @@
 
 angular.module('healthStarsApp').config(function($stateProvider) {
   $stateProvider.state('home', {
-    url: '/home',
+    url: '/',
     templateUrl: 'app/home/home.html',
     controller: 'HomeCtrl',
     controllerAs: 'vm',

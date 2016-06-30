@@ -31,7 +31,7 @@ angular.module('healthStarsApp').config(function($stateProvider) {
         }
         return EventService.get($stateParams.id).then(
           res => res.data,
-          err => $location.path('404')
+          () => $location.path('404')
         );
       }
     }

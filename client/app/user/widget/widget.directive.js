@@ -3,11 +3,14 @@
 class UserWidgetCtrl {
 	constructor($scope, User) {
 		this.user = {};
-		if($scope.uId) {
-			User.getInfo($scope.uId).then(
-				res => this.user = res.data
-			);
-		}
+			
+		$scope.$watch('uId', nv => {
+			if(nv) {
+				User.getInfo($scope.uId).then(
+					res => this.user = res.data
+				);
+			}
+		});
 	}
 }
 

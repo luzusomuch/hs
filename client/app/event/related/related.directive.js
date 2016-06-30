@@ -1,8 +1,15 @@
 'use strict';
 
 class EventRelatedCtrl {
-	constructor($scope, User) {
+	constructor($scope, EventService) {
 		this.events = [];
+		$scope.$watch('eId', nv => {
+			if(nv) {
+				EventService.getRelatedEvents(nv).then(
+					res => this.events = res.data
+				);
+			}
+		});
 	}
 }
 

@@ -18,6 +18,10 @@
 
       delete: (id) => {
       	return $http.delete(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}`);
+      },
+
+      getRelatedEvents: (id) => {
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/related`);
       }
     };
   }

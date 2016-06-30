@@ -5,6 +5,7 @@ module.exports = {
       name: String,
     	description: String,
     	imagePath: String,
+      type: String
     });
 
     //import timestamp for auto create updatedAt, createdAt field manually

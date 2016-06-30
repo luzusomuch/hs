@@ -14,11 +14,28 @@ module.exports = (CategoryModel, cb) => {
         CategoryModel.create({
           name: 'Cat A',
           description: 'Cat A description',
-          imagePath: 'pathToImage'
+          imagePath: 'pathToImage',
+          type: 'food',
         }, {
           name: 'Cat B',
           description: 'Cat B description',
-          imagePath: 'pathToImage'
+          imagePath: 'pathToImage',
+          type: 'action'
+        }, {
+          name: 'Cat C',
+          description: 'Cat C description',
+          imagePath: 'pathToImage',
+          type: 'eco'
+        }, {
+          name: 'Cat D',
+          description: 'Cat D description',
+          imagePath: 'pathToImage',
+          type: 'social'
+        }, {
+          name: 'Cat E',
+          description: 'Cat E description',
+          imagePath: 'pathToImage',
+          type: 'internation'
         })
         .then(() => {
           console.log('finished populating categories');

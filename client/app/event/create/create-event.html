@@ -2,16 +2,16 @@
 	<div class="row">
 		<div class="col-sm-8 col-lg-9">
 			<div class="box-blue p15">
-				<div class="title-blue">Create Event</div>
+				<div class="title-blue">{{'CREATE_EVENT' | translate}}</div>
         <form ng-submit="vm.create(form)" name="form" novalidate>
   				<div class="row form-event">
             <div class="col-lg-6">
               <div class="form-group">
-                <label>Event Title</label>
+                <label>{{'EVENT_TITLE' | translate}}</label>
                 <input type="text" class="form-control" ng-model="vm.event.name" required>
               </div>
               <div class="form-group">
-                <label>Category </label>
+                <label>{{'CATEGORY' | translate}} </label>
                 <div class="choose-category">
                   <div class="radio-l">
                     <input id="radio-sport" type="radio" name="category" value="radio-sport" checked="">
@@ -36,20 +36,20 @@
                 </div>
               </div>
               <div class="form-group">
-                <label>Event Type </label>
+                <label>{{'EVENT_TYPE' | translate}}</label>
                 <div class="radio-l">
                   <input id="radio1" ng-model="vm.event.public" type="radio" name="eventtype" checked="" value="radio1" ng-value="true">
-                  <label for="radio1"> Public</label>
+                  <label for="radio1"> {{'PUBLIC' | translate}}</label>
                 </div>
                 <div class="radio-l">
                   <input id="radio2" ng-model="vm.event.public" type="radio" name="eventtype" ng-value="false" value="radio2">
-                  <label for="radio2"> Private</label>
+                  <label for="radio2"> {{'PRIVATE' | translate}}</label>
                 </div>
               </div>
               <div class="form-group event-info-form">
-                <label>Event Information </label>
+                <label>{{'EVENT_INFORMATION' | translate}}</label>
                 <div class="row">
-                  <div class="col-sm-2" style="margin-top: 5px">From</div>
+                  <div class="col-sm-2" style="margin-top: 5px">{{'FROM' | translate}}</div>
                   <div class="col-sm-5">
                     <div class="form-group">
                       <div class="input-group date">
@@ -72,7 +72,7 @@
                   </div>
                   </div>
                   <div class="row">
-                    <div class="col-sm-2" style="margin-top: 5px">To</div>
+                    <div class="col-sm-2" style="margin-top: 5px">{{'TO' | translate}}</div>
                     <div class="col-sm-5">
                       <div class="form-group">
                         <div class="input-group date">
@@ -106,37 +106,37 @@
               </div>
 
               <div class="form-group">
-                <label>Repeat Schedule</label>
+                <label>{{'REPEAT_SCHEDULE' | translate}}</label>
                 <div class="radio-l">
                   <input id="radio3" type="radio" name="radio" value="radio3" checked="" ng-model="vm.event.isRepeat" ng-value="false">
-                  <label for="radio3"> All Day</label>
+                  <label for="radio3"> {{'ALL_DAY' | translate}}</label>
                 </div>
                 <div class="radio-l">
                   <input id="radio4" type="radio" name="radio" value="radio4" ng-model="vm.event.isRepeat" ng-value="true">
-                  <label for="radio4"> Repeat</label>
+                  <label for="radio4"> {{'REPEAT' | translate}}</label>
                 </div>
               </div>
 
               <div class="form-group">
-                <label>Description</label>
+                <label>{{'DESCRIPTION' | translate}}</label>
                 <textarea class="form-control" rows="5" placeholder="Description" ng-model="vm.event.description"></textarea>
               </div>
             </div>
             <div class="col-lg-6">
               <div class="form-group">
-                <label>Event Picture</label>
+                <label>{{'EVENT_PICTURES' | translate}}</label>
                 <div class="upload-img-event">
                   <div class="row">
                     <div class="col-xs-3"><img src="images/img.jpg" width="100%"></div>
                     <div class="col-xs-9 text-center">
-                      <p><a href="#" class="btn btn-danger btn-sm">Upload Picture</a></p>
-                      Maximum file size 5Mb, Only files ( JPG/JPEG )
+                      <p><a href="#" class="btn btn-danger btn-sm">{{'UPLOAD_PICTURE' | translate}}</a></p>
+                      {{'FILE_REQUIREMENT' | translate}}
                     </div>
                   </div>
                 </div>
               </div>
               <div class="form-group">
-                <label>Add Participants</label>
+                <label>{{'ADD_PARTICIPANTS' | translate}}</label>
                 <div class="list-user-add">
                   <ul>
                     <li ng-repeat="participant in vm.event.participants">
@@ -150,7 +150,7 @@
                   </ul>
                 </div>
 
-                <button class="btn btn-danger btn-sm" type="button" ng-click="vm.showAddParticipantsModal()">ADD Participants</button>
+                <button class="btn btn-danger btn-sm" type="button" ng-click="vm.showAddParticipantsModal()">{{'ADD_PARTICIPANTS' | translate}}</button>
               </div>
               <!-- <div class="form-group">
                 <label>Organizer</label>
@@ -168,14 +168,14 @@
               </div> -->
 
               <div class="form-group">
-                <label>Award For Event </label>
+                <label>{{'ADD_AWARD' | translate}}</label>
                 <div class="add-award-event">
                   <div class="row">
                     <div class="col-xs-3 col-sm-2">
                       <img ng-show="vm.event.award" ng-src="vm.event.award.objectPhotoId.metadata.small" width="100%">
                     </div>
                     <div class="col-xs-9 col-sm-10 text-center" style="margin-top: 10px">
-                      <button class="btn btn-danger btn-sm" type="button" ng-click="vm.showAddAwardModal()">ADD AWARD</button>
+                      <button class="btn btn-danger btn-sm" type="button" ng-click="vm.showAddAwardModal()">{{'ADD_AWARD' | translate}}</button>
                     </div>
                   </div>
                 </div>
@@ -183,14 +183,14 @@
             </div>
         	</div>
         	<div class="bottom-button">
-            <button type="submit" class="btn btn-success btn-radius-20">Create Event</button>
+            <button type="submit" class="btn btn-success btn-radius-20">{{'CREATE_EVENT' | translate}}</button>
           </div>
         </form>
 			</div>
 		</div>
     <div class="col-sm-4 col-lg-3 pc-show">
       <div class="box-blue p15">
-        <div class="title-blue">Friends List ({{vm.friends.length}}) <a href="#" class="show-all-box">Show all</a></div>
+        <div class="title-blue">{{'FRIENDS_LIST' | translate}} ({{vm.friends.length}}) <a href="#" class="show-all-box">Show all</a></div>
         <ul class="list-media list-friend list-friend-1">
           <li ng-repeat="friend in vm.friends">
             <div class="img-media">

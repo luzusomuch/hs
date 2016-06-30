@@ -4,6 +4,8 @@ import async from 'async';
 
 module.exports = function(kernel) {
 	kernel.app.post('/api/v1/events/', kernel.middleware.isAuthenticated(), (req, res) => {
+    console.log(req.body);
+    console.log(req.body.files);
 		if (req.user.deleted && req.user.deleted.status) {
 			return res.status(403).json({type: 'EMAIL_DELETED', message: 'This user email was deleted'});
 		}
@@ -12,10 +14,30 @@ module.exports = function(kernel) {
 		}
   	// TODO - storage all uploaded photos to PHOTO SCHEMA and then push its ID to photosId field
 
-    var data = req.body;
+    if (!req.body.award) {
+      return res.status(422).json({type: 'EVENT_AWARD_REQUIRED', path: 'award', message: 'Award is required'});
+    }
+    if (!req.body.location.fullAddress) {
+      return res.status(422).json({type: 'EVENT_LOCATION_REQUIRED', path: 'location', message: 'Location is required'}); 
+    }
+    var data = {
+      name: req.body.name,
+      description: req.body.description,
+      categoryId: req.body.categoryId,
+      startDateTime: req.body.startDateTime,
+      endDateTime: req.body.endDateTime,
+      awardId: req.body.award._id
+    };
     data.ownerId = req.user._id;
     data.organizerId = req.user._id;
-    data.blocked = {status: false};
+    data.public = req.body.public;
+    data.private = !data.public;
+    data.location = req.body.location;
+    if (req.body.participants && req.body.participants.length > 0) {
+      data.participantsId = _.map(req.body.participants, (participant) => {
+        return participant._id;
+      });
+    }
 
     var schema = Joi.object().keys({
       name: Joi.string().required().options({
@@ -33,30 +55,22 @@ module.exports = function(kernel) {
       		key: 'categoryId'
       	}
       }),
-      startDateTime: Joi.number().required().options({
+      startDateTime: Joi.date().required().options({
       	language: {
       		key: 'startDateTime'
       	}
       }),
-      endDateTime: Joi.number().required().options({
+      endDateTime: Joi.date().required().options({
       	language: {
       		key: 'endDateTime'
       	}
       }),
-      awardsId: Joi.array(Joi.string()).min(1).required().options({
+      awardId: Joi.string().required().options({
       	language: {
-      		key: 'awards',
-      		string: {
-      			min: 'must have at least 1 item'
-      		}
+      		key: 'award'
       	}
       }),
-      participantsId: Joi.array(Joi.string()).default([]),
-      public: Joi.boolean().required().options({
-        language: {
-          key: 'public'
-        }
-      })
+      participantsId: Joi.array(Joi.string()).default([])
     });
     var result = Joi.validate(data, schema, {
       stripUnknown: true,
@@ -84,8 +98,8 @@ module.exports = function(kernel) {
     			case 'string.endDateTime': 
     				type = 'EVENT_END_DATE_TIME_REQUIRED';
     				break;
-    			case 'string.min':
-    				type = 'EVENT_AWARDS_REQUIRED';
+    			case 'string.award':
+    				type = 'EVENT_AWARD_REQUIRED';
     				break;
           case 'string.public':
             type = 'EVENT_STATUS';
@@ -98,14 +112,13 @@ module.exports = function(kernel) {
       // return kernel.errorsHandler.parseError(errors);
       return res.status(422).json(errors);
     }
-      
     let model = new kernel.model.Event(data);
     model.save().then(event => {
   		var url = kernel.config.baseUrl + 'event/'+event._id;
     	async.each(event.participantsId, (id, cb) => {
     		kernel.model.User.findById(id, (err, user) => {
     			if (err || ! user) {return cb();}
-		      this.kernel.emit('SEND_MAIL', {
+		      kernel.emit('SEND_MAIL', {
 		        template: 'event-created.html',
 		        subject: 'New Event Created Named ' + event.name,
 		        data: {
@@ -121,6 +134,7 @@ module.exports = function(kernel) {
     		res.status(200).json(event);
     	});
     }).catch(err => {
+      console.log(err);
       res.status(500).json({type: 'SERVER_ERROR'});
     });
   });

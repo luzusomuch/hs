@@ -1,7 +1,9 @@
 'use strict';
 
 class CreateEventCtrl {
-	constructor($http, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage) {
+	constructor(Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage) {
+		this.Upload = Upload;
+		this.files = [];
 		this.user = $localStorage.authUser;
 		this.event = {
 			repeat: {},
@@ -9,6 +11,8 @@ class CreateEventCtrl {
 			location: {}
 		};
     this.$http = $http;
+    this.$state = $state;
+    this.EventService = EventService;
     this.RelationService = RelationService;
     this.AwardService = AwardService;
     this.$uibModal = $uibModal;
@@ -108,8 +112,20 @@ class CreateEventCtrl {
 		});
   }
 
+  select($files) {
+  	$files.forEach(file => {
+      //check file
+      let index = _.findIndex(this.files, (f) => {
+        return f.name === file.name && f.size === file.size;
+      });
+
+      if (index === -1) {
+        this.files.push(file);
+      }
+    });
+  }
+
   create(form) {
-  	console.log(form);
   	if (form.$valid && this.address.selected) {
   		var selectedAddress = this.address.selected;
       this.event.location.coordinates = [selectedAddress.geometry.location.lng, selectedAddress.geometry.location.lat];
@@ -117,7 +133,18 @@ class CreateEventCtrl {
       this.event.location.countryCode = selectedAddress.address_components[selectedAddress.address_components.length -1].short_name;
       this.event.location.fullAddress = selectedAddress.formatted_address;
 
-      console.log(this.event);
+      if (this.files.length > 0) {
+      	this.event.files = this.files;
+      }
+
+  		this.event.startDateTime = new Date(moment(this.event.startDate).hours(moment(this.event.startTime).hours()).minutes(moment(this.event.startTime).minutes()));
+  		this.event.endDateTime = new Date(moment(this.event.endDate).hours(moment(this.event.endTime).hours()).minutes(moment(this.event.endTime).minutes()));
+
+      this.EventService.create(this.event).then(resp => {
+      	this.$state.go('event.detail', {id: resp._id});
+      }).catch(err => {
+      	console.log(err);
+      });
   	}
   }
 }

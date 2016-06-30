@@ -77,7 +77,8 @@ let Language = {
 		MONTHLY: 'Monthly',
 		YEARLY: 'Yearly',
 		START: 'Start',
-		END: 'End'
+		END: 'End',
+		EVENT_LOCATION_REQUIRED: 'Event location is required'
 	},
 	de: {
 

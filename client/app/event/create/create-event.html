@@ -53,7 +53,7 @@
                   <div class="col-sm-5">
                     <div class="form-group">
                       <div class="input-group date">
-                        <input type="date" class="form-control" id="datetimepicker1" placeholder="Date" ng-model="vm.event.startDate">
+                        <input type="date" class="form-control" id="datetimepicker1" placeholder="Date" ng-model="vm.event.startDate" required name="startDate">
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -63,7 +63,7 @@
                   <div class="col-sm-5">
                     <div class="form-group">
                       <div class="input-group date">
-                        <input type="time" class="form-control" id="datetimepicker2" placeholder="Time" ng-model="vm.event.startTime">
+                        <input type="time" class="form-control" id="datetimepicker2" placeholder="Time" ng-model="vm.event.startTime" required name="startTime">
                         <span class="input-group-addon">
                             <span class="fa fa-clock-o"></span>
                         </span>
@@ -76,7 +76,7 @@
                     <div class="col-sm-5">
                       <div class="form-group">
                         <div class="input-group date">
-                          <input type="date" class="form-control" id="datetimepicker3" placeholder="Date" ng-model="vm.event.endDate">
+                          <input type="date" class="form-control" id="datetimepicker3" placeholder="Date" ng-model="vm.event.endDate" required name="endDate">
                           <span class="input-group-addon">
                               <span class="glyphicon glyphicon-calendar"></span>
                           </span>
@@ -86,7 +86,7 @@
                     <div class="col-sm-5">
                       <div class="form-group">
                         <div class="input-group date">
-                          <input type="time" class="form-control" id="datetimepicker4" placeholder="Time" ng-model="vm.event.endTime">
+                          <input type="time" class="form-control" id="datetimepicker4" placeholder="Time" ng-model="vm.event.endTime" required name="endTime">
                           <span class="input-group-addon">
                               <span class="fa fa-clock-o"></span>
                           </span>
@@ -127,9 +127,11 @@
                 <label>{{'EVENT_PICTURES' | translate}}</label>
                 <div class="upload-img-event">
                   <div class="row">
-                    <div class="col-xs-3"><img src="images/img.jpg" width="100%"></div>
+                    <div class="col-xs-3">
+                      <img ng-show="vm.files.length > 0" style="margin-bottom:5px" ng-repeat="file in vm.files" ngf-thumbnail="file" width="100%">
+                    </div>
                     <div class="col-xs-9 text-center">
-                      <p><a href="#" class="btn btn-danger btn-sm">{{'UPLOAD_PICTURE' | translate}}</a></p>
+                      <p><a href="#" class="btn btn-danger btn-sm" ngf-select="vm.select($files)" ngf-multiple="true" accept="image/*">{{'UPLOAD_PICTURE' | translate}}</a></p>
                       {{'FILE_REQUIREMENT' | translate}}
                     </div>
                   </div>

@@ -55,9 +55,9 @@ module.exports = {
       		totalRepeatDay: Number, //Maybe it could repeat in 1, 2 or more day
           startDate: Date,
           endDate: Date,
-      	},
-        private: Boolean
-      }
+      	}
+      },
+      private: Boolean
     });
 
     eventSchema.pre('save', function(next) {

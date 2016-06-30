@@ -55,8 +55,24 @@ module.exports = {
       		totalRepeatDay: Number, //Maybe it could repeat in 1, 2 or more day
           startDate: Date,
           endDate: Date,
-      	}
+      	},
+        private: Boolean
       }
+    });
+
+    eventSchema.pre('save', function(next) {
+      this.wasNew = this.isNew;
+      next();
+    });
+
+    eventSchema.post('save', doc => {
+      var ESConfig = kernel.config.ES;
+      var event = doc.wasNew ? ESConfig.events.CREATE :  ESConfig.events.UPDATE;
+      kernel.queue.create(event, {
+        type: ESConfig.mapping.eventType,
+        id: doc._id,
+        data: doc
+      }).save();
     });
 
     //import timestamp for auto create updatedAt, createdAt field manually

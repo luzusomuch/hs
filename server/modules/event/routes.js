@@ -143,12 +143,15 @@ module.exports = function(kernel) {
   Get Event Detail
   */
   kernel.app.get('/api/v1/events/:id', kernel.middleware.isAuthenticated(), (req, res) => {
+    if(!kernel.mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({type: 'BAD_REQUEST'});
+    }
     kernel.model.Event.findById(req.params.id)
-    .populate('ownerId', '-hashedPassword -salt')
+    .populate('ownerId', '-password -salt')
     .populate('categoryId')
     .populate('awardId')
-    .populate('photosId')
-    .populate('participantsId', '-hashedPassword - salt')
+    //.populate('photosId.metadata')
+    //.populate('participantsId', '-hashedPassword - salt')
     .exec().then(event => {
       if (!event) {
         return res.status(404).json({type: 'EVENT_NOT_FOUND', message: 'Event not found'});

@@ -133,20 +133,15 @@
                 <label>Add Participants</label>
                 <div class="list-user-add">
                   <ul>
-                    <li>
+                    <li ng-repeat="participant in vm.event.participants">
                       <img src="images/user.jpg">
-                      <a href="#">Barbara Walton</a> @Barbara
-                      <a href="#" class="delete-list"><i class="fa fa-trash-o"></i></a>
-                    </li>
-                    <li>
-                      <img src="images/user.jpg">
-                      <a href="#">Barbara Walton</a> @Barbara
-                      <a href="#" class="delete-list"><i class="fa fa-trash-o"></i></a>
+                      <a href="#">{{participant.name}}</a>
+                      <a href="#" class="delete-list" ng-click="vm.removeParticipant($index)"><i class="fa fa-trash-o"></i></a>
                     </li>
                   </ul>
                 </div>
 
-                <button class="btn btn-danger btn-sm">ADD Participants</button>
+                <button class="btn btn-danger btn-sm" type="button" ng-click="vm.showAddParticipantsModal()">ADD Participants</button>
               </div>
               <!-- <div class="form-group">
                 <label>Organizer</label>

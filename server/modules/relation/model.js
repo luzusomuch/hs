@@ -2,10 +2,10 @@ module.exports = {
   Relation(kernel) {
     let Schema = kernel.mongoose.Schema;
     let relationSchema = new Schema({
-    	fromUserId: kernel.mongoose.Schema.Types.ObjectId,
-    	toUserId: kernel.mongoose.Schema.Types.ObjectId,
+    	fromUserId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
+    	toUserId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
     	type: {type: String, enum: ['friend', 'follow']},
-    	status: {type: String, enum: ['pending', 'completed']}
+    	status: {type: String, enum: ['pending', 'completed', 'deleted']}
     });
 
     //import timestamp for auto create updatedAt, createdAt field manually

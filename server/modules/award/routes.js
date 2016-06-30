@@ -44,14 +44,18 @@ module.exports = function(kernel) {
   /**
    * Get list of awards created by current user
    */
-  kernel.app.get('/api/v1/awards/', kernel.middleware.isAuthenticated(), (req, res) => {
-    //TODO - validator
-    kernel.model.Like.find({ownerId:req.user._id})
-    .then(awards =>{
-      res.status(200).json(awards);
-    })
-    .catch(err => {
-      //TODO - handle error
+  kernel.app.get('/api/v1/awards/:id/all', kernel.middleware.isAuthenticated(), (req, res) => {
+    var condition = {};
+    if (req.params.id==='me') {
+      condition = {ownerId: req.user._id};
+    } else {
+      condition = {ownerId: req.params.id};
+    }
+    kernel.model.Award.find(condition)
+    .populate('objectPhotoId')
+    .exec().then(awards =>{
+      res.status(200).json({items: awards, totalItem: awards.length});
+    }).catch(err => {
       res.status(500).end();
     });
   });

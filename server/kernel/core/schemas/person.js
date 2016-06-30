@@ -18,11 +18,11 @@ module.exports = exports = function(kernel) {
         friendInvitation: {type: Boolean, defaults: true},
         newPost: {type: Boolean, defaults: true},
       },
-      avatar: Schema.Types.ObjectId,
-      coverPhoto: Schema.Types.ObjectId,
+      avatar: {type: Schema.Types.ObjectId, ref: 'Photo'},
+      coverPhoto: {type: Schema.Types.ObjectId, ref: 'Photo'},
       awardsExhibits: [{
         rank: Number,
-        awardId: Schema.Types.ObjectId
+        awardId: {type: Schema.Types.ObjectId, ref: 'Award'}
       }],
       location: {
         type: {type: String}, //this type only use for mongoDB geoJSON, maybe a Point or somethings
@@ -41,11 +41,11 @@ module.exports = exports = function(kernel) {
       lastAccess: Date,
       deleted: {
         status: {type: Boolean, default: false},
-        byUserId: Schema.Types.ObjectId
+        byUserId: {type: Schema.Types.ObjectId, ref: 'User'}
       },
       blocked: {
         status: {type: Boolean, default: false},
-        byUserId: Schema.Types.ObjectId
+        byUserId: {type: Schema.Types.ObjectId, ref: 'User'}
       },
       emailVerified: {type: Boolean, default: false},
       emailVerifiedToken: String,

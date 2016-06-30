@@ -13,7 +13,7 @@ module.exports = function(kernel) {
     	var result = _.map(relations, (relation) => {
     		return relation.toUserId;
     	});
-      return res.status(200).json({relations: result, totalItem: result.length});
+      return res.status(200).json({items: result, totalItem: result.length});
     }).catch(err => {
       return res.status(500).json({type: 'SERVER_ERROR'});
     });

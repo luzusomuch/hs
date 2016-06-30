@@ -1,23 +1,23 @@
 <div class="modal-header">
-	<h3 class="modal-title">Repeating Event</h3>
+	<h3 class="modal-title">{{'REPEAT_SCHEDULE' | translate}}</h3>
 </div>
 <div class="modal-body">
 	<form ng-submit="vm.submit(form)" name="form">
     <div class="form-group">
-      <label>Repeats:</label>
+      <label>{{'REPEAT' | translate}}:</label>
       <select class="form-control" ng-model="vm.repeat.type" required>
-        <option value="daily">Daily</option>
-        <option value="weekly">Weekly</option>
-        <option value="monthly">Monthly</option>
-        <option value="yearly">Yearly</option>
+        <option value="daily">{{'DAILY' | translate}}</option>
+        <option value="weekly">{{'WEEKLY' | translate}}</option>
+        <option value="monthly">{{'MONTHLY' | translate}}</option>
+        <option value="yearly">{{'YEARLY' | translate}}</option>
       </select>
     </div>
     <div class="form-group">
-      <label>Start:</label>
+      <label>{{'START' | translate}}:</label>
       <input type="date" class="form-control" ng-model="vm.repeat.startDate">
     </div>
     <div class="form-group">
-      <label>Finish:</label>
+      <label>{{'END' | translate}}:</label>
       <div class="form-group">
         <div class="input-group date">
           <input type="date" class="form-control" id="datetimepicker3" placeholder="Date" ng-model="vm.repeat.endDate" required>
@@ -28,7 +28,7 @@
       </div>
     </div>
 		<div class="modal-footer">
-			<button type="submit" class="btn btn-success btn-radius-20">Submit</button>
+			<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>
 		</div>    
   </form>
 </div>

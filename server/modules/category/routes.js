@@ -14,4 +14,13 @@ module.exports = function(kernel) {
       res.status(500).json(err);
     });
   });
+
+  // Get all category
+  kernel.app.get('/api/v1/categories', (req, res) => {
+    kernel.model.Category.find({}).then(categories => {
+      return res.status(200).json({items: categories, totalItem: categories.length});
+    }).catch(err => {
+      return res.status(500).json(err);
+    });
+  });
 };

@@ -15,7 +15,12 @@
 
       verifyAccount: (token) => {
         return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/verify-account`, token);
+      },
+
+      getInfo: (id) => {
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/${id}/info`);
       }
+
     };
   }
 

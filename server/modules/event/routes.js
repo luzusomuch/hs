@@ -224,6 +224,51 @@ module.exports = function(kernel) {
     });
   });
 
+  /**
+  * Get related events
+  *
+  */
+
+  kernel.app.get('/api/v1/events/:id/related', (req, res) => {
+    if(!kernel.mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({type: 'BAD_REQUEST'});
+    }
+
+    kernel.model.Event.findById(req.params.id).then(
+      event => {
+        if(!event) {
+          return res.status(500).json({type: 'EVENT_NOT_FOUND'});
+        }
+         async.waterfall([
+          (cb) => {
+             kernel.model.Event.find({
+              categoryId: event.categoryId,
+              createAt: { $lte: event.createAt },
+              _id: { $ne: event._id }
+            })
+            .sort({ createdAt: -1 })
+            .limit(3)
+            .exec(cb);
+          },
+
+          (events, cb) => {
+            /*async.map(evetns, (event) => {
+              count comment here
+            }, cb);*/
+            cb(null, events);
+          }
+        ], (err, result) => {
+          if(err) {
+            return  res.status(500).json({type: 'SERVER_ERROR'});
+          }
+          return res.status(200).json(result);
+        });
+      })
+    .catch(err => res.status(500).json({type: 'SERVER_ERROR'}));
+
+
+  });
+
   /*
   Delete an event
   */

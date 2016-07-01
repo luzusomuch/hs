@@ -166,6 +166,33 @@ angular.module('healthStarsApp')
     return moment(date).format(format);
   };
 })
+.filter('categoryImagePath', function() {
+  return function(category) {
+    var imagePath;
+
+    switch(category.type) {
+      case 'food':
+        imagePath = '/assets/images/star1.png';
+        break;
+      case 'action':
+        imagePath = '/assets/images/star4.png';
+        break;
+      case 'eco':
+        imagePath = '/assets/images/star3.png';
+        break;
+      case 'social':
+        imagePath = '/assets/images/star2.png';
+        break;
+      case 'internation':
+        imagePath = '/assets/images/star.png';
+        break;
+      default:
+        imagePath = category.imagePath;
+        break;
+    }
+    return imagePath;
+  };
+})
 .filter('trustAsResourceUrl', ['$sce', function($sce) {
     return function(val) {
         return $sce.trustAsResourceUrl(val);

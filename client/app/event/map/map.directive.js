@@ -43,7 +43,9 @@ angular.module('healthStarsApp').directive('hsEventMap', ($interval) => {
 		        map.setCenter(bounds.getCenter());
 						map.fitBounds(bounds);
 						var listener = google.maps.event.addListener(map, 'idle', function() { 
-						  if (map.getZoom() > 15) map.setZoom(15); 
+						  if (map.getZoom() > 15) { 
+						  	map.setZoom(15); 
+						  } 
 						  google.maps.event.removeListener(listener); 
 						});
 					}

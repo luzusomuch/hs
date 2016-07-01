@@ -11,8 +11,8 @@
                             <div class="action-event">
                                 <span><i class="fa fa-user"></i> by {{vm.event.ownerId.name}}</span>
                                 <span><i class="fa fa-clock-o"></i> {{vm.event.createdAt | hsDate: 'MMMM DD, YYYY HH:mm a'}}</span>
-                                <span><i class="fa fa-heart"></i> 5472</span>
-                                <span><i class="fa fa-comment"></i> 42</span>
+                                <span><i class="fa fa-heart"></i> 0</span>
+                                <span><i class="fa fa-comment"></i> 0</span>
                                 <span ng-if="!event.private"><i class="fa fa-unlock"></i> Public Event</span>
                                 <span ng-if="event.private"><i class="fa fa-lock"></i> Private Event</span>
                             </div>
@@ -20,7 +20,8 @@
                         <div class="col-sm-6 col-lg-4">
                             <div class="row row-small">
                                 <div class="col-xs-7"><a href="#" class="btn btn-default btn-block"><i class="user-i i-new"></i> Invite your friends </a></div>
-                                <div class="col-xs-5"><a href="#" class="btn btn-default btn-block"><i class="fa fa-plus"></i> Attend</a></div>
+                                <div class="col-xs-5"><a href="#" class="btn btn-default btn-block" ng-if="vm.isNotParticipant()"><i class="fa fa-plus"></i> Attend</a></div>
+                                 <div class="col-xs-5"><a href="#" class="btn btn-default btn-block" ng-if="!vm.isNotParticipant()"><i class="fa fa-user"></i> Attendded</a></div>
                             </div>
                         </div>
                     </div>
@@ -158,50 +159,8 @@
             </div>
         </div>
         <div class="col-sm-3">
-
-            <div class="box-blue p15">
-                <div class="title-blue">Who Are Attending  (652) <a href="#" class="show-all-box">Show all</a></div>
-                <ul class="list-media list-friend list-friend-1">
-                    <li>
-                        <div class="img-media">
-                            <a href="#"></a><a href="#"><img src="assets/images/48.jpg"></a>
-                        </div>
-                        <h4><a href="#">Caroline Sanders @Barbara</a></h4>
-                        <span class="text-mo">Your Friend</span>
-                    </li>
-                    <li>
-                        <div class="img-media">
-                            <a href="#"></a><a href="#"><img src="assets/images/48.jpg"></a>
-                        </div>
-                        <h4><a href="#">Caroline Sanders @Barbara</a></h4>
-                        <a href="#" class="btn-follow"><i class="i-new user-i-1"></i> Follow</a>
-                    </li>
-                    <li>
-                        <div class="img-media">
-                            <a href="#"></a><a href="#"><img src="assets/images/48.jpg"></a>
-                        </div>
-                        <h4><a href="#">Caroline Sanders @Barbara</a></h4>
-                        <a href="#" class="btn-follow"><i class="i-new user-i-1"></i> Follow</a>
-                    </li>
-                    <li>
-                        <div class="img-media">
-                            <a href="#"></a><a href="#"><img src="assets/images/48.jpg"></a>
-                        </div>
-                        <h4><a href="#">Caroline Sanders @Barbara</a></h4>
-                        <a href="#" class="btn-follow"><i class="i-new user-i-1"></i> Follow</a>
-                    </li>
-                    <li>
-                        <div class="img-media">
-                            <a href="#"></a><a href="#"><img src="assets/images/48.jpg"></a>
-                        </div>
-                        <h4><a href="#">Caroline Sanders @Barbara</a></h4>
-                        <a href="#" class="btn-follow"><i class="i-new user-i-1"></i> Follow</a>
-                    </li>
-                </ul>
-            </div>
-
+            <hs-event-attending e-id="vm.event._id"></hs-event-attending>
             <hs-related-events e-id="vm.event._id"></hs-related-events>
-
         </div>
     </div>
 </div>

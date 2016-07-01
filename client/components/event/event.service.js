@@ -22,6 +22,10 @@
 
       getRelatedEvents: (id) => {
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/related`);
+      },
+
+      getParticipants: (id) => {
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/participants`);
       }
     };
   }

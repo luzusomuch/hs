@@ -265,8 +265,6 @@ module.exports = function(kernel) {
         });
       })
     .catch(err => res.status(500).json({type: 'SERVER_ERROR'}));
-
-
   });
 
   /*
@@ -291,5 +289,103 @@ module.exports = function(kernel) {
     }).catch(err => {
       return res.status(500).json({type: 'SERVER_ERROR'});
     });
+  });
+
+  /**
+  * Get paticipants of an event
+  */
+  kernel.app.get('/api/v1/events/:id/participants', kernel.middleware.isAuthenticated(), (req, res) => {
+    if(!kernel.mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({type: 'BAD_REQUEST'});
+    }
+
+    const LIMIT = 6;
+
+    kernel.model.Event.findById(req.params.id).then(
+      event => {
+        if(!event) {
+          return res.status(404);
+        }
+        let response = {
+          total: event.participantsId.length,
+          items: []
+        };
+        async.waterfall([
+          (cb) => {
+            kernel.model.Relation.find({
+              $or: [
+                { fromUserId: req.user._id },
+                { toUserId: req.user._id },
+              ],
+              type: 'friend',
+              status: 'completed'
+            }, (err, friends) => {
+              if(err) return cb(err);
+              let friendIds = _.map(friends, f => {
+                return f.fromUserId.toString() === req.user._id.toString() ? f.toUserId : f.fromUserId;
+              });
+              return cb(null, friendIds);
+            });
+          },
+          (friendIds, cb) => {
+            if(!friendIds.length) return cb(null, []);
+            kernel.model.User.find({
+              $and: [
+                {
+                  _id: { $in: event.participantsId }
+                },
+                {
+                  _id: { $in: friendIds}
+                }
+              ]
+            }, '-salt -password').limit(LIMIT).exec((err, friends) => {
+              if(err) return cb(err);
+              return cb(null, _.map(friends, friend => {
+                let user = friend.toJSON();
+                user.isFriend = true;
+                return user;
+              }));
+            });
+          },
+          (friends, cb) => {
+            console.log(friends);
+            let remainingLimit = LIMIT - friends.length;
+            let remainingLength = event.participantsId.length - friends.length;
+            if(event.participantsId.indexOf(req.user._id) !== -1 ) remainingLength--;
+            if(!remainingLimit || !remainingLength) return cb(null, friends);
+            let skip = 0;
+            // remainingLimit = 1
+            // remainingLength = 7
+            if(remainingLimit < remainingLength) {
+              let start = 1;
+              let end = remainingLength - remainingLimit + 1;
+              skip = Math.floor((Math.random() * end) + start) - 1;
+            }
+            kernel.model.User.find({
+              $and: [
+                {
+                  _id: { $ne: req.user._id }
+                },
+                {
+                  _id: { $in: event.participantsId }
+                },
+                {
+                  _id: { $nin: _.map(friends, '_id') }
+                }
+              ]
+            }, '-salt -password').limit(remainingLimit).skip(skip).exec((err, participants) => {
+              if(err) return cb(err);
+              return cb(null, friends.concat(participants));
+            });
+          }
+        ], (err, items) => {
+          if(err) return res.status(500).json({type: 'SERVER_ERROR'});
+          response.items = items;
+          return res.status(200).json(response);
+        });
+      }
+    )
+    .catch(err => res.status(500).json({type: 'SERVER_ERROR', message: JSON.stringify(err)}));
+
   });
 };

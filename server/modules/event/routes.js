@@ -178,12 +178,12 @@ module.exports = function(kernel) {
               cb();
             });
           }, () => {
+            kernel.queue.create(kernel.config.ES.events.CREATE, {type: kernel.config.ES.mapping.eventType, id: event._id, data: event}).save();
             return res.status(200).json(event);
           });
         }).catch(err => {
           return res.status(500).json({type: 'SERVER_ERROR'});
         });
-        
       });
     });
   });

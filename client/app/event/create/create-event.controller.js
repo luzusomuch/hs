@@ -143,7 +143,7 @@ class CreateEventCtrl {
 	      data: {file: this.files, event: this.event},
 	      headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
 	    }).then(resp =>{
-	    	this.$state.go('event.detail', {id: resp._id});
+	    	this.$state.go('event.detail', {id: resp.data._id});
 	    }, (err) => {
 	    	console.log(err);
 	    });

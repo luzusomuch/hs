@@ -23,6 +23,7 @@ kernel.loadModule(require('./modules/event'));
 kernel.loadModule(require('./modules/relation'));
 kernel.loadModule(require('./modules/auth'));
 kernel.loadModule(require('./modules/es'));
+kernel.loadModule(require('./modules/queues'));
 //compose then start server
 kernel.compose();
 

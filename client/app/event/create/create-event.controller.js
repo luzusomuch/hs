@@ -1,8 +1,9 @@
 'use strict';
 
 class CreateEventCtrl {
-	constructor(Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies) {
-		this.Upload = Upload;
+	constructor(APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies) {
+		this.APP_CONFIG = APP_CONFIG;
+    this.Upload = Upload;
 		this.$cookies = $cookies;
 		this.files = [];
 		this.user = $localStorage.authUser;
@@ -11,6 +12,7 @@ class CreateEventCtrl {
 			participants: [],
 			location: {}
 		};
+    this.shareEventInfo = {};
     this.$http = $http;
     this.$state = $state;
     this.EventService = EventService;
@@ -143,15 +145,11 @@ class CreateEventCtrl {
 	      data: {file: this.files, event: this.event},
 	      headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
 	    }).then(resp =>{
-	    	this.$state.go('event.detail', {id: resp._id});
+        this.event.url = `${this.APP_CONFIG.baseUrl}event/detail/${resp.data._id}`;
+	    	this.$state.go('event.detail', {id: resp.data._id});
 	    }, (err) => {
 	    	console.log(err);
 	    });
-      // this.EventService.create(this.event).then(resp => {
-      // 	this.$state.go('event.detail', {id: resp._id});
-      // }).catch(err => {
-      // 	console.log(err);
-      // });
   	}
   }
 }

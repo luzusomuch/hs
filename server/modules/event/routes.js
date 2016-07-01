@@ -147,12 +147,13 @@ module.exports = function(kernel) {
         var photo = {
           ownerId: req.user._id,
           metadata: {
-            tmp: file.path
+            tmp: file.filename
           }
         };
         let model = new kernel.model.Photo(photo);
         model.save().then(saved => {
           uploadedPhotoIds.push(saved._id);
+          kernel.queue.create('PROCESS_AWS', saved).save();
           callback(null, uploadedPhotoIds);
         }).catch(err => {
           callback(err);
@@ -178,12 +179,12 @@ module.exports = function(kernel) {
               cb();
             });
           }, () => {
+            kernel.queue.create(kernel.config.ES.events.CREATE, {type: kernel.config.ES.mapping.eventType, id: event._id, data: event}).save();
             return res.status(200).json(event);
           });
         }).catch(err => {
           return res.status(500).json({type: 'SERVER_ERROR'});
         });
-        
       });
     });
   });
@@ -275,7 +276,7 @@ module.exports = function(kernel) {
       if (!event) {
        return res.status(404).json({type: 'EVENT_NOT_FOUND', message: 'Event not found'}); 
       }
-      if (event.ownerId===req.user._id || req.user.role==='admin') {
+      if (event.ownerId.toString()===req.user._id.toString() || req.user.role==='admin') {
         event.blocked = true;
         event.blockedByUserId = req.user._id;
         event.save().then(() => {

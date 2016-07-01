@@ -87,6 +87,8 @@ module.exports = function(kernel) {
       };
       let model = new kernel.model.Photo(photo);
       model.save().then(saved => {
+        // create a queue to resize and upload to s3
+        kernel.queue.create('PROCESS_AWS', saved).save();
         award.objectPhotoId = saved._id;
         let awardModel = new kernel.model.Award(award);
         awardModel.save().then(result => {

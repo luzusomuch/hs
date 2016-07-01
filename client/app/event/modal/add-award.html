@@ -6,10 +6,11 @@
     <h4>{{'AWARDS_LIST' | translate}}</h4>
     <div class="form-group">
       <div class="radio" ng-repeat="award in vm.awards">
-        <label><input type="radio" ng-checked="award.select" ng-click="award.select=!award.select">{{award.objectName}}</label>
+        <label><input type="radio" name="awardRadio" ng-checked="award.select" ng-click="vm.selectAward(award)">{{award.objectName}}</label>
       </div>
     </div>
 		<div class="modal-footer">
+      <button type="button" class="btn btn-radius-20" ng-click="vm.showAddMoreAwardModal()">{{'ADD_MORE_AWARD' | translate}}</button>
 			<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>
 		</div>    
   </form>

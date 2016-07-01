@@ -80,7 +80,12 @@ let Language = {
 		END: 'End',
 		EVENT_LOCATION_REQUIRED: 'Event location is required',
 		EVENT_REPEATING_MISSING_ENTITIES: 'Event repeat is missing some entities',
-		EVENT_REPEATING_ENTITY_NOT_VALID: 'Event repeat entity is not valid'
+		EVENT_REPEATING_ENTITY_NOT_VALID: 'Event repeat entity is not valid',
+		CREATE_AWARD: 'Create award',
+		AWARD_TITLE: 'Award title',
+		AWARD_TYPE: 'Award type',
+		ADD_MORE_AWARD: 'Add more awards',
+		SELECT_AWARD_TYPE: 'Select award type'
 	},
 	de: {
 

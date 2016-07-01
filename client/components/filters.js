@@ -191,5 +191,27 @@ angular.module('healthStarsApp')
         break;
     }
     return imagePath;
-  }
+  };
+})
+.filter('imageUrl', () => {
+  return (image, type) => {
+    if (image) {
+      let imagePath;
+      switch (type) {
+        case 'small':
+          imagePath = (image.metadata.small) ? image.metadata.small : '/assets/photos/'+image.metadata.tmp;
+          break;
+        case 'medium':
+          imagePath = (image.metadata.medium) ? image.metadata.medium : '/assets/photos/'+image.metadata.tmp;
+          break;
+        case 'large':
+          imagePath = (image.metadata.large) ? image.metadata.large : '/assets/photos/'+image.metadata.tmp;
+          break;
+        default:
+          imagePath = image.metadata.tmp;
+          break;
+      }
+      return imagePath;
+    }
+  };
 });

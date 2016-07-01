@@ -129,6 +129,6 @@
       <script src="components/util/util.service.js"></script>
       <!-- endinjector -->
     <!-- endbuild -->
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhg6JbSzbbB1rC9iqukJdiAXzUOYlpf-4" async defer></script>
+      <script ng-src="{{('https://maps.googleapis.com/maps/api/js?key=' + appSettings.get('apiKey').google) | trustAsResourceUrl}}" async defer></script>
   </body>
 </html>

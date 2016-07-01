@@ -9,4 +9,3 @@ dist
 /client/app/app.constant.js
 npm-debug.log
 coverage
-/server/config/environment/shared.js

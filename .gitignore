@@ -9,4 +9,5 @@ dist
 /client/app/app.constant.js
 npm-debug.log
 coverage
-/client/assets/photos
+/client/assets/photos/**/*
+!/client/assets/photos/.gitkeep

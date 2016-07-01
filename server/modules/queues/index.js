@@ -68,7 +68,7 @@ exports.core = (kernel) => {
             },
             folder: folder
           },
-          public: false
+          public: true
         };
         doProcess(filePath, options, cb);
       },
@@ -84,7 +84,7 @@ exports.core = (kernel) => {
             },
             folder: folder
           },
-          public: false
+          public: true
         };
         doProcess(filePath, options, cb);
       },
@@ -100,7 +100,7 @@ exports.core = (kernel) => {
             },
             folder: folder
           },
-          public: false
+          public: true
         };
         doProcess(filePath, options, cb);
       },

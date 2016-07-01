@@ -3,7 +3,7 @@
 exports = module.exports = {
   // List of user roles
   userRoles: ['guest', 'user', 'admin'],
-  baseUrl: 'http://healthstars.dev/',
+  baseUrl: 'http://localhost:9000/',
   apiVer : 'v1',
   apiKey: {
   	google: 'AIzaSyBhg6JbSzbbB1rC9iqukJdiAXzUOYlpf-4',

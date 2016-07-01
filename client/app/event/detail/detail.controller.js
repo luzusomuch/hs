@@ -1,7 +1,7 @@
 'use strict';
 
 class EventDetailCtrl {
-	constructor(event) {
+	constructor($scope, event) {
 		this.event = event;
 	}
 }

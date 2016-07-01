@@ -38,4 +38,5 @@ module.exports = {
     }
   },
   tmpFolder: path.resolve(__dirname, '../..//assets/.tmp'),
+  tmpPhotoFolder: path.resolve(__dirname, '../../..//client/assets/photos')
 };

@@ -10,13 +10,13 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
     cfpLoadingBarProvider.includeSpinner = false;
     $locationProvider.html5Mode(true);
   })
-  .factory('AppSettings', () => {
-    let _default = {
+  .factory('AppSettings', (APP_CONFIG) => {
+    let _default = _.merge({
       header: true,
       footer: true,
       bodyClass: '',
       pageTitle: 'HealthStars'
-    };
+    }, APP_CONFIG);
   	let settings = _.extend({}, _default);
   	return {
       getDefaultSettings() {

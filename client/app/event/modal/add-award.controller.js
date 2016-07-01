@@ -1,5 +1,5 @@
 class AddAwardCtrl {
-	constructor($uibModalInstance, growl, awards, selectedAward) {
+	constructor($uibModalInstance, growl, awards, selectedAward, $uibModal) {
 		this.awards = awards.data.items;
 		if (selectedAward) {
 			let index = _.findIndex(this.awards, (award) => {
@@ -11,6 +11,28 @@ class AddAwardCtrl {
 		}
 		this.$uibModalInstance = $uibModalInstance;
 		this.growl = growl;
+		this.$uibModal = $uibModal;
+	}
+
+	showAddMoreAwardModal() {
+		let modalInstance = this.$uibModal.open({
+    	animation: true,
+    	templateUrl: 'app/award/create/create-award-modal.html',
+    	controller: 'CreateAwardCtrl',
+    	controllerAs: 'vm'
+    });
+		modalInstance.result.then(data => {
+			this.awards.push(data);
+		}, err => {
+			console.log(err);
+		});
+	}
+
+	selectAward(award) {
+		this.awards.forEach(aw => {
+			aw.select = false;
+		});
+		award.select = true;
 	}
 
 	submit() {

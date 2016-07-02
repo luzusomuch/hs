@@ -11,10 +11,9 @@ class HealthStarsES {
 		this.options = config.options;
 		this.settings = { settings: config.settings };
 		this.es = new ES(this.options);
-		this.init();
 	}
 
-	init() {
+	index(done) {
 		async.series([
 			(cb) => {
 				this.es.exists(this.indexName, (err, exists) => {
@@ -45,11 +44,7 @@ class HealthStarsES {
 				}
 				async.parallel(funcs, cb);
 			}
-		], (err, done) => {
-			if(err) {
-				return console.log(err);
-			}
-		});
+		], done);
 	}
 
 	create(params, cb) {
@@ -118,49 +113,54 @@ exports.config = {
 exports.core = (kernel) => {
 	let m = new Mapping(kernel.config.ES);
 	kernel.ES = new HealthStarsES(kernel.config.ES, m.mapping);
+	kernel.ES.index((err) => {
+		if(err) {
+			return console.log(err);
+		}
 
-	/**
-	* create new document
-	* ex: kernel.queue.create(kernel.config.ES.events.CREATE, {type: 'user', id: 'objectId', data: 'object attributes').save();
-	*/
-	kernel.queue.process(kernel.config.ES.events.CREATE, (job, done) => {
-		kernel.ES.create(job.data, err => {
-			if(err) console.log(err);
-			done();
+		/**
+		* create new document
+		* ex: kernel.queue.create(kernel.config.ES.events.CREATE, {type: 'user', id: 'objectId', data: 'object attributes').save();
+		*/
+		kernel.queue.process(kernel.config.ES.events.CREATE, (job, done) => {
+			kernel.ES.create(job.data, err => {
+				if(err) console.log(err);
+				done();
+			});
 		});
-	});
 
-	/**
-	* update document to elastic-search
-	* ex: kernel.queue.create(kernel.config.ES.events.UPDATE, {type: 'user', id: 'objectId', data: 'object attributes').save();
-	*/
-	kernel.queue.process(kernel.config.ES.events.UPDATE, (job, done) => {
-		kernel.ES.update(job.data, err => {
-			if(err) console.log(err);
-			done();
+		/**
+		* update document to elastic-search
+		* ex: kernel.queue.create(kernel.config.ES.events.UPDATE, {type: 'user', id: 'objectId', data: 'object attributes').save();
+		*/
+		kernel.queue.process(kernel.config.ES.events.UPDATE, (job, done) => {
+			kernel.ES.update(job.data, err => {
+				if(err) console.log(err);
+				done();
+			});
 		});
-	});
 
-	/**
-	* Remove document from elastic-search
-	* ex: kernel.queue.create(kernel.config.ES.events.REMOVE, {type: kernel.config.ES.mapping.userType, id: 'objectId'}).save();
-	*/
-	kernel.queue.process(kernel.config.ES.events.REMOVE, (job, done) => {
-		kernel.ES.delete(job.data, err => {
-			if(err) console.log(err);
-			done();
+		/**
+		* Remove document from elastic-search
+		* ex: kernel.queue.create(kernel.config.ES.events.REMOVE, {type: kernel.config.ES.mapping.userType, id: 'objectId'}).save();
+		*/
+		kernel.queue.process(kernel.config.ES.events.REMOVE, (job, done) => {
+			kernel.ES.delete(job.data, err => {
+				if(err) console.log(err);
+				done();
+			});
 		});
-	});
 
-	/**
-	* example for search user type, to search all, using null instead of kernel.config.ES.mapping.userType
-	*	kernel.ES.search({
-	*		query: {
-	*			match_all: {}
-	*		}
-	*	}, kernel.config.ES.mapping.userType, (err, result) => {
-	*		console.log(err);
-	*		console.log(result);
-	*	});
-	*/
+		/**
+		* example for search user type, to search all, using null instead of kernel.config.ES.mapping.userType
+		*	kernel.ES.search({
+		*		query: {
+		*			match_all: {}
+		*		}
+		*	}, kernel.config.ES.mapping.userType, (err, result) => {
+		*		console.log(err);
+		*		console.log(result);
+		*	});
+		*/
+	});
 };

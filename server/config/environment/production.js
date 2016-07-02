@@ -8,7 +8,7 @@ var baseUrl = 'http://ec2-52-41-132-71.us-west-2.compute.amazonaws.com/';
 module.exports = {
   baseUrl: baseUrl,
   // MongoDB connection options
-  MONGO_URL: 'mongodb://localhost/healthstars',
+  MONGO_URL: 'mongodb://localhost/healthstars-dev',
   MONGO_REPLICAS_NUMBER: null,
   HTTP_PORT: 9000,
   PUBLIC_PATHS: [

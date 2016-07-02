@@ -7,7 +7,9 @@ class EventDetailCtrl {
 	}
 
 	isNotParticipant() {
-		if(!this.event.participantsId) return true;
+		if(!this.event.participantsId) {
+			return true;
+		}
 		return this.event.participantsId.indexOf(this.authUser._id) === -1;
 	}
 

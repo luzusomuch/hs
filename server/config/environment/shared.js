@@ -1,9 +1,11 @@
 'use strict';
+let env = process.env.NODE_ENV || 'development';
+let config = require('./' + env + '.js');
 
 exports = module.exports = {
   // List of user roles
   userRoles: ['guest', 'user', 'admin'],
-  baseUrl: 'http://localhost:9000/',
+  baseUrl: config.baseUrl,
   apiVer : 'v1',
   apiKey: {
   	google: 'AIzaSyBhg6JbSzbbB1rC9iqukJdiAXzUOYlpf-4',

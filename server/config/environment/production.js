@@ -36,14 +36,14 @@ module.exports = {
     region: 'us-west-2'
   },
   FACEBOOK: {
-    clientID:     process.env.FACEBOOK_ID || '151467955264025',
-    clientSecret: process.env.FACEBOOK_SECRET || 'b3fb8c3ac0b6fb90f6d4849128c7ac18',
+    clientID:     process.env.FACEBOOK_ID || '1405403066433083',
+    clientSecret: process.env.FACEBOOK_SECRET || '9e14990db2e80a07c27ca626e12b2284',
     callbackURL:  baseUrl + 'auth/facebook/callback'
   },
 
   TWITTER: {
-    clientID:     process.env.TWITTER_ID || 'Qd9Qf8FXDTf6qf2cRtQV8Kss2',
-    clientSecret: process.env.TWITTER_SECRET || 'VcQtq1rnOQZGe91sTzasAMVhEADLpHbRZpVbLQpQ7DZfB7X7yj',
+    clientID:     process.env.TWITTER_ID || 'NBwHIfLe0uEq8X9DsZpXptAtT',
+    clientSecret: process.env.TWITTER_SECRET || '9k6YDexW81vfjR0IsUNK00QeMZdVSkplReZARS1X46dUFjeYuB',
     callbackURL:  baseUrl + 'auth/twitter/callback'
   },
 

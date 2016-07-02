@@ -5,7 +5,7 @@
 'use strict';
 import async from 'async';
 
-module.exports = (EventModel, UserModel, CategoryModel, AwardModel, PhotoModel, cb) => {
+module.exports = (ES, EventModel, UserModel, CategoryModel, AwardModel, PhotoModel, cb) => {
   async.waterfall([
   	(cb) => {
   		UserModel.find({}).then(users => {
@@ -34,11 +34,11 @@ module.exports = (EventModel, UserModel, CategoryModel, AwardModel, PhotoModel, 
       EventModel.find({})
       .remove()
       .then(() => {
-        EventModel.create({
-        	name: 'Event 1',
-        	description: 'Event 1 description',
-        	ownerId: result.users[0]._id,
-        	categoryId: result.categories[0]._id,
+        let events = [{
+          name: 'Event 1',
+          description: 'Event 1 description',
+          ownerId: result.users[0]._id,
+          categoryId: result.categories[0]._id,
           tags: ['abc', 'def'],
           startDateTime: new Date(),
           endDateTime: new Date(),
@@ -47,27 +47,27 @@ module.exports = (EventModel, UserModel, CategoryModel, AwardModel, PhotoModel, 
           participantsId: [],
           photosId: [result.photos[0]._id],
           location: {
-          	coordinates: [105.819189, 21.042056],
-		        fullAddress: "265 Hoang Hoa Tham",
-		        country: 'Viet Nam',
-		        countryCode: 'VN',
-		        city: 'Ho Chi Minh',
-		        state: 'Ho Chi Minh',
-		        zipCode: '+84'
+            coordinates: [105.819189, 21.042056],
+            fullAddress: "265 Hoang Hoa Tham",
+            country: 'Viet Nam',
+            countryCode: 'VN',
+            city: 'Ho Chi Minh',
+            state: 'Ho Chi Minh',
+            zipCode: '+84'
           },
           repeat: {
-          	weekly: {
-          		repeating: true,
-          		repeatDay: 2,
-          		totalRepeatDay: 2
-          	}
+            weekly: {
+              repeating: true,
+              repeatDay: 2,
+              totalRepeatDay: 2
+            }
           }
         }, {
           name: 'Event 2',
-        	description: 'Event 2 description',
-        	ownerId: result.users[1]._id,
+          description: 'Event 2 description',
+          ownerId: result.users[1]._id,
           organizerId: result.users[1]._id,
-        	categoryId: result.categories[1]._id,
+          categoryId: result.categories[1]._id,
           tags: ['abc', 'def'],
           startDateTime: new Date(),
           endDateTime: new Date(),
@@ -75,24 +75,28 @@ module.exports = (EventModel, UserModel, CategoryModel, AwardModel, PhotoModel, 
           participantsId: [result.users[0]._id],
           photosId: [result.photos[1]._id],
           location: {
-          	coordinates: [105.819189, 21.042056],
-		        fullAddress: "265 Hoang Hoa Tham",
-		        country: 'Viet Nam',
-		        countryCode: 'VN',
-		        city: 'Ha Noi',
-		        state: 'Ha Noi',
-		        zipCode: '+84'
+            coordinates: [105.819189, 21.042056],
+            fullAddress: "265 Hoang Hoa Tham",
+            country: 'Viet Nam',
+            countryCode: 'VN',
+            city: 'Ha Noi',
+            state: 'Ha Noi',
+            zipCode: '+84'
           },
           repeat: {
-          	monthly: {
-          		repeating: true,
-          		repeatDay: 2,
-          		repeatMonth: 4,
-          		totalRepeatDay: 2
-          	}
+            monthly: {
+              repeating: true,
+              repeatDay: 2,
+              repeatMonth: 4,
+              totalRepeatDay: 2
+            }
           }
-        })
-        .then(() => {
+        }];
+        async.each(events, (event, callback) => {
+          EventModel.create(event).then(saved => {
+            ES.create({type: ES.config.mapping.eventType, id: saved._id, data: saved}, callback);
+          }).catch(callback);
+        }, () => {
           console.log('finished populating events');
           cb();
         });

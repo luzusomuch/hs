@@ -5,18 +5,18 @@
 'use strict';
 import async from 'async';
 
-module.exports = (UserModel, cb) => {
+module.exports = (ES, UserModel, cb) => {
   async.waterfall([
     (cb) => {
       UserModel.find({})
       .remove()
       .then(() => {
-        UserModel.create({
+        let users = [{
           provider: 'local',
           name: 'Test User',
           email: 'test@example.com',
           password: 'test'
-        },{
+        }, {
           provider: 'local',
           name: 'Trung Le',
           email: 'htle1810@gmail.com',
@@ -27,8 +27,12 @@ module.exports = (UserModel, cb) => {
           name: 'Admin',
           email: 'admin@example.com',
           password: 'admin'
-        })
-        .then(() => {
+        }];
+        async.each(users, (user, callback) => {
+          UserModel.create(user).then(saved => {
+            ES.create({type: ES.config.mapping.userType, id: saved._id, data: saved}, callback);
+          }).catch(callback);
+        }, () => {
           console.log('finished populating users');
           cb();
         });

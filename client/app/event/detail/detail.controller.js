@@ -4,7 +4,6 @@ class EventDetailCtrl {
 	constructor($scope, event, $localStorage) {
 		this.event = event;
 		this.authUser = $localStorage.authUser;
-		console.log(this.event);
 	}
 
 	isNotParticipant() {

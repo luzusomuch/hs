@@ -638,7 +638,7 @@ gulp.task('build:client:backend', () => {
 gulp.task('html', function() {
   return gulp.src(`${clientPath}/{app,components}/**/*.html`)
     .pipe(plugins.angularTemplatecache({
-      module: 'meanApp'
+      module: 'healthStarsApp'
     }))
     .pipe(gulp.dest('.tmp'));
 });
@@ -646,7 +646,7 @@ gulp.task('html', function() {
 gulp.task('html:backend', function() {
   return gulp.src(`${clientPath}/{backend,components}/**/*.html`)
     .pipe(plugins.angularTemplatecache({
-      module: 'meanApp',
+      module: 'healthStarsApp',
       filename: 'templatesBackend.js'
     }))
     .pipe(gulp.dest('.tmp'));
@@ -674,12 +674,12 @@ gulp.task('build:images', () => {
       progressive: true,
       interlaced: true
     }))
-    .pipe(plugins.rev())
+    //.pipe(plugins.rev())
     .pipe(gulp.dest(`${paths.dist}/${clientPath}/assets/images`))
-    .pipe(plugins.rev.manifest(`${paths.dist}/${clientPath}/assets/rev-manifest.json`, {
-      base: `${paths.dist}/${clientPath}/assets`,
-      merge: true
-    }))
+    // .pipe(plugins.rev.manifest(`${paths.dist}/${clientPath}/assets/rev-manifest.json`, {
+    //   base: `${paths.dist}/${clientPath}/assets`,
+    //   merge: true
+    // }))
     .pipe(gulp.dest(`${paths.dist}/${clientPath}/assets`));
 });
 
@@ -692,8 +692,11 @@ gulp.task('copy:extras', () => {
     .pipe(gulp.dest(`${paths.dist}/${clientPath}`));
 });
 
-gulp.task('copy:fonts', () => {
-  return gulp.src(`${clientPath}/bower_components/{bootstrap,font-awesome}/fonts/**/*`, { dot: true })
+gulp.task('copy:fonts', () => { //bootstrap-sass-official\vendor\assets\fonts
+  return gulp.src([
+    `${clientPath}/bower_components/{bootstrap,font-awesome}/fonts/**/*`,
+    `${clientPath}/bower_components/bootstrap-sass-official/vendor/assets/fonts/**/*`
+    ], { dot: true, base: `${clientPath}/bower_components/` })
     .pipe(gulp.dest(`${paths.dist}/${clientPath}/bower_components`));
 });
 

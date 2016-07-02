@@ -1,9 +1,7 @@
 'use strict';
 
 class HsFooterCtrl {
-	constructor() {
-		console.log('footer controller');
-	}
+	constructor() {}
 }
 
 angular.module('healthStarsApp').controller('HsFooterCtrl', HsFooterCtrl);

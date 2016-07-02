@@ -1,6 +1,6 @@
 'use strict';
 
-import path from 'path';
+var path = require('path');
 
 // Development specific configuration
 // ==================================

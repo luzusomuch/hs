@@ -102,7 +102,9 @@ module.exports = (kernel, cb) => {
                 }).catch(err => {
                   callback(err);
                 });
-              }, cb);
+              }, () => {
+                kernel.ES.create({type: kernel.ES.config.mapping.eventType, id: saved._id.toString(), data: saved}, cb);
+              });
             }).catch(err => {
               cb(err);
             });

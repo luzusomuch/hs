@@ -5,7 +5,7 @@ import kernel from '../app';
 //let args = process.argv.slice(2);
 async.waterfall([
   (cb) => {
-    require('./user')(kernel.model.User, cb);
+    require('./user')(kernel.ES, kernel.model.User, cb);
   },
   (cb) => {
   	require('./category')(kernel.model.Category, cb);
@@ -20,7 +20,7 @@ async.waterfall([
   	require('./thread')(kernel.model.Thread, kernel.model.User, cb);
   },
   (cb) => {
-  	require('./event')(kernel.model.Event, kernel.model.User, kernel.model.Category, kernel.model.Award, kernel.model.Photo, cb);
+  	require('./event')(kernel.ES, kernel.model.Event, kernel.model.User, kernel.model.Category, kernel.model.Award, kernel.model.Photo, cb);
   },
   (cb) => {
   	require('./relation')(kernel.model.Relation, kernel.model.User, cb);

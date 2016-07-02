@@ -25,13 +25,13 @@ module.exports = (PhotoModel, UserModel, AwardModel, cb) => {
         AwardModel.create({
           ownerId: result.users[0]._id,
           objectName: 'Award 1',
-          objectDescription: 'Award 1 description',
-          objectPhotoId: result.photos[0]._id
+          objectPhotoId: result.photos[0]._id,
+          type: 'accepted'
         }, {
           ownerId: result.users[1]._id,
           objectName: 'Award 2',
-          objectDescription: 'Award 2 description',
-          objectPhotoId: result.photos[1]._id
+          objectPhotoId: result.photos[1]._id,
+          type: 'gps'
         })
         .then(() => {
           console.log('finished populating awards');

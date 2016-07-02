@@ -37,7 +37,7 @@ angular.module('healthStarsApp')
         <a ng-show="tw" class="addthis_button_twitter"></a>
         <a ng-show="gg" class="addthis_button_google_plusone_share"></a>
       </div>`,
-    link : function($scope, element, attrs) {
+    link : function($scope, element) {
       $timeout(function () {
         var title, description, url;
         $scope.$watchGroup(['title', 'description', 'url'], (value) => {
@@ -59,4 +59,4 @@ angular.module('healthStarsApp')
       });
     }
   };
-}]);;
+}]);

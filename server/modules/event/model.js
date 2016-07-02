@@ -28,7 +28,7 @@ module.exports = {
       blocked: {type: Boolean, default: false},
       blockedByUserId : {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
       repeat: {
-        type: {type: String, enum: ['daily', 'weekly', 'monthly', 'yearly']},
+        type: {type: String, enum: ['daily', 'weekly', 'monthly', 'none']},
         startDate: Date,
         endDate: Date
       },

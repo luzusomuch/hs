@@ -59,11 +59,11 @@ module.exports = function(kernel) {
       }
 
       if (req.body.event.isRepeat === 'true') {
-        var repeatTypes = ['daily', 'weekly', 'monthly', 'yearly'];
+        var repeatTypes = ['daily', 'weekly', 'monthly'];
         if (!req.body.event.repeat.startDate || !req.body.event.repeat.endDate || !req.body.event.repeat.type) {
           return res.status(422).json({type: 'EVENT_REPEATING_MISSING_ENTITIES', path: 'repeat', message: 'Event repeat is missing some entities'}); 
         }
-        if (repeatTypes.indexOf(req.body.event.repeat.type) !== -1) {
+        if (repeatTypes.indexOf(req.body.event.repeat.type) === -1) {
           return res.status(422).json({type: 'EVENT_REPEATING_ENTITY_NOT_VALID', path: 'repeat', message: 'Event repeat entity is not valid'});
         }
         data.repeat = req.body.event.repeat;

@@ -387,6 +387,65 @@ module.exports = function(kernel) {
       }
     )
     .catch(err => res.status(500).json({type: 'SERVER_ERROR', message: JSON.stringify(err)}));
+  });
 
+  /* Get event */
+
+  kernel.app.get('/api/v1/events', kernel.middleware.isAuthenticated(), (req, res) => {
+    let query = {
+      query: {
+        match_all: {}
+      }
+    };
+
+    //Todo: filter based on query
+
+    kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {
+      if(err) {
+        return res.status(500).json({type: 'SERVER_ERROR'});
+      }
+      return res.status(200).json(result);
+    });
+  });
+
+  kernel.app.get('/api/v1/events/:id/bestPics/:limit', kernel.middleware.isAuthenticated(), (req, res) => {
+
+    if(!kernel.mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({type: 'BAD_REQUEST', message: 'Invalid Id'});
+    }
+
+    let limit = parseInt(req.params.limit);
+    if(!limit || limit === 'NaN' || limit > 10) {
+      limit = 1;
+    }
+
+    kernel.model.Event.findById(req.params.id).then(event => {
+      if (!event) {
+       return res.status(404).json({type: 'EVENT_NOT_FOUND', message: 'Event not found'}); 
+      }
+      async.waterfall([
+        (cb) => {
+          // Todo - get best pics based on total of comments
+          cb(null, []);
+        },
+        (photos, cb) => {
+          if(limit === photos.length) return cb(null, photos);
+          let remaining = limit - photos.length;
+          let ids = event.photosId;
+          if(ids.length > remaining) {
+            ids = ids.splice(remaining);
+          }
+          kernel.model.Photo.find({
+            _id: { $in: ids }
+          }, (err, eventPhotos) => {
+            if(err) return cb(err);
+            return cb(null, photos.concat(eventPhotos));
+          });
+        }
+      ], (err, photos) => {
+        if(err) return res.status(500).json({type: 'SERVER_ERROR'});
+        return res.status(200).json(photos);
+      });
+    }).catch(err => res.status(500).json({type: 'SERVER_ERROR', message: JSON.stringify(err)}));
   });
 };

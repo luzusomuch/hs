@@ -34,18 +34,11 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-3">
-         <hs-user-widget u-id="vm.event.ownerId._id"></hs-user-widget>
-          <div class="box-blue p15">
-              <div class="title-blue">Best Pictures for Event</div>
-              <ul class="row row-small list-photo">
-                  <li class="col-xs-6"><a href="#"><div class="bg-cover" style="background-image: url('assets/images/photo.jpg')"></div></a></li>
-                  <li class="col-xs-6"><a href="#"><div class="bg-cover" style="background-image: url('assets/images/photo1.jpg')"></div></a></li>
-                  <li class="col-xs-6"><a href="#"><div class="bg-cover" style="background-image: url('assets/images/photo2.jpg')"></div></a></li>
-                  <li class="col-xs-6"><a href="#"><div class="bg-cover" style="background-image: url('assets/images/photo.jpg')"></div></a></li>
-              </ul>
-          </div>
+        <hs-user-widget u-id="vm.event.ownerId._id"></hs-user-widget>
+        
+        <hs-event-best-pics e-id="vm.event._id" limit="4"></hs-event-best-pics>          
 
-          <hs-event-map locations="[vm.event.location]"></hs-event-map>
+        <hs-event-map locations="[vm.event.location]"></hs-event-map>
 
         </div>
         <div class="col-sm-6">

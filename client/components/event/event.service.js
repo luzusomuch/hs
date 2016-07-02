@@ -4,6 +4,11 @@
 
   function EventService($http, APP_CONFIG) {
     return {
+
+      search(query) {
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events` + (query ? `?${query}` : ''));
+      },
+
       get(id) {
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}`);
       },
@@ -26,6 +31,10 @@
 
       getParticipants: (id) => {
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/participants`);
+      },
+
+      getBestPics: (id, limit) => {
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/bestPics/${limit}`);
       }
     };
   }

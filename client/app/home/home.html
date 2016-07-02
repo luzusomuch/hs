@@ -132,7 +132,7 @@
             </div>
             <section class="grid">
                 <div class="grid-sizer"></div>
-                <div class="grid-item">
+                <div class="grid-item" ng-repeat="event in vm.events.items">
                     <div class="li-event li-blue">
                         <div class="top-li-event">
                             <a href="#"><img src="/assets/images/48.jpg"></a>
@@ -144,11 +144,11 @@
                             </div>
                         </div>
                         <div class="box-event-li">
-                            <a href="#" class="img-eventbox"><img src="/assets/images/img.jpg" width="100%"></a>
+                            <a ui-sref="event.detail({id: event._id})" class="img-eventbox"><img src="/assets/images/img.jpg" width="100%"></a>
                             <div class="text-li-event">
-                                <h3>Save Sea Event</h3>
+                                <h3>{{event.name}}</h3>
                                 <i class="fa fa-calendar"></i> 24.06.2016  <i class="fa fa-clock-o"></i> 15:30<br>
-                                <i class="fa fa-map-marker"></i> Location : Hamburg
+                                <i class="fa fa-map-marker"></i> Location : {{event.location.fullAddess}}
                             </div>
                         </div>
                         <div class="bottom-li-event">
@@ -165,8 +165,9 @@
                         </div>
                     </div>
                 </div>
+                <div style="clear:both"></div>
             </section>
-
+            <div class="text-center" ng-show="vm.loading"><hs-loading size="50"></hs-loading></div>
         </div>
 
         <div class="col-sm-3 col-lg-2"  id="div-3">
@@ -269,7 +270,6 @@
                             </div>
                         </li>
                     </ul>
-                    <a href="#" class="loadmore-event">Load More</a>
                 </div>
             </div>
 

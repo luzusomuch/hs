@@ -19,6 +19,7 @@ module.exports = (kernel, cb) => {
   }).then(events => {
     async.each(events, (event, callback) => {
       let newStartDateTime, newEndDateTime;
+      let eventTotalDays = moment(moment(event.endDateTime).format(dateFormat)).diff(moment(event.startDateTime).format(dateFormat), 'days');
       let eventRepeat = {
         startDate: event.repeat.startDate,
         endDate: event.repeat.endDate
@@ -34,11 +35,8 @@ module.exports = (kernel, cb) => {
           let diffDay = moment(todayFormated).diff(moment(eventRepeat.startDate).format(dateFormat), 'days');
           if (diffDay % 7 === 0 && moment(todayFormated).isBefore(moment(eventRepeat.endDate).format(dateFormat))) {
             newStartDateTime = new Date(moment().hours(getHourOrMinute('hours', event.startDateTime)).minutes(getHourOrMinute('minutes', event.startDateTime)));
-            // get total days left of repeat event
-            let availableDaysLeft = moment(moment(eventRepeat.endDate).format(dateFormat)).diff(todayFormated, 'days');
-            // if total days left >= 7 then we set new event end time is after 7 days
-            // else we set its to total days left
-            newEndDateTime = new Date(moment(newStartDateTime).add((availableDaysLeft >= 7) ? 7 : availableDaysLeft, 'days').hours(getHourOrMinute('hours', event.endDateTime)).minutes(getHourOrMinute('minutes', event.endDateTime)));
+            
+            newEndDateTime = new Date(moment(newStartDateTime).add(eventTotalDays, 'days').hours(getHourOrMinute('hours', event.endDateTime)).minutes(getHourOrMinute('minutes', event.endDateTime)));
           }
           break;
         case 'monthly': 
@@ -47,11 +45,8 @@ module.exports = (kernel, cb) => {
             let diffDay = moment(todayFormated).diff(moment(eventRepeat.startDate).format(dateFormat), 'days');
             if (diffDay % totalDaysInMonth === 0 && moment(todayFormated).isBefore(moment(eventRepeat.endDate).format(dateFormat))) {
               newStartDateTime = new Date(moment().hours(getHourOrMinute('hours', event.startDateTime)).minutes(getHourOrMinute('minutes', event.startDateTime)));
-              // get total days left of repeat event
-              let availableDaysLeft = moment(moment(eventRepeat.endDate).format(dateFormat)).diff(todayFormated, 'days');
-              // if total days left >= total days in month then we set new event end time is after total days in month
-              // else we set its to total days in month
-              newEndDateTime = new Date(moment(newStartDateTime).add((availableDaysLeft >= totalDaysInMonth) ? totalDaysInMonth : availableDaysLeft, 'days').hours(getHourOrMinute('hours', event.endDateTime)).minutes(getHourOrMinute('minutes', event.endDateTime)));
+              
+              newEndDateTime = new Date(moment(newStartDateTime).add(eventTotalDays, 'days').hours(getHourOrMinute('hours', event.endDateTime)).minutes(getHourOrMinute('minutes', event.endDateTime)));
             }
           }
           break;
@@ -116,8 +111,10 @@ module.exports = (kernel, cb) => {
           }
         }
       ], callback);
-    }, cb);
+    }, () => {
+      return cb();
+    });
   }).catch(err => {
-    cb(err);
+    return cb(err);
   });
 };

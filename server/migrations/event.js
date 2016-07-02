@@ -46,6 +46,8 @@ module.exports = (ES, EventModel, UserModel, CategoryModel, AwardModel, PhotoMod
           awardsId: result.awards[0]._id,
           participantsId: [],
           photosId: [result.photos[0]._id],
+          public: true,
+          private: false,
           location: {
             coordinates: [105.819189, 21.042056],
             fullAddress: "265 Hoang Hoa Tham",
@@ -74,6 +76,8 @@ module.exports = (ES, EventModel, UserModel, CategoryModel, AwardModel, PhotoMod
           awardsId: result.awards[1]._id,
           participantsId: [result.users[0]._id],
           photosId: [result.photos[1]._id],
+          public: false,
+          private: true,
           location: {
             coordinates: [105.819189, 21.042056],
             fullAddress: "265 Hoang Hoa Tham",
@@ -94,7 +98,7 @@ module.exports = (ES, EventModel, UserModel, CategoryModel, AwardModel, PhotoMod
         }];
         async.each(events, (event, callback) => {
           EventModel.create(event).then(saved => {
-            ES.create({type: ES.config.mapping.eventType, id: saved._id, data: saved}, callback);
+            ES.create({type: ES.config.mapping.eventType, id: saved._id.toString(), data: saved}, callback);
           }).catch(callback);
         }, () => {
           console.log('finished populating events');

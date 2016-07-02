@@ -30,7 +30,7 @@ module.exports = (ES, UserModel, cb) => {
         }];
         async.each(users, (user, callback) => {
           UserModel.create(user).then(saved => {
-            ES.create({type: ES.config.mapping.userType, id: saved._id, data: saved}, callback);
+            ES.create({type: ES.config.mapping.userType, id: saved._id.toString(), data: saved}, callback);
           }).catch(callback);
         }, () => {
           console.log('finished populating users');

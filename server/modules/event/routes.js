@@ -53,7 +53,11 @@ module.exports = function(kernel) {
       data.private = !data.public;
       data.location = req.body.event.location;
       if (req.body.event.participants) {
-        data.participantsId = req.body.event.participants._id;
+        if (req.body.event.participants._id instanceof Array) {
+          data.participantsId = req.body.event.participants._id;
+        } else {
+          data.participantsId = [req.body.event.participants._id];
+        }
       } else {
         data.participantsId = [];
       }
@@ -182,7 +186,8 @@ module.exports = function(kernel) {
             });
           }, () => {
             kernel.queue.create(kernel.config.ES.events.CREATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
-            kernel.queue.create('GRANTAWARD', event).save();
+            kernel.queue.create('GRANT_AWARD', event).save();
+            kernel.queue.create('TOTAL_EVENT_CREATED', {userId: req.user._id}).save();
             return res.status(200).json(event);
           });
         }).catch(err => {

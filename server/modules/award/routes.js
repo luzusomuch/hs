@@ -6,6 +6,7 @@ module.exports = function(kernel) {
    * Create new award
    */
   kernel.app.post('/api/v1/awards/', kernel.middleware.isAuthenticated(), (req, res) => {
+    kernel.queue.create('TOTAL_EVENT_JOINED', {userId: req.user._id}).save();
     if (req.user.deleted && req.user.deleted.status) {
       return res.status(403).json({type: 'EMAIL_DELETED', message: 'This user email was deleted'});
     }

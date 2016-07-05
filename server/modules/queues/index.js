@@ -227,4 +227,37 @@ exports.core = (kernel) => {
       done(err);
     }) 
   });
+
+  // queue to update interested stats of event
+  // data event object and string of type (up/down)
+  kernel.queue.process('INTERESTEDCOUNT', (job, done) => {
+    kernel.model.Event.findById(job.data.event._id).then(event => {
+      if (!event) {
+        done({error: 'Event not found'});
+      } else {
+        let availableType = ['up', 'down'];
+        if (availableType.indexOf(job.data.type) !== -1) {
+          if (event.stats) {
+            event.stats.totalInterested = (job.data.type==='up') ? event.stats.totalInterested+1 : event.stats.totalInterested-1;
+          } else {
+            event.stats = {
+              totalInterested: (job.data.type==='up') ? 1 : 0
+            }
+          }
+          if (event.stats.totalInterested < 0) {
+            event.stats.totalInterested = 0;
+          }
+          event.save().then(() => {
+            done();
+          }).catch(err => {
+            done(err);
+          });
+        } else {
+          done({error: 'Type is not valid'});
+        }
+      }
+    }).catch(err => {
+      done(err);
+    });
+  });
 };

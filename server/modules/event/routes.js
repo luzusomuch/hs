@@ -52,12 +52,11 @@ module.exports = function(kernel) {
       data.public = (req.body.event.public==='true') ? true : false;
       data.private = !data.public;
       data.location = req.body.event.location;
-      if (req.body.event.participants && req.body.event.participants.length > 0) {
-        data.participantsId = _.map(req.body.event.participants, (participant) => {
-          return participant._id;
-        });
+      if (req.body.event.participants) {
+        data.participantsId = req.body.event.participants._id;
+      } else {
+        data.participantsId = [];
       }
-
       if (req.body.event.isRepeat === 'true') {
         var repeatTypes = ['daily', 'weekly', 'monthly'];
         if (!req.body.event.repeat.startDate || !req.body.event.repeat.endDate || !req.body.event.repeat.type) {
@@ -160,6 +159,9 @@ module.exports = function(kernel) {
         });
       }, () => {
         data.photosId = uploadedPhotoIds;
+        data.stats = {
+          totalParticipants: data.participantsId.length
+        };
         let model = new kernel.model.Event(data);
         model.save().then(event => {
           var url = kernel.config.baseUrl + 'event/'+event._id;

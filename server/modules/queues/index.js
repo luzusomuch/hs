@@ -203,4 +203,28 @@ exports.core = (kernel) => {
       done(err);
     });
   });
+
+  // Update count for participants
+  kernel.queue.process('PARTICIPANTCOUNT', (job, done) => {
+    kernel.model.Event.findById(job.data._id).then(event => {
+      if (!event) {
+        done({error: 'Event not found'});
+      } else {
+        if (!event.stats) {
+          event.stats = {
+            totalParticipants: event.participantsId.length
+          };
+        } else {
+          event.stats.totalParticipants = event.participantsId.length;
+        }
+        event.save().then(() => {
+          done();
+        }).catch(err => {
+          done(err);
+        });
+      }
+    }).catch(err => {
+      done(err);
+    }) 
+  });
 };

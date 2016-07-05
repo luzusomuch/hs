@@ -81,7 +81,10 @@ module.exports = (kernel, cb) => {
               photosId: event.photosId,
               public: event.public,
               location: event.location,
-              private: event.private
+              private: event.private,
+              stats: {
+                totalParticipants: event.participantsId.length
+              }
             };
             kernel.model.Event(newEvent).save().then(saved => {
               var url = kernel.config.baseUrl + 'event/'+saved._id;

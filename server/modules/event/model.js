@@ -32,7 +32,11 @@ module.exports = {
         startDate: Date,
         endDate: Date
       },
-      private: Boolean
+      private: Boolean,
+      stats: {
+        totalParticipants: {type: Number, default: 0},
+        totalInterested: {type: Number, default: 0}
+      }
     });
     
     //import timestamp for auto create updatedAt, createdAt field manually

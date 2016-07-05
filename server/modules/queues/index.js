@@ -146,7 +146,8 @@ exports.core = (kernel) => {
                 kernel.model.GrantAward({
                   ownerId: user._id,
                   awardId: award._id
-                }).save().then(() => {
+                }).save().then(data => {
+                  kernel.queue.create('EMAILGRANTEDAWARD', data).save();
                   callback();
                 }).catch(err => {
                   callback(err);
@@ -155,7 +156,8 @@ exports.core = (kernel) => {
                 kernel.model.GrantAward({
                   ownerId: user._id,
                   awardId: award._id
-                }).save().then(() => {
+                }).save().then(data => {
+                  kernel.queue.create('EMAILGRANTEDAWARD', data).save();
                   callback();
                 }).catch(err => {
                   callback(err);
@@ -175,6 +177,30 @@ exports.core = (kernel) => {
       }
     }).catch(err => {
       return done(err);
+    });
+  });
+
+  // Email to user when he granted an award
+  kernel.queue.process('EMAILGRANTEDAWARD', (job, done) => {
+    kernel.model.GrantAward.findById(job.data._id)
+    .populate('awardId')
+    .populate('ownerId').exec().then(data => {
+      if (!data) {
+        done({error: 'Granted award not found'});
+      } else {
+        kernel.emit('SEND_MAIL', {
+          template: 'granted-award.html',
+          subject: 'New Award Granted',
+          data: {
+            user: data.ownerId, 
+            award: data.awardId
+          },
+          to: data.ownerId.email
+        });
+        done();
+      }
+    }).catch(err => {
+      done(err);
     });
   });
 };

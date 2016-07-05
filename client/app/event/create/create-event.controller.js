@@ -10,7 +10,9 @@ class CreateEventCtrl {
 		this.event = {
 			repeat: {},
 			participants: [],
-			location: {}
+			location: {},
+      public: true,
+      isRepeat: false
 		};
     this.shareEventInfo = {};
     this.$http = $http;
@@ -21,6 +23,8 @@ class CreateEventCtrl {
     this.$uibModal = $uibModal;
     this.address = {};
     this.addresses = [];
+    this.submitted = false;
+    this.errors = {};
 
     $scope.$on('$destroy', function() {
       //do anything such as remove socket
@@ -58,13 +62,15 @@ class CreateEventCtrl {
   }
 
   refreshAddresses(address) {
-    var params = {address: address, sensor: false};
-    return this.$http.get(
-      'http://maps.googleapis.com/maps/api/geocode/json',
-      {params: params}
-    ).then( (response) => {
-      this.addresses = response.data.results;
-    });
+    if (address.trim().length > 0) {
+      var params = {address: address, sensor: false};
+      return this.$http.get(
+        'http://maps.googleapis.com/maps/api/geocode/json',
+        {params: params}
+      ).then( (response) => {
+        this.addresses = response.data.results;
+      });
+    }
   }
 
   showAddParticipantsModal() {
@@ -129,6 +135,24 @@ class CreateEventCtrl {
   }
 
   create(form) {
+    this.errors = {};
+    this.submitted = true;
+    if (!this.event.categoryId) {
+      this.errors.category = true;
+    }
+    if (!this.event.startDate || !this.event.startTime) {
+      this.errors.startDateTime = true;
+    }
+    if (!this.event.endDate || !this.event.endTime) {
+      this.errors.endDateTime = true
+    }
+    if (!this.address.selected) {
+      this.errors.location = true;
+    }
+    if (!this.event.award) {
+      this.errors.award = true;
+    }
+
   	if (form.$valid && this.address.selected) {
   		var selectedAddress = this.address.selected;
       this.event.location.coordinates = [selectedAddress.geometry.location.lng, selectedAddress.geometry.location.lat];
@@ -147,6 +171,7 @@ class CreateEventCtrl {
 	    }).then(resp =>{
         this.event.url = `${this.APP_CONFIG.baseUrl}event/detail/${resp.data._id}`;
 	    	this.$state.go('event.detail', {id: resp.data._id});
+        this.submitted = false;
 	    }, (err) => {
 	    	console.log(err);
 	    });

@@ -8,9 +8,11 @@
         <form ng-submit="vm.create(form)" name="form" novalidate>
   				<div class="row form-event">
             <div class="col-lg-6">
-              <div class="form-group">
+              <div class="form-group relative-div">
                 <label>{{'EVENT_TITLE' | translate}}</label>
-                <input type="text" class="form-control" ng-model="vm.event.name" required>
+                <input type="text" class="form-control" ng-model="vm.event.name" name="name" required>
+
+                <p ng-show="form.name.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
               </div>
               <div class="form-group">
                 <label>{{'CATEGORY' | translate}} </label>
@@ -19,23 +21,8 @@
                     <input id="{{category._id}}" type="radio" name="category" value="{{category._id}}" ng-model="vm.event.categoryId">
                     <label for="{{category._id}}"> <img ng-src="{{category | categoryImagePath}}" ></label>
                   </div>
-                  <!-- <div class="radio-l">
-                    <input id="radio-food" type="radio" name="category" value="radio-food">
-                    <label for="radio-food"> <img src="/assets/images/star1.png" ></label>
-                  </div>
-                  <div class="radio-l">
-                    <input id="radio-social" type="radio" name="category" value="radio-social">
-                    <label for="radio-social"> <img src="/assets/images/star2.png" ></label>
-                  </div>
-                  <div class="radio-l">
-                    <input id="radio-eco" type="radio" name="category" value="radio-eco">
-                    <label for="radio-eco"> <img src="/assets/images/star3.png" ></label>
-                  </div>
-                  <div class="radio-l">
-                    <input id="radio-action" type="radio" name="category" value="radio-action" >
-                    <label for="radio-action"> <img src="/assets/images/star4.png" ></label>
-                  </div> -->
                 </div>
+                <p ng-show="vm.errors.category && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
               </div>
               <div class="form-group">
                 <label>{{'EVENT_TYPE' | translate}}</label>
@@ -57,7 +44,7 @@
                       <div class="input-group date">
                         <input type="date" class="form-control" id="datetimepicker1" placeholder="Date" ng-model="vm.event.startDate" required name="startDate">
                         <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
+                          <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                       </div>
                     </div>
@@ -72,39 +59,52 @@
                       </div>
                     </div>
                   </div>
+                </div>
+                <div class="row" style="height:25px" ng-show="vm.errors.startDateTime && vm.submitted">
+                  <div class="col-sm-12">
+                    <p class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
                   </div>
-                  <div class="row">
-                    <div class="col-sm-2" style="margin-top: 5px">{{'TO' | translate}}</div>
-                    <div class="col-sm-5">
-                      <div class="form-group">
-                        <div class="input-group date">
-                          <input type="date" class="form-control" id="datetimepicker3" placeholder="Date" ng-model="vm.event.endDate" required name="endDate">
-                          <span class="input-group-addon">
-                              <span class="glyphicon glyphicon-calendar"></span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-5">
-                      <div class="form-group">
-                        <div class="input-group date">
-                          <input type="time" class="form-control" id="datetimepicker4" placeholder="Time" ng-model="vm.event.endTime" required name="endTime">
-                          <span class="input-group-addon">
-                              <span class="fa fa-clock-o"></span>
-                          </span>
-                        </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-2" style="margin-top: 5px">{{'TO' | translate}}</div>
+                  <div class="col-sm-5">
+                    <div class="form-group">
+                      <div class="input-group date">
+                        <input type="date" class="form-control" id="datetimepicker3" placeholder="Date" ng-model="vm.event.endDate" required name="endDate">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
                       </div>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label>{{'LOCATION' | translate}}</label>
-                    <ui-select ng-model="vm.address.selected" theme="bootstrap" append-to-body="true" reset-search-input="false">
-                      <ui-select-match>{{$select.selected.formatted_address}}</ui-select-match>
-                      <ui-select-choices repeat="address in vm.addresses track by $index" refresh="vm.refreshAddresses($select.search)" refresh-delay="0">
-                        <div ng-bind-html="address.formatted_address"></div>
-                      </ui-select-choices>
-                    </ui-select>
+                  <div class="col-sm-5">
+                    <div class="form-group">
+                      <div class="input-group date">
+                        <input type="time" class="form-control" id="datetimepicker4" placeholder="Time" ng-model="vm.event.endTime" required name="endTime">
+                        <span class="input-group-addon">
+                            <span class="fa fa-clock-o"></span>
+                        </span>
+                      </div>
+                    </div>
                   </div>
+                </div>
+                <div class="row" style="height:25px" ng-show="vm.errors.endDateTime && vm.submitted">
+                  <div class="col-sm-12">
+                    <p class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>{{'LOCATION' | translate}}</label>
+                  <ui-select ng-model="vm.address.selected" theme="bootstrap" append-to-body="true" reset-search-input="false">
+                    <ui-select-match>{{$select.selected.formatted_address}}</ui-select-match>
+                    <ui-select-choices repeat="address in vm.addresses track by $index" refresh="vm.refreshAddresses($select.search)" refresh-delay="0">
+                      <div ng-bind-html="address.formatted_address"></div>
+                    </ui-select-choices>
+                  </ui-select>
+                  <p ng-show="vm.errors.location && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+                </div>
               </div>
 
               <div class="form-group">
@@ -119,9 +119,11 @@
                 </div>
               </div>
 
-              <div class="form-group">
+              <div class="form-group relative-div">
                 <label>{{'DESCRIPTION' | translate}}</label>
-                <textarea class="form-control" rows="5" placeholder="Description" ng-model="vm.event.description"></textarea>
+                <textarea class="form-control" rows="5" placeholder="Description" ng-model="vm.event.description" name="description" required></textarea>
+
+                <p ng-show="form.description.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
               </div>
             </div>
             <div class="col-lg-6">
@@ -183,6 +185,8 @@
                     </div>
                   </div>
                 </div>
+
+                <p ng-show="vm.errors.award && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
               </div>
             </div>
         	</div>

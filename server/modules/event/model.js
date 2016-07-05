@@ -12,7 +12,7 @@ module.exports = {
     	// organizerId: kernel.mongoose.Schema.Types.ObjectId,
     	awardId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Award'},
     	participantsId: [{type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}],
-    	photosId: [{type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}],
+    	photosId: [{type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Photo'}],
     	public: Boolean,
       publicStatusBy: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
     	location: {

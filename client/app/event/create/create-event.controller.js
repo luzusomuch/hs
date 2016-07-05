@@ -144,7 +144,7 @@ class CreateEventCtrl {
       this.errors.startDateTime = true;
     }
     if (!this.event.endDate || !this.event.endTime) {
-      this.errors.endDateTime = true
+      this.errors.endDateTime = true;
     }
     if (!this.address.selected) {
       this.errors.location = true;

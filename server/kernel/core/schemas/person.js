@@ -49,7 +49,8 @@ module.exports = exports = function(kernel) {
       },
       emailVerified: {type: Boolean, default: false},
       emailVerifiedToken: String,
-      passwordResetToken: String
+      passwordResetToken: String,
+      accessViaApp: {type: Boolean, default: false}
     });
   };
 

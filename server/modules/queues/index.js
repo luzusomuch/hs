@@ -128,4 +128,53 @@ exports.core = (kernel) => {
     	}
     });
 	});
+
+  // grant award to participants
+  kernel.queue.process('GRANTAWARD', (job, done) => {
+    kernel.model.Award.findById(job.data.awardId).then(award => {
+      if (!award) {
+        return done({error: 'Award Not Found'});
+      } else {
+        let autoGrantAwardType = ['accepted', 'gps'];
+        if (autoGrantAwardType.indexOf(award.type) !== -1) {
+          async.each(job.data.participantsId, (id, callback) => {
+            kernel.model.User.findById(id).then(user => {
+              if (!user) {
+                return callback({error: 'User not found'});
+              }
+              if (award.type==='gps' && user.accessViaApp) {
+                kernel.model.GrantAward({
+                  ownerId: user._id,
+                  awardId: award._id
+                }).save().then(() => {
+                  callback();
+                }).catch(err => {
+                  callback(err);
+                });
+              } else if (award.type==="accepted") {
+                kernel.model.GrantAward({
+                  ownerId: user._id,
+                  awardId: award._id
+                }).save().then(() => {
+                  callback();
+                }).catch(err => {
+                  callback(err);
+                });
+              } else {
+                callback();
+              }
+            }).catch(err => {
+              callback(err);
+            });
+          }, () => {
+            return done();
+          });
+        } else {
+          return done();
+        }
+      }
+    }).catch(err => {
+      return done(err);
+    });
+  });
 };

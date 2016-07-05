@@ -103,6 +103,7 @@ module.exports = (kernel, cb) => {
                   callback(err);
                 });
               }, () => {
+                kernel.queue.create('GRANTAWARD', saved).save();
                 kernel.ES.create({type: kernel.ES.config.mapping.eventType, id: saved._id.toString(), data: saved}, cb);
               });
             }).catch(err => {
@@ -112,7 +113,9 @@ module.exports = (kernel, cb) => {
             cb();
           }
         }
-      ], callback);
+      ], () => {
+        callback();
+      });
     }, () => {
       return cb();
     });

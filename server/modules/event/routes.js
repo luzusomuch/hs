@@ -180,6 +180,7 @@ module.exports = function(kernel) {
             });
           }, () => {
             kernel.queue.create(kernel.config.ES.events.CREATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
+            kernel.queue.create('GRANTAWARD', event).save();
             return res.status(200).json(event);
           });
         }).catch(err => {

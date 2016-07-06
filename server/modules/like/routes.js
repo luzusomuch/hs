@@ -30,8 +30,15 @@ module.exports = function(kernel) {
       }).then(like => {
         if (like) {
           return like.remove().then(() => {
-          	console.log(obj.totalLike);
-        		res.status(200).json({ liked: false });
+          	let totalLike = obj.get('totalLike');
+          	totalLike -=1;
+          	obj.set('totalLike', totalLike);
+          	obj.save().then(() => {
+        			res.status(200).json({ liked: false });
+          	}).catch(err => {
+          		console.log(err);
+          		res.status(200).json({ liked: false });
+          	})
           });
         }
 

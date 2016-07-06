@@ -1,0 +1,12 @@
+<div class="box-1 m20">
+    <div class="title-box-1">WEATHER</div>
+    <div class="body-box-1" style="text-align: center; padding:40px 40px 0 40px">
+        <i class="{{data.list[$index].weather | weatherIcon}}" style="font-size: 100px"></i>
+        <h1>{{data.list[$index].temp.day}} &deg;</h1>
+    </div>
+    <div style="text-align: center; position: relative;width: 100%;padding:0 20px 10px 20px">
+    	<a style="font-size: 20px" href="#" class="pull-left" ng-click="previous()" ng-class="{'disabled': $index===0}"><i class="fa fa-angle-left"></i></a>
+    	<span>{{moment(data.list[$index].dt*1000).format('dddd')}}</span>
+    	<a style="font-size: 20px" href="#" class="pull-right" ng-click="next()" ng-class="{'disabled': $index===6}"><i class="fa fa-angle-right"></i></a>
+    </div>
+</div>

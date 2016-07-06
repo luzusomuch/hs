@@ -17,6 +17,16 @@
         return angular.isFunction(cb) ? cb : angular.noop;
       },
 
+      obToquery(obj, prefix) {
+        var str = [];
+        for (var p in obj) {
+          var k = prefix ? prefix + '[' + p + ']' : p,
+              v = obj[k];
+          str.push(angular.isObject(v) ? this.obToquery(v, k) : (k) + '=' + encodeURIComponent(v));
+        }
+        return str.join('&');
+      },
+
       /**
        * Parse a given url with the use of an anchor element
        *

@@ -55,4 +55,20 @@ module.exports = function(kernel) {
     	return res.status(500).json({type: 'SERVER_ERROR'});
     });
 	});
+
+	/**
+   * Check user liked an object or not 
+   */
+  kernel.app.get('/api/v1/likes/:objectId/:objectName/check', kernel.middleware.isAuthenticated(), (req, res) => {
+    kernel.model.Like.findOne({ objectId: req.params.objectId, objectName:req.params.objectName, ownerId: req.user._id})
+    .then(comment =>{
+      if (!comment) {
+        return res.status(200).json({liked:false});
+      } else {
+        return res.status(200).json({liked:true});
+      }
+    }).catch(err => {
+      return res.status(500).json(err);
+    });
+  });
 };

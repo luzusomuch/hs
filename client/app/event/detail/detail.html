@@ -11,10 +11,10 @@
                             <div class="action-event">
                                 <span><i class="fa fa-user"></i> by {{vm.event.ownerId.name}}</span>
                                 <span><i class="fa fa-clock-o"></i> {{vm.event.createdAt | hsDate: 'MMMM DD, YYYY HH:mm a'}}</span>
-                                <span><i class="fa fa-heart"></i> 0</span>
+                                <span ng-click="vm.like()"><i class="fa fa-heart" ng-class="{liked: vm.liked}"></i> {{vm.event.totalLike || 0}}</span>
                                 <span><i class="fa fa-comment"></i> 0</span>
-                                <span ng-if="!event.private"><i class="fa fa-unlock"></i> Public Event</span>
-                                <span ng-if="event.private"><i class="fa fa-lock"></i> Private Event</span>
+                                <span ng-if="!vm.event.private"><i class="fa fa-unlock"></i> Public Event</span>
+                                <span ng-if="vm.event.private"><i class="fa fa-lock"></i> Private Event</span>
                             </div>
                         </div>
                         <div class="col-sm-6 col-lg-4">

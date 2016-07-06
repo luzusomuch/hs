@@ -121,9 +121,11 @@ module.exports = (kernel, cb) => {
         callback();
       });
     }, () => {
-      return cb();
+      console.log("Done create repeat event");
+      cb();
     });
   }).catch(err => {
-    return cb(err);
+    console.log("Error when create repeat event");
+    cb(err);
   });
 };

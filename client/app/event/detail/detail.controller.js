@@ -20,7 +20,7 @@ class EventDetailCtrl {
 		this.LikeService.likeOrDislike(this.event._id, 'Event').then(resp => {
 			this.liked = resp.data.liked;
 			if (this.liked) {
-				this.event.totalLike = this.event.totalLike + 1;
+				this.event.totalLike = (this.event.totalLike) ? this.event.totalLike + 1 : 1;
 			} else {
 				this.event.totalLike = this.event.totalLike -1;
 			}

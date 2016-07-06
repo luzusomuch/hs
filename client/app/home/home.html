@@ -154,7 +154,7 @@
                         <div class="bottom-li-event">
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <div class="text-bottom-big"><i class="fa fa-heart"></i> 625</div>
+                                    <div class="text-bottom-big" ng-click="vm.like(event)"><i class="fa fa-heart" ng-class="{liked: event.liked}"></i> {{event.totalLike || 0}}</div>
                                     Interested
                                 </div>
                                 <div class="col-xs-6">

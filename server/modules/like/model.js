@@ -20,8 +20,11 @@ module.exports = {
       }
       //otherwise increase totalLike
       //TODO - fire event such as totalLike added to all subscriber
-      attachModel[doc.objectName].findByIdAndUpdate(doc.objectId, {$inc: {totalLike: 1}}).then(() => {
-      	return;
+      attachModel[doc.objectName].findByIdAndUpdate(doc.objectId, {$inc: {totalLike: 1}}).then(data => {
+      	if (doc.objectName==='Event') {
+      		data.set('totalLike', data.get('totalLike') + 1);
+      		kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: data._id.toString(), data: data}).save();
+      	}
       }).catch(err => {
       	console.log(err);
       	return;

@@ -33,7 +33,8 @@ module.exports = function(kernel) {
           	let totalLike = obj.get('totalLike');
           	totalLike -=1;
           	obj.set('totalLike', totalLike);
-          	obj.save().then(() => {
+          	obj.save().then(newObj => {
+          		kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: newObj._id.toString(), data: newObj}).save();
         			res.status(200).json({ liked: false });
           	}).catch(err => {
           		console.log(err);

@@ -5,7 +5,7 @@ module.exports = {
     	ownerId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
     	content: String,
     	photosId: [{type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Photo'}],
-    	eventId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Event'},
+    	eventId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Event', required: true},
       blocked: {type: Boolean, default: false},
       blockedByUserId : {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}
     });

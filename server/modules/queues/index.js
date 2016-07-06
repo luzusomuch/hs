@@ -310,4 +310,29 @@ exports.core = (kernel) => {
       done(err);
     });
   });
+
+  // queue to sent email when accepted event have new feed
+  /*
+  params: new jeed object
+  */
+  kernel.queue.process('NEW_FEED_ACCEPTED_EVENT', (job, done) => {
+    kernel.model.Event.findById(job.data.feed.eventId)
+    .populate('participantsId').exec().then(event => {
+      let url = kernel.config.baseUrl + 'event/detail/' + event._id;
+      async.each(event.participantsId, (user, callback) => {
+        kernel.emit('SEND_MAIL', {
+          template: 'new-feed.html',
+          subject: 'New feed has posted in event ' + event.name,
+          data: {
+            user: user, 
+            feed: job.data.feed,
+            url: url
+          },
+          to: user.email
+        });
+      }, done);
+    }).catch(err => {
+      done(err);
+    })
+  });
 };

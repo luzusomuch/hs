@@ -1,0 +1,7 @@
+{% extends 'layouts/default.html' %}
+
+{% block content %}
+<p>Hello <%= user.name%></p>
+<p>New feed with content '<%= feed.content%>' has been posted in event <%= event.name %></p>
+<p>Please click <a href="<%= url %>">here</a> to view it</p>
+{% endblock %}

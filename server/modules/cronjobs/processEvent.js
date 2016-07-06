@@ -81,7 +81,10 @@ module.exports = (kernel, cb) => {
               photosId: event.photosId,
               public: event.public,
               location: event.location,
-              private: event.private
+              private: event.private,
+              stats: {
+                totalParticipants: event.participantsId.length
+              }
             };
             kernel.model.Event(newEvent).save().then(saved => {
               var url = kernel.config.baseUrl + 'event/'+saved._id;
@@ -103,6 +106,8 @@ module.exports = (kernel, cb) => {
                   callback(err);
                 });
               }, () => {
+                kernel.queue.create('TOTAL_EVENT_CREATED', {userId: saved.ownerId}).save();
+                kernel.queue.create('GRANTAWARD', saved).save();
                 kernel.ES.create({type: kernel.ES.config.mapping.eventType, id: saved._id.toString(), data: saved}, cb);
               });
             }).catch(err => {
@@ -112,11 +117,15 @@ module.exports = (kernel, cb) => {
             cb();
           }
         }
-      ], callback);
+      ], () => {
+        callback();
+      });
     }, () => {
-      return cb();
+      console.log("Done create repeat event");
+      cb();
     });
   }).catch(err => {
-    return cb(err);
+    console.log("Error when create repeat event");
+    cb(err);
   });
 };

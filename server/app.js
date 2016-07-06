@@ -24,6 +24,9 @@ kernel.loadModule(require('./modules/relation'));
 kernel.loadModule(require('./modules/auth'));
 kernel.loadModule(require('./modules/es'));
 kernel.loadModule(require('./modules/queues'));
+kernel.loadModule(require('./modules/feed'));
+kernel.loadModule(require('./modules/grant-award'));
+kernel.loadModule(require('./modules/like'));
 //compose then start server
 kernel.compose();
 

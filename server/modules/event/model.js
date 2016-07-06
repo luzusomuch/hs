@@ -12,7 +12,7 @@ module.exports = {
     	// organizerId: kernel.mongoose.Schema.Types.ObjectId,
     	awardId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Award'},
     	participantsId: [{type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}],
-    	photosId: [{type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}],
+    	photosId: [{type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Photo'}],
     	public: Boolean,
       publicStatusBy: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
     	location: {
@@ -32,7 +32,11 @@ module.exports = {
         startDate: Date,
         endDate: Date
       },
-      private: Boolean
+      private: Boolean,
+      stats: {
+        totalParticipants: {type: Number, default: 0},
+        totalInterested: {type: Number, default: 0}
+      }
     });
     
     //import timestamp for auto create updatedAt, createdAt field manually

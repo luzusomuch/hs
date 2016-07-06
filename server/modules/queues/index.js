@@ -128,4 +128,211 @@ exports.core = (kernel) => {
     	}
     });
 	});
+
+  // grant award to participants
+  kernel.queue.process('GRANT_AWARD', (job, done) => {
+    kernel.model.Award.findById(job.data.awardId).then(award => {
+      if (!award) {
+        return done({error: 'Award Not Found'});
+      } else {
+        let autoGrantAwardType = ['accepted', 'gps'];
+        if (autoGrantAwardType.indexOf(award.type) !== -1) {
+          async.each(job.data.participantsId, (id, callback) => {
+            kernel.model.User.findById(id).then(user => {
+              if (!user) {
+                return callback({error: 'User not found'});
+              }
+              if (award.type==='gps' && user.accessViaApp) {
+                kernel.model.GrantAward({
+                  ownerId: user._id,
+                  awardId: award._id
+                }).save().then(data => {
+                  kernel.queue.create('EMAIL_GRANTED_AWARD', data).save();
+                  callback();
+                }).catch(err => {
+                  callback(err);
+                });
+              } else if (award.type==="accepted") {
+                kernel.model.GrantAward({
+                  ownerId: user._id,
+                  awardId: award._id
+                }).save().then(data => {
+                  kernel.queue.create('EMAIL_GRANTED_AWARD', data).save();
+                  callback();
+                }).catch(err => {
+                  callback(err);
+                });
+              } else {
+                callback();
+              }
+            }).catch(err => {
+              callback(err);
+            });
+          }, () => {
+            return done();
+          });
+        } else {
+          return done();
+        }
+      }
+    }).catch(err => {
+      return done(err);
+    });
+  });
+
+  // Email to user when he granted an award
+  kernel.queue.process('EMAIL_GRANTED_AWARD', (job, done) => {
+    kernel.model.GrantAward.findById(job.data._id)
+    .populate('awardId')
+    .populate('ownerId').exec().then(data => {
+      if (!data) {
+        done({error: 'Granted award not found'});
+      } else {
+        kernel.emit('SEND_MAIL', {
+          template: 'granted-award.html',
+          subject: 'New Award Granted',
+          data: {
+            user: data.ownerId, 
+            award: data.awardId
+          },
+          to: data.ownerId.email
+        });
+        done();
+      }
+    }).catch(err => {
+      done(err);
+    });
+  });
+
+  // Update count for participants
+  kernel.queue.process('PARTICIPANT_COUNT', (job, done) => {
+    kernel.model.Event.findById(job.data._id).then(event => {
+      if (!event) {
+        done({error: 'Event not found'});
+      } else {
+        if (!event.stats) {
+          event.stats = {
+            totalParticipants: event.participantsId.length
+          };
+        } else {
+          event.stats.totalParticipants = event.participantsId.length;
+        }
+        event.save().then(() => {
+          done();
+        }).catch(err => {
+          done(err);
+        });
+      }
+    }).catch(err => {
+      done(err);
+    }) 
+  });
+
+  // queue to update interested stats of event
+  // data event object and string of type (up/down)
+  kernel.queue.process('INTERESTED_COUNT', (job, done) => {
+    kernel.model.Event.findById(job.data.event._id).then(event => {
+      if (!event) {
+        done({error: 'Event not found'});
+      } else {
+        let availableType = ['up', 'down'];
+        if (availableType.indexOf(job.data.type) !== -1) {
+          if (event.stats && event.stats.totalInterested) {
+            event.stats.totalInterested = (job.data.type==='up') ? event.stats.totalInterested+1 : event.stats.totalInterested-1;
+          } else {
+            event.stats = {
+              totalInterested: (job.data.type==='up') ? 1 : 0
+            }
+          }
+          if (event.stats.totalInterested < 0) {
+            event.stats.totalInterested = 0;
+          }
+          event.save().then(() => {
+            done();
+          }).catch(err => {
+            done(err);
+          });
+        } else {
+          done({error: 'Type is not valid'});
+        }
+      }
+    }).catch(err => {
+      done(err);
+    });
+  });
+
+  // queue to count total created events of a user
+  kernel.queue.process('TOTAL_EVENT_CREATED', (job, done) => {
+    kernel.model.User.findById(job.data.userId).then(user => {
+      if (!user) {
+        done({error: 'User not found'});
+      } else {
+        if (user.stats) {
+          user.stats.totalCreatedEvent = (user.stats.totalCreatedEvent) ? user.stats.totalCreatedEvent+1 : 1;
+        } else {
+          user.stats = {
+            totalCreatedEvent: 1
+          }
+        }
+        user.save().then(() => {
+          done();
+        }).catch(err => {
+          done(err);
+        })
+      }
+    }).catch(err => {
+      done(err);
+    });
+  });
+
+  // queue to count total joined event of a user
+  kernel.queue.process('TOTAL_EVENT_JOINED', (job, done) => {
+    kernel.model.User.findById(job.data.userId).then(user => {
+      if (!user) {
+        done({error: 'User not found'});
+      } else {
+        kernel.model.Event.count({participantsId: user._id}).then(total => {
+          if (user.stats) {
+            user.stats.totalJoinedEvent = total;
+          } else {
+            user.stats = {totalJoinedEvent: total};
+          }
+          user.save().then(() => {
+            done();
+          }).catch(err => {
+            done(err);
+          })
+        }).catch(err => {
+          done(err);
+        });
+      }
+    }).catch(err => {
+      done(err);
+    });
+  });
+
+  // queue to sent email when accepted event have new feed
+  /*
+  params: new jeed object
+  */
+  kernel.queue.process('NEW_FEED_ACCEPTED_EVENT', (job, done) => {
+    kernel.model.Event.findById(job.data.feed.eventId)
+    .populate('participantsId').exec().then(event => {
+      let url = kernel.config.baseUrl + 'event/detail/' + event._id;
+      async.each(event.participantsId, (user, callback) => {
+        kernel.emit('SEND_MAIL', {
+          template: 'new-feed.html',
+          subject: 'New feed has posted in event ' + event.name,
+          data: {
+            user: user, 
+            feed: job.data.feed,
+            url: url
+          },
+          to: user.email
+        });
+      }, done);
+    }).catch(err => {
+      done(err);
+    })
+  });
 };

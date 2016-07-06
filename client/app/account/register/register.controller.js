@@ -18,13 +18,15 @@ class RegisterCtrl {
   //start-non-standard
 
   refreshAddresses(address) {
-    var params = {address: address, sensor: false};
-    return this.$http.get(
-      'http://maps.googleapis.com/maps/api/geocode/json',
-      {params: params}
-    ).then( (response) => {
-      this.addresses = response.data.results;
-    });
+    if (address.trim().length > 0) {
+      var params = {address: address, sensor: false};
+      return this.$http.get(
+        'http://maps.googleapis.com/maps/api/geocode/json',
+        {params: params}
+      ).then( (response) => {
+        this.addresses = response.data.results;
+      });
+    }
   }
 
   register(form) {

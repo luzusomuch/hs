@@ -4,5 +4,89 @@ import async from 'async';
 import multer from 'multer';
 
 module.exports = function(kernel) {
-	
+	/*Create new feed*/
+	kernel.app.post('/api/v1/feeds', kernel.middleware.isAuthenticated(), (req, res) => {
+		let storage = multer.diskStorage({
+      destination: (req, file, cb) => {
+        cb(null, kernel.config.tmpPhotoFolder)
+      },
+      filename: (req, file, cb) => {
+        return cb(null, file.originalname);
+      }
+    });
+    let upload = multer({
+      storage: storage
+    }).array('file');
+
+    upload(req, res, (err) => {
+    	if (err) {
+        return res.status(500).json({type: 'SERVER_ERROR'});
+      }
+      let uploadedPhotoIds = [];
+
+      // validation
+      let data = {
+      	content: req.body.feed.content,
+      	eventId: req.body.feed.eventId
+      };
+
+      let schema = Joi.object().keys({
+      	content: Joi.string().required().options({
+          language: {
+            key: 'content'
+          }
+        }),
+        eventId: Joi.string().required().options({
+          language: {
+            key: 'eventId'
+          }
+        })
+      });
+
+      var result = Joi.validate(data, schema, {
+        stripUnknown: true,
+        abortEarly: false,
+        allowUnknown: true
+      });
+
+      if (result.error) {
+      	let errors = [];
+      	result.error.details.forEach(error => {
+      		let type;
+      		switch (error.type) {
+      			case 'string.content':
+      				type = 'FEED_CONTENT_REQUIRED';
+      				break;
+      			case 'string.eventId':
+      				type = 'FEED_EVENT_REQUIRED';
+      				break;
+      			default:
+      				break;
+      		}
+      		errors.push({type: type, path: error.path, message: error.message});
+      	});
+      	return res.status(422).json(errors);
+      }
+
+      async.each(req.files, (file, callback) => {
+      	var photo = {
+          ownerId: req.user._id,
+          metadata: {
+            tmp: file.filename
+          }
+        };
+        let model = new kernel.model.Photo(photo);
+        model.save().then(saved => {
+          uploadedPhotoIds.push(saved._id);
+          kernel.queue.create('PROCESS_AWS', saved).save();
+          callback(null, uploadedPhotoIds);
+        }).catch(err => {
+          callback(err);
+        });
+      }, (err, result) => {
+      	console.log(err);
+      	console.log(result);
+      });
+    });
+	});
 };

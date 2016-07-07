@@ -1,6 +1,5 @@
 import Joi from 'joi';
 import async from 'async';
-import multer from 'multer';
 
 module.exports = function(kernel) {
   /**
@@ -74,7 +73,6 @@ module.exports = function(kernel) {
     var isSubComment = req.query.isSubComment || false;
     kernel.model.Comment.find({objectId:req.params.objectId,objectName:req.params.objectName, isSubComment: isSubComment}) 
     .populate('ownerId', '-hashedPassword - salt')
-    .populate('photosId')
     .limit(Number(pageSize))
     .skip(pageSize * (page-1))
     .exec()

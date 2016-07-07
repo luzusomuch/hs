@@ -5,7 +5,6 @@ module.exports = {
     let Schema = kernel.mongoose.Schema;
     let commentSchema = new Schema({
       ownerId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
-      photosId: [{type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Photo'}],
       objectId: kernel.mongoose.Schema.Types.ObjectId,
       objectName: String, // Maybe Photo, Feed, Event or even if its a Comment
       content: String,

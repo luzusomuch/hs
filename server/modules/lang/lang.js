@@ -86,6 +86,7 @@ let Language = {
 		AWARD_TYPE: 'Award type',
 		ADD_MORE_AWARD: 'Add more awards',
 		SELECT_AWARD_TYPE: 'Select award type',
+		FEED_CONTENT_REQUIRED: 'Feed content is required',
 		INVITE_FRIEND: 'Invite your friend',
 		WHO_ARE_ATTENDING : 'Who Are Attending',
 		YOUR_FRIEND: 'Your friend',

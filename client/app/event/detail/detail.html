@@ -62,87 +62,66 @@
             <div class="box-blue">
                 <div class="post-li" ng-repeat="feed in vm.feeds">
                     <div class="img-post-li">
-                        <img src="assets/images/48.jpg">
+                        <img ng-src="{{feed.ownerId | avatarUrl}}">
                     </div>
                     <div class="content-post-li">
                         <div class="title-post-li">
-                            <h4 class="title-generated-home">{{feed.ownerId.name}}<span class="date-post">3m</span> </h4>
+                            <h4 class="title-generated-home">{{feed.ownerId.name}}<span class="date-post">{{feed.createdAt | fromNow}}</span> </h4>
                         </div>
                         <div class="content-post-li">
                             {{feed.content}}
                         </div>
                         <div class="img-content-post">
                             <div class="row row-small">
-                                <div class="col-xs-6" ng-repeat="photo in feed.photosId | limitTo: 2">
-                                    <div class="bg-cover " style="background-image: url({{photo | imageUrl: 'medium'}}); height: 100px"></div>
+                                <div ng-class="{'col-xs-6': feed.photosId.length > 1, 'col-xs-12': feed.photosId.length==1}" ng-repeat="photo in feed.photosId | limitTo: 2">
+                                    <div class="bg-cover " style="background-image: url({{photo | imageUrl: 'medium'}}); height: 150px"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <like-comment-share data="feed" type="Feed">
+                    <!-- 
                     <div class="bottom-li-post">
                         <div class="pull-left">
                             <like-comment-share data="feed" type="Feed">
                         </div>
                     </div>
-                </div>
 
-
-                <!-- <div class="post-li">
-                    <div class="img-post-li">
-                        <img src="assets/images/48.jpg">
-                    </div>
-                    <div class="content-post-li">
-                        <div class="title-post-li">
-                            <h4 class="title-generated-home">Mollie Richardson @Mollie <span class="date-post">5m</span> </h4>
-                        </div>
-                        <div class="content-post-li">
-                            This is such a beautiful detail on iBooks.
-                        </div>
-
-                    </div>
-                    <div class="bottom-li-post">
-                        <div class="pull-left">
-                            <a href="#"><i class="fa fa-heart-o"></i> 12</a>
-                            <a href="#"><i class="fa fa-comments"></i> 30</a>
-                            <a href="#"><i class="fa fa-reply"></i> 10</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="post-li">
-                    <div class="img-post-li">
-                        <img src="assets/images/48.jpg">
-                    </div>
-                    <div class="content-post-li">
-                        <div class="title-post-li">
-                            <h4 class="title-generated-home">Mollie Richardson @Mollie <span class="date-post">12m</span> </h4>
-                        </div>
-                        <div class="content-post-li">
-                            I shared this on my fb wall a few months back, and I thought I'd share it here again because it's such a great read. "You already found your passion.” You are just ignoring it. The problem isn't passion. It's never passion. It's priorities.
-                        </div>
-                        <div class="img-content-post">
-                            <div class="row row-small">
-                                <div class="col-xs-6">
-                                    <div class="bg-cover " style="background-image: url('assets/images/photo2.jpg'); height: 100px"></div>
+                    <div class="replies-post">
+                        <ul>
+                            <li>
+                                <div class="post-li">
+                                    <div class="img-post-li">
+                                        <img src="images/48.jpg">
+                                    </div>
+                                    <div class="content-post-li">
+                                        <div class="title-post-li">
+                                            <h4 class="title-generated-home">Coffee with the Chiefs @Mollie <span class="date-post">3d ago</span> </h4>
+                                        </div>
+                                        <div class="content-post-li">
+                                            Nationwide, 43 percent of first-year drivers and 37 percent of second-year drivers are involved in car crashes.
+                                            The risk of motor vehicle crashes is higher among 16-19-year-olds than among any other age group. In fact, per mile driven,
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-xs-6">
-                                    <div class="bg-cover " style="background-image: url('assets/images/img3.jpg'); height: 100px"></div>
+                            </li>
+                            <li>
+                                <div class="post-li">
+                                    <div class="img-post-li">
+                                        <img src="images/48.jpg">
+                                    </div>
+                                    <div class="content-post-li">
+                                        <div class="replies-form">
+                                            <textarea class="form-control" placeholder="Write a reply..." onkeyup="textAreaAdjust(this)"></textarea>
+                                            <a href="#" class="replies-img-a"><i class="fa fa-share"></i></a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bottom-li-post">
-                        <div class="pull-left">
-                            <a href="#"><i class="fa fa-heart-o"></i> 12</a>
-                            <a href="#"><i class="fa fa-comments"></i> 30</a>
-                            <a href="#"><i class="fa fa-reply active"></i> 10</a>
-                        </div>
-                    </div>
+                            </li>
 
-
-                </div> -->
-
-
+                        </ul>
+                    </div> -->
+                </div>
             </div>
         </div>
         <div class="col-sm-3">

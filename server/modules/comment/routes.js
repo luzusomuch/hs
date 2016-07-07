@@ -70,14 +70,20 @@ module.exports = function(kernel) {
     var page = req.query.page || 1;
     var pageSize = req.query.pagesize || kernel.config.COMMENT_PAGE_SIZE;
     var isSubComment = req.query.isSubComment || false;
-    kernel.model.Comment.find({objectId:req.params.objectId,objectName:req.params.objectName, isSubComment: isSubComment}) 
-    .populate('ownerId', '-hashedPassword - salt')
+    kernel.model.Comment.find({objectId:req.params.objectId, objectName:req.params.objectName, isSubComment: isSubComment}) 
     .limit(Number(pageSize))
     .skip(pageSize * (page-1))
-    .exec()
-    .then(comments => {
-      return res.status(200).json({comments: comments, totalItem: comments.length});
+    .exec().then(comments => {
+      async.each(comments, (comment, callback) => {
+        kernel.model.User.findById(comment.ownerId, '-password -salt').populate('avatar').exec().then(user => {
+          comment.ownerId = user;
+          callback()
+        }).catch(callback);
+      }, () => {
+        return res.status(200).json({comments: comments, totalItem: comments.length});
+      });
     }).catch(err => {
+      console.log(err);
       return res.status(500).json(err);
     });
   });

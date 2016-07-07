@@ -10,7 +10,11 @@ module.exports = function(kernel) {
 		let page = req.query.page || 1;
     let pageSize = req.query.pagesize || 5;
 		kernel.model.Feed.find({eventId: req.params.id})
-		.populate('ownerId', '-password -salt')
+		.populate({
+			path: 'ownerId', 
+			select: '-password -salt', 
+			populate: {path: 'avatar', model: 'Photo'}
+		})
 		.populate('photosId')
 		.limit(Number(pageSize))
     .skip(pageSize * (page-1))

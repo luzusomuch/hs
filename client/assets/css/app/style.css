@@ -1727,3 +1727,35 @@ label {
     border-radius: 20px;
     height: 38px !important;
 }
+
+.box-weather {
+    padding: 15px;
+    text-align:center;
+}
+.icon-weather {
+    font-size:70px;
+    margin-top:20px;
+    margin-bottom:30px;
+    color: #c2382b;
+}
+.do-weather {
+    font-size:30px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+.date-weather {
+    position: relative;
+    padding: 0px 50px;
+}
+.date-weather .next-wea, .date-weather .prev-wea {
+    position: absolute;
+    top: 0px;
+    font-size:17px;
+    cursor: pointer;
+}
+.date-weather .next-wea {
+    left: 0px;
+}
+.date-weather .prev-wea {
+    right: 0px;
+}

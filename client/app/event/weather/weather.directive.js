@@ -29,13 +29,13 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 					return false;
 				}
 				scope.$index--;
-			}
+			};
 			scope.next = function() {
 				if(scope.$index >= 6) {
 					return false;
 				}
 				scope.$index++;
-			}
+			};
 			scope.$watch('location', function(nv) {
 				if(nv && nv.coordinates) {
 					params.lon = nv.coordinates[0];
@@ -428,7 +428,7 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 	    'label': 'hurricane',
 	    'icon': 'cloudy-gusts'
 	  }
-	}
+	};
 })
 .filter('weatherIcon', function(weatherIcons){
 	return function(weather) {
@@ -447,6 +447,6 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 	  // Finally tack on the prefix.
 	  icon = prefix + icon;
 	  return icon;
-	}
+	};
 })
 .controller('EventWeatherCtrl', EventWeatherCtrl);

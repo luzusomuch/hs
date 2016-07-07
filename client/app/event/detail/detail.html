@@ -13,15 +13,15 @@
                                 <span><i class="fa fa-clock-o"></i> {{vm.event.createdAt | hsDate: 'MMMM DD, YYYY HH:mm a'}}</span>
                                 <span ng-click="vm.like()"><i class="fa fa-heart" ng-class="{liked: vm.liked}"></i> {{vm.event.totalLike || 0}}</span>
                                 <span><i class="fa fa-comment"></i> 0</span>
-                                <span ng-if="!vm.event.private"><i class="fa fa-unlock"></i> Public Event</span>
-                                <span ng-if="vm.event.private"><i class="fa fa-lock"></i> Private Event</span>
+                                <span ng-if="!vm.event.private"><i class="fa fa-unlock"></i> {{'PUBLIC_EVENT' | translate}}</span>
+                                <span ng-if="vm.event.private"><i class="fa fa-lock"></i> {{'PRIVATE_EVENT' | translate}}</span>
                             </div>
                         </div>
                         <div class="col-sm-6 col-lg-4">
                             <div class="row row-small">
-                                <div class="col-xs-7"><a href="#" class="btn btn-default btn-block" e-id="vm.event._id" hs-event-invite><i class="user-i i-new"></i> Invite your friends </a></div>
-                                <div class="col-xs-5"><a href="#" class="btn btn-default btn-block" ng-if="vm.isNotParticipant()"><i class="fa fa-plus"></i> Attend</a></div>
-                                 <div class="col-xs-5"><a href="#" class="btn btn-default btn-block" ng-if="!vm.isNotParticipant()"><i class="fa fa-user"></i> Attended</a></div>
+                                <div class="col-xs-7"><a href="#" class="btn btn-default btn-block" e-id="vm.event._id" hs-event-invite><i class="user-i i-new"></i> {{'INVITE_FRIEND' | translate}} </a></div>
+                                <div class="col-xs-5"><a href="#" class="btn btn-default btn-block" ng-if="vm.isNotParticipant()"><i class="fa fa-plus"></i> {{'ATTEND' | translate}}</a></div>
+                                 <div class="col-xs-5"><a href="#" class="btn btn-default btn-block" ng-if="!vm.isNotParticipant()"><i class="fa fa-user"></i> {{'ATTEND' | translate}}</a></div>
                             </div>
                         </div>
                     </div>
@@ -43,7 +43,7 @@
         <div class="col-sm-6">
 
             <div class="box-blue p15">
-                <div class="title-blue">Event Detail</div>
+                <div class="title-blue">{{'EVENT_DETAIL' | translate}}</div>
                 {{vm.event.description}}
             </div>
 
@@ -55,7 +55,7 @@
                         <a href="#" class="post-picture" ngf-select="vm.select($files)" ngf-multiple="true" accept="image/*"><i class="fa fa-picture-o"></i></a>
                         &nbsp;
                         <p class="new-feed-error" ng-show="vm.errors.content && vm.submitted">{{'FEED_CONTENT_REQUIRED' | translate}}</p>
-                        <button class="btn btn-primary" ng-click="vm.createNewFeed(vm.feed)">Post</button>
+                        <button class="btn btn-primary" ng-click="vm.createNewFeed(vm.feed)">{{'POST' | translate}}</button>
                     </div>
                 </div>
             </div>

@@ -13,7 +13,6 @@ angular.module('healthStarsApp').directive('hsLoading', () => {
 				width: scope.size + 'px',
 				height: scope.size + 'px'
 			};
-			console.log(scope.style);
 		}
 	};
 });

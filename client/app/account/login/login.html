@@ -4,7 +4,7 @@
   <div class="box-login">
       <form class="form-login" ng-submit="vm.login(form)" name="form" novalidate>
           <h2><span>{{'SIGN_IN' | translate}}</span></h2>
-          <div class="form-group" ng-class="{'has-error': (form.email.$error.email || form.email.$error.required) && vm.submitted}">
+          <div class="form-group" ng-class="{'has-error': form.email.$error.email || form.email.$error.required && vm.submitted}">
               <label>{{'USERNAME_EMAIL' | translate}}</label>
               <input type="email" ng-model="vm.user.email" class="form-control" placeholder="Your Username" required name="email">
 
@@ -28,7 +28,7 @@
           <oauth-buttons theme="icon"></oauth-buttons>
       </form>
       <div class="text-center">
-      {{'NOT_REGISTERED' | translate}}? <a href="#" ui-sref="register">{{'REGISTER' | translate}}</a>
+      {{'NOT_REGISTERED' | translate}}? <a href="#" ui-sref="register">{{'SIGN_UP' | translate}}</a>
       </div>
   </div>
   </div>

@@ -172,6 +172,9 @@ img {
     margin: 15px 0px;
     background: url(/assets/images/bg-line1.png) no-repeat center;
 }
+.or-login span {
+    text-transform: uppercase;
+}
 .list-social li {
     display: inline-block;
     margin: 0px 5px;
@@ -1703,7 +1706,7 @@ label {
 }
 
 .error-input {
-    border: 3px solid red
+    /*border: 3px solid red*/
 }
 .error-text {
     color: red;
@@ -1726,6 +1729,7 @@ label {
     width: 100% !important;
     border-radius: 20px;
     height: 38px !important;
+    overflow: hidden;
 }
 
 .box-weather {
@@ -1766,4 +1770,26 @@ label {
     position: absolute;
     top: 10px;
     color: red;
+}
+.upper-case {
+    text-transform: uppercase;
+}
+.sign-up-success-validate {
+    position: absolute;
+    right: 0px;
+    top: 25px;
+    color: #1dc46c;
+}
+.sign-up-error-validate {
+    position: absolute;
+    right: 0px;
+    top: 25px;
+    color: red;
+}
+.fa-cicle-input {
+    font-size: 1.5em !important;
+    top: 5px !important;
+}
+.fa-icon-input {
+    font-size: 15px !important;
 }

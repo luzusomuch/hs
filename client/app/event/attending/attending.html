@@ -1,13 +1,13 @@
    <div class="box-blue p15">
-    <div class="title-blue">Who Are Attending  ({{vm.participants.total || 0}}) <a href="#" class="show-all-box">Show all</a></div>
+    <div class="title-blue">{{'WHO_ARE_ATTENDING' | translate}}  ({{vm.participants.total || 0}}) <a href="#" class="show-all-box">Show all</a></div>
     <ul class="list-media list-friend list-friend-1">
         <li ng-repeat="user in vm.participants.items">
             <div class="img-media">
                 <a href="#"></a><a href="#"><img ng-src="{{user | avatarUrl}}"></a>
             </div>
             <h4><a href="#">{{user.name}}</a></h4>
-            <span class="text-mo" ng-if="user.isFriend">Your Friend</span>
-            <a href="#" class="btn-follow" ng-if="!user.isFriend"><i class="i-new user-i-1"></i> Add Friend</a>
+            <span class="text-mo" ng-if="user.isFriend">{{'YOUR_FRIEND' | translate}}</span>
+            <a href="#" class="btn-follow" ng-if="!user.isFriend"><i class="i-new user-i-1"></i> {{'ADD_FRIEND' | translate}}</a>
         </li>
     </ul>
 </div>

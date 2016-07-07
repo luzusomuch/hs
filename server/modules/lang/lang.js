@@ -85,7 +85,23 @@ let Language = {
 		AWARD_TITLE: 'Award title',
 		AWARD_TYPE: 'Award type',
 		ADD_MORE_AWARD: 'Add more awards',
-		SELECT_AWARD_TYPE: 'Select award type'
+		SELECT_AWARD_TYPE: 'Select award type',
+		INVITE_FRIEND: 'Invite your friend',
+		WHO_ARE_ATTENDING : 'Who Are Attending',
+		YOUR_FRIEND: 'Your friend',
+		ADD_FRIEND: 'Add Friend',
+		BEST_PICS: 'Best Pictures for Event',
+		EVENT_DETAIL: 'Event Detail',
+		POST: 'Post',
+		EVENT_LOCATION: 'Event Location',
+		RELATED_EVENTS: 'RELATED EVENTS',
+		SHOW_ALL: 'Show all',
+		COMMENTS: 'Comments',
+		WEATHER: 'WEATHER',
+		ATTEND: 'Attend', 
+		ATTENDED: 'Attended',
+		PUBLIC_EVENT: 'Public Event',
+		PRIVATE_EVENT: 'Private Event'
 	},
 	de: {
 

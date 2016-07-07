@@ -37,6 +37,7 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 				scope.$index++;
 			};
 			scope.$watch('location', function(nv) {
+				scope.valid = false;
 				if(nv && nv.coordinates) {
 					params.lon = nv.coordinates[0];
 					params.lat = nv.coordinates[1];
@@ -47,6 +48,7 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 							scope.$index = _.findIndex(scope.data.list, function(item) {
 								return moment(item.dt * 1000).days() === moment().days();
 							});
+							scope.valid = true;
 						}
 					});
 				}

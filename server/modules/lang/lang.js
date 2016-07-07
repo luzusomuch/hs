@@ -105,7 +105,8 @@ let Language = {
 		ATTEND: 'Attend', 
 		ATTENDED: 'Attended',
 		PUBLIC_EVENT: 'Public Event',
-		PRIVATE_EVENT: 'Private Event'
+		PRIVATE_EVENT: 'Private Event',
+		CITY_EVENT_MAP:'City Event Map'
 	},
 	de: {
 

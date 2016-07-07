@@ -1,7 +1,7 @@
 'use strict';
 
 class HomeCtrl {
-	constructor(EventService, LikeService) {
+	constructor(EventService, LikeService, $localStorage) {
    this.events = {
    	items: [],
    	totalItem: 0
@@ -9,12 +9,17 @@ class HomeCtrl {
    this.EventService = EventService;
    this.LikeService = LikeService;
    this.search();
+   this.authUser = $localStorage.authUser;
+   this.locations = [];
   }
 
   search() {
   	this.loading = true;
   	this.EventService.search().then(res => {
   		this.events = res.data;
+      this.locations = _.map(res.data.items, (item) => {
+        return _.assign({title: item.name}, item.location || {});
+      });
   		this.loading = false;
   	}, () => this.loading = false);
   }
@@ -24,6 +29,10 @@ class HomeCtrl {
   	this.EventService.search().then(res => {
   		this.events.items = this.events.items.concat(res.data);
   		this.events.totalItem = res.data.totalItem;
+      var locations = _.map(res.data.items, (item) => {
+        return _.assign({title: item.name}, item.location || {});
+      });
+      this.location = this.locations.concat(locations);
   		this.loading = false;
   	}, () => this.loading = false);
   }

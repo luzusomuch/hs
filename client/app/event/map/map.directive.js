@@ -9,6 +9,7 @@ angular.module('healthStarsApp').directive('hsEventMap', ($interval) => {
 		restrict: 'E',
 		scope: {
 			locations : '=',
+			title: '@',
 			center: '='
 		},
 		templateUrl: 'app/event/map/map.html',
@@ -16,6 +17,7 @@ angular.module('healthStarsApp').directive('hsEventMap', ($interval) => {
 		controllerAs: 'vm',
 		replace: true,
 		link: function(scope, elm) {
+			scope.address = '';
 			var map, google;
 	    var mapElm = angular.element(elm).find('.event-map');
 	    var initMap = function(locations, center) {
@@ -26,9 +28,12 @@ angular.module('healthStarsApp').directive('hsEventMap', ($interval) => {
 	      });
 	      var resize = false;
 	      if(typeof locations === 'object' && locations.length) {
-	      	 var bounds = new google.maps.LatLngBounds();
-	      	for(var i=0; i < locations.length; i++) {
-	      		let pos = (typeof locations[i] === 'object' &&  locations[i].coordinates)? locations[i].coordinates : null;
+	      	if(locations.length === 1 && locations[0].fullAddress) {
+	      		scope.address = locations[0].fullAddress;
+	      	}
+	      	var bounds = new google.maps.LatLngBounds();
+	      	_.each(locations, function(location) {
+	      		let pos = (typeof location === 'object' &&  location.coordinates)? location.coordinates : null;
 	      		if(pos) {
 	      			var latLng = new google.maps.LatLng(pos[1], pos[0]);
 			        new google.maps.Marker({
@@ -38,7 +43,7 @@ angular.module('healthStarsApp').directive('hsEventMap', ($interval) => {
 			        bounds.extend(latLng);
 			        resize = true;
 		        }
-	        }
+	        });
 	        if(resize) {
 		        map.setCenter(bounds.getCenter());
 						map.fitBounds(bounds);
@@ -46,7 +51,7 @@ angular.module('healthStarsApp').directive('hsEventMap', ($interval) => {
 						  if (map.getZoom() > 15) { 
 						  	map.setZoom(15); 
 						  } 
-						  google.maps.event.removeListener(listener); 
+						  google.maps.event.removeListener(listener);
 						});
 					}
 	      }

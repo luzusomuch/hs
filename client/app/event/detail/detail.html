@@ -50,33 +50,31 @@
 
             <div class="box-blue">
                 <div class="form-post">
-                    <textarea placeholder="Write something....."></textarea>
+                    <textarea ng-model="vm.feed.content" placeholder="Write something....."></textarea>
                     <div class="bottom-post">
-                        <a href="#" class="post-picture"><i class="fa fa-picture-o"></i></a>
+                        <a href="#" class="post-picture" ngf-select="vm.select($files)" ngf-multiple="true" accept="image/*"><i class="fa fa-picture-o"></i></a>
                         &nbsp;
-                        <button class="btn btn-primary">Post</button>
+                        <p class="new-feed-error" ng-show="vm.errors.content && vm.submitted">{{'FEED_CONTENT_REQUIRED' | translate}}</p>
+                        <button class="btn btn-primary" ng-click="vm.createNewFeed(vm.feed)">Post</button>
                     </div>
                 </div>
             </div>
             <div class="box-blue">
-                <div class="post-li">
+                <div class="post-li" ng-repeat="feed in vm.feeds">
                     <div class="img-post-li">
                         <img src="assets/images/48.jpg">
                     </div>
                     <div class="content-post-li">
                         <div class="title-post-li">
-                            <h4 class="title-generated-home">Mollie Richardson @Mollie <span class="date-post">3m</span> </h4>
+                            <h4 class="title-generated-home">{{feed.ownerId.name}}<span class="date-post">3m</span> </h4>
                         </div>
                         <div class="content-post-li">
-                            I shared this on my fb wall a few months back, and I thought I'd share it here again because it's such a great read. "You already found your passion.” You are just ignoring it. The problem isn't passion. It's never passion. It's priorities.
+                            {{feed.content}}
                         </div>
                         <div class="img-content-post">
                             <div class="row row-small">
-                                <div class="col-xs-6">
-                                    <div class="bg-cover " style="background-image: url('assets/images/photo.jpg'); height: 100px"></div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="bg-cover " style="background-image: url('assets/images/photo1.jpg'); height: 100px"></div>
+                                <div class="col-xs-6" ng-repeat="photo in feed.photosId | limitTo: 2">
+                                    <div class="bg-cover " style="background-image: url({{photo | imageUrl: 'medium'}}); height: 100px"></div>
                                 </div>
                             </div>
                         </div>
@@ -88,11 +86,10 @@
                             <a href="#"><i class="fa fa-reply"></i> 10</a>
                         </div>
                     </div>
-
                 </div>
 
 
-                <div class="post-li">
+                <!-- <div class="post-li">
                     <div class="img-post-li">
                         <img src="assets/images/48.jpg">
                     </div>
@@ -145,7 +142,7 @@
                     </div>
 
 
-                </div>
+                </div> -->
 
 
             </div>

@@ -1760,5 +1760,10 @@ label {
     right: 0px;
 }
 .liked {
-    color: red
+    color: red;
+}
+.new-feed-error {
+    position: absolute;
+    top: 10px;
+    color: red;
 }

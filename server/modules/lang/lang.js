@@ -85,7 +85,8 @@ let Language = {
 		AWARD_TITLE: 'Award title',
 		AWARD_TYPE: 'Award type',
 		ADD_MORE_AWARD: 'Add more awards',
-		SELECT_AWARD_TYPE: 'Select award type'
+		SELECT_AWARD_TYPE: 'Select award type',
+		FEED_CONTENT_REQUIRED: 'Feed content is required'
 	},
 	de: {
 

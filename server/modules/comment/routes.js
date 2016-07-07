@@ -67,7 +67,6 @@ module.exports = function(kernel) {
    * Get list comment parameter objectId, objectName
    */
   kernel.app.get('/api/v1/comments/:objectId/:objectName', (req, res) => {
-    var result = [];
     var page = req.query.page || 1;
     var pageSize = req.query.pagesize || kernel.config.COMMENT_PAGE_SIZE;
     var isSubComment = req.query.isSubComment || false;

@@ -4,6 +4,23 @@ import async from 'async';
 import multer from 'multer';
 
 module.exports = function(kernel) {
+
+	/*Get all feeds by event id*/
+	kernel.app.get('/api/v1/feeds/:id/event', kernel.middleware.isAuthenticated(), (req, res) => {
+		let page = req.query.page || 1;
+    let pageSize = req.query.pagesize || 5;
+		kernel.model.Feed.find({eventId: req.params.id})
+		.populate('ownerId', '-password -salt')
+		.populate('photosId')
+		.limit(Number(pageSize))
+    .skip(pageSize * (page-1))
+    .exec().then(feeds => {
+    	return res.status(200).json({items: feeds, totalItem: feeds.length});
+    }).catch(err => {
+    	return res.status(500).json({type: 'SERVER_ERROR'});
+    })
+	});
+
 	/*Create new feed*/
 	kernel.app.post('/api/v1/feeds', kernel.middleware.isAuthenticated(), (req, res) => {
 		let storage = multer.diskStorage({
@@ -84,8 +101,22 @@ module.exports = function(kernel) {
           callback(err);
         });
       }, (err, result) => {
-      	console.log(err);
-      	console.log(result);
+      	if (err) {
+      		return res.status(500).json({type: 'SERVER_ERROR'})
+      	}
+      	data.photosId = uploadedPhotoIds;
+      	data.ownerId = req.user._id;
+      	kernel.model.Feed(data).save().then(feed => {
+      		kernel.model.Feed.populate(feed, [
+      			{path: 'ownerId', select: '-password -salt'},
+      			{path: 'photosId'}
+    			], (err, result) => {
+    				return res.status(200).json(result);
+    			});
+      	}).catch(err => {
+      		console.log(err);
+      		return res.status(500).json({type: 'SERVER_ERROR'})
+      	})
       });
     });
 	});

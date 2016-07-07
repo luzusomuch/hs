@@ -33,7 +33,8 @@ module.exports = function(kernel) {
           	let totalLike = obj.get('totalLike');
           	totalLike -=1;
           	obj.set('totalLike', totalLike);
-          	obj.save().then(() => {
+          	obj.save().then(newObj => {
+          		kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: newObj._id.toString(), data: newObj}).save();
         			res.status(200).json({ liked: false });
           	}).catch(err => {
           		console.log(err);
@@ -55,4 +56,20 @@ module.exports = function(kernel) {
     	return res.status(500).json({type: 'SERVER_ERROR'});
     });
 	});
+
+	/**
+   * Check user liked an object or not 
+   */
+  kernel.app.get('/api/v1/likes/:objectId/:objectName/check', kernel.middleware.isAuthenticated(), (req, res) => {
+    kernel.model.Like.findOne({ objectId: req.params.objectId, objectName:req.params.objectName, ownerId: req.user._id})
+    .then(comment =>{
+      if (!comment) {
+        return res.status(200).json({liked:false});
+      } else {
+        return res.status(200).json({liked:true});
+      }
+    }).catch(err => {
+      return res.status(500).json(err);
+    });
+  });
 };

@@ -412,7 +412,24 @@ module.exports = function(kernel) {
       if(err) {
         return res.status(500).json({type: 'SERVER_ERROR'});
       }
-      return res.status(200).json(result);
+      async.each(result.items, (item, callback) => {
+        item.liked = false;
+        if (req.user) {
+          kernel.model.Like.findOne({objectId: item._id, objectName: 'Event', ownerId: req.user._id}).then(liked => {
+            if (!liked) {
+              return callback();
+            }
+            item.liked = true;
+            return callback();
+          }).catch(err => {
+            return callback();
+          });
+        } else {
+          return callback();
+        }
+      }, () => {
+        return res.status(200).json(result);
+      });
     });
   });
 

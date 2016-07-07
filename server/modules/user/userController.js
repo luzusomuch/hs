@@ -117,7 +117,7 @@ class UserController {
       var token = jwt.sign({ _id: user._id }, this.kernel.config.SECRETS.session, {
         expiresIn: 60 * 60 * 5
       });
-      this.kernel.queue.create(this.kernel.config.ES.events.CREATE, {type: kernel.config.ES.mapping.userType, id: user._id.toString(), data: user}).save();
+      this.kernel.queue.create(this.kernel.config.ES.events.CREATE, {type: this.kernel.config.ES.mapping.userType, id: user._id.toString(), data: user}).save();
       res.json({ token });
     })
     .catch(handleError(res));

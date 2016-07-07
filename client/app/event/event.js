@@ -36,6 +36,18 @@ angular.module('healthStarsApp').config(function($stateProvider) {
             }
           }
         );
+      },
+      liked: (LikeService, $stateParams, $location) => {
+        if (!$stateParams.id) {
+          return $location.path('404');
+        }
+        return LikeService.checkLiked($stateParams.id, 'Event').then(res => {
+          return res.data.liked;
+        }).catch(err => {
+          if (err.status !== 401) {
+            return $location.path('404');
+          }
+        });
       }
     }
   });

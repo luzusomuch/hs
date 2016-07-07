@@ -1,12 +1,13 @@
 'use strict';
 
 class HomeCtrl {
-	constructor(EventService) {
+	constructor(EventService, LikeService) {
    this.events = {
    	items: [],
    	totalItem: 0
    };
    this.EventService = EventService;
+   this.LikeService = LikeService;
    this.search();
   }
 
@@ -25,6 +26,20 @@ class HomeCtrl {
   		this.events.totalItem = res.data.totalItem;
   		this.loading = false;
   	}, () => this.loading = false);
+  }
+
+  like(event) {
+    this.LikeService.likeOrDislike(event._id, 'Event').then(resp => {
+      event.liked = resp.data.liked;
+      if (event.liked) {
+        event.totalLike = (event.totalLike) ? event.totalLike + 1 : 1;
+      } else {
+        event.totalLike = event.totalLike -1;
+      }
+    }).catch(err => {
+      // TODO - show error message
+      console.log(err);
+    });
   }
 }
 

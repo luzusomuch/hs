@@ -115,7 +115,7 @@ exports.core = (kernel) => {
 	kernel.ES = new HealthStarsES(kernel.config.ES, m.mapping);
 	kernel.ES.index((err) => {
 		if(err) {
-			return console.log(err);
+		 console.log(err);
 		}
 
 		/**

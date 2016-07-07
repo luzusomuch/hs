@@ -1759,3 +1759,6 @@ label {
 .date-weather .prev-wea {
     right: 0px;
 }
+.liked {
+    color: red
+}

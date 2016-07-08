@@ -1793,3 +1793,9 @@ label {
 .fa-icon-input {
     font-size: 15px !important;
 }
+.intl-tel-input{
+    width: 100% !important;
+}
+span.country-name {
+    color: #999 !important;
+}

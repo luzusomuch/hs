@@ -32,6 +32,9 @@ class RegisterCtrl {
   register(form) {
     this.submitted = true;
     if (form.$valid && this.address.selected) {
+      if (this.user.phoneNumber) {
+        this.user.phoneNumber = $("#phone").intlTelInput('getNumber');
+      }
       var selectedAddress = this.address.selected;
       this.user.location.coordinates = [selectedAddress.geometry.location.lng, selectedAddress.geometry.location.lat];
       this.user.location.country = selectedAddress.address_components[selectedAddress.address_components.length -1].long_name;

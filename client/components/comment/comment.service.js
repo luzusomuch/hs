@@ -14,7 +14,7 @@
   			return $http.get('/api/v1/comments/'+id+'/'+type, {params: params});
   		},
   		checkCommentatorExisted(id, type) {
-  			return $http.get('/api/v1/comments/'+id+'/'+type+'/check')
+  			return $http.get('/api/v1/comments/'+id+'/'+type+'/check');
   		},
   		delete: (id) => {
   			return $http.delete('/api/v1/comments/'+id);

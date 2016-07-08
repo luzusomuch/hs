@@ -1799,3 +1799,6 @@ label {
 span.country-name {
     color: #999 !important;
 }
+.uib-datepicker-popup button {
+    border-radius: 0px !important;
+}

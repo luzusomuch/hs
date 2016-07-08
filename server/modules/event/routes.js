@@ -2,8 +2,7 @@ import Joi from 'joi';
 import _ from 'lodash';
 import async from 'async';
 import multer from 'multer';
-// import path from 'path';
-// import S3 from './../../components/S3';
+import moment from 'moment';
 
 module.exports = function(kernel) {
 	kernel.app.post('/api/v1/events/', kernel.middleware.isAuthenticated(), (req, res) => {
@@ -144,6 +143,10 @@ module.exports = function(kernel) {
         });
         // return kernel.errorsHandler.parseError(errors);
         return res.status(422).json(errors);
+      }
+
+      if (moment(moment(data.startDateTime).format('YYYY-MM-DD HH:mm')).isSameOrAfter(moment(data.endDateTime).format('YYYY-MM-DD HH:mm'))) {
+        return res.status(422).json({type: 'CHECK_DATE_TIME_AGAIN', path: 'datetime', message: 'Check your date time again'})
       }
 
       async.each(req.files, (file, callback) => {

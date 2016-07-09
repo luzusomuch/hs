@@ -1,8 +1,9 @@
 'use strict';
 
 class EventDetailCtrl {
-	constructor($scope, event, $localStorage, liked, LikeService, Upload, $cookies, $stateParams, FeedService) {
+	constructor($scope, event, $localStorage, liked, LikeService, Upload, $cookies, $stateParams, FeedService, PhotoViewer) {
 		this.event = event;
+		this.viewer = PhotoViewer;
 		this.submitted = false;
 		this.feed = {};
 		this.files = [];
@@ -26,6 +27,14 @@ class EventDetailCtrl {
 			this.feeds = resp.data.items;
 			this.pageSize = resp.data.totalItem;
 		});
+	}
+
+	viewPhoto(photo, fid) {
+		this.viewer.setPhoto(photo, {
+			type: 'feed',
+			tid: fid
+		});
+		this.viewer.toggle(true);
 	}
 
 	isNotParticipant() {

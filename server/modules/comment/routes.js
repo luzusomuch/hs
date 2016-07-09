@@ -110,7 +110,7 @@ module.exports = function(kernel) {
       return res.status(422).json(kernel.errorsHandler.parseError(result.error));
     }
 
-    kernel.model.Comment.findOne({_id: req.params.id, ownerId: req.user._id})
+    kernel.model.Comment.findById(req.params.id)
     .then(comment =>{
       if (!comment){
         return res.status(404).json({message: 'Comment not found'});
@@ -118,9 +118,51 @@ module.exports = function(kernel) {
       if (comment.deleted) {
         return res.status(422).json({message: 'This comment was deleted'});
       }
-      comment.content = req.body.content;
-      comment.save().then(updated =>{
-        return res.status(200).json(updated);
+      async.parallel([
+        (cb) => {
+          kernel.model[comment.objectName].findById(comment.objectId).then(data => {
+            if (comment.objectName==='Feed') {
+              cb(null, data.eventId);
+            } else if (comment.objectName==='Photo') {
+              kernel.model.Feed.findOne({photosId: data._id}).then(data => {
+                cb(null, data.eventId);
+              }).catch(cb);
+            } else if (comment.objectName==='Comment') {
+              // If it a sub-comment
+              if (data.objectName==='Feed') {
+                kernel.model[data.objectName].findById(data.objectId).then(feed => {
+                  cb(null, feed.eventId);
+                }).catch(cb);
+              } else if (data.objectName==='Photo') {
+                kernel.model.Feed.findOne({photosId: data.objectId}).then(feed => {
+                  cb(null, feed.eventId);
+                }).catch(cb);
+              } else {
+                cb({error: 'Not found'});
+              }
+            } else {
+              cb({error: 'Not found'});
+            }
+          }).catch(cb);
+        }
+      ], (err, result) => {
+        if (err) {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        }
+        // Now we got the eventId and we can get the event owner
+        kernel.model.Event.findById(result[0]).then(event => {
+          if (req.user._id.toString()=== event.ownerId.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin'){
+            comment.content = req.body.content;
+            comment.save().then(updated =>{
+              return res.status(200).json(updated);
+            });
+          } else {
+            return res.status(403).end();
+          }
+        })
+        .catch(err => {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        });
       });
     }).catch(err => {
       return res.status(500).json(err);
@@ -151,18 +193,55 @@ module.exports = function(kernel) {
       if (comment.deleted) {
         return res.status(200).end();
       }
-      if (comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin'){
-        comment.deleted = true;
-        comment.deletedByUserId = req.user._id;
-        // we not delete the comment. We just update status of the comment
-        comment.save().then(() => {
-          return res.status(200).end();
+      async.parallel([
+        (cb) => {
+          kernel.model[comment.objectName].findById(comment.objectId).then(data => {
+            if (comment.objectName==='Feed') {
+              cb(null, data.eventId);
+            } else if (comment.objectName==='Photo') {
+              kernel.model.Feed.findOne({photosId: data._id}).then(data => {
+                cb(null, data.eventId);
+              }).catch(cb);
+            } else if (comment.objectName==='Comment') {
+              // If it a sub-comment
+              if (data.objectName==='Feed') {
+                kernel.model[data.objectName].findById(data.objectId).then(feed => {
+                  cb(null, feed.eventId);
+                }).catch(cb);
+              } else if (data.objectName==='Photo') {
+                kernel.model.Feed.findOne({photosId: data.objectId}).then(feed => {
+                  cb(null, feed.eventId);
+                }).catch(cb);
+              } else {
+                cb({error: 'Not found'});
+              }
+            } else {
+              cb({error: 'Not found'});
+            }
+          }).catch(cb);
+        }
+      ], (err, result) => {
+        if (err) {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        }
+        // Now we got the eventId and we can get the event owner
+        kernel.model.Event.findById(result[0]).then(event => {
+          if (req.user._id.toString()=== event.ownerId.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin'){
+            comment.deleted = true;
+            comment.deletedByUserId = req.user._id;
+            // we not delete the comment. We just update status of the comment
+            comment.save().then(() => {
+              return res.status(200).end();
+            }).catch(err => {
+              return res.status(500).json(err);
+            });
+          } else {
+            return res.status(403).end();
+          }
         }).catch(err => {
-          return res.status(500).json(err);
-        });
-      } else {
-        return res.status(403).end();
-      }
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        })
+      });
     }).catch(err => {
       return res.status(500).json(err);
     });

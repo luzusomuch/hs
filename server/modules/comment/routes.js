@@ -75,13 +75,22 @@ module.exports = function(kernel) {
     .limit(Number(pageSize))
     .skip(pageSize * (page-1))
     .exec().then(comments => {
-      async.each(comments, (comment, callback) => {
-        kernel.model.User.findById(comment.ownerId, '-password -salt').populate('avatar').exec().then(user => {
-          comment.ownerId = user;
-          callback()
-        }).catch(callback);
-      }, () => {
-        return res.status(200).json({comments: comments, totalItem: comments.length});
+      async.parallel([
+        (cb) => {
+          kernel.model.Comment.count({objectId:req.params.objectId, objectName:req.params.objectName, isSubComment: isSubComment}).then(count => {
+            cb(null, count);
+          });
+        },
+        (cb) => {
+          async.each(comments, (comment, callback) => {
+            kernel.model.User.findById(comment.ownerId, '-password -salt').populate('avatar').exec().then(user => {
+              comment.ownerId = user;
+              callback()
+            }).catch(callback);
+          }, cb);
+        }
+      ], (err, result) => {
+        return res.status(200).json({comments: comments, totalItem: result[0]});
       });
     }).catch(err => {
       console.log(err);

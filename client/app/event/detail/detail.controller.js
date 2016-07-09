@@ -102,6 +102,7 @@ class EventDetailCtrl {
 	    }).then(resp =>{
         this.submitted = false;
         this.feed = {};
+        this.files = [];
         this.feeds.push(resp.data);
 	    }, (err) => {
 	    	console.log(err);

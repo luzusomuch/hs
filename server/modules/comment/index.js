@@ -4,7 +4,7 @@ exports.config = {
   COMMENT_VALIDATORS: {
     minLength: 1
   },
-  COMMENT_PAGE_SIZE: 50
+  COMMENT_PAGE_SIZE: 3
 };
 
 exports.name = 'Comment';

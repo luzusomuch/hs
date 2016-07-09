@@ -56,16 +56,31 @@ class EventDetailCtrl {
       });
 
       if (index === -1) {
-        this.files.push(file);
+      	this.files.push(file);
+      	this.checkNude(file, (result) => {
+      		file.nude = result;
+      	});
       }
     });
   }
 
+  checkNude(file, cb) {
+  	setTimeout(function() {
+  		nude.load(file.name);
+	  	nude.scan(result => {
+	  		cb(result);
+	  	});
+  	}, 500);
+  }
+
 	createNewFeed(feed) {
 		this.submitted = true;
+		this.errors = {};
+		if (_.filter(this.files, {nude: true}).length > 0) {
+			return this.errors.file = true;
+		}
 		if (feed.content && feed.content.trim().length > 0) {
 			feed.eventId = this.$stateParams.id;
-			this.errors = {};
 			this.Upload.upload({
 	      url: '/api/v1/feeds',
 	      arrayKey: '',

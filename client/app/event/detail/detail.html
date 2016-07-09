@@ -51,10 +51,16 @@
             <div class="box-blue">
                 <div class="form-post">
                     <textarea ng-model="vm.feed.content" placeholder="Write something....."></textarea>
+                    <div class="row new-feed-preview-images" ng-show="vm.files.length > 0">
+                        <div ng-repeat="file in vm.files" class="col-sm-3">
+                            <img ng-class="{'nude-image': file.nude}" id="{{file.name}}" ngf-thumbnail="file" width="150" height="150">
+                        </div>
+                    </div>
                     <div class="bottom-post">
                         <a href="#" class="post-picture" ngf-select="vm.select($files)" ngf-multiple="true" accept="image/*"><i class="fa fa-picture-o"></i></a>
                         &nbsp;
                         <p class="new-feed-error" ng-show="vm.errors.content && vm.submitted">{{'FEED_CONTENT_REQUIRED' | translate}}</p>
+                        <p class="new-feed-error" ng-show="vm.errors.file && vm.submitted">{{'NUDE_FOUND' | translate}}</p>
                         <button class="btn btn-primary" ng-click="vm.createNewFeed(vm.feed)">{{'POST' | translate}}</button>
                     </div>
                 </div>

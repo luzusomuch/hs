@@ -1802,3 +1802,13 @@ span.country-name {
 .uib-datepicker-popup button {
     border-radius: 0px !important;
 }
+.new-feed-preview-images {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+}
+.new-feed-preview-images > img {
+    margin-right: 5px;
+}
+.nude-image {
+    border: 1px solid red;
+}

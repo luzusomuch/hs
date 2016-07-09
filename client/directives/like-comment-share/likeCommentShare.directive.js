@@ -21,6 +21,7 @@ class likeCommentShareCtrl {
   		this.data.liked = resp.data.liked;
   	});
   	this.pageSize = 3;
+    this.page = 1;
   	this.comment = {};
   	this.authUser = $localStorage.authUser;
   }
@@ -40,19 +41,30 @@ class likeCommentShareCtrl {
 
   loadComment(data, type, params) {
     this.CommentService.getListComments(data._id, type, params).then(resp => {
-      data.comments = resp.data.comments;
-      this.pageSize += 3;
+      data.comments = (data.comments) ? data.comments.concat(resp.data.comments) : resp.data.comments;
+      data.comments = _.uniq(data.comments, '_id');
+      data.comments.sort((a,b) => {
+        if (a.createdAt < b.createdAt) {
+          return -1;
+        }
+        if (a.createdAt > b.createdAt) {
+          return 1
+        }
+        return 0
+      });
+      this.pageSize = resp.data.totalItem;
+      this.page +=1;
     });
   }
 
   loadMore() {
-    this.loadComment(this.data, this.type, {pageSize: this.pageSize});
+    this.loadComment(this.data, this.type, {page: this.page});
   }
 
   showComments() {
   	this.data.showComment = !this.data.showComment;
   	if (this.data.showComment) {
-      this.loadComment(this.data, this.type, {pageSize: this.pageSize});
+      this.loadComment(this.data, this.type, {page: this.page});
   	}
   }
 
@@ -65,6 +77,7 @@ class likeCommentShareCtrl {
   			$('#reply-textarea').css('height', '43px');
   			this.data.comments.push(resp.data);
   			this.data.totalComment = (this.data.totalComment) ? this.data.totalComment+=1 : 1;
+        this.pageSize +=1;
   		}).catch(err => {
   			console.log(err);
   		});

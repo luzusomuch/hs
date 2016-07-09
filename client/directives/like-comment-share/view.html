@@ -29,7 +29,7 @@
           </div>
         </div>
       </div>
-      <div class="load-more" ng-show="vm.data.comments.length < vm.pageSize" ng-click="vm.loadMore()">
+      <div class="load-more" ng-hide="vm.data.comments.length === vm.pageSize" ng-click="vm.loadMore()">
         {{'LOAD_MORE_COMMENT' | translate}}
       </div>
     </li>

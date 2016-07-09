@@ -4,9 +4,11 @@ class EventAttendingCtrl {
 	constructor($scope, EventService) {
 		this.participants = {};
 		$scope.$watch('eId', (nv) => {
-			EventService.getParticipants(nv).then(
-				res => this.participants = res.data
-			);
+			if(nv) {
+				EventService.getParticipants(nv).then(
+					res => this.participants = res.data
+				);
+			}
 		});
 	}
 }

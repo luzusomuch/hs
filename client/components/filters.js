@@ -213,7 +213,7 @@ angular.module('healthStarsApp')
           imagePath = (image.metadata.large) ? image.metadata.large : '/assets/photos/'+image.metadata.tmp;
           break;
         default:
-          imagePath = image.metadata.tmp;
+          imagePath = '/assets/photos/'+image.metadata.tmp;
           break;
       }
       return imagePath;

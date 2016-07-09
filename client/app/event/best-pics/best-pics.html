@@ -2,7 +2,7 @@
     <div class="title-blue">{{'BEST_PICS' | translate}}</div>
     <ul class="row row-small list-photo">
         <li class="col-xs-6" ng-repeat="pic in vm.bestPics">
-        <a href="#"><div class="bg-cover" ng-style="{backgroundImage: 'url(' + vm.photoFilter(pic, 'medium')  + ')'}"></div></a>
+        <a href="#" ng-click="vm.viewPhoto(pic)"><div class="bg-cover" ng-style="{backgroundImage: 'url(' + vm.photoFilter(pic, 'medium')  + ')'}"></div></a>
         </li>
     </ul>
 </div>

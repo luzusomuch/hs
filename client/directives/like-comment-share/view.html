@@ -18,14 +18,15 @@
             <h4 class="title-generated-home">{{comment.ownerId.name}}
               <span class="date-post">{{comment.createdAt | fromNow}}</span> 
               <span ng-click="comment.showOption=!comment.showOption" class="comment-option-button"><i class="fa fa-ellipsis-v"></i></span>
-              <ul class="comment-option" ng-show="comment.showOption">
-                <li ng-click="">{{'EDIT_COMMENT' | translate}}</li>
+              <ul class="comment-option" ng-show="comment.showOption && !comment.deleted">
+                <li ng-click="comment.isEdit=!comment.isEdit; comment.showOption=false">{{'EDIT_COMMENT' | translate}}</li>
                 <li ng-click="vm.deleteComment(comment)">{{'DELETE_COMMENT' | translate}}</li>
               </ul>
             </h4>
           </div>
           <div class="content-post-li">
-            {{(comment.deleted) ? 'This comment was deleted.' :comment.content}}
+            <span ng-show="!comment.isEdit">{{(comment.deleted) ? 'This comment was deleted.' :comment.content}}</span>
+            <input class="input-edit-comment" ng-show="comment.isEdit" type="text" ng-model="comment.content" ng-blur="vm.editComment(comment)">
           </div>
         </div>
       </div>

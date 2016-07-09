@@ -1842,3 +1842,8 @@ span.country-name {
 .load-more {
     margin-left: 10px;
 }
+.input-edit-comment {
+    width: 90%;
+    border-radius: 5px;
+    color: #000;
+}

@@ -172,6 +172,9 @@ img {
     margin: 15px 0px;
     background: url(/assets/images/bg-line1.png) no-repeat center;
 }
+.or-login span {
+    text-transform: uppercase;
+}
 .list-social li {
     display: inline-block;
     margin: 0px 5px;
@@ -1034,7 +1037,7 @@ label {
 .title-generated-home span.date-post {
     position: absolute;
     top: 15px;
-    right: 14px;
+    right: 25px;
     font-size: 13px;
 }
 .bottom-li-post {
@@ -1703,7 +1706,7 @@ label {
 }
 
 .error-input {
-    border: 3px solid red
+    /*border: 3px solid red*/
 }
 .error-text {
     color: red;
@@ -1726,6 +1729,7 @@ label {
     width: 100% !important;
     border-radius: 20px;
     height: 38px !important;
+    overflow: hidden;
 }
 
 .box-weather {
@@ -1900,4 +1904,75 @@ label {
 }
 .photo-next {
     right:0px;
+}
+.upper-case {
+    text-transform: uppercase;
+}
+.sign-up-success-validate {
+    position: absolute;
+    right: 0px;
+    top: 25px;
+    color: #1dc46c;
+}
+.sign-up-error-validate {
+    position: absolute;
+    right: 0px;
+    top: 25px;
+    color: red;
+}
+.fa-cicle-input {
+    font-size: 1.5em !important;
+    top: 5px !important;
+}
+.fa-icon-input {
+    font-size: 15px !important;
+}
+.intl-tel-input{
+    width: 100% !important;
+}
+span.country-name {
+    color: #999 !important;
+}
+.uib-datepicker-popup button {
+    border-radius: 0px !important;
+}
+.new-feed-preview-images {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    margin: 0px;
+}
+.new-feed-preview-images > img {
+    margin-right: 5px;
+}
+.nude-image {
+    border: 1px solid red;
+}
+.remove-icon {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+.remove-icon i {
+    font-size: 2em;
+    color: red;
+}
+.title-generated-home span.comment-option-button {
+    position: absolute;
+    top: 15px;
+    right: 0px;
+    cursor: pointer;
+}
+.title-generated-home ul.comment-option {
+    position: absolute;
+    top: 31px;
+    right: 0px;
+    background: rgba(255,255,255,0.2);
+    padding: 5px;
+    text-align: right;
+}
+.title-generated-home ul.comment-option li {
+    cursor: pointer;
+}
+.load-more {
+    margin-left: 10px;
 }

@@ -56,6 +56,7 @@ module.exports = function(kernel) {
       }
       let model = new kernel.model.Comment(data);
       model.save().then(comment => {
+        comment.ownerId = req.user;
         return res.status(200).json(comment);
       }).catch(err => {
         return res.status(500).json(err);
@@ -68,7 +69,7 @@ module.exports = function(kernel) {
    */
   kernel.app.get('/api/v1/comments/:objectId/:objectName', (req, res) => {
     var page = req.query.page || 1;
-    var pageSize = req.query.pagesize || kernel.config.COMMENT_PAGE_SIZE;
+    var pageSize = req.query.pageSize || kernel.config.COMMENT_PAGE_SIZE;
     var isSubComment = req.query.isSubComment || false;
     kernel.model.Comment.find({objectId:req.params.objectId, objectName:req.params.objectName, isSubComment: isSubComment}) 
     .limit(Number(pageSize))
@@ -138,6 +139,9 @@ module.exports = function(kernel) {
    */
   kernel.app.delete('/api/v1/comments/:id', kernel.middleware.isAuthenticated(), (req, res) => {
     kernel.model.Comment.findById(req.params.id).then(comment =>{
+      if (comment.deleted) {
+        return res.status(200).end();
+      }
       if (comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin'){
         comment.deleted = true;
         comment.deletedByUserId = req.user._id;

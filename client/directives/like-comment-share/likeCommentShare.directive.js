@@ -4,7 +4,8 @@ angular.module('healthStarsApp').directive('likeCommentShare', () => ({
   restrict: 'E',
   scope: {
   	data: '=',
-    type: '@'
+    type: '@',
+    eventOwner: '='
   },
   controller: 'likeCommentShareCtrl',
   controllerAs: 'vm',
@@ -37,13 +38,21 @@ class likeCommentShareCtrl {
   	});
   }
 
+  loadComment(data, type, params) {
+    this.CommentService.getListComments(data._id, type, params).then(resp => {
+      data.comments = resp.data.comments;
+      this.pageSize += 3;
+    });
+  }
+
+  loadMore() {
+    this.loadComment(this.data, this.type, {pageSize: this.pageSize});
+  }
+
   showComments() {
   	this.data.showComment = !this.data.showComment;
   	if (this.data.showComment) {
-  		this.CommentService.getListComments(this.data._id, this.type).then(resp => {
-  			this.data.comments = resp.data.comments;
-  			this.pageSize = resp.data.totalItem;
-  		});
+      this.loadComment(this.data, this.type, {pageSize: this.pageSize});
   	}
   }
 
@@ -62,6 +71,20 @@ class likeCommentShareCtrl {
   	} else {
   		// TODO show error when enter empty content
   	}
+  }
+
+  deleteComment(comment) {
+    comment.showOption = false;
+    if (this.authUser._id===comment.ownerId._id || this.authUser._id===this.eventOwner._id || this.authUser._id===this.eventOwner) {
+      this.CommentService.delete(comment._id).then(() => {
+        comment.deleted = true;
+      }).catch(err => {
+        console.log(err);
+        // TODO show error 
+      });
+    } else {
+      // TODO - show error
+    }
   }
 }
 

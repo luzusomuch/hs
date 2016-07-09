@@ -59,6 +59,11 @@ class CreateEventCtrl {
     CategoryService.getAll().then(resp => {
     	this.categories = resp.data.items;
     });
+
+    this.options = {
+      minDate: new Date(),
+      showWeeks: true
+    };
   }
 
   refreshAddresses(address) {
@@ -134,6 +139,11 @@ class CreateEventCtrl {
     });
   }
 
+  onTimeSet(newDate, oldDate) {
+    console.log(newDate);
+    console.log(oldDate);
+  }
+
   create(form) {
     this.errors = {};
     this.submitted = true;
@@ -162,6 +172,10 @@ class CreateEventCtrl {
 
   		this.event.startDateTime = new Date(moment(this.event.startDate).hours(moment(this.event.startTime).hours()).minutes(moment(this.event.startTime).minutes()));
   		this.event.endDateTime = new Date(moment(this.event.endDate).hours(moment(this.event.endTime).hours()).minutes(moment(this.event.endTime).minutes()));
+
+      if (moment(moment(this.event.startDateTime).format('YYYY-MM-DD HH:mm')).isSameOrAfter(moment(this.event.endDateTime).format('YYYY-MM-DD HH:mm'))) {
+        return this.errors.dateTime = true;
+      }
 
   		this.Upload.upload({
 	      url: '/api/v1/events',

@@ -1,9 +1,11 @@
 'use strict';
 
 class EventBestPicsCtrl {
-	constructor($scope, EventService, $filter) {
+	constructor($scope, EventService, $filter, PhotoViewer) {
 		this.bestPics = [];
 		this.photoFilter = $filter('imageUrl');
+		this.viewer = PhotoViewer;
+		this.eventId = $scope.eId;
 		$scope.$watch('eId', (nv) => {
 			if(nv) {
 				let limit = $scope.limit || 4;
@@ -16,6 +18,15 @@ class EventBestPicsCtrl {
 			}
 		});
 	}
+
+	viewPhoto(photo) {
+		this.viewer.setPhoto(photo, {
+			type: 'bestPics',
+			eid: this.eventId
+		});
+		this.viewer.toggle(true);
+	}
+
 }
 
 angular.module('healthStarsApp').directive('hsEventBestPics', () => {

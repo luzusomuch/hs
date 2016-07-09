@@ -41,8 +41,8 @@
                   <div class="col-sm-2" style="margin-top: 5px">{{'FROM' | translate}}</div>
                   <div class="col-sm-5">
                     <div class="form-group">
-                      <div class="input-group date">
-                        <input type="date" class="form-control" id="datetimepicker1" placeholder="Date" ng-model="vm.event.startDate" required name="startDate">
+                      <div class="input-group date" ng-click="isOpenFromDate=!isOpenFromDate">
+                        <input type="text" class="form-control" id="datetimepicker1" placeholder="Date" ng-model="vm.event.startDate" required name="startDate" uib-datepicker-popup="{{'dd-MMMM-yyyy'}}" is-open="isOpenFromDate" datepicker-options="vm.options">
                         <span class="input-group-addon">
                           <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -70,8 +70,8 @@
                   <div class="col-sm-2" style="margin-top: 5px">{{'TO' | translate}}</div>
                   <div class="col-sm-5">
                     <div class="form-group">
-                      <div class="input-group date">
-                        <input type="date" class="form-control" id="datetimepicker3" placeholder="Date" ng-model="vm.event.endDate" required name="endDate">
+                      <div class="input-group date" ng-click="isOpenToDate=!isOpenToDate">
+                        <input type="text" class="form-control" id="datetimepicker3" placeholder="Date" ng-model="vm.event.endDate" required name="endDate" uib-datepicker-popup="{{'dd-MMMM-yyyy'}}" is-open="isOpenToDate" datepicker-options="vm.options">
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -92,6 +92,12 @@
                 <div class="row" style="height:25px" ng-show="vm.errors.endDateTime && vm.submitted">
                   <div class="col-sm-12">
                     <p class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+                  </div>
+                </div>
+
+                <div class="row" style="height:25px" ng-show="vm.errors.dateTime && vm.submitted">
+                  <div class="col-sm-12">
+                    <p class="error-text">{{'CHECK_DATE_TIME_AGAIN' | translate}}</p>
                   </div>
                 </div>
 

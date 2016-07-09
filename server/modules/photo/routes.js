@@ -15,7 +15,6 @@ module.exports = function(kernel) {
 				if(!req.query.tid || !kernel.mongoose.Types.ObjectId.isValid(req.query.tid)) {
 					return cb(null);
 				}
-				console.log(req.query.type);
 				switch(req.query.type) {
 					case 'event':
 					case 'bestPics':
@@ -36,22 +35,31 @@ module.exports = function(kernel) {
 				return res.status(200).json({detail: result.photo, next: null, prev: null});
 			}
 
-			let getPhoto = (type, ids) => {
+			let getPhoto = (id) => {
 				return (cb) => {
-					var condition = { 
-						$and: [
-							{ _id: { $in: ids } }
-						]
-					},
-					sort = type === 'next' ? { _id: 1 } : { _id: -1 };
-					if(type === 'next') {
-						condition.$and.push({ _id: { $gt: result.photo._id } });
-					} else {
-						condition.$and.push({ _id: { $lt: result.photo._id } });
-					}
-					kernel.model.Photo.findOne(condition).sort(sort).limit(1).exec(cb);
+					kernel.model.Photo.findById(id, cb);
 				};
 			};
+
+			let response = (res, ids) => {
+				let idx = _.findIndex(ids, id => {
+      		return id.toString() === result.photo._id.toString();
+      	});
+      	var funcs = {};
+      	if(ids[idx+1]) {
+      		funcs.next = getPhoto(ids[idx+1]);
+      	}
+
+      	if(ids[idx-1]) {
+      		funcs.prev = getPhoto(ids[idx-1]);
+      	}
+       	async.parallel(funcs, (err, photos) => {
+	      	if(err) return res.status(500).json({type: 'SERVER_ERROR'});
+	      	photos.next = photos.next || null;
+	      	photos.prev = photos.prev || null;
+	      	return res.status(200).json(_.merge({detail: result.photo}, photos));
+	      });
+      };
 			
 			if(req.query.type === 'bestPics') {
 				async.waterfall([
@@ -60,6 +68,7 @@ module.exports = function(kernel) {
               eventId: result.belongTo._id,
               blocked: false
             }, (err, feeds) => {
+            	console.log(feeds);
               if(err) return cb(err);
               let photosId = [];
               _.each(feeds, feed => {
@@ -67,30 +76,17 @@ module.exports = function(kernel) {
               });
               return cb(null, _.uniq(photosId));
             });
-	        },
-
-	        (feedPhotoIds, cb) => {
-	        	
-	         	/*var funcs = {};
-	         	console.log(photo);
-	         	if(!photo.next) funcs.next = getPhoto('next', result.belongTo.photosId, true);
-	         	if(!Object.keys(funcs).length) {
-	         		return cb(null, photo);
-	         	}
-	         	async.parallel(funcs, cb);*/
 	        }
-	      ], (err, photos) => {
+	      ],  (err, photoIds) => {
 	      	if(err) return res.status(500).json({type: 'SERVER_ERROR'});
-	      	return res.status(200).json(_.merge({detail: result.photo}, photos));
-	      });
+        	let feedPhotoIds = _.reverse(_.sortBy(photoIds));
+        	let belongToIds = _.reverse(_.sortBy(result.belongTo.photosId));
+        	let ids = feedPhotoIds.concat(belongToIds);
+        	return response(res, ids);
+        });
 			} else {
-				var funcs = {};
-       	funcs.next = getPhoto('next', result.belongTo.photosId);
-       	funcs.prev = getPhoto('prev', result.belongTo.photosId);
-       	async.parallel(funcs, (err, photos) => {
-	      	if(err) return res.status(500).json({type: 'SERVER_ERROR'});
-	      	return res.status(200).json(_.merge({detail: result.photo}, photos));
-	      });
+				let ids = _.reverse(_.sortBy(result.belongTo.photosId));
+				return response(res, ids);
 			}
 		});
 	});

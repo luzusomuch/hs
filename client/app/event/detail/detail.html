@@ -81,7 +81,9 @@
                         <div class="img-content-post">
                             <div class="row row-small">
                                 <div ng-class="{'col-xs-6': feed.photosId.length > 1, 'col-xs-12': feed.photosId.length==1}" ng-repeat="photo in feed.photosId | limitTo: 2">
-                                    <div class="bg-cover " style="background-image: url({{photo | imageUrl: 'medium'}}); height: 150px"></div>
+                                    <a href ng-click="vm.viewPhoto(photo, feed._id)">
+                                        <div class="bg-cover " style="background-image: url({{photo | imageUrl: 'medium'}}); height: 150px"></div>
+                                    </a>
                                 </div>
                             </div>
                         </div>

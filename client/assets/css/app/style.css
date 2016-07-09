@@ -1767,3 +1767,137 @@ label {
     top: 10px;
     color: red;
 }
+.popup-photo {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+}
+.bg-popup {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    background:rgba(0,0,0,0.8);
+}
+.content-popup {
+    width: 800px;
+    height: 85%;
+    -ms-transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    left: 50%;
+    top: 50%;
+    background: #141c2d;
+    position: absolute;
+    z-index:10;
+}
+.row-photos {
+    position: relative;
+    padding-right: 300px;
+}
+.img-popup, .table-img, .cell-img, .row-photos {
+    height: -o-calc(100% );
+    height: -webkit-calc(100%);
+    height: -moz-calc(100%);
+}
+.table-img {
+    display: table;
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+.table-img:hover > .photo-prev {
+    opacity: 1 !important;
+}
+
+.table-img:hover > .photo-next {
+    opacity: 1 !important;
+}
+.cell-img {
+    display: table-cell;
+    vertical-align: middle;
+}
+.img-popup img {
+    max-width: 100%;
+    max-height: 100%;
+}
+.comment-popup {
+    width: 300px;
+    height: 100%;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    background: #0f1838;
+    padding: 15px;
+}
+.list-comment {
+    height: -o-calc(100% - 200px);
+    height: -webkit-calc(100% - 200px);
+    height: -moz-calc(100%- 200px);
+    overflow: auto;
+}
+.list-comment .post-li {
+    border: 0px;
+    padding-bottom: 5px;
+}
+.list-comment .bottom-li-post {
+    margin-top: 5px;
+}
+.list-comment .bottom-li-post a {
+    color: #fff;
+}
+.action-popup-photo {
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding-bottom: 10px ;
+    margin-bottom: 15px ;
+}
+.post-li-no .img-post-li {
+    left: 0px;
+}
+.post-li-no {
+    padding-left:65px;
+}
+.img-popup .action-popup-photo {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+}
+.close-popup {
+    font-size: 20px;
+    color: #fff;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    opacity: 0.5;
+    z-index: 10;
+    cursor: pointer;
+}
+.photo-prev, .photo-next {
+    position: absolute;
+    top: 50%;
+    display: block;
+    /* width: 20px; */
+    /* height: 20px; */
+    /* padding: 0; */
+    -webkit-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    cursor: pointer;
+    color: #fff;
+    font-size: 20px;
+    background: #000;
+    padding: 10px;
+    opacity: 0;
+}
+.photo-prev {
+    left: 0px;
+}
+.photo-next {
+    right:0px;
+}

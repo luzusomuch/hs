@@ -39,6 +39,7 @@
     <hs-header ng-if="appSettings.get('header')"></hs-header>
     <div ui-view class="content-home"></div>
     <hs-footer ng-if="appSettings.get('footer')"></hs-footer>
+    <hs-photo-viewer></hs-photo-viewer>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
@@ -102,6 +103,7 @@
       <script src="app/event/create/create-event.controller.js"></script>
       <script src="app/event/detail/detail.controller.js"></script>
       <script src="app/event/event.js"></script>
+      <script src="app/event/invite/invite.directive.js"></script>
       <script src="app/event/map/map.directive.js"></script>
       <script src="app/event/modal/add-award.controller.js"></script>
       <script src="app/event/modal/add-participants.controller.js"></script>
@@ -113,6 +115,7 @@
       <script src="app/header/header.js"></script>
       <script src="app/home/home.controller.js"></script>
       <script src="app/home/home.js"></script>
+      <script src="app/photo/photo.js"></script>
       <script src="app/user/widget/widget.directive.js"></script>
       <script src="components/auth/auth.service.js"></script>
       <script src="components/auth/interceptor.service.js"></script>

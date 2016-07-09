@@ -264,10 +264,32 @@ module.exports = function(kernel) {
           },
 
           (events, cb) => {
-            /*async.map(evetns, (event) => {
-              count comment here
-            }, cb);*/
-            cb(null, events);
+            //TODO: count number of feeds of event
+            kernel.model.Feed.aggregate([
+              { 
+                $match: {
+                  eventId: { $in: _.map(events, e => e._id) }
+                }
+              },
+              {
+                $group: {
+                  _id: '$eventId',
+                  total: { $sum: 1 }
+                }
+              }
+            ], (err, result) => {
+              if(err) return cb(err);
+              _.each(result, r => {
+                let idx = _.findIndex(events, e => {
+                  return e._id.toString() === r._id.toString();
+                });
+                if(idx !== -1) {
+                  events[idx] = events[idx].toJSON();
+                  events[idx].totalComment = r.total;
+                }
+              });
+              return cb(null, events);
+            });
           }
         ], (err, result) => {
           if(err) {
@@ -360,7 +382,6 @@ module.exports = function(kernel) {
             });
           },
           (friends, cb) => {
-            console.log(friends);
             let remainingLimit = LIMIT - friends.length;
             let remainingLength = event.participantsId.length - friends.length;
             if(event.participantsId.indexOf(req.user._id) !== -1 ) remainingLength--;
@@ -453,8 +474,32 @@ module.exports = function(kernel) {
       }
       async.waterfall([
         (cb) => {
-          // Todo - get best pics based on total of comments
-          cb(null, []);
+          async.waterfall([
+            _cb => {
+              kernel.model.Feed.find({
+                eventId: event._id,
+                blocked: false
+              }, (err, feeds) => {
+                if(err) return _cb(err);
+                let photosId = [];
+                _.each(feeds, feed => {
+                  photosId = photosId.concat(feed.photosId || []);
+                });
+                return _cb(null, _.uniq(photosId));
+              });
+            },
+
+            (photosId, _cb) => {
+              if(!photosId.length) {
+                return _cb(null, []);
+              }
+              
+              kernel.model.Photo.find({
+                _id: { $in: photosId}
+              })
+              .sort({createdAt: -1}).limit(limit).exec(_cb);
+            }
+          ], cb);
         },
         (photos, cb) => {
           if(limit === photos.length) return cb(null, photos);

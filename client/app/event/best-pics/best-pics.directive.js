@@ -22,7 +22,7 @@ class EventBestPicsCtrl {
 	viewPhoto(photo) {
 		this.viewer.setPhoto(photo, {
 			type: 'bestPics',
-			eid: this.eventId
+			tid: this.eventId
 		});
 		this.viewer.toggle(true);
 	}

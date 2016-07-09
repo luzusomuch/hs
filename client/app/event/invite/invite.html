@@ -1,0 +1,25 @@
+<div class="modal-body">
+    <h3 style="margin-top: 0">{{'INVITE_FRIEND' | translate}}</h3>
+    <ul>
+        <li class="mt-list-item" ng-repeat="user in vm.users | filter: vm.search.name">
+            <div class="list-icon-container">
+               <button ng-if="!user.wasAdded" ng-click="vm.request(user)" type="button" class="btn green">ADD</button>
+            </div>
+            <div class="list-thumb">
+                <a href="javascript:;">
+                    <img alt="" ng-src="{{user.avatar}}">
+                </a>
+            </div>
+            <div class="list-datetime bold uppercase font-red">{{user.firstName}} {{user.lastName}}</div>
+            <div class="list-item-content">
+                <h3 class="uppercase">
+                    <a href="javascript:;">&nbsp;</a>
+                </h3>
+                <p>&nbsp;</p>
+            </div>
+        </li>
+        <!-- <li class="mt-list-item" ng-show="!vm.loading && !vm.users.length">No {{vm.type}} found.</li> -->
+        <li class="mt-list-item" ng-show="vm.loading"></li>
+    </ul>
+    <hs-loading size="32"></hs-loading>
+</div>

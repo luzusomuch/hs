@@ -1,0 +1,39 @@
+<div class="popup-photo" ng-if="vm.isOpened">
+            <div class="content-popup">
+                <span class="close-popup" ng-click="vm.close()"><i class="fa fa-close"></i></span>
+                <div class="row-photos">
+                    <div class="img-popup">
+                        <div class="table-img">
+                            <div class="cell-img"><img ng-if="vm.photo" ng-src="{{vm.photo.detail | imageUrl: 'large'}}"></div>
+                            <a class="photo-next" ng-show="vm.hasPhoto('next')" ng-click="vm.next()"><i class="fa fa-angle-right"></i></a>
+                            <a class="photo-prev" ng-show="vm.hasPhoto('prev')"  ng-click="vm.prev()"><i class="fa fa-angle-left"></i></a>
+                        </div>
+<!--                         <div class="bottom-li-post action-popup-photo mobile-show">
+                                    <div class="pull-left">
+                                        <a href="#"><i class="fa fa-heart-o active"></i> 12</a>
+                                        <a href="#"><i class="fa fa-comments"></i> 30</a>
+                                        <a href="#"><i class="fa fa-reply"></i> 10</a>
+                                    </div>
+                                </div> -->
+                    </div>
+                    <div class="comment-popup" ng-if="vm.photo.detail">
+                            <div class="post-li post-li-no user-show-pop">
+                                <div class="img-post-li">
+                                     <img ng-src="{{vm.photo.detail.ownerId | avatarUrl}}">
+                                </div>
+                                <div class="content-post-li">
+                                    <div class="title-post-li">
+                                        <h4 class="title-generated-home">{{vm.photo.detail.ownerId.name}} </h4>
+                                    </div>
+                                    <div class="content-post-li">
+                                        {{vm.photo.detail.createdAt | fromNow}}
+                                    </div>
+
+                                </div>
+                            </div>
+                            <like-comment-share ng-if="vm.photo.detail" data="vm.photo.detail" type="Photo"></like-comment-share>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-popup"></div>
+        </div>

@@ -3,7 +3,7 @@
     <ul class="list-my-event">
         <li ng-repeat="event in vm.events">
             <p><a ui-sref="event.detail({id: event._id})">{{event.name}}</a></p>
-            {{event.createdAt | hsDate: 'MMMM DD, YYYY'}} / {{'COMMENTS' | translate}} {{event.comments || 0}}
+            {{event.createdAt | hsDate: 'MMMM DD, YYYY'}} / {{'COMMENTS' | translate}} {{event.totalComment || 0}}
         </li>
     </ul>
 </div>

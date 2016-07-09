@@ -52,8 +52,9 @@
                 <div class="form-post">
                     <textarea ng-model="vm.feed.content" placeholder="Write something....."></textarea>
                     <div class="row new-feed-preview-images" ng-show="vm.files.length > 0">
-                        <div ng-repeat="file in vm.files" class="col-sm-3">
+                        <div ng-repeat="file in vm.files" class="col-sm-3 relative-div">
                             <img ng-class="{'nude-image': file.nude}" id="{{file.name}}" ngf-thumbnail="file" width="150" height="150">
+                            <a class="remove-icon" ng-click="vm.removeImage($index)" href="#"><i class="fa fa-times"></i></a>
                         </div>
                     </div>
                     <div class="bottom-post">
@@ -85,7 +86,7 @@
                             </div>
                         </div>
                     </div>
-                    <like-comment-share data="feed" type="Feed">
+                    <like-comment-share data="feed" type="Feed" event-owner="vm.event.ownerId">
                     <!-- 
                     <div class="bottom-li-post">
                         <div class="pull-left">

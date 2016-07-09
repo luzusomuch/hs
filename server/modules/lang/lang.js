@@ -108,7 +108,10 @@ let Language = {
 		PRIVATE_EVENT: 'Private Event',
 		CITY_EVENT_MAP:'City Event Map',
 		CHECK_DATE_TIME_AGAIN: 'Check your date time again',
-		NUDE_FOUND: 'Not allow nude image'
+		NUDE_FOUND: 'Not allow nude image',
+		EDIT_COMMENT: 'Edit comment',
+		DELETE_COMMENT: 'Delete comment',
+		LOAD_MORE_COMMENT: 'Load more comment ...'
 	},
 	de: {
 

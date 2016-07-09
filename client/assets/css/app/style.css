@@ -1037,7 +1037,7 @@ label {
 .title-generated-home span.date-post {
     position: absolute;
     top: 15px;
-    right: 14px;
+    right: 25px;
     font-size: 13px;
 }
 .bottom-li-post {
@@ -1805,10 +1805,40 @@ span.country-name {
 .new-feed-preview-images {
     padding: 15px;
     border-bottom: 1px solid rgba(255,255,255,0.3);
+    margin: 0px;
 }
 .new-feed-preview-images > img {
     margin-right: 5px;
 }
 .nude-image {
     border: 1px solid red;
+}
+.remove-icon {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+.remove-icon i {
+    font-size: 2em;
+    color: red;
+}
+.title-generated-home span.comment-option-button {
+    position: absolute;
+    top: 15px;
+    right: 0px;
+    cursor: pointer;
+}
+.title-generated-home ul.comment-option {
+    position: absolute;
+    top: 31px;
+    right: 0px;
+    background: rgba(255,255,255,0.2);
+    padding: 5px;
+    text-align: right;
+}
+.title-generated-home ul.comment-option li {
+    cursor: pointer;
+}
+.load-more {
+    margin-left: 10px;
 }

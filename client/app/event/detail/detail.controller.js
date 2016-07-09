@@ -73,6 +73,10 @@ class EventDetailCtrl {
   	}, 500);
   }
 
+  removeImage(index) {
+  	this.files.splice(index, 1);
+  }
+
 	createNewFeed(feed) {
 		this.submitted = true;
 		this.errors = {};

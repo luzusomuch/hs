@@ -1,7 +1,37 @@
 <div class="box-blue p15 box-user-event">
-    <img src="{{user | avatarUrl}}" width="100%;">
+    <div class="img-user-main">
+        <img src="{{user | avatarUrl}}" width="100%;">
+        <div class="code-qc">
+            <img src="assets/images/code.jpg">
+        </div>
+    </div>
+    
     <div class="bottom-user-main">
-        <div class="pull-left">
+        <div class="row user-action-post">
+            <div class="col-xs-6">
+                <div class="box-action-user">
+                    <label>Post</label>
+                    <h2>{{vm.user.posts}}</h2>
+                </div>
+            </div>
+            <div  class="col-xs-6">
+                <div class="box-action-user">
+                <label>Followers</label>
+                <h2>{{vm.user.followers}}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="arward-user-review">
+            <ul class="row" ng-show="vm.user.awardsExhibits.length > 0">
+                <li class="col-xs-4" ng-repeat="award in vm.user.awardsExhibits">
+                    <div class="exhibit-user">
+                        <img src="assets/images/box-pic.png">
+                        <span><img ng-src="{{award.awardId.objectPhotoId | imageUrl: 'small'}}"></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!-- <div class="pull-left">
             <div>
                 <label>Post</label>
                 <h2>{{vm.user.posts}}</h2>
@@ -10,8 +40,8 @@
                 <label>Followers</label>
                 <h2>{{vm.user.followers}}</h2>
             </div>
-        </div>
-        <div class="pull-right">
+        </div> -->
+        <!-- <div class="pull-right">
             <div class="cup-user">
                 <div class="arward-li-top color-green">
                     <span>{{vm.user.awards}}</span>
@@ -26,6 +56,6 @@
                     <i class="fa fa-trophy"></i>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>

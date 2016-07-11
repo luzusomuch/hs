@@ -239,6 +239,18 @@ class UserController {
             toUserId: user.id,
             type: 'follow'
           }, cb);        
+        },
+        (cb) => {
+          // get user exhibit awards
+          async.each(user.awardsExhibits, (award, callback) => {
+            this.kernel.model.Award.findById(award.awardId)
+            .populate('objectPhotoId')
+            .exec().then(aw => {
+              if (!aw) {return callback({error: 'Award not found'});}
+              award.awardId = aw;
+              callback();
+            }).catch(callback);
+          }, cb);
         }
       ], (err, result) => {
         if(err) {
@@ -248,6 +260,7 @@ class UserController {
         data.awards = result[0];
         data.posts = result[1];
         data.followers = result[2];
+        console.log(data);
         return res.status(200).json(data);
       });
     }, err => res.status(500).json({type: 'SERVER_ERROR', message: JSON.stringify(err)}))

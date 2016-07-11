@@ -14,17 +14,22 @@ angular.module('healthStarsApp').directive('likeCommentShare', () => ({
 }));
 
 class likeCommentShareCtrl {
-  constructor(LikeService, CommentService, $localStorage, $q) {
+  constructor(LikeService, CommentService, $localStorage, $q, $timeout) {
   	this.LikeService = LikeService;
   	this.CommentService = CommentService;
   	LikeService.checkLiked(this.data._id, this.type).then(resp => {
   		this.data.liked = resp.data.liked;
   	});
-  	this.pageSize = 3;
-    this.page = 1;
   	this.comment = {};
   	this.authUser = $localStorage.authUser;
     this.$q = $q;
+
+    if (this.type==='Photo') {
+      $timeout(() => {
+        this.data.showComment = true;
+        this.loadComment(this.data, 'Photo', {pageSize: 5});
+      }, 500)
+    }
   }
 
   like(object, type) {

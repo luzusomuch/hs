@@ -1981,3 +1981,12 @@ span.country-name {
     border-radius: 5px;
     color: #000;
 }
+.block-photo-btn {
+    text-decoration: none !important;
+    color: rgba(255,255,255,0.7) !important;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background-color: #010c3a;
+    padding: 8px;
+}

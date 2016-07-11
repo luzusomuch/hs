@@ -90,6 +90,9 @@ angular.module('healthStarsApp.photoViewer', ['healthStarsApp.constants', 'healt
 		getFromServer: () => {
 			var query = Util.obToquery(params);
 			return $http.get(`${config.baseUrl}api/${config.apiVer}/photos/view?${query}`);
+		},
+		blockPhoto(id, eventId) {
+			return $http.put(`${config.baseUrl}api/${config.apiVer}/photos/${id}/block`, {eventId: eventId});
 		}
 	};
 })

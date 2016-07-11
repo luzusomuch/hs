@@ -56,6 +56,7 @@ module.exports = function(kernel) {
       }
       let model = new kernel.model.Comment(data);
       model.save().then(comment => {
+        kernel.queue.create(kernel.config.ES.events.CREATE, {type: kernel.config.ES.mapping.commentType, id: comment._id.toString(), data: comment}).save();
         comment.ownerId = req.user;
         return res.status(200).json(comment);
       }).catch(err => {

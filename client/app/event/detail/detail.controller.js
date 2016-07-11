@@ -30,11 +30,13 @@ class EventDetailCtrl {
 	}
 
 	viewPhoto(photo, fid) {
-		this.viewer.setPhoto(photo, {
-			type: 'feed',
-			tid: fid
-		});
-		this.viewer.toggle(true);
+		if (!photo.blocked) {
+			this.viewer.setPhoto(photo, {
+				type: 'feed',
+				tid: fid
+			});
+			this.viewer.toggle(true);
+		}
 	}
 
 	isNotParticipant() {
@@ -110,6 +112,15 @@ class EventDetailCtrl {
 		} else {
 			this.errors.content = true;
 		}
+	}
+
+	blockPhoto(photo) {
+		this.viewer.blockPhoto(photo._id, this.$stateParams.id).then(resp => {
+			photo.blocked = resp.data.blocked;
+		}).catch(err => {
+			console.log(err);
+			// TODO show error
+		});
 	}
 
 }

@@ -111,6 +111,10 @@
                   </ui-select>
                   <p ng-show="vm.errors.location && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
                 </div>
+
+                <div class="form-group" ng-show="vm.address.selected">
+                  <hs-event-map place="create-event" locations="[vm.address.selected]" title="{{'EVENT_LOCATION' | translate}}"></hs-event-map>
+                </div>
               </div>
 
               <div class="form-group">

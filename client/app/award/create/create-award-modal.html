@@ -16,10 +16,10 @@
     <div class="award-image-review">
     	<div class="row">
         <div class="col-xs-3">
-          <img ng-show="vm.file.name" style="margin-bottom:5px" ngf-thumbnail="vm.file" width="100%">
+          <img ng-show="vm.file.name" style="margin-bottom:5px" ngf-src="vm.file" width="100%">
         </div>
         <div class="col-xs-9 text-center">
-          <p><a href="#" class="btn btn-danger btn-sm" ngf-select="vm.select($file)" ngf-multiple="true" accept="image/*">{{'UPLOAD_PICTURE' | translate}}</a></p>
+          <p><a href="#" class="btn btn-danger btn-sm" ngf-select="vm.select($file)" ngf-multiple="false" accept="image/*">{{'UPLOAD_PICTURE' | translate}}</a></p>
           {{'FILE_REQUIREMENT' | translate}}
         </div>
       </div>

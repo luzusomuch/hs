@@ -10,7 +10,8 @@ angular.module('healthStarsApp').directive('hsEventMap', ($interval) => {
 		scope: {
 			locations : '=',
 			title: '@',
-			center: '='
+			center: '=',
+			place: '@'
 		},
 		templateUrl: 'app/event/map/map.html',
 		controller: 'EventMapCtrl',
@@ -57,13 +58,23 @@ angular.module('healthStarsApp').directive('hsEventMap', ($interval) => {
 	      }
 	    };
 	    scope.$watch('locations', (nv) => {
-	    	var $ttl = $interval(() => {
-	    		if(window.google && window.google.maps) {
-	    			$interval.cancel($ttl);
-	    			google = window.google;
-	    			initMap(nv, scope.center);
-	    		}
-	    	}, 250);
+	    	if (nv[0]) {
+		    	var $ttl = $interval(() => {
+		    		if(window.google && window.google.maps) {
+		    			$interval.cancel($ttl);
+		    			google = window.google;
+		    			if (scope.place==='create-event') {
+		    				let data = [{
+		    					coordinates: [nv[0].geometry.location.lng, nv[0].geometry.location.lat],
+		    					fullAddress: nv[0].formatted_address
+		    				}];
+		    				initMap(data, scope.center);
+		    			} else {
+		    				initMap(nv, scope.center);
+		    			}
+		    		}
+		    	}, 250);
+	    	}
 	    });
 		}
 	};

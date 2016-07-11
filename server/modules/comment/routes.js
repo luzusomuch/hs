@@ -28,7 +28,7 @@ module.exports = function(kernel) {
             if (!comment) {
               cb({message: 'Comment not found'});
             }
-            if (!comment.isSubComment) {
+            if (!comment.isSubComment && !comment.blocked) {
               cb(null, {allowCreate: true});
             } else {
               cb(null, {allowCreate: false});
@@ -93,7 +93,6 @@ module.exports = function(kernel) {
         return res.status(200).json({comments: comments, totalItem: result[0]});
       });
     }).catch(err => {
-      console.log(err);
       return res.status(500).json(err);
     });
   });
@@ -292,7 +291,6 @@ module.exports = function(kernel) {
           if (req.user._id.toString()=== event.ownerId.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin'){
             comment.blocked = !comment.blocked;
             comment.blockedByUserId = (comment.blocked) ? req.user._id : null;
-            // we not delete the comment. We just update status of the comment
             comment.save().then(() => {
               return res.status(200).end();
             }).catch(err => {

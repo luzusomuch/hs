@@ -112,6 +112,15 @@ class likeCommentShareCtrl {
       // TODO - show error
     }
   }
+
+  blockComment(comment) {
+    this.CommentService.block(comment._id).then(() => {
+      comment.blocked = !comment.blocked;
+    }).catch(err => {
+      console.log(err);
+      // TODO show error;
+    });
+  }
 }
 
 angular.module('healthStarsApp').controller('likeCommentShareCtrl', likeCommentShareCtrl);

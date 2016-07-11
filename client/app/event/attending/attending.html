@@ -8,6 +8,7 @@
             <h4><a href="#">{{user.name}}</a></h4>
             <span class="text-mo" ng-if="user.isFriend">{{'YOUR_FRIEND' | translate}}</span>
             <a href="#" class="btn-follow" ng-if="!user.isFriend"><i class="i-new user-i-1"></i> {{'ADD_FRIEND' | translate}}</a>
+            <a ng-show="vm.isEventOwner" href="#" class="btn-follow" ng-click="vm.banUser(user)"><i class="fa fa-trash"></i></a>
         </li>
     </ul>
 </div>

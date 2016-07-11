@@ -260,7 +260,6 @@ class UserController {
         data.awards = result[0];
         data.posts = result[1];
         data.followers = result[2];
-        console.log(data);
         return res.status(200).json(data);
       });
     }, err => res.status(500).json({type: 'SERVER_ERROR', message: JSON.stringify(err)}))

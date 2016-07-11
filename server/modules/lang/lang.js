@@ -111,7 +111,10 @@ let Language = {
 		NUDE_FOUND: 'Not allow nude image',
 		EDIT_COMMENT: 'Edit comment',
 		DELETE_COMMENT: 'Delete comment',
-		LOAD_MORE_COMMENT: 'Load more comment ...'
+		LOAD_MORE_COMMENT: 'Load more comment ...',
+		BLOCK_COMMENT: 'Block comment',
+		UNBLOCK_COMMENT: 'Unblock comment',
+		MISSING_BAN_USER: 'Missing ban user info'
 	},
 	de: {
 

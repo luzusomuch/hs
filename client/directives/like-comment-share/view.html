@@ -8,8 +8,8 @@
 
 <div class="replies-post" ng-show="vm.data.showComment">
   <ul>
-    <li>
-      <div class="post-li" ng-repeat="comment in vm.data.comments">
+    <li ng-repeat="comment in vm.data.comments">
+      <div class="post-li">
         <div class="img-post-li">
           <img ng-src="{{comment.ownerId | avatarUrl}}" style="width: 40px; height: 40px">
         </div>
@@ -98,22 +98,23 @@
           </div>
         </div>
       </div>
+    </li>
+
+    <li>
       <div class="load-more" ng-hide="vm.data.comments.length === vm.data.pageSize" ng-click="vm.loadMore()">
         {{'LOAD_MORE_COMMENT' | translate}}
       </div>
     </li>
-    <li>
-      <div class="post-li">
-        <div class="img-post-li">
-          <img ng-src="{{vm.authUser | avatarUrl}}" style="width: 40px; height: 40px">
-        </div>
-        <div class="content-post-li">
-          <div class="replies-form">
-            <textarea class="form-control" placeholder="Write a reply..." id="reply-textarea" ng-model="vm.comment.content"></textarea>
-            <a href="#" class="replies-img-a" ng-click="vm.postComment(vm.comment)"><i class="fa fa-share"></i></a>
-          </div>
-        </div>
-      </div>
-    </li>
   </ul>
+</div>
+<div class="post-li" ng-show="vm.data.showComment">
+  <div class="img-post-li">
+    <img ng-src="{{vm.authUser | avatarUrl}}" style="width: 40px; height: 40px">
+  </div>
+  <div class="content-post-li">
+    <div class="replies-form">
+      <textarea class="form-control" placeholder="Write a reply..." id="reply-textarea" ng-model="vm.comment.content"></textarea>
+      <a href="#" class="replies-img-a" ng-click="vm.postComment(vm.comment)"><i class="fa fa-share"></i></a>
+    </div>
+  </div>
 </div>

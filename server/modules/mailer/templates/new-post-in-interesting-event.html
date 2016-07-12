@@ -1,0 +1,14 @@
+{% extends 'layouts/default.html' %}
+
+{% block content %}
+<p>Hello <%= user.name%></p>
+<p>You have new feeds in your interested events</p>
+
+<ul>
+	{% for item in newFeeds%}
+	<li>
+		In event <%= item.feed.eventId.name %>, <%= item.feed.ownerId.name%> has post new feed with content: <%= item.feed.content %>. You can click <a href="<%= item.url%>"></a> to view it
+	</li>
+	{% endfor %}
+</ul>
+{% endblock %}

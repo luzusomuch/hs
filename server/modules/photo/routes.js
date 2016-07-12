@@ -68,7 +68,6 @@ module.exports = function(kernel) {
               eventId: result.belongTo._id,
               blocked: false
             }, (err, feeds) => {
-            	console.log(feeds);
               if(err) return cb(err);
               let photosId = [];
               _.each(feeds, feed => {

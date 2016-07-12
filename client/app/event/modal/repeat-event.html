@@ -2,7 +2,7 @@
 	<h3 class="modal-title">{{'REPEAT_SCHEDULE' | translate}}</h3>
 </div>
 <div class="modal-body">
-	<form ng-submit="vm.submit(form)" name="form">
+	<form ng-submit="vm.submit(form)" name="form" novalidate>
     <div class="form-group">
       <label>{{'REPEAT' | translate}}:</label>
       <select class="form-control" ng-model="vm.repeat.type" required>
@@ -10,21 +10,20 @@
         <option value="weekly">{{'WEEKLY' | translate}}</option>
         <option value="monthly">{{'MONTHLY' | translate}}</option>
       </select>
+      <p class="error-text" ng-show="vm.errors.type">{{'REQUIRED_ERROR' | translate}}</p>
     </div>
     <div class="form-group">
       <label>{{'START' | translate}}:</label>
-      <input type="date" class="form-control" ng-model="vm.repeat.startDate">
+      <input type="date" name="startDate" class="form-control" ng-model="vm.repeat.startDate" required>
+
+      <p class="error-text" ng-show="form.startDate.$error.required && vm.submitted">{{'REQUIRED_ERROR' | translate}}</p>
     </div>
     <div class="form-group">
       <label>{{'END' | translate}}:</label>
-      <div class="form-group">
-        <div class="input-group date">
-          <input type="date" class="form-control" id="datetimepicker3" placeholder="Date" ng-model="vm.repeat.endDate" required>
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-calendar"></span>
-          </span>
-        </div>
-      </div>
+      <input type="date" name="endDate" class="form-control" ng-model="vm.repeat.endDate" required>
+
+      <p class="error-text" ng-show="vm.errors.date">{{'NOT_VALID_FIELD' | translate}}</p>
+      <p class="error-text" ng-show="form.endDate.$error.required && vm.submitted">{{'REQUIRED_ERROR' | translate}}</p>
     </div>
 		<div class="modal-footer">
 			<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>

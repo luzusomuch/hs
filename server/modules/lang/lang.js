@@ -118,7 +118,8 @@ let Language = {
 		MISSING_BAN_USER: 'Missing ban user info',
 		MISSING_EVENT_ID: 'Missing event id',
 		BLOCK_PHOTO: 'Block photo',
-		UNBLOCK_PHOTO: 'Unblock photo'
+		UNBLOCK_PHOTO: 'Unblock photo',
+		NOT_VALID_FIELD: 'These fields are not valid'
 	},
 	de: {
 

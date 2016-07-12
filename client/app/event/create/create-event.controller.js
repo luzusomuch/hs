@@ -200,13 +200,21 @@ class RepeatEventCtrl {
 		this.repeat = {
 			startDate: new Date()
 		};
+    this.errors = {};
+    this.submitted = false;
 	}
 
 	submit(form) {
+    this.submitted = true;
+    this.errors = {};
+    if (!this.repeat.type) {
+      this.errors.type = true;
+    }
 		if (form.$valid && this.repeat.type) {
 			if (moment(moment(this.repeat.endDate).format('YYYY-MM-DD')).isSameOrAfter(moment(this.repeat.startDate).format('YYYY-MM-DD'))) {
 				this.$uibModalInstance.close(this.repeat);
 			} else {
+        this.errors.date = true;
 				this.growl.error('Check your repeating start date and end date');
 			}
 		} else {

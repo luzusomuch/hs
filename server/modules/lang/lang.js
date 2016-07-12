@@ -16,6 +16,7 @@ let Language = {
 		USERNAME_EMAIL: 'Your username or e-mail',
 		SELECT_YOUR_LOCATION: 'Select your location',
 		PASSWORD: 'Password',
+		PASSWORD_PATTERN_ERROR: 'Password must have both digit and characters',
 		CONFIRM_PASSWORD_ERROR: 'Confirm password does not match',
 		CONFIRM_PASSWORD: 'Confirm Password',
 		FORGOT_PASSWORD: 'Forgot Password or Username?',
@@ -46,7 +47,7 @@ let Language = {
 		REQUIRED_ERROR: 'This field is required',
 		EMAIL_TYPE_ERROR: 'Your email is not valid',
 		PHONE_NUMBER_TYPE_ERROR: 'Your phone number is not valid',
-		PASSWORD_MIN_LENGTH_ERROR: 'Minimun length of password is 8 characters',
+		PASSWORD_MIN_LENGTH_ERROR: 'Minimun length of password is 6 characters',
 		CONFIRM_PASSWORD_NOT_MATCH: 'Password and confirm password not match',
 		SIGN_IN_ERROR: 'Password or email not correct',
 		EMAIL_BLOCKED: 'This user email has blocked',
@@ -117,7 +118,8 @@ let Language = {
 		MISSING_BAN_USER: 'Missing ban user info',
 		MISSING_EVENT_ID: 'Missing event id',
 		BLOCK_PHOTO: 'Block photo',
-		UNBLOCK_PHOTO: 'Unblock photo'
+		UNBLOCK_PHOTO: 'Unblock photo',
+		NOT_VALID_FIELD: 'These fields are not valid'
 	},
 	de: {
 

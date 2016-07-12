@@ -18,13 +18,13 @@ module.exports = {
     //import timestamp for auto create updatedAt, createdAt field manually
     commentSchema.plugin(kernel.schema.timestamp);
 
-    commentSchema.pre('save', (next) => {
+    commentSchema.pre('save', function(next) {
       this.wasNew = this.isNew;
       next();
     });
 
     commentSchema.post('save', (doc) => {
-      if (this.wasNew) {
+      if (doc.wasNew) {
         let attachModel = kernel.model;
         if (!attachModel[doc.objectName]) {
           //do nothing

@@ -133,7 +133,7 @@
                         <div class="form-group relative-div">
                             <label>{{'LOCATION' | translate}}</label>
                             <ui-select ng-model="vm.address.selected" theme="bootstrap" append-to-body="true" reset-search-input="false">
-                              <ui-select-match placeholder="{{'SELECT_YOUR_LOCATION' | translate}}">{{$select.selected.formatted_address}}</ui-select-match>
+                              <ui-select-match placeholder="{{'SELECT_YOUR_LOCATION' | translate}}">{{$select.selected.formatted_short_address}}</ui-select-match>
                               <ui-select-choices repeat="address in vm.addresses track by $index" refresh="vm.refreshAddresses($select.search)" refresh-delay="0">
                                 <div ng-bind-html="address.formatted_address"></div>
                               </ui-select-choices>
@@ -197,19 +197,20 @@
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group relative-div">
-                            <label>{{'PASSWORD' | translate}} <span class="note-form">8 symbols min</span></label>
-                            <input type="password" class="form-control" ng-model="vm.user.password" name="password" required ng-minlength="8" ng-class="{'error-input': form.password.$error.minlength || form.password.$error.required && vm.submitted}">
+                            <label>{{'PASSWORD' | translate}} <span class="note-form">6 symbols min</span></label>
+                            <input type="password" class="form-control" ng-model="vm.user.password" name="password" required ng-minlength="6" pattern="^\w*(?=\w*\d)(?=\w*[A-Za-z])\w*$" ng-class="{'error-input': form.password.$error.minlength || form.password.$error.required && vm.submitted}">
 
-                            <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.password.$error.minlength && !form.password.$error.required && vm.submitted">
+                            <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.password.$error.pattern && !form.password.$error.minlength && !form.password.$error.required && vm.submitted">
                               <i class="fa fa-circle fa-stack-2x fa-cicle-input"></i>
                               <i class="fa fa-check fa-stack-1x fa-inverse fa-icon-input"></i>
                             </span>
 
-                            <span class="fa-stack fa-lg sign-up-error-validate" ng-show="form.password.$error.minlength || form.password.$error.required && vm.submitted">
+                            <span class="fa-stack fa-lg sign-up-error-validate" ng-show="(form.password.$error.pattern || form.password.$error.minlength || form.password.$error.required) && vm.submitted">
                               <i class="fa fa-circle fa-stack-2x fa-cicle-input"></i>
                               <i class="fa fa-times fa-stack-1x fa-inverse fa-icon-input"></i>
                             </span>
 
+                            <p ng-show="form.password.$error.pattern && vm.submitted" class="error-text">{{'PASSWORD_PATTERN_ERROR' | translate}}</p>
                             <p ng-show="form.password.$error.minlength && vm.submitted" class="error-text">{{'PASSWORD_MIN_LENGTH_ERROR' | translate}}</p>
                             <p ng-show="form.password.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
                         </div>

@@ -50,6 +50,18 @@ class CreateEventCtrl {
     	}
     });
 
+    $scope.$watch('vm.event.endTime', (nv) => {
+      if (nv) {
+        this.event.endTimeFormatted = moment(nv).format('HH:mm');
+      }
+    });
+
+    $scope.$watch('vm.event.startTime', (nv) => {
+      if (nv) {
+        this.event.startTimeFormatted = moment(nv).format('HH:mm');
+      }
+    });
+
     this.friends = [];
     this.RelationService.getAll({id: this.user._id, type: 'friend'}).then(resp => {
     	this.friends = resp.data.items;
@@ -73,6 +85,9 @@ class CreateEventCtrl {
         'http://maps.googleapis.com/maps/api/geocode/json',
         {params: params}
       ).then( (response) => {
+        _.each(response.data.results, (result) => {
+          result.formatted_short_address = result.formatted_address.substr(0, 35) + ' ...';
+        });
         this.addresses = response.data.results;
       });
     }
@@ -200,13 +215,25 @@ class RepeatEventCtrl {
 		this.repeat = {
 			startDate: new Date()
 		};
+    this.errors = {};
+    this.submitted = false;
+    this.options = {
+      minDate: new Date(),
+      showWeeks: true
+    };
 	}
 
 	submit(form) {
+    this.submitted = true;
+    this.errors = {};
+    if (!this.repeat.type) {
+      this.errors.type = true;
+    }
 		if (form.$valid && this.repeat.type) {
 			if (moment(moment(this.repeat.endDate).format('YYYY-MM-DD')).isSameOrAfter(moment(this.repeat.startDate).format('YYYY-MM-DD'))) {
 				this.$uibModalInstance.close(this.repeat);
 			} else {
+        this.errors.date = true;
 				this.growl.error('Check your repeating start date and end date');
 			}
 		} else {

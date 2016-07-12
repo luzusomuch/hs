@@ -51,11 +51,15 @@
                   </div>
                   <div class="col-sm-5">
                     <div class="form-group">
-                      <div class="input-group date">
-                        <input type="time" class="form-control" id="datetimepicker2" placeholder="Time" ng-model="vm.event.startTime" required name="startTime">
+                      <div class="input-group date" ng-click="vm.startTimeOpen=!vm.startTimeOpen">
+                        <input type="text" class="form-control" id="datetimepicker2" placeholder="Time" ng-model="vm.event.startTimeFormatted" required name="startTime">
                         <span class="input-group-addon">
                             <span class="fa fa-clock-o"></span>
                         </span>
+                      </div>
+
+                      <div ng-show="vm.startTimeOpen" class="absolute-timepicker">
+                        <uib-timepicker ng-mouseleave="vm.startTimeOpen = false" required name="startTime" ng-model="vm.event.startTime" show-meridian="false"></uib-timepicker>
                       </div>
                     </div>
                   </div>
@@ -79,12 +83,16 @@
                     </div>
                   </div>
                   <div class="col-sm-5">
-                    <div class="form-group">
-                      <div class="input-group date">
-                        <input type="time" class="form-control" id="datetimepicker4" placeholder="Time" ng-model="vm.event.endTime" required name="endTime">
+                    <div class="form-group relative-div">
+                      <div class="input-group date" ng-click="vm.endTimeOpen=!vm.endTimeOpen">
+                        <input type="text" class="form-control" id="datetimepicker4" placeholder="Time" ng-model="vm.event.endTimeFormatted" required name="endTime">
                         <span class="input-group-addon">
-                            <span class="fa fa-clock-o"></span>
+                          <span class="fa fa-clock-o"></span>
                         </span>
+                      </div>
+
+                      <div ng-show="vm.endTimeOpen" class="absolute-timepicker">
+                        <uib-timepicker ng-mouseleave="vm.endTimeOpen = false" required name="endTime" ng-model="vm.event.endTime" show-meridian="false"></uib-timepicker>
                       </div>
                     </div>
                   </div>
@@ -104,7 +112,7 @@
                 <div class="form-group">
                   <label>{{'LOCATION' | translate}}</label>
                   <ui-select ng-model="vm.address.selected" theme="bootstrap" append-to-body="true" reset-search-input="false">
-                    <ui-select-match>{{$select.selected.formatted_address}}</ui-select-match>
+                    <ui-select-match>{{$select.selected.formatted_short_address}}</ui-select-match>
                     <ui-select-choices repeat="address in vm.addresses track by $index" refresh="vm.refreshAddresses($select.search)" refresh-delay="0">
                       <div ng-bind-html="address.formatted_address"></div>
                     </ui-select-choices>

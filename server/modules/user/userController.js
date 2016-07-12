@@ -62,11 +62,12 @@ class UserController {
           key: 'Email '
         }
       }),
-      password: Joi.string().min(8).required().options({
+      password: Joi.string().regex(/^\w*(?=\w*\d)(?=\w*[A-Za-z])\w*$/).min(6).required().options({
         language: {
           key: 'Password ',
           string: {
-            min: 'must be greater than or equal to 8 characters'
+            min: 'must be greater than or equal to 6 characters',
+            regex: 'must have both digit and characters'
           }
         }
       })
@@ -86,6 +87,9 @@ class UserController {
             break;
           case 'string.min': 
             type = 'PASSWORD_MIN_LENGTH_ERROR';
+            break;
+          case 'string.regex': 
+            type = 'PASSWORD_PATTERN_ERROR';
             break;
           default:
             break;

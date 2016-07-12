@@ -1990,3 +1990,9 @@ span.country-name {
     background-color: #010c3a;
     padding: 8px;
 }
+.absolute-timepicker {
+    position: absolute;
+    padding: 10px;
+    z-index: 999;
+    background-color: rgb(255, 255, 255);
+}

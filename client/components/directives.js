@@ -56,10 +56,6 @@ angular.module('healthStarsApp')
             }
           }
         });
-
-        addthis.addEventListener('addthis.menu.share', (ev) => {
-          console.log(ev);
-        });
       });
     }
   };

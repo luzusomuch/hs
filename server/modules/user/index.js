@@ -10,4 +10,5 @@ exports.routes = (kernel) => {
   kernel.app.delete('/api/v1/users/:id', kernel.middleware.hasRole('admin'), userController.destroy);
   kernel.app.get('/api/v1/users', kernel.middleware.hasRole('admin'), userController.index);
   kernel.app.get('/api/v1/users/:id/info', kernel.middleware.isAuthenticated(), userController.info);
+  kernel.app.get('/api/v1/users/friends/:page', kernel.middleware.isAuthenticated(), userController.getFriends);
 };

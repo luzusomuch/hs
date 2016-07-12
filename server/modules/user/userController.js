@@ -34,6 +34,7 @@ class UserController {
     this.verifyAccount = this.verifyAccount.bind(this);
     this.authCallback = this.authCallback.bind(this);
     this.info = this.info.bind(this);
+    this.getFriends = this.getFriends.bind(this);
   }
 
   /**
@@ -263,6 +264,41 @@ class UserController {
         return res.status(200).json(data);
       });
     }, err => res.status(500).json({type: 'SERVER_ERROR', message: JSON.stringify(err)}))
+  }
+
+  getFriends(req, res) {
+    let page = req.params.page || 1;
+    let limit = 5;
+    async.waterfall([
+      (cb) => {
+        this.kernel.model.Relation.find({
+          $or: [
+            { fromUserId: req.user._id },
+            { toUserId: req.user._id }
+          ],
+          status: 'completed'
+        }, (err, result) => {
+          if(err) return cb(err);
+          let friendIds = _.map(result, friend => {
+            return friend.toUserId.toString() === req.user._id.toString() ? friend.fromUserId : friend.toUserId;
+          });
+          return cb(null, friendIds);
+        });
+      },
+
+      (friendIds, cb) => {
+        if(!friendIds.length) {
+          return cb(null, []);
+        }
+        this.kernel.model.User.find({
+          _id: { $in: friendIds}
+        }, '-hash -password').limit(limit).skip((page-1)*limit).exec(cb);
+      }
+
+    ], (err, friends) => {
+      if(err) return res.status(500).json({type: 'SERVER_ERROR', message: JSON.stringify(err)});
+      return res.status(200).json(friends);
+    });
   }
 
   /**

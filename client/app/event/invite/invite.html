@@ -1,25 +1,22 @@
 <div class="modal-body">
     <h3 style="margin-top: 0">{{'INVITE_FRIEND' | translate}}</h3>
-    <ul>
-        <li class="mt-list-item" ng-repeat="user in vm.users | filter: vm.search.name">
-            <div class="list-icon-container">
-               <button ng-if="!user.wasAdded" ng-click="vm.request(user)" type="button" class="btn green">ADD</button>
+    <!-- <form>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search for..."> 
+        </div>
+    </form> -->
+     <ul class="list-media list-friend list-friend-1" style="padding: 0 0 20px 0">
+        <li ng-repeat="user in vm.users">
+            <div class="img-media">
+                <a href="#"></a><a href="#"><img ng-src="{{user | avatarUrl}}"></a>
             </div>
-            <div class="list-thumb">
-                <a href="javascript:;">
-                    <img alt="" ng-src="{{user.avatar}}">
-                </a>
-            </div>
-            <div class="list-datetime bold uppercase font-red">{{user.firstName}} {{user.lastName}}</div>
-            <div class="list-item-content">
-                <h3 class="uppercase">
-                    <a href="javascript:;">&nbsp;</a>
-                </h3>
-                <p>&nbsp;</p>
-            </div>
+            <h4><a href="#">{{user.name}}</a></h4>
+            <!-- <span class="text-mo">{{'YOUR_FRIEND' | translate}}</span> -->
+            <a href="#" ng-click="vm.invite(user)" class="btn-follow">{{!user.invited ? ('INVITE' | translate) : ('RESEND' | translate)}}</a>
+
         </li>
-        <!-- <li class="mt-list-item" ng-show="!vm.loading && !vm.users.length">No {{vm.type}} found.</li> -->
-        <li class="mt-list-item" ng-show="vm.loading"></li>
+        <li ng-if="!users.length" style="padding-left: 0">No friend was found</li>
     </ul>
-    <hs-loading size="32"></hs-loading>
+    <hs-loading size="32" ng-show="vm.loading"></hs-loading>
+    <button class="btn btn-primary ng-binding" ng-click="vm.close()">Close</button>
 </div>

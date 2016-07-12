@@ -3,7 +3,7 @@
 class RegisterCtrl {
   //end-non-standard
 
-  constructor(Auth, $state, $http) {
+  constructor(Auth, $state, $http, $scope) {
     this.Auth = Auth;
     this.$state = $state;
     this.$http = $http;
@@ -24,12 +24,16 @@ class RegisterCtrl {
         'http://maps.googleapis.com/maps/api/geocode/json',
         {params: params}
       ).then( (response) => {
+        _.each(response.data.results, (address) => {
+          address.formatted_short_address = address.formatted_address.substr(0,30) + ' ...';
+        });
         this.addresses = response.data.results;
       });
     }
   }
 
   register(form) {
+    console.log(form);
     this.submitted = true;
     if (form.$valid && this.address.selected) {
       if (this.user.phoneNumber) {

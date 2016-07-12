@@ -3,6 +3,7 @@
 class EventDetailCtrl {
 	constructor($scope, event, $localStorage, liked, LikeService, Upload, $cookies, $stateParams, FeedService, PhotoViewer) {
 		this.event = event;
+		this.event.url = 'event/detail/'+event._id;
 		this.viewer = PhotoViewer;
 		this.submitted = false;
 		this.feed = {};

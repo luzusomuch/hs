@@ -119,7 +119,8 @@ let Language = {
 		MISSING_EVENT_ID: 'Missing event id',
 		BLOCK_PHOTO: 'Block photo',
 		UNBLOCK_PHOTO: 'Unblock photo',
-		NOT_VALID_FIELD: 'These fields are not valid'
+		NOT_VALID_FIELD: 'These fields are not valid',
+		REPORT_EVENT: 'Report event'
 	},
 	de: {
 

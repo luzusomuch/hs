@@ -956,7 +956,7 @@ label {
 .list-photo li .bg-cover {
     height: 110px;
 }
-.row-small .col-xs-6, .row-small .col-xs-3 {
+.row-small .col-xs-6, .row-small .col-xs-3, .row-small .col-xs-4, .row-small .col-xs-5 {
     padding: 0px 3px;
 }
 .form-post textarea {

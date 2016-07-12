@@ -28,7 +28,7 @@ module.exports = function(kernel) {
             if (!comment) {
               cb({message: 'Comment not found'});
             }
-            if (!comment.isSubComment) {
+            if (!comment.isSubComment && !comment.blocked) {
               cb(null, {allowCreate: true});
             } else {
               cb(null, {allowCreate: false});
@@ -56,6 +56,7 @@ module.exports = function(kernel) {
       }
       let model = new kernel.model.Comment(data);
       model.save().then(comment => {
+        kernel.queue.create(kernel.config.ES.events.CREATE, {type: kernel.config.ES.mapping.commentType, id: comment._id.toString(), data: comment}).save();
         comment.ownerId = req.user;
         return res.status(200).json(comment);
       }).catch(err => {
@@ -93,7 +94,6 @@ module.exports = function(kernel) {
         return res.status(200).json({comments: comments, totalItem: result[0]});
       });
     }).catch(err => {
-      console.log(err);
       return res.status(500).json(err);
     });
   });
@@ -190,6 +190,9 @@ module.exports = function(kernel) {
    */
   kernel.app.delete('/api/v1/comments/:id', kernel.middleware.isAuthenticated(), (req, res) => {
     kernel.model.Comment.findById(req.params.id).then(comment =>{
+      if (!comment) {
+        return res.status(404).end();
+      }
       if (comment.deleted) {
         return res.status(200).end();
       }
@@ -228,7 +231,7 @@ module.exports = function(kernel) {
         kernel.model.Event.findById(result[0]).then(event => {
           if (req.user._id.toString()=== event.ownerId.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin'){
             comment.deleted = true;
-            comment.deletedByUserId = req.user._id;
+            comment.deletedByUserId = (comment.deleted) ? req.user._id : null;
             // we not delete the comment. We just update status of the comment
             comment.save().then(() => {
               return res.status(200).end();
@@ -244,6 +247,63 @@ module.exports = function(kernel) {
       });
     }).catch(err => {
       return res.status(500).json(err);
+    });
+  });
+
+  /*
+  Block comment
+  */
+  kernel.app.put('/api/v1/comments/:id/block', kernel.middleware.isAuthenticated(), (req, res) => {
+    kernel.model.Comment.findById(req.params.id).then(comment => {
+      if (!comment) {return res.status(404).end();}
+      async.parallel([
+        (cb) => {
+          kernel.model[comment.objectName].findById(comment.objectId).then(data => {
+            if (comment.objectName==='Feed') {
+              cb(null, data.eventId);
+            } else if (comment.objectName==='Photo') {
+              kernel.model.Feed.findOne({photosId: data._id}).then(data => {
+                cb(null, data.eventId);
+              }).catch(cb);
+            } else if (comment.objectName==='Comment') {
+              // If it a sub-comment
+              if (data.objectName==='Feed') {
+                kernel.model[data.objectName].findById(data.objectId).then(feed => {
+                  cb(null, feed.eventId);
+                }).catch(cb);
+              } else if (data.objectName==='Photo') {
+                kernel.model.Feed.findOne({photosId: data.objectId}).then(feed => {
+                  cb(null, feed.eventId);
+                }).catch(cb);
+              } else {
+                cb({error: 'Not found'});
+              }
+            } else {
+              cb({error: 'Not found'});
+            }
+          }).catch(cb);
+        }
+      ], (err, result) => {
+        if (err) {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        }
+        // Now we got the eventId and we can get the event owner
+        kernel.model.Event.findById(result[0]).then(event => {
+          if (req.user._id.toString()=== event.ownerId.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin'){
+            comment.blocked = !comment.blocked;
+            comment.blockedByUserId = (comment.blocked) ? req.user._id : null;
+            comment.save().then(() => {
+              return res.status(200).end();
+            }).catch(err => {
+              return res.status(500).json(err);
+            });
+          } else {
+            return res.status(403).end();
+          }
+        }).catch(err => {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        })
+      });
     });
   });
 };

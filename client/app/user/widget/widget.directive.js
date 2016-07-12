@@ -7,7 +7,9 @@ class UserWidgetCtrl {
 		$scope.$watch('uId', nv => {
 			if(nv) {
 				User.getInfo($scope.uId).then(
-					res => this.user = res.data
+					res => {
+						this.user = res.data
+					}
 				);
 			}
 		});

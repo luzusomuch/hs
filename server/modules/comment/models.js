@@ -10,7 +10,9 @@ module.exports = {
       content: String,
       isSubComment: {type: Boolean, default: false},
       deleted: {type: Boolean, default: false},
-      deletedByUserId: kernel.mongoose.Schema.Types.ObjectId
+      deletedByUserId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
+      blocked: {type: Boolean, default: false},
+      blockedByUserId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}
     });
 
     //import timestamp for auto create updatedAt, createdAt field manually

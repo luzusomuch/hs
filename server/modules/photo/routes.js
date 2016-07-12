@@ -89,4 +89,35 @@ module.exports = function(kernel) {
 			}
 		});
 	});
+
+	kernel.app.put('/api/v1/photos/:id/block', kernel.middleware.isAuthenticated(), (req, res) => {
+		if (!req.body.eventId) {
+			return res.status(422).json({type: 'MISSING_EVENT_ID', message: 'Missing event id'});
+		}
+		kernel.model.Event.findById(req.body.eventId).then(event => {
+			if (!event) {
+				return res.status(404).end();
+			}
+			if (req.user.role === 'admin' || event.ownerId.toString()===req.user._id.toString()) {
+				kernel.model.Photo.findById(req.params.id).then(photo => {
+					if (!photo) {
+						return res.status(404).end();
+					}
+					photo.blocked = !photo.blocked;
+					photo.blockedBy = (photo.blocked) ? req.user._id : null;
+					photo.save().then(photo => {
+						return res.status(200).json({blocked: photo.blocked});
+					}).catch(err => {
+						return res.status(500).json({type: 'SERVER_ERROR'});
+					});
+				}).catch(err => {
+					return res.status(500).json({type: 'SERVER_ERROR'});
+				});
+			} else {
+				return res.status(403).end();
+			}
+		}).catch(err => {
+			return res.status(500).json({type: 'SERVER_ERROR'});
+		});
+	});
 };

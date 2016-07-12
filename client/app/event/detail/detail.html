@@ -80,9 +80,13 @@
                         </div>
                         <div class="img-content-post">
                             <div class="row row-small">
-                                <div ng-class="{'col-xs-6': feed.photosId.length > 1, 'col-xs-12': feed.photosId.length==1}" ng-repeat="photo in feed.photosId | limitTo: 2">
+                                <div ng-mouseover="photo.showBlock=true" ng-mouseleave="photo.showBlock=false" class="relative-div" ng-class="{'col-xs-6': feed.photosId.length > 1, 'col-xs-12': feed.photosId.length==1}" ng-repeat="photo in feed.photosId | limitTo: 2">
                                     <a href ng-click="vm.viewPhoto(photo, feed._id)">
                                         <div class="bg-cover " style="background-image: url({{photo | imageUrl: 'medium'}}); height: 150px"></div>
+                                        <a ng-click="vm.blockPhoto(photo)" ng-show="photo.showBlock && (vm.authUser._id==vm.event.ownerId._id || vm.authUser._id==vm.event.ownerId || vm.authUser.role=='admin')" href="#" class="block-photo-btn">
+                                            <span ng-show="photo.blocked">{{'UNBLOCK_PHOTO' | translate}}</span>
+                                            <span ng-show="!photo.blocked">{{'BLOCK_PHOTO' | translate}}</span>
+                                        </a>
                                     </a>
                                 </div>
                             </div>
@@ -134,7 +138,7 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <hs-event-attending e-id="vm.event._id"></hs-event-attending>
+            <hs-event-attending e-id="vm.event._id" e-owner="vm.event.ownerId"></hs-event-attending>
             <hs-related-events e-id="vm.event._id"></hs-related-events>
         </div>
     </div>

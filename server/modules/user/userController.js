@@ -239,6 +239,18 @@ class UserController {
             toUserId: user.id,
             type: 'follow'
           }, cb);        
+        },
+        (cb) => {
+          // get user exhibit awards
+          async.each(user.awardsExhibits, (award, callback) => {
+            this.kernel.model.Award.findById(award.awardId)
+            .populate('objectPhotoId')
+            .exec().then(aw => {
+              if (!aw) {return callback({error: 'Award not found'});}
+              award.awardId = aw;
+              callback();
+            }).catch(callback);
+          }, cb);
         }
       ], (err, result) => {
         if(err) {

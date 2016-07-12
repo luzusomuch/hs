@@ -4,6 +4,9 @@ import kernel from '../../app';
 async.parallel([
 	(cb) => {
 		require('./processEvent')(kernel, cb);
+	},
+	(cb) => {
+		require('./processNewPost')(kernel, cb);
 	}
 ], () => {
 	console.log('done!');

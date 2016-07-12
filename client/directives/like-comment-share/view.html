@@ -8,8 +8,8 @@
 
 <div class="replies-post" ng-show="vm.data.showComment">
   <ul>
-    <li>
-      <div class="post-li" ng-repeat="comment in vm.data.comments">
+    <li ng-repeat="comment in vm.data.comments">
+      <div class="post-li">
         <div class="img-post-li">
           <img ng-src="{{comment.ownerId | avatarUrl}}" style="width: 40px; height: 40px">
         </div>
@@ -18,34 +18,103 @@
             <h4 class="title-generated-home">{{comment.ownerId.name}}
               <span class="date-post">{{comment.createdAt | fromNow}}</span> 
               <span ng-click="comment.showOption=!comment.showOption" class="comment-option-button"><i class="fa fa-ellipsis-v"></i></span>
-              <ul class="comment-option" ng-show="comment.showOption && !comment.deleted">
-                <li ng-click="comment.isEdit=!comment.isEdit; comment.showOption=false">{{'EDIT_COMMENT' | translate}}</li>
-                <li ng-click="vm.deleteComment(comment)">{{'DELETE_COMMENT' | translate}}</li>
+              <ul ng-mouseleave="comment.showOption = false" class="comment-option" ng-show="comment.showOption">
+                <li ng-show="!comment.deleted && !comment.blocked" ng-click="comment.isEdit=!comment.isEdit; comment.showOption=false">{{'EDIT_COMMENT' | translate}}</li>
+                <li ng-show="!comment.blocked && !comment.deleted && (vm.authUser.role=='admin' || vm.authUser._id==vm.eventOwner || vm.authUser._id==vm.eventOwner._id || comment.ownerId._id==vm.authUser._id)" ng-click="vm.deleteComment(comment)">{{'DELETE_COMMENT' | translate}}</li>
+                <li ng-show="vm.authUser.role=='admin' || vm.authUser._id==vm.eventOwner || vm.authUser._id==vm.eventOwner._id" ng-click="vm.blockComment(comment)">
+                  <span ng-show="comment.blocked">{{'UNBLOCK_COMMENT' | translate}}</span>
+                  <span ng-show="!comment.blocked">{{'BLOCK_COMMENT' | translate}}</span>
+                </li>
               </ul>
             </h4>
           </div>
           <div class="content-post-li">
-            <span ng-show="!comment.isEdit">{{(comment.deleted) ? 'This comment was deleted.' :comment.content}}</span>
+            <p ng-show="!comment.isEdit">
+              <span ng-show="comment.deleted && !comment.blocked">This comment was deleted.</span>
+              <span ng-show="comment.blocked && !comment.deleted">{{vm.eventOwner._id==vm.authUser._id || vm.authUser.role=='admin' ? comment.content : 'This comment was blocked.'}}</span>
+              <span ng-show="comment.blocked && comment.deleted">This comment was blocked or deleted</span>
+              <span ng-show="!comment.blocked && !comment.deleted">{{comment.content}}</span>
+            </p>
             <input class="input-edit-comment" ng-show="comment.isEdit" type="text" ng-model="comment.content" ng-blur="vm.editComment(comment)">
+            <!-- start sub-comment -->
+            <div class="bottom-li-post">
+              <div class="pull-left">
+                <a href="#" ng-click="vm.like(comment, 'Comment')"><i class="fa fa-heart-o" ng-class="{active: comment.liked}"></i> {{comment.totalLike || 0}}</a>
+                <a href="#" ng-click="vm.showComments(comment)"><i class="fa fa-comments"></i> {{comment.totalComment || 0}}</a>
+                <a href="#"><i class="fa fa-reply"></i> {{comment.totalShare || 0}}</a>
+              </div>
+            </div>
+
+            <div class="replies-post" ng-show="comment.showComment && !comment.blocked">
+              <ul>
+                <li>
+                  <div class="post-li" ng-repeat="subComment in comment.comments">
+                    <div class="img-post-li">
+                      <img ng-src="{{subComment.ownerId | avatarUrl}}" style="width: 40px; height: 40px">
+                    </div>
+                    <div class="content-post-li">
+                      <div class="title-post-li">
+                        <h4 class="title-generated-home">{{subComment.ownerId.name}}
+                          <span class="date-post">{{subComment.createdAt | fromNow}}</span> 
+                          <span ng-click="subComment.showOption=!subComment.showOption" class="comment-option-button"><i class="fa fa-ellipsis-v"></i></span>
+                          <ul ng-mouseleave="subComment.showOption = false" class="comment-option" ng-show="subComment.showOption">
+                            <li ng-show="!subComment.deleted && !subComment.blocked" ng-click="subComment.isEdit=!subComment.isEdit; subComment.showOption=false">{{'EDIT_COMMENT' | translate}}</li>
+                            <li ng-show="!subComment.blocked && !subComment.deleted && (vm.authUser.role=='admin' || vm.authUser._id==vm.eventOwner || vm.authUser._id==vm.eventOwner._id || subComment.ownerId._id==vm.authUser._id)" ng-click="vm.deleteComment(subComment)">{{'DELETE_COMMENT' | translate}}</li>
+                            <li ng-show="vm.authUser.role=='admin' || vm.authUser._id==vm.eventOwner || vm.authUser._id==vm.eventOwner._id" ng-click="vm.blockComment(subComment)">
+                              <span ng-show="subComment.blocked">{{'UNBLOCK_COMMENT' | translate}}</span>
+                              <span ng-show="!subComment.blocked">{{'BLOCK_COMMENT' | translate}}</span>
+                            </li>
+                          </ul>
+                        </h4>
+                      </div>
+                      <div class="content-post-li">
+                        <p ng-show="!subComment.isEdit">
+                          <span ng-show="subComment.deleted && !subComment.blocked">This comment was deleted.</span>
+                          <span ng-show="subComment.blocked && !subComment.deleted">{{vm.eventOwner._id==vm.authUser._id || vm.authUser.role=='admin' ? subComment.content : 'This comment was blocked.'}}</span>
+                          <span ng-show="subComment.blocked && subComment.deleted">This comment was blocked or deleted</span>
+                          <span ng-show="!subComment.blocked && !subComment.deleted">{{subComment.content}}</span>
+                        </p>
+                        <input class="input-edit-comment" ng-show="subComment.isEdit" type="text" ng-model="subComment.content" ng-blur="vm.editComment(subComment)">
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="post-li">
+                    <div class="img-post-li">
+                      <img ng-src="{{vm.authUser | avatarUrl}}" style="width: 40px; height: 40px">
+                    </div>
+                    <div class="content-post-li">
+                      <div class="replies-form">
+                        <textarea class="form-control" placeholder="Write a reply..." id="reply-textarea" ng-model="subComment.content"></textarea>
+                        <a href="#" class="replies-img-a" ng-click="vm.postComment(subComment, comment)"><i class="fa fa-share"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <!-- End sub-comment -->
           </div>
         </div>
       </div>
-      <div class="load-more" ng-hide="vm.data.comments.length === vm.pageSize" ng-click="vm.loadMore()">
+    </li>
+
+    <li>
+      <div class="load-more" ng-hide="vm.data.comments.length === vm.data.pageSize" ng-click="vm.loadMore()">
         {{'LOAD_MORE_COMMENT' | translate}}
       </div>
     </li>
-    <li>
-      <div class="post-li">
-        <div class="img-post-li">
-          <img ng-src="{{vm.authUser | avatarUrl}}" style="width: 40px; height: 40px">
-        </div>
-        <div class="content-post-li">
-          <div class="replies-form">
-            <textarea class="form-control" placeholder="Write a reply..." id="reply-textarea" ng-model="vm.comment.content"></textarea>
-            <a href="#" class="replies-img-a" ng-click="vm.postComment(vm.comment)"><i class="fa fa-share"></i></a>
-          </div>
-        </div>
-      </div>
-    </li>
   </ul>
+</div>
+<div class="post-li" ng-show="vm.data.showComment">
+  <div class="img-post-li">
+    <img ng-src="{{vm.authUser | avatarUrl}}" style="width: 40px; height: 40px">
+  </div>
+  <div class="content-post-li">
+    <div class="replies-form">
+      <textarea class="form-control" placeholder="Write a reply..." id="reply-textarea" ng-model="vm.comment.content"></textarea>
+      <a href="#" class="replies-img-a" ng-click="vm.postComment(vm.comment)"><i class="fa fa-share"></i></a>
+    </div>
+  </div>
 </div>

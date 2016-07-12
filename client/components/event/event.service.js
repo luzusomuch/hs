@@ -35,6 +35,10 @@
 
       getBestPics: (id, limit) => {
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/bestPics/${limit}`);
+      },
+
+      banUser(id, userId) {
+        return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/banUser`, {userId: userId});
       }
     };
   }

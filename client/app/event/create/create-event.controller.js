@@ -50,6 +50,18 @@ class CreateEventCtrl {
     	}
     });
 
+    $scope.$watch('vm.event.endTime', (nv) => {
+      if (nv) {
+        this.event.endTimeFormatted = moment(nv).format('HH:mm');
+      }
+    });
+
+    $scope.$watch('vm.event.startTime', (nv) => {
+      if (nv) {
+        this.event.startTimeFormatted = moment(nv).format('HH:mm');
+      }
+    });
+
     this.friends = [];
     this.RelationService.getAll({id: this.user._id, type: 'friend'}).then(resp => {
     	this.friends = resp.data.items;
@@ -205,6 +217,10 @@ class RepeatEventCtrl {
 		};
     this.errors = {};
     this.submitted = false;
+    this.options = {
+      minDate: new Date(),
+      showWeeks: true
+    };
 	}
 
 	submit(form) {

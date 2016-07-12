@@ -14,13 +14,23 @@
     </div>
     <div class="form-group">
       <label>{{'START' | translate}}:</label>
-      <input type="date" name="startDate" class="form-control" ng-model="vm.repeat.startDate" required>
+      <div class="input-group date" ng-click="isOpenStartDate=!isOpenStartDate">
+        <input type="text" class="form-control" placeholder="Date" ng-model="vm.repeat.startDate" required name="startDate" uib-datepicker-popup="{{'dd-MMMM-yyyy'}}" is-open="isOpenStartDate" datepicker-options="vm.options" required>
+        <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+        </span>
+      </div>
 
       <p class="error-text" ng-show="form.startDate.$error.required && vm.submitted">{{'REQUIRED_ERROR' | translate}}</p>
     </div>
     <div class="form-group">
       <label>{{'END' | translate}}:</label>
-      <input type="date" name="endDate" class="form-control" ng-model="vm.repeat.endDate" required>
+      <div class="input-group date" ng-click="isOpenEndDate=!isOpenEndDate">
+        <input type="text" class="form-control" placeholder="Date" ng-model="vm.repeat.endDate" required name="endDate" uib-datepicker-popup="{{'dd-MMMM-yyyy'}}" is-open="isOpenEndDate" datepicker-options="vm.options" required>
+        <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+        </span>
+      </div>
 
       <p class="error-text" ng-show="vm.errors.date">{{'NOT_VALID_FIELD' | translate}}</p>
       <p class="error-text" ng-show="form.endDate.$error.required && vm.submitted">{{'REQUIRED_ERROR' | translate}}</p>

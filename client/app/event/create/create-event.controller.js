@@ -73,6 +73,9 @@ class CreateEventCtrl {
         'http://maps.googleapis.com/maps/api/geocode/json',
         {params: params}
       ).then( (response) => {
+        _.each(response.data.results, (result) => {
+          result.formatted_short_address = result.formatted_address.substr(0, 35) + ' ...';
+        });
         this.addresses = response.data.results;
       });
     }

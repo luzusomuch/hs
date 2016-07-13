@@ -1,9 +1,9 @@
 'use strict';
 
 class EventDetailCtrl {
-	constructor($scope, event, $localStorage, liked, LikeService, Upload, $cookies, $stateParams, FeedService, PhotoViewer) {
+	constructor($scope, event, $localStorage, liked, LikeService, Upload, $cookies, $stateParams, FeedService, PhotoViewer, APP_CONFIG) {
 		this.event = event;
-		this.event.url = 'event/detail/'+event._id;
+		this.event.url = APP_CONFIG.baseUrl + 'event/detail/'+event._id;
 		this.viewer = PhotoViewer;
 		this.submitted = false;
 		this.feed = {};

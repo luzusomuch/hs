@@ -28,6 +28,7 @@ kernel.loadModule(require('./modules/feed'));
 kernel.loadModule(require('./modules/grant-award'));
 kernel.loadModule(require('./modules/like'));
 kernel.loadModule(require('./modules/comment'));
+kernel.loadModule(require('./modules/share'));
 //compose then start server
 kernel.compose();
 

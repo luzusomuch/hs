@@ -211,7 +211,7 @@ module.exports = function(kernel) {
     .populate('ownerId', '-password -salt')
     .populate('categoryId')
     .populate('awardId')
-    //.populate('photosId.metadata')
+    .populate('photosId')
     //.populate('participantsId', '-hashedPassword - salt')
     .exec().then(event => {
       if (!event) {

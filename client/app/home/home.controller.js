@@ -1,7 +1,7 @@
 'use strict';
 
 class HomeCtrl {
-	constructor(EventService, LikeService, $localStorage) {
+	constructor(EventService, LikeService, $localStorage, socket) {
    this.events = {
    	items: [],
    	totalItem: 0
@@ -10,6 +10,9 @@ class HomeCtrl {
    this.LikeService = LikeService;
    this.search();
    this.authUser = $localStorage.authUser;
+   if (this.authUser._id) {
+    socket.socket.emit('join', this.authUser._id);
+   }
    this.locations = [];
   }
 

@@ -4,6 +4,7 @@
 'use strict';
 
 import redisSocket from 'socket.io-redis';
+let onlineUsers = [];
 
 // When the user disconnects.. perform this
 function onDisconnect(socket) {
@@ -17,6 +18,14 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+  socket.on('join', id => {
+    console.log('user join room [%s] socket id [%s]', id, socket.id);
+    socket.join(id);
+
+    onlineUsers.push(id);
+    console.log(onlineUsers);
+    
+  });
 }
 
 exports.core = (kernel) => {

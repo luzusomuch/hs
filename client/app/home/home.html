@@ -117,7 +117,9 @@
             </div>
 
             <div class="show-sl-event m20">
-                <i class="fa fa-refresh"></i> 0  new events.
+                <a href="#" style="color:#FFF">
+                    <i ng-click="vm.$state.reload()" class="fa fa-refresh"></i> {{vm.countNewEvent}}  new events.
+                </a>
                 <a href="#" class="close-show"><img src="/assets/images/arrow.png" width="10"></a>
             </div>
             <section class="grid">

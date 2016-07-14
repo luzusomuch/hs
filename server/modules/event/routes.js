@@ -3,6 +3,7 @@ import _ from 'lodash';
 import async from 'async';
 import multer from 'multer';
 import moment from 'moment';
+import {EventBus} from '../../components';
 
 module.exports = function(kernel) {
 	kernel.app.post('/api/v1/events/', kernel.middleware.isAuthenticated(), (req, res) => {
@@ -191,7 +192,19 @@ module.exports = function(kernel) {
             kernel.queue.create(kernel.config.ES.events.CREATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
             kernel.queue.create('GRANT_AWARD', event).save();
             kernel.queue.create('TOTAL_EVENT_CREATED', {userId: req.user._id}).save();
-            return res.status(200).json(event);
+            // get all user then update real-time count update in home page
+            kernel.model.User.find({}).then(users => {
+              users.forEach(user => {
+                EventBus.emit('socket:emit', {
+                  event: 'tracking:count-new-event',
+                  room: user._id.toString(),
+                  data: event
+                });
+              });
+              return res.status(200).json(event);
+            }).catch(err => {
+              return res.status(500).json({type: 'SERVER_ERROR'});
+            });
           });
         }).catch(err => {
           return res.status(500).json({type: 'SERVER_ERROR'});

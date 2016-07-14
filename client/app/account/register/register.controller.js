@@ -33,7 +33,7 @@ class RegisterCtrl {
   }
 
   register(form) {
-    console.log(form);
+    form['email'].$setValidity('mongoose', true);
     this.submitted = true;
     if (form.$valid && this.address.selected) {
       if (this.user.phoneNumber) {
@@ -61,8 +61,10 @@ class RegisterCtrl {
         this.errors = {};
 
         angular.forEach(err.data, (err) => {
-          form[err.path].$setValidity(err.path, false);
-          this.errors[err.path] = err.type;
+          if (err && err.path) {
+            form[err.path].$setValidity(err.path, false);
+            this.errors[err.path] = err.type;
+          }
         });
 
         // Update validity of form fields that match the mongoose errors

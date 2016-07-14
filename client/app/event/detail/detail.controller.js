@@ -19,14 +19,23 @@ class EventDetailCtrl {
 		this.$stateParams = $stateParams;
 		this.FeedService = FeedService;
 
-		this.pageSize = 3;
-		this.getFeeds({pageSize: this.pageSize});
+		this.page = 1;
+		this.getFeeds({page: this.page});
+	}
+
+	loadMoreFeeds() {
+		this.FeedService.getAllByEventId(this.$stateParams.id, {page: this.page}).then(resp => {
+			this.feeds = this.feeds.concat(resp.data.items);
+			this.pageSize = resp.data.totalItem;
+			this.page += 1;
+		});
 	}
 
 	getFeeds(params) {
 		this.FeedService.getAllByEventId(this.$stateParams.id, params).then(resp => {
 			this.feeds = resp.data.items;
 			this.pageSize = resp.data.totalItem;
+			this.page += 1;
 		});
 	}
 
@@ -107,6 +116,7 @@ class EventDetailCtrl {
         this.feed = {};
         this.files = [];
         this.feeds.push(resp.data);
+        this.event.totalComment = (this.event.totalComment) ? this.event.totalComment+1 : 1;
 	    }, (err) => {
 	    	console.log(err);
 	    });
@@ -115,7 +125,7 @@ class EventDetailCtrl {
 		}
 	}
 
-	blockPhoto(photo) {
+	blockPhoto(photo, feed) {
 		this.viewer.blockPhoto(photo._id, this.$stateParams.id).then(resp => {
 			photo.blocked = resp.data.blocked;
 		}).catch(err => {

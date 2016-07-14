@@ -137,8 +137,8 @@
                             <a ui-sref="event.detail({id: event._id})" class="img-eventbox"><img src="/assets/images/img.jpg" width="100%"></a>
                             <div class="text-li-event">
                                 <h3>{{event.name}}</h3>
-                                <i class="fa fa-calendar"></i> 24.06.2016  <i class="fa fa-clock-o"></i> 15:30<br>
-                                <i class="fa fa-map-marker"></i> Location : {{event.location.fullAddess}}
+                                <i class="fa fa-calendar"></i> {{event.startDateTime | date : 'dd.MM.yyyy'}} <i class="fa fa-clock-o"></i> {{event.startDateTime | date: 'HH:mm'}}<br>
+                                <i class="fa fa-map-marker"></i> Location : {{event.location.fullAddress}}
                             </div>
                         </div>
                         <div class="bottom-li-event">

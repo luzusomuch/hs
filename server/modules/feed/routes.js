@@ -8,7 +8,7 @@ module.exports = function(kernel) {
 	/*Get all feeds by event id*/
 	kernel.app.get('/api/v1/feeds/:id/event', kernel.middleware.isAuthenticated(), (req, res) => {
 		let page = req.query.page || 1;
-    let pageSize = req.query.pagesize || 5;
+    let pageSize = req.query.pageSize || 5;
 		kernel.model.Feed.find({eventId: req.params.id})
 		.populate({
 			path: 'ownerId', 
@@ -19,7 +19,11 @@ module.exports = function(kernel) {
 		.limit(Number(pageSize))
     .skip(pageSize * (page-1))
     .exec().then(feeds => {
-    	return res.status(200).json({items: feeds, totalItem: feeds.length});
+      kernel.model.Feed.count({eventId: req.params.id}).then(count => {
+    	 return res.status(200).json({items: feeds, totalItem: count});
+      }).catch(err => {
+        return res.status(500).json({type: 'SERVER_ERROR'});  
+      });
     }).catch(err => {
     	return res.status(500).json({type: 'SERVER_ERROR'});
     })

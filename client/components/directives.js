@@ -18,7 +18,7 @@ angular.module('healthStarsApp')
     }
   };
 })
-.directive('shareToolBox', ['$timeout', function($timeout) {
+.directive('shareToolBox', ['$timeout', 'ShareService', '$state', 'APP_CONFIG', function($timeout, ShareService, $state, APP_CONFIG) {
   return {
     restrict : 'A',
     replace : true,
@@ -32,7 +32,8 @@ angular.module('healthStarsApp')
       photo: '=',
       autoShare: '@',
       data: '=',
-      type: '@'
+      type: '@',
+      shared: '='
     },
     template : 
       `<div>
@@ -42,17 +43,25 @@ angular.module('healthStarsApp')
   '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a>
       </div>`,
     link : function($scope, element) {
-      $timeout(function () {
+      // $timeout(function () {
+
         var title, description, url;
         $scope.$watchGroup(['title', 'description', 'url'], (value) => {
           title = value[0];
           description = value[1];
           url = value[2];
+
+          if (!url) {
+            if ($state.current.name==='event.detail') {
+              url = APP_CONFIG.baseUrl + 'event/detail/'+$state.params.id
+            }
+          }
+
           if ($scope.tw) {
-            $scope.tweetUrl = 'https://twitter.com/intent/tweet?url='+$scope.url;
+            $scope.tweetUrl = 'https://twitter.com/intent/tweet?url='+url;
           }
           if ($scope.gg) {
-            $scope.ggUrl = 'https://plus.google.com/share?url='+$scope.url;
+            $scope.ggUrl = 'https://plus.google.com/share?url='+url;
           }
           if (title && description && url) {
             if ($scope.fb && $scope.autoShare === 'fb') {
@@ -60,22 +69,28 @@ angular.module('healthStarsApp')
             }
           }
         });
-      });
+      // },500);
     },
-    controller: function($scope, ShareService) {
+    controller: function($scope) {
+      if (!$scope.url) {
+        if ($state.current.name==='event.detail') {
+          $scope.url = APP_CONFIG.baseUrl + 'event/detail/'+$state.params.id
+        }
+      }
       $scope.share = function(type) {
         if (type === 'fb') {
           FB.ui({
             method: 'feed',
             name: $scope.title,
-            link: $scope.link,
+            link: $scope.url,
             picture: ($scope.photo) ? $scope.photo.metadata.medium : null,
             caption: $scope.title,
             description: $scope.description
           }, function(response) {
             if (response && response.post_id) {
               ShareService.share($scope.data._id, $scope.type).then(() => {
-                $scope.data.totalShare = ($scope.data.totalShare) ? $scope.totalShare+=1 : 1;
+                $scope.data.totalShare = ($scope.data.totalShare) ? $scope.data.totalShare+1 : 1;
+                $scope.shared = !$scope.shared;
               }).catch(err => {
                 console.log(err);
                 // TODO show error
@@ -90,7 +105,8 @@ angular.module('healthStarsApp')
               // your callback action here...
               if (event && event.type === 'tweet') {
                 ShareService.share($scope.data._id, $scope.type).then(() => {
-                  $scope.data.totalShare = ($scope.data.totalShare) ? $scope.totalShare+=1 : 1;
+                  $scope.data.totalShare = ($scope.data.totalShare) ? $scope.data.totalShare+1 : 1;
+                  $scope.shared = !$scope.shared;
                 }).catch(err => {
                   console.log(err);
                   // TODO show error
@@ -100,7 +116,8 @@ angular.module('healthStarsApp')
           });
         } else if (type === 'gg') {
           ShareService.share($scope.data._id, $scope.type).then(() => {
-            $scope.data.totalShare = ($scope.data.totalShare) ? $scope.totalShare+=1 : 1;
+            $scope.data.totalShare = ($scope.data.totalShare) ? $scope.data.totalShare+1 : 1;
+            $scope.shared = !$scope.shared;
           }).catch(err => {
             console.log(err);
             // TODO show error

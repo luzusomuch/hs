@@ -14,12 +14,16 @@ angular.module('healthStarsApp').directive('likeCommentShare', () => ({
 }));
 
 class likeCommentShareCtrl {
-  constructor(LikeService, CommentService, $localStorage, $q, $timeout) {
+  constructor(LikeService, CommentService, ShareService, $localStorage, $q, $timeout) {
   	this.LikeService = LikeService;
   	this.CommentService = CommentService;
+    this.ShareService = ShareService;
   	LikeService.checkLiked(this.data._id, this.type).then(resp => {
   		this.data.liked = resp.data.liked;
   	});
+    ShareService.checkShared(this.data._id, this.type).then(resp => {
+      this.data.shared = resp.data.shared;
+    });
   	this.comment = {};
   	this.authUser = $localStorage.authUser;
     this.$q = $q;
@@ -50,28 +54,38 @@ class likeCommentShareCtrl {
 
   loadComment(data, type, params) {
     this.CommentService.getListComments(data._id, type, params).then(resp => {
-      let promise = [];
-      _.each(resp.data.comments, (comment) => {
-        promise.push(this.LikeService.checkLiked(comment._id, 'Comment'));
-      });
-      this.$q.all(promise).then(checked => {
-        _.each(resp.data.comments, (comment, index) => {
-          comment.liked = checked[0].data.liked;
-        });
+      let likePromise = [];
+      let sharePromise = [];
 
-        data.comments = (data.comments) ? data.comments.concat(resp.data.comments) : resp.data.comments;
-        data.comments = _.uniq(data.comments, '_id');
-        data.comments.sort((a,b) => {
-          if (a.createdAt < b.createdAt) {
-            return -1;
-          }
-          if (a.createdAt > b.createdAt) {
-            return 1
-          }
-          return 0
+      _.each(resp.data.comments, (comment) => {
+        likePromise.push(this.LikeService.checkLiked(comment._id, 'Comment'));
+        sharePromise.push(this.ShareService.checkShared(comment._id, 'Comment'));
+      });
+      // check all comment liked or not
+      this.$q.all(likePromise).then(checked => {
+        _.each(resp.data.comments, (comment, index) => {
+          comment.liked = checked[index].data.liked;
         });
-        data.pageSize = resp.data.totalItem;
-        data.page +=1;
+        // Check shared or not
+        this.$q.all(sharePromise).then(checked => {
+          _.each(resp.data.comments, (comment, index) => {
+            comment.shared = checked[index].data.shared;
+          });
+          
+          data.comments = (data.comments) ? data.comments.concat(resp.data.comments) : resp.data.comments;
+          data.comments = _.uniq(data.comments, '_id');
+          data.comments.sort((a,b) => {
+            if (a.createdAt < b.createdAt) {
+              return -1;
+            }
+            if (a.createdAt > b.createdAt) {
+              return 1
+            }
+            return 0
+          });
+          data.pageSize = resp.data.totalItem;
+          data.page +=1;
+        });
       });
     });
   }
@@ -150,6 +164,19 @@ class likeCommentShareCtrl {
       // TODO show error;
     });
   }
+
+  // share(object, type) {
+  //   let data = (object && type) ? object : this.data;
+  //   data.type = (object && type) ? type : this.type;
+
+  //   this.ShareService.share(data._id, data.type).then(resp => {
+  //     data.shared = resp.data.shared;
+  //     data.totalShare = (data.totalShare) ? data.totalShare+=1 : 1;
+  //   }).catch(err => {
+  //     console.log(err);
+  //     // TODO show error;
+  //   });
+  // }
 }
 
 angular.module('healthStarsApp').controller('likeCommentShareCtrl', likeCommentShareCtrl);

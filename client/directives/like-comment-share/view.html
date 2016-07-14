@@ -1,8 +1,10 @@
 <div class="bottom-li-post">
-  <div class="pull-left">
+  <div class="pull-left relative-div">
     <a href="#" ng-click="vm.like()"><i class="fa fa-heart-o" ng-class="{active: vm.data.liked}"></i> {{vm.data.totalLike || 0}}</a>
 		<a href="#" ng-click="vm.showComments()"><i class="fa fa-comments"></i> {{vm.data.totalComment || 0}}</a>
-		<a href="#"><i class="fa fa-reply"></i> {{vm.data.totalShare || 0}}</a>
+		<a href="#" ng-click="vm.data.clickedShare=true"><i class="fa fa-reply" ng-class="{active: vm.data.shared}"></i> {{vm.data.totalShare || 0}}</a>
+    <div class="share-content" ng-show="vm.data.clickedShare" share-tool-box decription="vm.data.content" title="'Join us on HealthStar'" url="vm.data.url" data="vm.data" type="Feed" fb="true" tw="true" gg="true" shared="vm.data.clickedShare">
+    </div>
   </div>
 </div>
 
@@ -38,10 +40,13 @@
             <input class="input-edit-comment" ng-show="comment.isEdit" type="text" ng-model="comment.content" ng-blur="vm.editComment(comment)">
             <!-- start sub-comment -->
             <div class="bottom-li-post">
-              <div class="pull-left">
+              <div class="pull-left relative-div">
                 <a href="#" ng-click="vm.like(comment, 'Comment')"><i class="fa fa-heart-o" ng-class="{active: comment.liked}"></i> {{comment.totalLike || 0}}</a>
                 <a href="#" ng-click="vm.showComments(comment)"><i class="fa fa-comments"></i> {{comment.totalComment || 0}}</a>
-                <a href="#"><i class="fa fa-reply"></i> {{comment.totalShare || 0}}</a>
+                <a href="#" ng-click="comment.clickedShare = true"><i class="fa fa-reply" ng-class="{active: comment.shared}"></i> {{comment.totalShare || 0}}</a>
+
+                <div class="share-content" ng-show="comment.clickedShare" share-tool-box decription="comment.content" title="'Join us on HealthStar'" url="comment.url" data="comment" type="Comment" fb="true" tw="true" gg="true" shared="comment.clickedShare">
+                </div>
               </div>
             </div>
 

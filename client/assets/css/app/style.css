@@ -2006,3 +2006,12 @@ span.country-name {
     font-size: 2em;
     color: #FFF !important;
 }
+.share-content {
+    position: absolute;
+    right: 0px;
+    padding: 10px;
+    border: 1px solid;
+    background: rgba(15,24,56,0.87);
+    border-radius: 5px;
+    z-index: 999;
+}

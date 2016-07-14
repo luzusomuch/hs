@@ -125,7 +125,7 @@
             <section class="grid">
                 <div class="grid-sizer"></div>
                 <div class="grid-item" ng-repeat="event in vm.events.items">
-                    <div class="li-event li-blue">
+                    <div class="li-event {{event.categoryId | categoryClass}}">
                         <div class="top-li-event">
                             <a href="#"><img src="/assets/images/48.jpg"></a>
                             <h4><a href="#">Sandra Howard</a></h4>

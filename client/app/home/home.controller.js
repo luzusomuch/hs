@@ -13,6 +13,9 @@ class HomeCtrl {
    if (this.authUser._id) {
     socket.socket.emit('join', this.authUser._id);
    }
+   socket.socket.on('tracking:user', (data) => {
+    console.log(data);
+   });
    this.locations = [];
   }
 
@@ -20,7 +23,6 @@ class HomeCtrl {
   	this.loading = true;
   	this.EventService.search().then(res => {
   		this.events = res.data;
-      console.log(this.events);
       this.locations = _.map(res.data.items, (item) => {
         return _.assign({title: item.name}, item.location || {});
       });

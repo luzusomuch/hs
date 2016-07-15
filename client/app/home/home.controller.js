@@ -1,15 +1,20 @@
 'use strict';
 
 class HomeCtrl {
-	constructor($scope, EventService, LikeService, $localStorage, SearchParams, socket, $state) {
+	constructor($scope, EventService, LikeService, $localStorage, CategoryService, SearchParams, socket, $state, $timeout) {
     this.searchParams = SearchParams;
+    this.page = 1;
     this.events = {
      	items: [],
      	totalItem: 0
     };
+    this.categories = [];
+    this.categoryId = '';
+    CategoryService.getAll().then(resp => {
+      this.categories = resp.data.items;
+    });
     this.EventService = EventService;
     this.LikeService = LikeService;
-    this.search();
     this.authUser = $localStorage.authUser;
     this.locations = [];
     this.$state = $state;
@@ -18,7 +23,7 @@ class HomeCtrl {
     }
     // Tracking online/offline user
     socket.socket.on('tracking:user', (data) => {
-      console.log(data);
+      //console.log(data);
     });
 
     this.locations = [];
@@ -29,16 +34,32 @@ class HomeCtrl {
       this.countNewEvent +=1;
     });
 
+    $scope.$watch('vm.categoryId', (nv) => {
+      SearchParams.category = nv;
+    });
+
+    var ttl;
     $scope.$watch(() => {
       return SearchParams;
     }, (nv) => {
-      console.log(nv);
+      if(ttl) {
+        $timeout.cancel(ttl);
+      }
+      ttl = $timeout(this.search.bind(this), 500);
     }, true);
   }
 
   search() {
+    console.log('search');
   	this.loading = true;
-  	this.EventService.search().then(res => {
+    this.events =  {
+      items: [],
+      totalItem: 0
+    };
+    this.page = 1;
+    let params = angular.copy(this.searchParams);
+    params.page = this.page;
+  	this.EventService.search(this.searchParams).then(res => {
   		this.events = res.data;
       this.locations = _.map(res.data.items, (item) => {
         return _.assign({title: item.name}, item.location || {});
@@ -49,7 +70,10 @@ class HomeCtrl {
 
   pageChange() {
   	this.loading = true;
-  	this.EventService.search().then(res => {
+    this.page++;
+    let params = angular.copy(this.searchParams);
+    params.page = this.page;
+  	this.EventService.search(this.searchParams).then(res => {
   		this.events.items = this.events.items.concat(res.data);
   		this.events.totalItem = res.data.totalItem;
       var locations = _.map(res.data.items, (item) => {
@@ -72,6 +96,10 @@ class HomeCtrl {
       // TODO - show error message
       console.log(err);
     });
+  }
+
+  selectCategory(category) {
+    this.categoryId = this.categoryId === category._id ? '' : category._id;
   }
 }
 

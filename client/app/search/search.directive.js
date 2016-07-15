@@ -8,21 +8,24 @@ angular.module('healthStarsApp')
 		replace: true,
 		link: (scope, element) => {
 			let elm = angular.element(element).find('input');
+			let suggest = '';
 			scope.items = [];
+			scope.suggests = [];
 			var updateItem = (e) => {
 				scope.items.push(e.item);
-				scope.$apply();
+				//scope.$apply();
 			};
 
 			var removeItem = (e) => {
 				_.remove(scope.items, item => item === e.item);
-				scope.$apply();
+				//scope.$apply();
 			};
 
 			var autocomplete = (value) => {
+				suggest = value;
 				EventService.suggest(value).then(
 					res => {
-						console.log(res);
+						scope.suggests = res.data;
 					}
 				);
 			}
@@ -47,6 +50,12 @@ angular.module('healthStarsApp')
 				scope.items = [];
 			};
 
+			scope.select = (value) => {
+				scope.suggests = [];
+				elm.tagsinput('remove', suggest);
+				elm.tagsinput('add', value);
+			};
+
 			scope.$watch('items', (nv) => {
 				SearchParams.keywords = nv.join(',');
 			}, true);
@@ -68,9 +77,14 @@ angular.module('healthStarsApp')
 			};
 
 			scope.select = function(address) {
-				scope.address = angular.copy(address.formatted_address);
+				scope.address = angular.copy(address);
 				scope.addresses = [];
 			};
+
+			scope.search = () => {
+				SearchParams = _.merge(SearchParams, {address: scope.address, radius: scope.radius});
+				angular.element('body').trigger('click');
+			}
 
 			var autocomplete  = (value) => {
 				var params = {address: value, sensor: false};

@@ -450,23 +450,33 @@ module.exports = function(kernel) {
         return res.status(500).json({type: 'SERVER_ERROR'});
       }
       async.each(result.items, (item, callback) => {
-        kernel.model.Category.findById(item.categoryId).then(category => {
-          item.categoryId = (category) ? category : item.categoryId;
-          item.liked = false;
-          if (req.user) {
+        item.liked = false;
+        async.parallel([
+          (cb) => {
+            // populate ownerId
+            kernel.model.User.findById(item.ownerId, '-password -salt').then(user => {
+              item.ownerId = (user) ? user : item.ownerId;
+              cb();
+            }).catch(cb);
+          }, 
+          (cb) => {
+            // populate categoryId
+            kernel.model.Category.findById(item.categoryId).then(category => {
+              item.categoryId = (category) ? category : item.categoryId;
+              cb();
+            }).catch(cb);
+          }, 
+          (cb) => {
+            // Check that current user liked an event or not
             kernel.model.Like.findOne({objectId: item._id, objectName: 'Event', ownerId: req.user._id}).then(liked => {
               if (!liked) {
-                return callback();
+                return cb();
               }
               item.liked = true;
-              return callback();
-            }).catch(err => {
-              return callback();
-            });
-          } else {
-            return callback();
+              cb();
+            }).catch(cb);
           }
-        }).catch(callback);
+        ], callback);
       }, () => {
         return res.status(200).json(result);
       });

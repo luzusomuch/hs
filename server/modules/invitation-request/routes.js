@@ -27,7 +27,7 @@ module.exports = function(kernel) {
 			});
 			invite.save().then(
 				saved => {
-					let url = `${kernel.config.baseUrl}/event/detail/${result.event._id}`;
+					let url = `${kernel.config.baseUrl}event/detail/${result.event._id}`;
 		      kernel.emit('SEND_MAIL', {
 		        template: 'inviteToEvent.html',
 		        subject: 'Invitation for attending ' + result.event.name + ' event',

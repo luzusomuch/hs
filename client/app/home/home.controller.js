@@ -1,16 +1,22 @@
 'use strict';
 
 class HomeCtrl {
-	constructor(EventService, LikeService, $localStorage) {
-   this.events = {
-   	items: [],
-   	totalItem: 0
-   };
-   this.EventService = EventService;
-   this.LikeService = LikeService;
-   this.search();
-   this.authUser = $localStorage.authUser;
-   this.locations = [];
+	constructor($scope, EventService, LikeService, $localStorage, SearchParams) {
+    this.searchParams = SearchParams;
+    this.events = {
+     	items: [],
+     	totalItem: 0
+    };
+    this.EventService = EventService;
+    this.LikeService = LikeService;
+    this.search();
+    this.authUser = $localStorage.authUser;
+    this.locations = [];
+    $scope.$watch(() => {
+      return SearchParams;
+    }, (nv) => {
+      console.log(nv);
+    }, true);
   }
 
   search() {

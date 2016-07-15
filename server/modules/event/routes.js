@@ -423,7 +423,7 @@ module.exports = function(kernel) {
 
   /* Get event */
 
-  kernel.app.get('/api/v1/events', kernel.middleware.isAuthenticated(), (req, res) => {
+  kernel.app.post('/api/v1/events/search', kernel.middleware.isAuthenticated(), (req, res) => {
     let query = {
       query: {
         match_all: {}

@@ -10,6 +10,6 @@ exports = module.exports = {
   apiKey: {
   	google: 'AIzaSyBhg6JbSzbbB1rC9iqukJdiAXzUOYlpf-4',
   	weather: 'd6ce4efe26d8a70511337db70401d39c',
-  	fbAppId: '1564026697235598'
+  	fbAppId: '1564026697235598' 
   }
 };

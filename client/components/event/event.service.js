@@ -5,6 +5,10 @@
   function EventService($http, APP_CONFIG) {
     return {
 
+      getFriendsEvents(params) {
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/friendsEvents`);
+      },
+
       search: (body) => {
         body = body || {};
         return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/search`, body);

@@ -1,0 +1,26 @@
+<div class="body-box-1 event-home-right">
+	<ul class="event-list">
+		<li class="li-blue" ng-repeat="event in vm.events">
+			<div class="top-li-event">
+        <a href="#"><img src="{{event.ownerId | avatarUrl}}"></a>
+        <h4><a href="#">{{event.ownerId.name}}</a></h4>
+        <i class="fa fa-clock-o"></i> {{event.createdAt | fromNow}}
+        <div class="arward-li-top">
+          <span>{{event.ownerId.totalAwards || 0}}</span>
+          <i class="fa fa-trophy"></i>
+        </div>
+      </div>
+      <div class="text-li-event">
+        <h3>{{event.name}}</h3>
+        <i class="fa fa-calendar"></i> {{event.startDateTime | date : 'dd.MM.yyyy'}}  <i class="fa fa-clock-o"></i> {{event.startDateTime | date: 'HH:mm'}}<br>
+        <div class="li-friend-event">
+          <i class="fa fa-user-plus"></i>
+          <ul>
+              <li ng-repeat="participant in event.participantsId | limitTo: 5"><a href="#"><img src="{{participant | avatarUrl}}"></a></li>
+              <li ng-show="event.participantsId.length - 5 > 0"><a href="#" class="number-friend-event">+{{event.participantsId.length -5}}</a></li>
+          </ul>
+        </div>
+      </div>
+		</li>
+	</ul>
+</div>

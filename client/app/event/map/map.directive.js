@@ -58,7 +58,7 @@ angular.module('healthStarsApp').directive('hsEventMap', ($interval) => {
 	      }
 	    };
 	    scope.$watch('locations', (nv) => {
-	    	if (nv[0]) {
+	    	if (nv && nv[0]) {
 		    	var $ttl = $interval(() => {
 		    		if(window.google && window.google.maps) {
 		    			$interval.cancel($ttl);

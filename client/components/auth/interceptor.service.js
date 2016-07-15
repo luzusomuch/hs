@@ -2,13 +2,15 @@
 
 (function() {
 
-  function authInterceptor($rootScope, $q, $cookies, $injector, Util) {
+  function authInterceptor($rootScope, $q, $cookies, $injector, Util, APP_CONFIG) {
     var state;
     return {
       // Add authorization token to headers
       request(config) {
         config.headers = config.headers || {};
-        if ($cookies.get('token')) {
+        var apiUrl = APP_CONFIG.baseUrl;
+        var origins = Util.urlParse(apiUrl);
+        if ($cookies.get('token') && Util.isSameOrigin(config.url, origins)) {
           config.headers.Authorization = 'Bearer ' + $cookies.get('token');
         }
         return config;

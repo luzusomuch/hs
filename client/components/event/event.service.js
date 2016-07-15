@@ -44,6 +44,10 @@
 
       banUser(id, userId) {
         return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/banUser`, {userId: userId});
+      },
+
+      grantAward(id, userId) {
+        return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/grantAward`, {userId: userId});
       }
     };
   }

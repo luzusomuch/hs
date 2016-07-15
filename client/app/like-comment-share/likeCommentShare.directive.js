@@ -10,7 +10,7 @@ angular.module('healthStarsApp').directive('likeCommentShare', () => ({
   controller: 'likeCommentShareCtrl',
   controllerAs: 'vm',
   bindToController: true,
-  templateUrl: 'directives/like-comment-share/view.html'
+  templateUrl: 'app/like-comment-share/view.html'
 }));
 
 class likeCommentShareCtrl {

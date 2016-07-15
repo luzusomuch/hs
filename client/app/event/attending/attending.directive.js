@@ -9,9 +9,9 @@ class EventAttendingCtrl {
 		
 		$scope.$watch('eId', (nv) => {
 			if(nv) {
-				EventService.getParticipants(nv).then(
-					res => this.participants = res.data
-				);
+				EventService.getParticipants(nv).then(res => {
+					this.participants = res.data
+				});
 			}
 		});
 
@@ -36,6 +36,19 @@ class EventAttendingCtrl {
 			// TOTO show error
 		}
 	}
+
+	grantAward(user) {
+		if (this.isEventOwner) {
+			this.EventService.grantAward(this.$state.params.id, user._id).then(() => {
+				
+			}).catch(err => {
+				console.log(err);
+				// TODO show error
+			});
+		} else {
+			// TODO show error
+		}
+	}
 }
 
 angular.module('healthStarsApp').directive('hsEventAttending', () => {
@@ -43,7 +56,8 @@ angular.module('healthStarsApp').directive('hsEventAttending', () => {
 		restrict: 'E',
 		scope: {
 			eId : '=',
-			eOwner: '='
+			eOwner: '=',
+			eAward: '='
 		},
 		templateUrl: 'app/event/attending/attending.html',
 		controller: 'EventAttendingCtrl',

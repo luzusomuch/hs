@@ -5,13 +5,16 @@ class JoinedEventsCtrl {
 		this.events = [];
 		EventService.getFriendsEvents().then(resp => {
 			this.events = resp.data.events;
+			console.log(this.events);
+		}).catch(err => {
+			console.log(err);
 		});
 	}
 }
 
-angular.module('healthStarsApp').directive('hsJoinedEvents', ($uibModal) => {
+angular.module('healthStarsApp').directive('hsJoinedEvents', () => {
 	return {
-		restrict: 'A',
+		restrict: 'E',
 		controller: 'JoinedEventsCtrl',
 		controllerAs: 'vm',
 		templateUrl: 'app/event/joined-events/view.html'

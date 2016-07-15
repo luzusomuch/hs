@@ -222,20 +222,33 @@ module.exports = function(kernel) {
 
     let query = {
       query: {
-        match_all: {}
+        bool: {
+          should: [
+            {
+              match: {
+                name: req.query.keyword
+              }
+            },
+            {
+              term: {
+                tags: req.query.keyword
+              }
+            }
+          ]
+        }
       },
-      filter: {
-        or: [
-          { match_phrase: { title: req.query.keyword } },
-          { term: { tag: req.query.keyword } }
-        ]
-      }
+      from: 0,
+      size: 10
     };
     console.log(JSON.stringify(query));
     //Todo: filter based on query
 
     kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {
-
+      if(err) {
+        return res.status(500).json({type: 'SERVER_ERROR'});
+      }
+      let suggests = _.map(result.items, 'name');
+      return res.status(200).json(suggests);
     });
 
   });

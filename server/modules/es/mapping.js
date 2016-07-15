@@ -24,6 +24,11 @@ class Mapping {
     let mapping = {};
     mapping[this.config.mapping.eventType] = {
       properties: {
+        name: {
+          type: "string",
+          index_analyzer: "autocomplete_term",
+          search_analyzer: "autocomplete_search"
+        }
         // put mapping for event properties here
       }
     };

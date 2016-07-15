@@ -78,7 +78,7 @@ h1, h2, h3, h4, h5, h6 {
 strong {
     font-family: 'proxima_nova_rgbold';
 }
-a, a:hover {
+a, a:hover, a:visited, a:active, a:focus {
     text-decoration: none;
     color: #0080e5;
 }
@@ -539,19 +539,19 @@ label .note-form {
     height: 3px;
     left: 0px;
 }
-.menu-home li a.color-blue:after {
+.menu-home li.active a.color-blue:after {
     background: #3598dc;
 }
-.menu-home li a.color-orange:after {
+.menu-home li.active a.color-orange:after {
     background: #e84c3d;
 }
-.menu-home li a.color-yellow:after {
+.menu-home li.active a.color-yellow:after {
     background: #f1c40f;
 }
-.menu-home li a.color-green:after {
+.menu-home li.active a.color-green:after {
     background: #2fcc71;
 }
-.menu-home li a.color-purple:after {
+.menu-home li.active a.color-purple:after {
     background: #9c59b8;
 }
 .line-menu-home .checkbox-l {

@@ -226,24 +226,24 @@ angular.module('healthStarsApp')
       let className;
       switch (category.type) {
         case 'food':
-        className = 'li-orange';
+        className = 'li-orange color-orange';
         break;
       case 'action':
-        className = 'li-purple';
+        className = 'li-purple color-purple';
         break;
       case 'eco':
-        className = 'li-green';
+        className = 'li-green color-green';
         break;
       case 'social':
-        className = 'li-yellow';
+        className = 'li-yellow color-yellow';
         break;
       case 'internation':
-        className = 'li-blue';
+        className = 'li-blue color-blue';
         break;
       default:
-        className = 'li-blue';
+        className = 'li-blue color-blue';
         break;
-      }
+      };
       return className;
     }
   }

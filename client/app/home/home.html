@@ -3,18 +3,22 @@
       <div class="row">
           <div class="col-sm-3 col-lg-2">
               <div class="checkbox-l">
-                  <input id="checkbox1" type="checkbox" name="checkbox" value="checkbox1" >
+                  <input id="checkbox1" type="checkbox" ng-model="vm.searchParams.friendActivities" name="checkbox" value="checkbox1" >
                   <label for="checkbox1"> Friends activities</label>
               </div>
           </div>
           <div class="col-sm-6  col-lg-8">
               <div class="menu-home">
                   <ul>
-                      <li><a href="#" class="color-blue"><img src="/assets/images/star.png"><span>SPORTSTAR</span></a></li>
-                      <li><a href="#" class="color-orange"><img src="/assets/images/star1.png"><span>FOODSTAR</span></a></li>
+                      <li ng-class="{'active': vm.categoryId === category._id}" ng-repeat="category in vm.categories">
+                          <a href ng-click="vm.selectCategory(category)" class="{{category | categoryClass}}"><img ng-src="{{category | categoryImagePath}}">
+                            <span>{{category.type.toUpperCase()}}</span>
+                          </a>
+                      </li>
+                     <!--  <li><a href="#" class="color-orange"><img src="/assets/images/star1.png"><span>FOODSTAR</span></a></li>
                       <li><a href="#" class="color-yellow"><img src="/assets/images/star2.png"><span>SOCIALSTAR</span></a></li>
                       <li><a href="#" class="color-green"><img src="/assets/images/star3.png"><span>ECOSTAR </span></a></li>
-                      <li><a href="#" class="color-purple"><img src="/assets/images/star4.png"><span>ACTIONSTAR</span></a></li>
+                      <li><a href="#" class="color-purple"><img src="/assets/images/star4.png"><span>ACTIONSTAR</span></a></li> -->
                   </ul>
               </div>
           </div>

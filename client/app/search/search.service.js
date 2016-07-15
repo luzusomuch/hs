@@ -5,12 +5,14 @@
   function SearchParams($http, APP_CONFIG) {
     return {
       keywords: '',
-      address: '',
+      address: {},
       postion: '',
       postCode: '',
       radius: '',
       startDate: '',
-      endDate: ''
+      endDate: '',
+      friendActivities: false,
+      category: ''
     };
   }
 

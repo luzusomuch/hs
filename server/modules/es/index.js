@@ -93,8 +93,30 @@ exports.config = {
 			host: 'localhost:9200'
 		},
 		index: 'health-stars',
-		settings: {
-			//put setting here
+		settings: { 
+			analysis: {
+			  analyzer: {  
+			    autocomplete_term:{  
+			      tokenizer: "autocomplete_edge",
+			      filter :[  
+			         "lowercase"
+			      ]
+			     },
+				  autocomplete_search: {  
+				    tokenizer: "keyword",
+				    filter : [  
+				      "lowercase"
+				    ]
+				  }
+			  },
+			  tokenizer: {  
+			    autocomplete_edge: {  
+	          type:"edge_nGram",
+	          min_gram:1,
+	          max_gram:100
+			    }
+			  }
+		  }
 		},
 		events: {
 			CREATE : 'es_create_data',

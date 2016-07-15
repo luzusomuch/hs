@@ -101,7 +101,6 @@ class HomeCtrl {
     this.page++;
     let params = angular.copy(this.searchParams);
     params.page = this.page;
-    console.log(params);
   	this.EventService.search(params).then(res => {
   		this.events.items = this.events.items.concat(res.data.items);
   		this.events.totalItem = res.data.totalItem;

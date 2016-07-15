@@ -1,7 +1,6 @@
 'use strict';
 
 class HomeCtrl {
-<<<<<<< HEAD
 	constructor($scope, EventService, LikeService, $localStorage, SearchParams, $state) {
     this.searchParams = SearchParams;
     this.events = {

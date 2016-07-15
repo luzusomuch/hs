@@ -6,11 +6,12 @@ class EventAttendingCtrl {
 		this.authUser = $localStorage.authUser;
 		this.$state = $state;
 		this.participants = {};
-		
+		this.eAward = $scope.eAward;
+
 		$scope.$watch('eId', (nv) => {
 			if(nv) {
 				EventService.getParticipants(nv).then(res => {
-					this.participants = res.data
+					this.participants = res.data;
 				});
 			}
 		});
@@ -38,9 +39,9 @@ class EventAttendingCtrl {
 	}
 
 	grantAward(user) {
-		if (this.isEventOwner) {
+		if (this.isEventOwner && !user.isGrantedAward && this.eAward.type==='organizer') {
 			this.EventService.grantAward(this.$state.params.id, user._id).then(() => {
-				
+				user.isGrantedAward = true;
 			}).catch(err => {
 				console.log(err);
 				// TODO show error

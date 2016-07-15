@@ -74,10 +74,8 @@ angular.module('healthStarsApp')
 
 			var autocomplete  = (value) => {
 				var params = {address: value, sensor: false};
-				console.log(params);
 				$http.get('http://maps.googleapis.com/maps/api/geocode/json', { params: params })
 				.then( res => {
-					console.log(res);
 					scope.addresses = res.data.results;
 	      });
 			};

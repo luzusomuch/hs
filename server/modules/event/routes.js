@@ -213,6 +213,33 @@ module.exports = function(kernel) {
     });
   });
 
+  /* suggest for searching */
+
+  kernel.app.get('/api/v1/events/suggest', kernel.middleware.isAuthenticated(), (req, res) => {
+    if(!req.query.keyword) {
+      return res.status(200).json([]);
+    }
+
+    let query = {
+      query: {
+        match_all: {}
+      },
+      filter: {
+        or: [
+          { match_phrase: { title: req.query.keyword } },
+          { term: { tag: req.query.keyword } }
+        ]
+      }
+    };
+    console.log(JSON.stringify(query));
+    //Todo: filter based on query
+
+    kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {
+
+    });
+
+  });
+
   /*
   Get Event Detail
   */

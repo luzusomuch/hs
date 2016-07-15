@@ -10,6 +10,10 @@
         return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/search`, body);
       },
 
+      suggest: (value) => {
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/suggest?keyword=${value}`);
+      },
+
       get: (id) => {
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}`);
       },

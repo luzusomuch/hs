@@ -231,6 +231,7 @@ module.exports = function(kernel) {
         $or: [{participantsId: {$in: friendIds}}, {ownerId: {$in: friendIds}}]
       })
       .populate('awardId')
+      .populate('categoryId')
       .populate({
         path: 'participantsId', 
         select: '-password -salt', 

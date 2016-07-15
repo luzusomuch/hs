@@ -1,6 +1,6 @@
 <div class="body-box-1 event-home-right">
 	<ul class="event-list">
-		<li class="li-blue" ng-repeat="event in vm.events">
+		<li class="{{event.categoryId | categoryClass}}" ng-repeat="event in vm.events">
 			<div class="top-li-event">
         <a href="#"><img src="{{event.ownerId | avatarUrl}}"></a>
         <h4><a href="#">{{event.ownerId.name}}</a></h4>

@@ -477,12 +477,19 @@ module.exports = function(kernel) {
   /* Get event */
 
   kernel.app.post('/api/v1/events/search', kernel.middleware.isAuthenticated(), (req, res) => {
+    
+    let page = parseInt(req.body.page);
+    page = (isNaN(page) || !page) ? 1 : page;
+    let limit = 4;
+    let skip = (page - 1) * limit;
+
     let query = {
       query: {
         match_all: {}
-      }
+      },
+      from: skip,
+      size: limit
     };
-
     //Todo: filter based on query
 
     kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {

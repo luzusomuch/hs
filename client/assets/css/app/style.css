@@ -61,7 +61,7 @@ body {
     font-size: 14px;
     line-height:20px;
     font-family: 'proxima_nova_rgregular';
-    background-image: url(/assets/images/bg.jpg);
+    /*background-image: url(/assets/images/bg.jpg);*/
     background-color: #010c3a;
     background-repeat: no-repeat;
     background-position: bottom center;

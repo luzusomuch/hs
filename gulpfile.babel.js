@@ -510,8 +510,17 @@ gulp.task('wiredep:client', () => {
         /font-awesome\.css/,
         /bootstrap\.css/,
         /bootstrap-sass-official/,
-        /bootstrap-social\.css/
+        /bootstrap-social\.css/,
+        /mansory\.js/
       ],
+      overrides: {
+        masonry: {
+          main: 'dist/masonry.pkgd.js'
+        },
+        outlayer: {
+          main: ['item.js', 'outlayer.js']
+        }
+      },
       ignorePath: clientPath
     }))
     .pipe(gulp.dest(`${clientPath}/`));

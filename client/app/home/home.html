@@ -15,10 +15,6 @@
                             <span>{{category.type.toUpperCase()}}</span>
                           </a>
                       </li>
-                     <!--  <li><a href="#" class="color-orange"><img src="/assets/images/star1.png"><span>FOODSTAR</span></a></li>
-                      <li><a href="#" class="color-yellow"><img src="/assets/images/star2.png"><span>SOCIALSTAR</span></a></li>
-                      <li><a href="#" class="color-green"><img src="/assets/images/star3.png"><span>ECOSTAR </span></a></li>
-                      <li><a href="#" class="color-purple"><img src="/assets/images/star4.png"><span>ACTIONSTAR</span></a></li> -->
                   </ul>
               </div>
           </div>
@@ -76,46 +72,14 @@
 
 
         <div class="col-sm-6 col-lg-8"  id="div-2">
-            <div class="m20 mobile-show">
-                <div class="venue-box">
-                    <a href="#" class="btn btn-default btn-block">HILDESHEIM <i class="fa fa-angle-down"></i></a>
-                    <div class="venue-dropdow">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="City">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Postual code">
-                        </div>
-                        <div class="form-group">
-                            <select type="text" class="form-control" ><option>Country</option></select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mobile-show">
-                <div class="m20">
-                    <div class='input-group date'>
-                        <input type='text' class="form-control"  id='datetimepicker2' value="16/06/2016"/>
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-
-                </div>
-                <div class="calendar-home m20">
-                    <img src="/assets/images/calendar.jpg" width="100%">
-                </div>
-            </div>
-
             <div class="show-sl-event m20">
                 <a href="#" style="color:#FFF">
                     <i ng-click="vm.$state.reload()" class="fa fa-refresh"></i> {{vm.countNewEvent}}  new events.
                 </a>
                 <a href="#" class="close-show"><img src="/assets/images/arrow.png" width="10"></a>
             </div>
-            <section class="grid">
-                <div class="grid-sizer"></div>
-                <div class="grid-item" ng-repeat="event in vm.events.items">
+            <section class="grid" masonry>
+                <div class="masonry-brick grid-item" ng-repeat="event in vm.events.items">
                     <div class="li-event {{event.categoryId | categoryClass}}">
                         <div class="top-li-event">
                             <a href="#"><img src="{{event.ownerId | avatarUrl}}"></a>
@@ -148,7 +112,6 @@
                         </div>
                     </div>
                 </div>
-                <div style="clear:both"></div>
             </section>
             <div class="text-center" ng-show="vm.loading"><hs-loading size="50"></hs-loading></div>
         </div>

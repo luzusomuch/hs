@@ -38,7 +38,7 @@ class HomeCtrl {
       SearchParams.category = nv;
     });
 
-    var ttl;
+    let ttl;
     $scope.$watch(() => {
       return SearchParams;
     }, (nv) => {
@@ -47,10 +47,35 @@ class HomeCtrl {
       }
       ttl = $timeout(this.search.bind(this), 500);
     }, true);
+
+    let prevOffset = 0;
+
+    let ttl2;
+    let loadMore = (event) => {
+      let content = angular.element('section[masonry]');
+      let windowHeight = angular.element(window).height();
+      let bottom = content.closest('.container')[0].offsetTop + content.height();
+      let offset = windowHeight + angular.element(document).scrollTop();
+      let dir = offset > prevOffset ? 'down' : 'up';
+      prevOffset = offset;
+      if(dir === 'down' && offset > (bottom + 50)) {
+        if(ttl2) {
+          $timeout.cancel(ttl2);
+        }
+        ttl2 = $timeout(this.pageChange.bind(this), 500);
+      }
+    }
+
+    angular.element(document).bind('scroll', loadMore.bind(this));
+    $scope.$on('$destroy', () => {
+       angular.element(document).unbind('scroll', loadMore.bind(this));
+    });
   }
 
   search() {
-    console.log('search');
+    if(this.loading) {
+      return false;
+    }
   	this.loading = true;
     this.events =  {
       items: [],
@@ -69,12 +94,16 @@ class HomeCtrl {
   }
 
   pageChange() {
+    if(this.loading) {
+      return false;
+    }
   	this.loading = true;
     this.page++;
     let params = angular.copy(this.searchParams);
     params.page = this.page;
-  	this.EventService.search(this.searchParams).then(res => {
-  		this.events.items = this.events.items.concat(res.data);
+    console.log(params);
+  	this.EventService.search(params).then(res => {
+  		this.events.items = this.events.items.concat(res.data.items);
   		this.events.totalItem = res.data.totalItem;
       var locations = _.map(res.data.items, (item) => {
         return _.assign({title: item.name}, item.location || {});

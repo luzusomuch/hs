@@ -6,7 +6,7 @@ import moment from 'moment';
 import {EventBus} from '../../components';
 
 module.exports = function(kernel) {
-	kernel.app.post('/api/v1/events/', kernel.middleware.isAuthenticated(), (req, res) => {
+  kernel.app.post('/api/v1/events', kernel.middleware.isAuthenticated(), (req, res) => {
     let storage = multer.diskStorage({
       destination: (req, file, cb) => {
         cb(null, kernel.config.tmpPhotoFolder)
@@ -213,8 +213,63 @@ module.exports = function(kernel) {
     });
   });
 
-  /* suggest for searching */
+  // Get events list for current user base on friends
+  kernel.app.get('/api/v1/events/friendsEvents', kernel.middleware.isAuthenticated(), (req, res) => {
+    // Get all friends
+    kernel.model.Relation.find({
+      type: 'friend', 
+      status: 'completed', 
+      $or: [{fromUserId: req.user._id}, {toUserId: req.user._id}]
+    }).then(friends => {
+      if (friends.length === 0) {
+        return res.status(200).json({events: []});
+      }
+      let friendIds = _.map(friends, (friend) => {
+        return friend.fromUserId.toString() === req.user._id.toString() ? friend.toUserId : friend.fromUserId;
+      });
+      kernel.model.Event.find({
+        $or: [{participantsId: {$in: friendIds}}, {ownerId: {$in: friendIds}}]
+      })
+      .populate('awardId')
+      .populate('categoryId')
+      .populate({
+        path: 'participantsId', 
+        select: '-password -salt', 
+        populate: {path: 'avatar', model: 'Photo'}
+      })
+      .populate({
+        path: 'ownerId', 
+        select: '-password -salt', 
+        populate: {path: 'avatar', model: 'Photo'}
+      })
+      .limit(4).exec().then(events => {
+        let results = [];
+        async.each(events, (item, callback) => {
+          if (item.ownerId && item.ownerId._id && item.awardId) {
+            kernel.model.GrantAward.findOne({ownerId: (item.ownerId._id) ? item.ownerId._id : item.ownerId, eventId: item._id, awardId: item.awardId._id}).then(award => {
+              let data = item.ownerId.toJSON();
+              data.isGrantedAward = (award) ? true : false;
+              item.ownerId = data;
+              results.push(item);
+              callback();
+            }).catch(callback);
+          } else {
+            callback();
+          }
+        }, () => {
+          return res.status(200).json({events: results});
+        });
+      }).catch(err => {
+        console.log(err);
+        return res.status(500).json({type: 'SERVER_ERROR'});  
+      })
+    }).catch(err => {
+      console.log(err);
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+  });
 
+  /* suggest for searching */
   kernel.app.get('/api/v1/events/suggest', kernel.middleware.isAuthenticated(), (req, res) => {
     if(!req.query.keyword) {
       return res.status(200).json([]);
@@ -466,8 +521,18 @@ module.exports = function(kernel) {
           }
         ], (err, items) => {
           if(err) return res.status(500).json({type: 'SERVER_ERROR'});
-          response.items = items;
-          return res.status(200).json(response);
+          let results = [];
+          async.each(items, (item, callback) => {
+            kernel.model.GrantAward.findOne({ownerId: item._id, eventId: event._id, awardId: event.awardId}).then(award => {
+              let data = item.toJSON();
+              data.isGrantedAward = (award) ? true : false;
+              results.push(data);
+              callback();
+            }).catch(callback);
+          }, () => {
+            response.items = results;
+            return res.status(200).json(response);
+          });
         });
       }
     )
@@ -506,7 +571,6 @@ module.exports = function(kernel) {
                 let user = u.toJSON();
                 kernel.model.GrantAward.count({ownerId: user._id}).then(count => {
                   user.totalAwards = count;
-                  console.log(user);
                   item.ownerId = user;
                   cb();
                 }).catch(err => {
@@ -635,5 +699,49 @@ module.exports = function(kernel) {
     }).catch(err => {
       return res.status(500).json({type: 'SERVER_ERROR'});
     });
+  });
+
+  kernel.app.post('/api/v1/events/:id/grantAward', kernel.middleware.isAuthenticated(), (req, res) => {
+    if (!req.body.userId) {
+      return res.status(422).json({message: 'Missing user id'});
+    }
+    kernel.model.Event.findById(req.params.id).then(event => {
+      if (!event) {
+        return res.status(404).end();
+      }
+      kernel.model.Award.findById(event.awardId).then(award => {
+        if (!award) {
+          return res.status(404).end();   
+        }
+        kernel.model.User.findById(req.body.userId).then(user => {
+          if (!user) {
+            return res.status(404).end();      
+          }
+          kernel.model.GrantAward.find({ownerId: user._id, eventId: event._id, awardId: award._id}).then(awards => {
+            if (awards.length > 0) {
+              return res.status(422).json({message: 'This event award has granted to this user', type: 'AWARD_GRANTED_ERROR'});
+            }
+            // Insert new award
+            kernel.model.GrantAward({
+              ownerId: user._id,
+              eventId: event._id,
+              awardId: award._id
+            }).save().then(saved => {
+              return res.status(200).end();
+            }).catch(err => {
+              return res.status(500).json({type: 'SERVER_ERROR'});     
+            });
+          }).catch(err => {
+            return res.status(500).json({type: 'SERVER_ERROR'});     
+          });
+        }).catch(err => {
+          return res.status(500).json({type: 'SERVER_ERROR'});    
+        });
+      }).catch(err => {
+        return res.status(500).json({type: 'SERVER_ERROR'});  
+      })
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    })
   });
 };

@@ -123,6 +123,7 @@ let Language = {
 		REPORT_EVENT: 'Report event',
 		EMAIL_ALREADY_USED: 'This email was already used',
 		LOAD_MORE_FEED: 'Load more feed ...',
+		AWARD_GRANTED_ERROR: 'This event award has granted to this user'
 	},
 	de: {
 

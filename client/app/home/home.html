@@ -114,9 +114,9 @@
                 <div class="grid-item" ng-repeat="event in vm.events.items">
                     <div class="li-event {{event.categoryId | categoryClass}}">
                         <div class="top-li-event">
-                            <a href="#"><img src="/assets/images/48.jpg"></a>
-                            <h4><a href="#">Sandra Howard</a></h4>
-                            <i class="fa fa-clock-o"></i> 12 hours ago
+                            <a href="#"><img src="{{event.ownerId | avatarUrl}}"></a>
+                            <h4><a href="#">{{event.ownerId.name}}</a></h4>
+                            <i class="fa fa-clock-o"></i> {{event.createdAt | fromNow}}
                             <div class="arward-li-top">
                                 <span>6</span>
                                 <i class="fa fa-trophy"></i>

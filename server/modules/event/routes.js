@@ -454,9 +454,21 @@ module.exports = function(kernel) {
         async.parallel([
           (cb) => {
             // populate ownerId
-            kernel.model.User.findById(item.ownerId, '-password -salt').then(user => {
-              item.ownerId = (user) ? user : item.ownerId;
-              cb();
+            kernel.model.User.findById(item.ownerId, '-password -salt').then(u => {
+              if (u) {
+                let user = u.toJSON();
+                kernel.model.GrantAward.count({ownerId: user._id}).then(count => {
+                  user.totalAwards = count;
+                  console.log(user);
+                  item.ownerId = user;
+                  cb();
+                }).catch(err => {
+                  user.totalAwards = 0;
+                  cb();
+                });
+              } else {
+                cb();
+              }
             }).catch(cb);
           }, 
           (cb) => {

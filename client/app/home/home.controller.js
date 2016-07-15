@@ -1,7 +1,8 @@
 'use strict';
 
 class HomeCtrl {
-	constructor($scope, EventService, LikeService, $localStorage, SearchParams) {
+<<<<<<< HEAD
+	constructor($scope, EventService, LikeService, $localStorage, SearchParams, $state) {
     this.searchParams = SearchParams;
     this.events = {
      	items: [],
@@ -12,6 +13,23 @@ class HomeCtrl {
     this.search();
     this.authUser = $localStorage.authUser;
     this.locations = [];
+    this.$state = $state;
+    if (this.authUser._id) {
+      socket.socket.emit('join', this.authUser._id);
+    }
+    // Tracking online/offline user
+    socket.socket.on('tracking:user', (data) => {
+      console.log(data);
+    });
+
+    this.locations = [];
+
+    this.countNewEvent = 0;
+     // tracking count new event in realtime
+    socket.socket.on('tracking:count-new-event', (data) => {
+      this.countNewEvent +=1;
+    });
+
     $scope.$watch(() => {
       return SearchParams;
     }, (nv) => {

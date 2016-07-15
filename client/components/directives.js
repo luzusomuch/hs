@@ -18,7 +18,7 @@ angular.module('healthStarsApp')
     }
   };
 })
-.directive('addthisToolbox', ['$timeout', function($timeout) {
+.directive('shareToolBox', ['$timeout', 'ShareService', '$state', 'APP_CONFIG', function($timeout, ShareService, $state, APP_CONFIG) {
   return {
     restrict : 'A',
     replace : true,
@@ -29,34 +29,101 @@ angular.module('healthStarsApp')
       fb: '=',
       tw: '=',
       gg: '=',
-      autoShare: '@'
+      photo: '=',
+      autoShare: '@',
+      data: '=',
+      type: '@',
+      shared: '='
     },
     template : 
-      `<div class="addthis_toolbox addthis_default_style addthis_32x32_style">
-        <a ng-show="fb" class="addthis_button_facebook"></a>
-        <a ng-show="tw" class="addthis_button_twitter"></a>
-        <a ng-show="gg" class="addthis_button_google_plusone_share"></a>
+      `<div>
+        <a class="share-fb-btn" ng-show="fb" href='#' ng-click="share('fb')"><i class="fa fa-facebook-square" aria-hidden="true"></i></a>
+        <a class="share-tw-btn" ng-show="tw" ng-href='{{tweetUrl}}' ng-click="share('tw')"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
+        <a class="share-gg-btn" ng-show="gg" ng-href='{{ggUrl}}' ng-click="share('gg')" onclick="javascript:window.open(this.href,
+  '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a>
       </div>`,
     link : function($scope, element) {
-      $timeout(function () {
+      // $timeout(function () {
+
         var title, description, url;
         $scope.$watchGroup(['title', 'description', 'url'], (value) => {
           title = value[0];
           description = value[1];
           url = value[2];
+
+          if (!url) {
+            if ($state.current.name==='event.detail') {
+              url = APP_CONFIG.baseUrl + 'event/detail/'+$state.params.id
+            }
+          }
+
+          if ($scope.tw) {
+            $scope.tweetUrl = 'https://twitter.com/intent/tweet?url='+url;
+          }
+          if ($scope.gg) {
+            $scope.ggUrl = 'https://plus.google.com/share?url='+url;
+          }
           if (title && description && url) {
-            addthis.init();
-            addthis.toolbox($(element).get(), {}, {
-              url: url,
-              title : title,
-              description : description
-            });
             if ($scope.fb && $scope.autoShare === 'fb') {
-              angular.element(element).find('.addthis_button_facebook').trigger('click');
+              angular.element(element).find('.share-fb-btn').trigger('click');
             }
           }
         });
-      });
+      // },500);
+    },
+    controller: function($scope) {
+      if (!$scope.url) {
+        if ($state.current.name==='event.detail') {
+          $scope.url = APP_CONFIG.baseUrl + 'event/detail/'+$state.params.id
+        }
+      }
+      $scope.share = function(type) {
+        if (type === 'fb') {
+          FB.ui({
+            method: 'feed',
+            name: $scope.title,
+            link: $scope.url,
+            picture: ($scope.photo) ? $scope.photo.metadata.medium : null,
+            caption: $scope.title,
+            description: $scope.description
+          }, function(response) {
+            if (response && response.post_id) {
+              ShareService.share($scope.data._id, $scope.type).then(() => {
+                $scope.data.totalShare = ($scope.data.totalShare) ? $scope.data.totalShare+1 : 1;
+                $scope.shared = !$scope.shared;
+              }).catch(err => {
+                console.log(err);
+                // TODO show error
+              });
+            } else {
+              // TODO show dialog
+            }
+          });
+        } else if (type === 'tw') {
+          twttr.ready(function (twttr) {
+            twttr.events.bind('tweet', function (event) {
+              // your callback action here...
+              if (event && event.type === 'tweet') {
+                ShareService.share($scope.data._id, $scope.type).then(() => {
+                  $scope.data.totalShare = ($scope.data.totalShare) ? $scope.data.totalShare+1 : 1;
+                  $scope.shared = !$scope.shared;
+                }).catch(err => {
+                  console.log(err);
+                  // TODO show error
+                });
+              }
+            });
+          });
+        } else if (type === 'gg') {
+          ShareService.share($scope.data._id, $scope.type).then(() => {
+            $scope.data.totalShare = ($scope.data.totalShare) ? $scope.data.totalShare+1 : 1;
+            $scope.shared = !$scope.shared;
+          }).catch(err => {
+            console.log(err);
+            // TODO show error
+          });
+        }
+      };
     }
   };
 }]);

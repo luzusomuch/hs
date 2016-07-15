@@ -98,7 +98,7 @@
                             <label>{{'FIRST_NAME' | translate}}</label>
                             <input type="text" class="form-control" ng-model="vm.user.firstName" name="firstName" required ng-class="{'error-input': form.firstName.$error.required && vm.submitted}">
 
-                            <span class="fa-stack fa-lg sign-up-success-validate " ng-show="!form.firstName.$error.required && vm.submitted">
+                            <span class="fa-stack fa-lg sign-up-success-validate " ng-show="!form.firstName.$error.required">
                               <i class="fa fa-circle fa-stack-2x fa-cicle-input"></i>
                               <i class="fa fa-check fa-stack-1x fa-inverse fa-icon-input"></i>
                             </span>
@@ -116,7 +116,7 @@
                             <label>{{'LAST_NAME' | translate}}</label>
                             <input type="text" class="form-control" ng-model="vm.user.lastName" name="lastName" required ng-class="{'error-input': form.lastName.$error.required && vm.submitted}">
 
-                            <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.lastName.$error.required && vm.submitted">
+                            <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.lastName.$error.required">
                               <i class="fa fa-circle fa-stack-2x fa-cicle-input"></i>
                               <i class="fa fa-check fa-stack-1x fa-inverse fa-icon-input"></i>
                             </span>
@@ -139,7 +139,7 @@
                               </ui-select-choices>
                             </ui-select>
 
-                            <span class="fa-stack fa-lg sign-up-success-validate" ng-show="vm.address.selected.formatted_address && vm.submitted">
+                            <span class="fa-stack fa-lg sign-up-success-validate" ng-show="vm.address.selected.formatted_address">
                               <i class="fa fa-circle fa-stack-2x fa-cicle-input"></i>
                               <i class="fa fa-check fa-stack-1x fa-inverse fa-icon-input"></i>
                             </span>
@@ -158,17 +158,18 @@
                             <label>{{'EMAIL' | translate}}</label>
                             <input type="email" class="form-control" ng-model="vm.user.email" name="email" required ng-class="{'error-input': form.email.$error.pattern || form.email.$error.email || form.email.$error.required && vm.submitted}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$">
 
-                            <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.email.$error.pattern && !form.email.$error.email && !form.email.$error.required && vm.submitted">
+                            <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.email.$error.pattern && !form.email.$error.email && !form.email.$error.required">
                               <i class="fa fa-circle fa-stack-2x fa-cicle-input"></i>
                               <i class="fa fa-check fa-stack-1x fa-inverse fa-icon-input"></i>
                             </span>
 
-                            <span class="fa-stack fa-lg sign-up-error-validate" ng-show="form.email.$error.pattern || form.email.$error.email || form.email.$error.required && vm.submitted">
+                            <span class="fa-stack fa-lg sign-up-error-validate" ng-show="(form.email.$error.mongoose || form.email.$error.pattern || form.email.$error.email || form.email.$error.required) && vm.submitted">
                               <i class="fa fa-circle fa-stack-2x fa-cicle-input"></i>
                               <i class="fa fa-times fa-stack-1x fa-inverse fa-icon-input"></i>
                             </span>
                             <p ng-show="form.email.$error.pattern || form.email.$error.email && vm.submitted" class="error-text">{{'EMAIL_TYPE_ERROR' | translate}}</p>
                             <p ng-show="form.email.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+                            <p ng-show="form.email.$error.mongoose && vm.submitted" class="error-text">{{'EMAIL_ALREADY_USED' | translate}}</p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
@@ -176,7 +177,7 @@
                             <label>{{'PHONE' | translate}}</label>
                             <input id="phone" type="text" class="form-control" ng-model="vm.user.phoneNumber" name="phoneNumber" international-phone-number ng-class="{'error-input': form.phoneNumber.$invalid && vm.submitted}">
 
-                            <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.phoneNumber.$invalid && vm.submitted">
+                            <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.phoneNumber.$invalid">
                               <i class="fa fa-circle fa-stack-2x fa-cicle-input"></i>
                               <i class="fa fa-check fa-stack-1x fa-inverse fa-icon-input"></i>
                             </span>
@@ -200,7 +201,7 @@
                             <label>{{'PASSWORD' | translate}} <span class="note-form">6 symbols min</span></label>
                             <input type="password" class="form-control" ng-model="vm.user.password" name="password" required ng-minlength="6" pattern="^\w*(?=\w*\d)(?=\w*[A-Za-z])\w*$" ng-class="{'error-input': form.password.$error.minlength || form.password.$error.required && vm.submitted}">
 
-                            <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.password.$error.pattern && !form.password.$error.minlength && !form.password.$error.required && vm.submitted">
+                            <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.password.$error.pattern && !form.password.$error.minlength && !form.password.$error.required">
                               <i class="fa fa-circle fa-stack-2x fa-cicle-input"></i>
                               <i class="fa fa-check fa-stack-1x fa-inverse fa-icon-input"></i>
                             </span>
@@ -220,7 +221,7 @@
                             <label>{{'CONFIRM_PASSWORD' | translate}}</label>
                             <input type="password" class="form-control" ng-model="vm.user.repassword" name="repassword" required compare-to="vm.user.password" ng-class="{'error-input': form.repassword.$error.compareTo || form.password.$error.required && vm.submitted}">
 
-                            <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.repassword.$error.compareTo && !form.password.$error.required && vm.submitted">
+                            <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.repassword.$error.compareTo && !form.password.$error.required">
                               <i class="fa fa-circle fa-stack-2x fa-cicle-input"></i>
                               <i class="fa fa-check fa-stack-1x fa-inverse fa-icon-input"></i>
                             </span>

@@ -37,6 +37,10 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
   font-weight: normal;
   font-style: normal;
 }
+
+.iti-flag {
+	background: url('/bower_components/intl-tel-input/build/img/flags.png')
+}
 // Component styles are injected through grunt
 /* inject:scss */
 /* endinject */

@@ -6,7 +6,7 @@ let Language = {
 		MENU_ABOUT: 'About',
 		MENU_MY_CALENDAR: 'My calendar',
 		MENU_MY_AWARDS: 'My awards',
-		MENU_MY_MESSAGER: 'My messager',
+		MENU_MY_MESSENGER: 'My messenger',
 		MENU_SETTINGS: 'My settings',
 		MENU_LOGOUT: 'Logout',
 		SIGN_IN: 'Sign in',
@@ -119,7 +119,10 @@ let Language = {
 		MISSING_EVENT_ID: 'Missing event id',
 		BLOCK_PHOTO: 'Block photo',
 		UNBLOCK_PHOTO: 'Unblock photo',
-		NOT_VALID_FIELD: 'These fields are not valid'
+		NOT_VALID_FIELD: 'These fields are not valid',
+		REPORT_EVENT: 'Report event',
+		EMAIL_ALREADY_USED: 'This email was already used',
+		LOAD_MORE_FEED: 'Load more feed ...',
 	},
 	de: {
 

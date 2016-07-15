@@ -1,0 +1,16 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{vm.modalName | translate}}</h3>
+</div>
+<div class="modal-body">
+	<form ng-submit="vm.submit(form)" name="form">
+    <div class="form-group">
+      <label>{{'DESCRIPTION' | translate}}</label>
+      <textarea class="form-control" rows="5" placeholder="Description" ng-model="vm.report.description" name="description" required></textarea>
+
+      <p ng-show="form.description.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+    </div>
+		<div class="modal-footer">
+			<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>
+		</div>    
+  </form>
+</div>

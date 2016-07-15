@@ -125,7 +125,9 @@ class UserController {
       this.kernel.queue.create(this.kernel.config.ES.events.CREATE, {type: this.kernel.config.ES.mapping.userType, id: user._id.toString(), data: user}).save();
       res.json({ token });
     })
-    .catch(handleError(res));
+    .catch(err => {
+      return res.status(500).json(err);
+    });
   }
 
   /**

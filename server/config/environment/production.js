@@ -4,7 +4,7 @@ import path from 'path';
 
 // Development specific configuration
 // ==================================
-var baseUrl = 'http://ec2-52-41-132-71.us-west-2.compute.amazonaws.com/';
+var baseUrl = 'http://ec2-52-41-38-203.us-west-2.compute.amazonaws.com/';
 module.exports = {
   baseUrl: baseUrl,
   // MongoDB connection options

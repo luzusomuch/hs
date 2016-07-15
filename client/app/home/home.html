@@ -104,13 +104,15 @@
             </div>
 
             <div class="show-sl-event m20">
-                <i class="fa fa-refresh"></i> 0  new events.
+                <a href="#" style="color:#FFF">
+                    <i ng-click="vm.$state.reload()" class="fa fa-refresh"></i> {{vm.countNewEvent}}  new events.
+                </a>
                 <a href="#" class="close-show"><img src="/assets/images/arrow.png" width="10"></a>
             </div>
             <section class="grid">
                 <div class="grid-sizer"></div>
                 <div class="grid-item" ng-repeat="event in vm.events.items">
-                    <div class="li-event li-blue">
+                    <div class="li-event {{event.categoryId | categoryClass}}">
                         <div class="top-li-event">
                             <a href="#"><img src="/assets/images/48.jpg"></a>
                             <h4><a href="#">Sandra Howard</a></h4>
@@ -124,8 +126,8 @@
                             <a ui-sref="event.detail({id: event._id})" class="img-eventbox"><img src="/assets/images/img.jpg" width="100%"></a>
                             <div class="text-li-event">
                                 <h3>{{event.name}}</h3>
-                                <i class="fa fa-calendar"></i> 24.06.2016  <i class="fa fa-clock-o"></i> 15:30<br>
-                                <i class="fa fa-map-marker"></i> Location : {{event.location.fullAddess}}
+                                <i class="fa fa-calendar"></i> {{event.startDateTime | date : 'dd.MM.yyyy'}} <i class="fa fa-clock-o"></i> {{event.startDateTime | date: 'HH:mm'}}<br>
+                                <i class="fa fa-map-marker"></i> Location : {{event.location.fullAddress}}
                             </div>
                         </div>
                         <div class="bottom-li-event">

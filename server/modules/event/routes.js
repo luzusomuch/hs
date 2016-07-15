@@ -3,6 +3,7 @@ import _ from 'lodash';
 import async from 'async';
 import multer from 'multer';
 import moment from 'moment';
+import {EventBus} from '../../components';
 
 module.exports = function(kernel) {
 	kernel.app.post('/api/v1/events/', kernel.middleware.isAuthenticated(), (req, res) => {
@@ -191,7 +192,19 @@ module.exports = function(kernel) {
             kernel.queue.create(kernel.config.ES.events.CREATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
             kernel.queue.create('GRANT_AWARD', event).save();
             kernel.queue.create('TOTAL_EVENT_CREATED', {userId: req.user._id}).save();
-            return res.status(200).json(event);
+            // get all user then update real-time count update in home page
+            kernel.model.User.find({}).then(users => {
+              users.forEach(user => {
+                EventBus.emit('socket:emit', {
+                  event: 'tracking:count-new-event',
+                  room: user._id.toString(),
+                  data: event
+                });
+              });
+              return res.status(200).json(event);
+            }).catch(err => {
+              return res.status(500).json({type: 'SERVER_ERROR'});
+            });
           });
         }).catch(err => {
           return res.status(500).json({type: 'SERVER_ERROR'});
@@ -211,7 +224,7 @@ module.exports = function(kernel) {
     .populate('ownerId', '-password -salt')
     .populate('categoryId')
     .populate('awardId')
-    //.populate('photosId.metadata')
+    .populate('photosId')
     //.populate('participantsId', '-hashedPassword - salt')
     .exec().then(event => {
       if (!event) {
@@ -437,20 +450,23 @@ module.exports = function(kernel) {
         return res.status(500).json({type: 'SERVER_ERROR'});
       }
       async.each(result.items, (item, callback) => {
-        item.liked = false;
-        if (req.user) {
-          kernel.model.Like.findOne({objectId: item._id, objectName: 'Event', ownerId: req.user._id}).then(liked => {
-            if (!liked) {
+        kernel.model.Category.findById(item.categoryId).then(category => {
+          item.categoryId = (category) ? category : item.categoryId;
+          item.liked = false;
+          if (req.user) {
+            kernel.model.Like.findOne({objectId: item._id, objectName: 'Event', ownerId: req.user._id}).then(liked => {
+              if (!liked) {
+                return callback();
+              }
+              item.liked = true;
               return callback();
-            }
-            item.liked = true;
+            }).catch(err => {
+              return callback();
+            });
+          } else {
             return callback();
-          }).catch(err => {
-            return callback();
-          });
-        } else {
-          return callback();
-        }
+          }
+        }).catch(callback);
       }, () => {
         return res.status(200).json(result);
       });

@@ -3,7 +3,8 @@
 angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constants', 'healthStarsApp.util',
     'ngCookies', 'ngResource', 'ngSanitize', 'btford.socket-io', 'ui.router', 'ui.bootstrap',
     'validation.match', 'angular-growl', 'angular-loading-bar', 'ngAnimate', 'ngStorage', 
-    'healthStarsApp.language', 'ui.select', 'ngFileUpload', 'healthStarsApp.photoViewer', 'internationalPhoneNumber'
+    'healthStarsApp.language', 'ui.select', 'ngFileUpload', 'healthStarsApp.photoViewer', 
+    'internationalPhoneNumber'
   ])
   .config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
     $urlRouterProvider.otherwise('/');
@@ -39,6 +40,12 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
   .run(function($rootScope, $state, Auth, AppSettings, $localStorage, Language) {
     let lang = $localStorage.language || 'en';
     Language.set(lang);
+    FB.init({
+      appId: AppSettings.get('apiKey')['fbAppId'],
+      status: true,
+      cookie: true,
+      xfbml: true
+    });
   	$rootScope.appSettings = AppSettings;																		
     $rootScope.$on('$stateChangeStart', function(event, next) {
     	for(let key in AppSettings.getSettings()) {

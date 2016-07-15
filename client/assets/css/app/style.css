@@ -957,7 +957,7 @@ label {
 .list-photo li .bg-cover {
     height: 110px;
 }
-.row-small .col-xs-6, .row-small .col-xs-3 {
+.row-small .col-xs-6, .row-small .col-xs-3, .row-small .col-xs-4, .row-small .col-xs-5 {
     padding: 0px 3px;
 }
 .form-post textarea {
@@ -1996,4 +1996,23 @@ span.country-name {
     padding: 10px;
     z-index: 999;
     background-color: rgb(255, 255, 255);
+}
+.event-share-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.event-share-button a {
+    font-size: 2em;
+    color: #FFF !important;
+}
+.share-content {
+    position: absolute;
+    right: 0px;
+    padding: 10px;
+    border: 1px solid;
+    background: rgba(15,24,56,0.87);
+    border-radius: 5px;
+    z-index: 999;
 }

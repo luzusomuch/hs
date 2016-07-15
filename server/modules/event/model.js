@@ -36,7 +36,8 @@ module.exports = {
       stats: {
         totalParticipants: {type: Number, default: 0},
         totalInterested: {type: Number, default: 0}
-      }
+      },
+      totalComment: {type: Number, default: 0}
     });
     
     //import timestamp for auto create updatedAt, createdAt field manually

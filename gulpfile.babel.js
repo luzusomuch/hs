@@ -696,7 +696,8 @@ gulp.task('copy:fonts', () => { //bootstrap-sass-official\vendor\assets\fonts
   return gulp.src([
     `${clientPath}/bower_components/{bootstrap,font-awesome}/fonts/**/*`,
     `${clientPath}/bower_components/bootstrap-sass-official/vendor/assets/fonts/**/*`,
-    `${clientPath}/bower_components/intl-tel-input/build/img/**/*`
+    `${clientPath}/bower_components/intl-tel-input/build/img/**/*`,
+    `${clientPath}/bower_components/intl-tel-input/lib/libphonenumber/build/**/*`
     ], { dot: true, base: `${clientPath}/bower_components/` })
     .pipe(gulp.dest(`${paths.dist}/${clientPath}/bower_components`));
 });

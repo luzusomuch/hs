@@ -57,7 +57,7 @@ angular.module('healthStarsApp').directive('hsReport', ($uibModal) => {
 			var func =  function(e){
 				e.preventDefault();
 				$uibModal.open({
-					templateUrl: 'directives/report/report.html',
+					templateUrl: 'app/report/report.html',
 					controller: 'ReportCtrl',
 					controllerAs: 'vm',
 					resolve: {

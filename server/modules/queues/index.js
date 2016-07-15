@@ -145,7 +145,8 @@ exports.core = (kernel) => {
               if (award.type==='gps' && user.accessViaApp) {
                 kernel.model.GrantAward({
                   ownerId: user._id,
-                  awardId: award._id
+                  awardId: award._id,
+                  eventId: job.data._id
                 }).save().then(data => {
                   kernel.queue.create('EMAIL_GRANTED_AWARD', data).save();
                   callback();
@@ -155,7 +156,8 @@ exports.core = (kernel) => {
               } else if (award.type==="accepted") {
                 kernel.model.GrantAward({
                   ownerId: user._id,
-                  awardId: award._id
+                  awardId: award._id,
+                  eventId: job.data._id
                 }).save().then(data => {
                   kernel.queue.create('EMAIL_GRANTED_AWARD', data).save();
                   callback();

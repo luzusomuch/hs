@@ -68,7 +68,7 @@ class HomeCtrl {
 
     angular.element(document).bind('scroll', loadMore.bind(this));
     $scope.$on('$destroy', () => {
-       angular.element(document).unbind('scroll', loadMore.bind(this));
+       angular.element(document).unbind('scroll');
     });
   }
 

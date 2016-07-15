@@ -16,7 +16,7 @@ class EventAttendingCtrl {
 			}
 		});
 
-		this.isEventOwner = (this.authUser._id===$scope.eOwner._id) ? true : false;
+		this.isEventOwner = ($scope.eOwner && this.authUser._id===$scope.eOwner._id) ? true : false;
 	}
 
 	banUser(user) {

@@ -9,7 +9,8 @@ angular.module('healthStarsApp').config(function($stateProvider) {
     authenticate: true,
     settings: {
     	footer: false,
-      pageTitle: 'HealthStars | Home'
+      pageTitle: 'HealthStars | Home',
+      bodyClass: 'no-bg'
     }
   });
 });

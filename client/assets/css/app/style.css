@@ -61,7 +61,7 @@ body {
     font-size: 14px;
     line-height:20px;
     font-family: 'proxima_nova_rgregular';
-    /*background-image: url(/assets/images/bg.jpg);*/
+    background-image: url(/assets/images/bg.jpg);
     background-color: #010c3a;
     background-repeat: no-repeat;
     background-position: bottom center;
@@ -70,6 +70,9 @@ body {
     -o-background-size: cover;
     background-size: cover;
     color: rgba(255,255,255,0.7);
+}
+body.no-bg {
+    background-image: none;
 }
 h1, h2, h3, h4, h5, h6 {
     font-weight: normal;

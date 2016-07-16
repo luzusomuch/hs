@@ -21,6 +21,7 @@ angular.module('healthStarsApp').directive('hsEventMap', ($interval) => {
 			scope.address = '';
 			var map, google;
 	    var mapElm = angular.element(elm).find('.event-map');
+	    var markers = [];
 	    var initMap = function(locations, center) {
 	    	center = center || {lat: 52.511, lng: 13.447};
 	      map = new google.maps.Map(mapElm[0], {
@@ -37,10 +38,11 @@ angular.module('healthStarsApp').directive('hsEventMap', ($interval) => {
 	      		let pos = (typeof location === 'object' &&  location.coordinates)? location.coordinates : null;
 	      		if(pos) {
 	      			var latLng = new google.maps.LatLng(pos[1], pos[0]);
-			        new google.maps.Marker({
+			        var marker = new google.maps.Marker({
 			            map: map,
 			            position: latLng
 			        });
+			        markers.push(marker);
 			        bounds.extend(latLng);
 			        resize = true;
 		        }
@@ -58,6 +60,10 @@ angular.module('healthStarsApp').directive('hsEventMap', ($interval) => {
 	      }
 	    };
 	    scope.$watch('locations', (nv) => {
+    		while(markers.length){
+            markers.pop().setMap(null);
+        }
+        
 	    	if (nv && nv[0]) {
 		    	var $ttl = $interval(() => {
 		    		if(window.google && window.google.maps) {

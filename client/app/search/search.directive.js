@@ -4,9 +4,10 @@ angular.module('healthStarsApp')
 .directive('searchInput', (SearchParams, $timeout, EventService, $state) => {
 	return {
 		restrict: 'E',
+		scope: {},
 		templateUrl: 'app/search/templates/text.html',
 		replace: true,
-		link: (scope, element) => {
+		link: function(scope, element) {
 			let elm = angular.element(element).find('input');
 			let suggest = '';
 			scope.items = [];
@@ -68,9 +69,10 @@ angular.module('healthStarsApp')
 .directive('searchLocation', (SearchParams, $timeout, $http) => {
 	return {
 		restrict: 'E',
+		scope: {},
 		templateUrl: 'app/search/templates/location.html',
 		replace: true,
-		link: (scope, element) => {
+		link: function(scope, element) {
 			scope.addresses = [];
 			scope.params = {
 				address: angular.copy(SearchParams.params.address),
@@ -119,4 +121,33 @@ angular.module('healthStarsApp')
 			});
 		}
 	}	
+})
+.directive('searchDate', (SearchParams) => {
+	return {
+		restrict: 'E',
+		scope: {},
+		templateUrl: 'app/search/templates/datepicker.html',
+		replace: true,
+		link: function(scope, element) {
+			scope.style = {};
+			scope.dt = new Date();
+			scope.options = {
+				datepickerMode : 'day',
+				initDate: new Date(),
+				formatMonth: 'MMM',
+      	showWeeks: false,
+      	yearColumns: 3
+			};
+			
+			scope.filter = function() {
+				SearchParams.params.startDate = angular.copy(scope.dt.getTime());
+				scope.style = {'background-color': '#3071a9', border: '#3071a9'};
+			}
+
+			scope.clear = function() {
+				SearchParams.params.startDate = '';
+				scope.style =  {};
+			}
+		}
+	}
 });

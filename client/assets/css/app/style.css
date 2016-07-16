@@ -740,9 +740,45 @@ label .note-form {
     background: #9c59b8;
 }
 .calendar-home {
-    background: #273141;
-    border-radius: 5px;
     overflow: hidden;
+}
+.calendar-home * {
+    background: #273141;
+    color: rgba(255,255,255,0.7);
+    outline: none;
+}
+.calendar-home .well {
+    margin-bottom: 5px;
+}
+.calendar-home .btn-sm, .btn-group-sm > .btn {
+    padding: 4px 5px;
+    border: none;
+    background: none;
+}
+.calendar-home tr td button:hover {
+    background-color: #3598dc;
+    border-radius: 50%;
+    box-shadow: none;
+}
+.calendar-home tr td button.active {
+    background-color: #e84c3d;
+    border-radius: 50%;
+    box-shadow: none;
+}
+.calendar-home tr th button:hover, .calendar-home tr th button:focus,  .calendar-home tr th button:active{
+    background: none;
+    box-shadow: none;
+}
+.calendar-home tr td button span {
+    background: none;
+}
+.calendar-home .uib-month button {
+    border: none;
+    padding: 10px 17px;
+}
+.calendar-home .uib-years button {
+    border: none;
+    padding: 10px 8px;
 }
 .event-home-right {
     background: #2e3848;

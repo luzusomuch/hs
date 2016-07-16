@@ -38,7 +38,7 @@ class Mapping {
           }
         },
         createdAt: {
-          type: 'string'
+          type: 'date'
         }
         // put mapping for event properties here
       }

@@ -566,8 +566,8 @@ module.exports = function(kernel) {
       from: skip,
       size: limit,
       sort: [
-        { _id: 'desc' },
-        { createdAt: 'desc' }
+        { createdAt: 'desc' },
+        { _id: 'desc' }
       ]
     };
 
@@ -583,6 +583,22 @@ module.exports = function(kernel) {
     //process categoryid 
     if(req.body.category) {
       q.query.filtered.filter.bool.must.push({term: {categoryId: req.body.category}});
+    }
+
+    //process date
+    if(req.body.startDate) {
+      let time = parseInt(req.body.startDate);
+      let date = moment(new Date(time));
+      if(date.isValid()) {
+         q.query.filtered.filter.bool.must.push({
+          range: {
+            createdAt: {
+              gte: date.startOf('date').toISOString(),
+              lte: date.endOf('date').toISOString()
+            }
+          }
+         });
+      }
     }
 
     //process location

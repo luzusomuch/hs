@@ -247,4 +247,24 @@ angular.module('healthStarsApp')
       return className;
     }
   }
+})
+.filter('eventThumbnail', () => {
+  return (photos) => {
+    let imageUrl = '/assets/images/img.jpg';
+    let selectedImage;
+    if (photos.length > 0) {
+      angular.forEach(photos, (photo) => {
+        if (!photo.blocked) {
+          selectedImage = photo;
+        }
+        if (selectedImage._id) {
+          return false;
+        }
+      });
+      if (selectedImage) {
+        imageUrl = selectedImage.metadata.small;
+      }
+    }
+    return imageUrl;
+  }
 });

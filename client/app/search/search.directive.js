@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('healthStarsApp')
-.directive('searchInput', (SearchParams, $timeout, EventService) => {
+.directive('searchInput', (SearchParams, $timeout, EventService, $state) => {
 	return {
 		restrict: 'E',
 		templateUrl: 'app/search/templates/text.html',
@@ -13,16 +13,17 @@ angular.module('healthStarsApp')
 			scope.suggests = [];
 			var updateItem = (e) => {
 				scope.items.push(e.item);
-				//scope.$apply();
+				scope.suggests = [];
+				scope.$$phase || scope.$apply();
 			};
 
 			var removeItem = (e) => {
 				_.remove(scope.items, item => item === e.item);
-				//scope.$apply();
+				scope.suggests = [];
+				scope.$$phase || scope.$apply();
 			};
 
 			var autocomplete = (value) => {
-				suggest = value;
 				EventService.suggest(value).then(
 					res => {
 						scope.suggests = res.data;
@@ -30,7 +31,8 @@ angular.module('healthStarsApp')
 				);
 			}
 
-			elm.tagsinput();
+			elm.tagsinput({addOnBlur: false});
+
 			elm.on('itemAdded', updateItem).on('itemRemoved', removeItem);
 			var ttl;
 			$timeout(() => {
@@ -52,12 +54,13 @@ angular.module('healthStarsApp')
 
 			scope.select = (value) => {
 				scope.suggests = [];
-				elm.tagsinput('remove', suggest);
 				elm.tagsinput('add', value);
+				elm.tagsinput('input').val('');
 			};
 
 			scope.$watch('items', (nv) => {
-				SearchParams.keywords = nv.join(',');
+				SearchParams.params.keywords = nv.join(',');
+				$state.go('home');
 			}, true);
 		}
 	}	
@@ -70,10 +73,9 @@ angular.module('healthStarsApp')
 		link: (scope, element) => {
 			scope.addresses = [];
 			scope.params = {
-				address: '',
+				address: angular.copy(SearchParams.params.address),
 				postCode: '',
-				radius: '',
-				radius: ''
+				radius: angular.copy(SearchParams.params.radius)
 			};
 
 			scope.select = function(address) {
@@ -82,8 +84,19 @@ angular.module('healthStarsApp')
 			};
 
 			scope.search = () => {
-				SearchParams = _.merge(SearchParams, {address: scope.address, radius: scope.radius});
+				var address = angular.copy(scope.address);
+				var radius = angular.copy(scope.radius);
+				SearchParams.params = _.assign(SearchParams.params, {address: address, radius: radius});
 				angular.element('body').trigger('click');
+				scope.style={'background-color': '#3598dc', color: '#fff'};
+			}
+
+			scope.clear = () => {
+				scope.address = {};
+				scope.radius = '';
+				SearchParams.params = _.assign(SearchParams.params, {address: {}, radius: ''});
+				angular.element('body').trigger('click');
+				scope.style = {};
 			}
 
 			var autocomplete  = (value) => {

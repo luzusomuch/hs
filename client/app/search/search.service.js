@@ -3,16 +3,30 @@
 (function() {
 
   function SearchParams($http, APP_CONFIG) {
-    return {
+    let _default =  {
       keywords: '',
       address: {},
-      postion: '',
       postCode: '',
       radius: '',
       startDate: '',
       endDate: '',
       friendActivities: false,
       category: ''
+    };
+    return {
+      _default: function() {
+        return _default;
+      },
+      params: {
+        keywords: '',
+        address: {},
+        postCode: '',
+        radius: '',
+        startDate: '',
+        endDate: '',
+        friendActivities: false,
+        category: ''
+      }
     };
   }
 

@@ -28,6 +28,17 @@ class Mapping {
           type: "string",
           index_analyzer: "autocomplete_term",
           search_analyzer: "autocomplete_search"
+        },
+        location: {
+          type: 'object',
+          properties: {
+            coordinates: {
+              type: 'geo_point'
+            }
+          }
+        },
+        createdAt: {
+          type: 'string'
         }
         // put mapping for event properties here
       }

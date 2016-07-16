@@ -2,14 +2,13 @@
 
 class HomeCtrl {
 	constructor($scope, EventService, LikeService, $localStorage, CategoryService, SearchParams, socket, $state, $timeout) {
-    this.searchParams = SearchParams;
+    this.searchParams = SearchParams.params;
     this.page = 1;
     this.events = {
      	items: [],
      	totalItem: 0
     };
     this.categories = [];
-    this.categoryId = '';
     CategoryService.getAll().then(resp => {
       this.categories = resp.data.items;
     });
@@ -34,14 +33,8 @@ class HomeCtrl {
       this.countNewEvent +=1;
     });
 
-    $scope.$watch('vm.categoryId', (nv) => {
-      SearchParams.category = nv;
-    });
-
     let ttl;
-    $scope.$watch(() => {
-      return SearchParams;
-    }, (nv) => {
+    $scope.$watch('vm.searchParams', (nv) => {
       if(ttl) {
         $timeout.cancel(ttl);
       }
@@ -56,9 +49,10 @@ class HomeCtrl {
       let windowHeight = angular.element(window).height();
       let bottom = content.closest('.container')[0].offsetTop + content.height();
       let offset = windowHeight + angular.element(document).scrollTop();
+      let documenHeight = angular.element(document).height();
       let dir = offset > prevOffset ? 'down' : 'up';
       prevOffset = offset;
-      if(dir === 'down' && offset > (bottom + 50)) {
+      if(dir === 'down' && ((offset + windowHeight ) >= (documenHeight - 50))) {
         if(ttl2) {
           $timeout.cancel(ttl2);
         }
@@ -84,7 +78,11 @@ class HomeCtrl {
     this.page = 1;
     let params = angular.copy(this.searchParams);
     params.page = this.page;
-  	this.EventService.search(this.searchParams).then(res => {
+    if(params.address && params.address.geometry && params.address.geometry.location) {
+      params.location = angular.copy(params.address.geometry.location);
+    }
+    delete params.address;
+  	this.EventService.search(params).then(res => {
   		this.events = res.data;
       this.locations = _.map(res.data.items, (item) => {
         return _.assign({title: item.name}, item.location || {});
@@ -101,6 +99,10 @@ class HomeCtrl {
     this.page++;
     let params = angular.copy(this.searchParams);
     params.page = this.page;
+    if(params.address && params.address.geometry && params.address.geometry.location) {
+      params.location = angular.copy(params.address.geometry.location);
+    }
+    delete params.address;
   	this.EventService.search(params).then(res => {
   		this.events.items = this.events.items.concat(res.data.items);
   		this.events.totalItem = res.data.totalItem;
@@ -127,7 +129,7 @@ class HomeCtrl {
   }
 
   selectCategory(category) {
-    this.categoryId = this.categoryId === category._id ? '' : category._id;
+    this.searchParams.category = this.searchParams.category === category._id ? '' : category._id;
   }
 }
 

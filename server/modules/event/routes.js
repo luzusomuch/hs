@@ -544,13 +544,24 @@ module.exports = function(kernel) {
   kernel.app.post('/api/v1/events/search', kernel.middleware.isAuthenticated(), (req, res) => {
     
     let page = parseInt(req.body.page);
-    page = (isNaN(page) || !page) ? 1 : page;
+    page = (page === 'NaN' || !page) ? 1 : page;
     let limit = 4;
     let skip = (page - 1) * limit;
 
-    let query = {
+    let q = {
       query: {
-        match_all: {}
+        filtered: {
+          query: {
+            bool: {
+              should: []
+            }
+          },
+          filter: {
+            bool: {
+              must: []
+            }
+          }
+        }
       },
       from: skip,
       size: limit,
@@ -559,55 +570,123 @@ module.exports = function(kernel) {
         { createdAt: 'desc' }
       ]
     };
-    //Todo: filter based on query
 
-    kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {
-      if(err) {
-        return res.status(500).json({type: 'SERVER_ERROR'});
-      }
-      async.each(result.items, (item, callback) => {
-        item.liked = false;
-        async.parallel([
-          (cb) => {
-            // populate ownerId
-            kernel.model.User.findById(item.ownerId, '-password -salt').then(u => {
-              if (u) {
-                let user = u.toJSON();
-                kernel.model.GrantAward.count({ownerId: user._id}).then(count => {
-                  user.totalAwards = count;
-                  item.ownerId = user;
-                  cb();
-                }).catch(err => {
-                  user.totalAwards = 0;
-                  cb();
-                });
-              } else {
-                cb();
-              }
-            }).catch(cb);
-          }, 
-          (cb) => {
-            // populate categoryId
-            kernel.model.Category.findById(item.categoryId).then(category => {
-              item.categoryId = (category) ? category : item.categoryId;
-              cb();
-            }).catch(cb);
-          }, 
-          (cb) => {
-            // Check that current user liked an event or not
-            kernel.model.Like.findOne({objectId: item._id, objectName: 'Event', ownerId: req.user._id}).then(liked => {
-              if (!liked) {
-                return cb();
-              }
-              item.liked = true;
-              cb();
-            }).catch(cb);
-          }
-        ], callback);
-      }, () => {
-        return res.status(200).json(result);
+    // process keywords
+    if(req.body.keywords && typeof req.body.keywords === 'string') {
+      let keywords = req.body.keywords.split(',');
+      _.each(keywords, key => {
+        q.query.filtered.query.bool.should.push({match: {name: key}});
+        q.query.filtered.query.bool.should.push({term: {tags: key}});
       });
-    });
+    }
+
+    //process categoryid 
+    if(req.body.category) {
+      q.query.filtered.filter.bool.must.push({term: {categoryId: req.body.category}});
+    }
+
+    //process location
+    let radius = parseInt(req.body.radius);
+    if(req.body.location && req.body.location.lat && req.body.location.lng && radius && radius !== 'NaN') {
+      q.query.filtered.filter.bool.must.push({
+        geo_distance: {
+          distance: radius + 'km',
+          'location.coordinates': [req.body.location.lng, req.body.location.lat], 
+        }
+      });
+    }
+
+    //process friend activities
+    let funcs = [];
+    if(req.body.friendActivities) {
+        let getFriends =  (cb) => {
+          kernel.model.Relation.find({
+            type: 'friend', 
+            status: 'completed', 
+            $or: [{fromUserId: req.user._id}, {toUserId: req.user._id}]
+          }).then(friends => {
+            if (friends.length === 0) {
+              return cb(null, []);
+            }
+            let friendIds = _.map(friends, (friend) => {
+              return friend.fromUserId.toString() === req.user._id.toString() ? friend.toUserId : friend.fromUserId;
+            });
+            return cb(null, friendIds);
+          }, cb);
+        }
+      funcs.push(getFriends);
+    }
+
+    if(!funcs.length) {
+      funcs.push((cb) => {
+        return cb(null, null);
+      });
+    }
+
+    let getEvents = (friendIds, cb) => {
+      if(friendIds) {
+        q.query.filtered.filter.bool.must.push({ terms: {ownerId : friendIds} });
+      }
+      //console.log(JSON.stringify(q));
+      kernel.ES.search(q, kernel.config.ES.mapping.eventType, (err, result) => {
+        if(err) {
+          return cb(err);
+        }
+        async.each(result.items, (item, callback) => {
+          item.liked = false;
+          async.parallel([
+            (cb) => {
+              // populate ownerId
+              kernel.model.User.findById(item.ownerId, '-password -salt').then(u => {
+                if (u) {
+                  let user = u.toJSON();
+                  kernel.model.GrantAward.count({ownerId: user._id}).then(count => {
+                    user.totalAwards = count;
+                    item.ownerId = user;
+                    cb();
+                  }).catch(err => {
+                    user.totalAwards = 0;
+                    cb();
+                  });
+                } else {
+                  cb();
+                }
+              }).catch(cb);
+            }, 
+            (cb) => {
+              // populate categoryId
+              kernel.model.Category.findById(item.categoryId).then(category => {
+                item.categoryId = (category) ? category : item.categoryId;
+                cb();
+              }).catch(cb);
+            }, 
+            (cb) => {
+              // Check that current user liked an event or not
+              kernel.model.Like.findOne({objectId: item._id, objectName: 'Event', ownerId: req.user._id}).then(liked => {
+                if (!liked) {
+                  return cb();
+                }
+                item.liked = true;
+                cb();
+              }).catch(cb);
+            }
+          ], callback);
+        }, (err) => {
+          if(err) {
+            return cb(err);
+          }
+          return cb(null, result);
+        });
+      });
+    };
+
+    funcs.push(getEvents);
+
+    async.waterfall(funcs, (err, result) => {
+      if(err) return res.status(500).json({type: 'SERVER_ERROR'});
+      return res.status(200).json(result);
+    })
+    //Todo: filter based on query
   });
 
   kernel.app.get('/api/v1/events/:id/bestPics/:limit', kernel.middleware.isAuthenticated(), (req, res) => {

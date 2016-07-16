@@ -669,6 +669,20 @@ module.exports = function(kernel) {
                 item.liked = true;
                 cb();
               }).catch(cb);
+            },
+            (cb) => {
+              // Populate event photo
+              let populatedPhotos = [];
+              async.each(item.photosId, (photoId, callback) => {
+                kernel.model.Photo.findById(photoId).then(photo => {
+                  photoId = (photo) ? photo : photoId;
+                  populatedPhotos.push(photoId);
+                  callback();
+                }).catch(callback);
+              }, () => {
+                item.photosId = populatedPhotos;
+                cb();
+              });
             }
           ], callback);
         }, (err) => {

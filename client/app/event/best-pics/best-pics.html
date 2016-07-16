@@ -1,7 +1,7 @@
 <div class="box-blue p15">
     <div class="title-blue">{{'BEST_PICS' | translate}}</div>
     <ul class="row row-small list-photo">
-        <li class="col-xs-6" ng-repeat="pic in vm.bestPics">
+        <li class="col-xs-6" ng-repeat="pic in vm.bestPics" ng-show="!pic.blocked || (vm.authUser.role=='admin' || vm.authUser._id==vm.eventOwner._id)">
         <a href="#" ng-click="vm.viewPhoto(pic)"><div class="bg-cover" ng-style="{backgroundImage: 'url(' + vm.photoFilter(pic, 'medium')  + ')'}"></div></a>
         </li>
     </ul>

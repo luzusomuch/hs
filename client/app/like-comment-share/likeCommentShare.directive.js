@@ -130,7 +130,7 @@ class likeCommentShareCtrl {
   }
 
   editComment(comment) {
-    if (comment.content.trim().length > 0 && !comment.deleted && (comment.ownerId._id===this.authUser._id || this.eventOwner._id===this.authUser._id)) {
+    if (comment.content.trim().length > 0 && !comment.deleted && (comment.ownerId._id===this.authUser._id || this.eventOwner._id===this.authUser._id || this.authUser.role==='admin')) {
       this.CommentService.update(comment._id, comment.content).then(() => {
         comment.isEdit = false;
       }).catch(err => {
@@ -144,7 +144,7 @@ class likeCommentShareCtrl {
 
   deleteComment(comment) {
     comment.showOption = false;
-    if (this.authUser._id===comment.ownerId._id || this.authUser._id===this.eventOwner._id || this.authUser._id===this.eventOwner) {
+    if (this.authUser._id===comment.ownerId._id || this.authUser._id===this.eventOwner._id || this.authUser._id===this.eventOwner || this.authUser.role==='admin') {
       this.CommentService.delete(comment._id).then(() => {
         comment.deleted = true;
       }).catch(err => {
@@ -157,26 +157,17 @@ class likeCommentShareCtrl {
   }
 
   blockComment(comment) {
-    this.CommentService.block(comment._id).then(() => {
-      comment.blocked = !comment.blocked;
-    }).catch(err => {
-      console.log(err);
-      // TODO show error;
-    });
+    if (this.authUser._id===this.eventOwner._id || this.authUser.role==='admin') {
+      this.CommentService.block(comment._id).then(() => {
+        comment.blocked = !comment.blocked;
+      }).catch(err => {
+        console.log(err);
+        // TODO show error;
+      });
+    } else {
+      // TODO show error
+    }
   }
-
-  // share(object, type) {
-  //   let data = (object && type) ? object : this.data;
-  //   data.type = (object && type) ? type : this.type;
-
-  //   this.ShareService.share(data._id, data.type).then(resp => {
-  //     data.shared = resp.data.shared;
-  //     data.totalShare = (data.totalShare) ? data.totalShare+=1 : 1;
-  //   }).catch(err => {
-  //     console.log(err);
-  //     // TODO show error;
-  //   });
-  // }
 }
 
 angular.module('healthStarsApp').controller('likeCommentShareCtrl', likeCommentShareCtrl);

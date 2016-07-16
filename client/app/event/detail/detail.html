@@ -39,7 +39,7 @@
         <div class="col-sm-3">
         <hs-user-widget u-id="vm.event.ownerId._id"></hs-user-widget>
         <hs-weather location="vm.event.location"></hs-weather >          
-        <hs-event-best-pics e-id="vm.event._id" limit="4"></hs-event-best-pics>          
+        <hs-event-best-pics e-owner="vm.event.ownerId" e-id="vm.event._id" limit="4"></hs-event-best-pics>          
         <hs-event-map locations="[vm.event.location]" title="{{'EVENT_LOCATION' | translate}}"></hs-event-map>
 
         </div>

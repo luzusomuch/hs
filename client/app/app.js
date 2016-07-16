@@ -46,7 +46,8 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
       cookie: true,
       xfbml: true
     });
-  	$rootScope.appSettings = AppSettings;																		
+    $rootScope.appSettings = AppSettings;                                   
+    
     $rootScope.$on('$stateChangeStart', function(event, next) {
     	for(let key in AppSettings.getSettings()) {
     		if(next.settings && next.settings.hasOwnProperty(key)) {
@@ -56,5 +57,8 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
           AppSettings.set(key, _default[key]);
         }
     	}
+    });
+    $rootScope.$on('$stateChangeSuccess', (event, state) => {
+      $rootScope.currentState = state.name;
     });
   });

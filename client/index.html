@@ -37,7 +37,7 @@
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     <!-- Add your site or application content here -->
-    <hs-header ng-if="appSettings.get('header')"></hs-header>
+    <hs-header ng-if="appSettings.get('header') && currentState!=='login'"></hs-header>
     <div ui-view class="content-home"></div>
     <hs-footer ng-if="appSettings.get('footer')"></hs-footer>
     <hs-photo-viewer></hs-photo-viewer>

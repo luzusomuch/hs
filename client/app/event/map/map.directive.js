@@ -60,10 +60,10 @@ angular.module('healthStarsApp').directive('hsEventMap', ($interval) => {
 	      }
 	    };
 	    scope.$watch('locations', (nv) => {
-    		while(markers.length){
-            markers.pop().setMap(null);
-        }
-        
+    		for(var i=0; i< markers.length; i++) {
+    			markers[i].setMap(null);
+    		}
+    		markers = [];
 	    	if (nv && nv[0]) {
 		    	var $ttl = $interval(() => {
 		    		if(window.google && window.google.maps) {

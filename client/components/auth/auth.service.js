@@ -49,6 +49,7 @@
        */
       logout() {
         $cookies.remove('token');
+        $localStorage.authUser = null;
         currentUser = {};
       },
 

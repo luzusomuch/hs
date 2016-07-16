@@ -553,7 +553,11 @@ module.exports = function(kernel) {
         match_all: {}
       },
       from: skip,
-      size: limit
+      size: limit,
+      sort: [
+        { _id: 'desc' },
+        { createdAt: 'desc' }
+      ]
     };
     //Todo: filter based on query
 

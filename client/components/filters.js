@@ -254,14 +254,14 @@ angular.module('healthStarsApp')
     let selectedImage;
     if (photos.length > 0) {
       angular.forEach(photos, (photo) => {
-        if (!photo.blocked) {
+        if (!photo.blocked && photo._id) {
           selectedImage = photo;
         }
-        if (selectedImage._id) {
+        if (selectedImage && selectedImage._id) {
           return false;
         }
       });
-      if (selectedImage) {
+      if (selectedImage && selectedImage._id) {
         imageUrl = selectedImage.metadata.small;
       }
     }

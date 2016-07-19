@@ -618,7 +618,7 @@ module.exports = function(kernel) {
     } else if(req.user.location && req.user.location.coordinates) {
       q.query.filtered.filter.bool.must.push({
         geo_distance: {
-          distance: radius + 'km',
+          distance: '1000km',
           'location.coordinates': req.user.location.coordinates, 
         }
       });

@@ -558,7 +558,11 @@ module.exports = function(kernel) {
           },
           filter: {
             bool: {
-              must: []
+              must: [],
+              should: [
+                { missing: { field: 'private' } },
+                { term: { private: false } } 
+              ]
             }
           }
         }
@@ -580,6 +584,7 @@ module.exports = function(kernel) {
       });
     }
 
+
     //process categoryid 
     if(req.body.category) {
       q.query.filtered.filter.bool.must.push({term: {categoryId: req.body.category}});
@@ -590,14 +595,14 @@ module.exports = function(kernel) {
       let time = parseInt(req.body.startDate);
       let date = moment(new Date(time));
       if(date.isValid()) {
-         q.query.filtered.filter.bool.must.push({
+        q.query.filtered.filter.bool.must.push({
           range: {
             createdAt: {
               gte: date.startOf('date').toISOString(),
               lte: date.endOf('date').toISOString()
             }
           }
-         });
+        });
       }
     }
 
@@ -608,6 +613,13 @@ module.exports = function(kernel) {
         geo_distance: {
           distance: radius + 'km',
           'location.coordinates': [req.body.location.lng, req.body.location.lat], 
+        }
+      });
+    } else if(req.user.location && req.user.location.coordinates) {
+      q.query.filtered.filter.bool.must.push({
+        geo_distance: {
+          distance: radius + 'km',
+          'location.coordinates': req.user.location.coordinates, 
         }
       });
     }
@@ -643,7 +655,7 @@ module.exports = function(kernel) {
       if(friendIds) {
         q.query.filtered.filter.bool.must.push({ terms: {ownerId : friendIds} });
       }
-      //console.log(JSON.stringify(q));
+      console.log(JSON.stringify(q));
       kernel.ES.search(q, kernel.config.ES.mapping.eventType, (err, result) => {
         if(err) {
           return cb(err);
@@ -715,8 +727,7 @@ module.exports = function(kernel) {
     async.waterfall(funcs, (err, result) => {
       if(err) return res.status(500).json({type: 'SERVER_ERROR'});
       return res.status(200).json(result);
-    })
-    //Todo: filter based on query
+    });
   });
 
   kernel.app.get('/api/v1/events/:id/bestPics/:limit', kernel.middleware.isAuthenticated(), (req, res) => {

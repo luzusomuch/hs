@@ -53,11 +53,14 @@ angular.module('healthStarsApp')
 				scope.items = [];
 			};
 
-			scope.select = (value) => {
+			angular.element(element).on('click', 'ul.dropdown-menu > li > a', function(e) {
+				e.preventDefault();
+				var index = angular.element(this).parent().index();
+				var value = scope.suggests[index]; 
 				scope.suggests = [];
 				elm.tagsinput('add', value);
 				elm.tagsinput('input').val('');
-			};
+			});
 
 			scope.$watch('items', (nv) => {
 				SearchParams.params.keywords = nv.join(',');

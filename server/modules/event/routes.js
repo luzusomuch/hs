@@ -570,8 +570,7 @@ module.exports = function(kernel) {
       from: skip,
       size: limit,
       sort: [
-        { createdAt: 'desc' },
-        { _id: 'desc' }
+        { createdAt: 'desc' }
       ]
     };
 
@@ -613,13 +612,6 @@ module.exports = function(kernel) {
         geo_distance: {
           distance: radius + 'km',
           'location.coordinates': [req.body.location.lng, req.body.location.lat], 
-        }
-      });
-    } else if(req.user.location && req.user.location.coordinates) {
-      q.query.filtered.filter.bool.must.push({
-        geo_distance: {
-          distance: '1000km',
-          'location.coordinates': req.user.location.coordinates, 
         }
       });
     }

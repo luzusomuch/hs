@@ -4,6 +4,7 @@ class HomeCtrl {
 	constructor($scope, EventService, LikeService, $localStorage, CategoryService, SearchParams, socket, $state, $timeout) {
     this.searchParams = SearchParams.params;
     this.page = 1;
+    this.loaded = false;
     this.events = {
      	items: [],
      	totalItem: 0
@@ -34,11 +35,14 @@ class HomeCtrl {
     });
 
     let ttl;
-    $scope.$watch('vm.searchParams', (nv) => {
-      if(ttl) {
-        $timeout.cancel(ttl);
+    $scope.geoLocation = false;
+    $scope.$watch('[vm.searchParams, geoLocation]', (nv) => {
+      if(nv && nv[1]) {
+        if(ttl) {
+          $timeout.cancel(ttl);
+        }
+        ttl = $timeout(this.search.bind(this), 500);
       }
-      ttl = $timeout(this.search.bind(this), 500);
     }, true);
 
     let prevOffset = 0;
@@ -64,6 +68,25 @@ class HomeCtrl {
     $scope.$on('$destroy', () => {
        angular.element(document).unbind('scroll');
     });
+    // geo location
+    if (navigator.geolocation && (!this.searchParams.address || !this.searchParams.address.geometry || !this.searchParams.address.geometry.location)) {
+      navigator.geolocation.getCurrentPosition( position => {
+        this.searchParams.address.geometry = {
+          location: {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          }
+        };
+        this.searchParams.radius = 1000;
+        $scope.geoLocation = true;
+        $scope.$$phase || $scope.$apply();
+      }, () => {
+        $scope.geoLocation = true;
+        $scope.$$phase || $scope.$apply();
+      });
+    } else {
+      $scope.geoLocation = true;
+    }
   }
 
   search() {
@@ -88,11 +111,12 @@ class HomeCtrl {
         return _.assign({title: item.name}, item.location || {});
       });
   		this.loading = false;
+      this.loaded = true;
   	}, () => this.loading = false);
   }
 
   pageChange() {
-    if(this.loading) {
+    if(this.loading || !this.loaded) {
       return false;
     }
   	this.loading = true;

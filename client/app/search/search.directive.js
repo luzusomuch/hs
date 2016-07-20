@@ -62,6 +62,16 @@ angular.module('healthStarsApp')
 				elm.tagsinput('input').val('');
 			});
 
+			angular.element('body').on('click', function(e) {
+				var target = angular.element(e.target);
+				let tagsinput = angular.element(element).find('.bootstrap-tagsinput');
+				if(angular.element(element).find(target).length === 0 && target !== tagsinput) {
+					var value = elm.tagsinput('input').val();
+					elm.tagsinput('add', value);
+					elm.tagsinput('input').val('');
+				}
+			});
+
 			let first = true;
 
 			scope.$watch('items', (nv) => {

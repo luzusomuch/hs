@@ -69,8 +69,7 @@ angular.module('healthStarsApp')
 					SearchParams.params.keywords = nv.join(',');
 					$state.go('home');
 				}
-				first = false; 
-				console.log(first);
+				first = false;
 			}, true);
 		}
 	}	

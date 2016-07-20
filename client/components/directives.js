@@ -9,8 +9,6 @@ angular.module('healthStarsApp')
     link: function(scope, element, attributes, modelVal) {
 
       modelVal.$validators.compareTo = function(val) {
-        console.log(val);
-        console.log(scope.confirmPassword);
         return val === scope.confirmPassword;
       };
 

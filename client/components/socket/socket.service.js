@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('healthStarsApp')
-  .factory('socket', function(socketFactory) {
+  .factory('socket', function(socketFactory, APP_CONFIG) {
     // socket.io now auto-configures its connection when we ommit a connection url
-    var ioSocket = io('', {
+    var ioSocket = io(APP_CONFIG.socketUrl, {
       // Send auth token on connection, you will need to DI the Auth service above
       // 'query': 'token=' + Auth.getToken()
       path: '/socket.io-client'

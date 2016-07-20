@@ -5,8 +5,10 @@ import path from 'path';
 // Development specific configuration
 // ==================================
 var baseUrl = 'http://ec2-52-41-38-203.us-west-2.compute.amazonaws.com/';
+var socketUrl = 'http://52.41.38.203:9000/';
 module.exports = {
   baseUrl: baseUrl,
+  socketUrl: socketUrl,
   // MongoDB connection options
   MONGO_URL: 'mongodb://localhost/healthstars',
   MONGO_REPLICAS_NUMBER: null,

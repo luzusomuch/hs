@@ -5,8 +5,10 @@ import path from 'path';
 // Development specific configuration
 // ==================================
 var baseUrl = 'http://localhost:9000/';
+var socketUrl = 'http://localhost:9000/';
 module.exports = {
   baseUrl: baseUrl,
+  socketUrl: socketUrl,
   // MongoDB connection options
   MONGO_URL: 'mongodb://localhost/healthstars-dev',
   MONGO_REPLICAS_NUMBER: null,

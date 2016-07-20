@@ -6,6 +6,7 @@ exports = module.exports = {
   // List of user roles
   userRoles: ['guest', 'user', 'admin'],
   baseUrl: config.baseUrl,
+  socketUrl: config.socketUrl,
   apiVer : 'v1',
   apiKey: {
   	google: 'AIzaSyBhg6JbSzbbB1rC9iqukJdiAXzUOYlpf-4',

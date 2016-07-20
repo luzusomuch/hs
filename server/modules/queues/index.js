@@ -34,7 +34,7 @@ exports.core = (kernel) => {
         S3.uploadFile(result.path, options.s3Options, cb);
       }
     ], (err, s3Object) => {
-      if (err) { return cb(err); }
+      if (err) {console.log(err); return cb(err); }
 
       //remove converted file
       if (!options.originalFile) {

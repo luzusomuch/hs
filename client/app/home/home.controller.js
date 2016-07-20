@@ -107,7 +107,6 @@ class HomeCtrl {
     delete params.address;
   	this.EventService.search(params).then(res => {
   		this.events = res.data;
-      console.log(this.events);
       this.locations = _.map(res.data.items, (item) => {
         return _.assign({title: item.name}, item.location || {});
       });

@@ -72,7 +72,7 @@
 
 
         <div class="col-sm-6 col-lg-8"  id="div-2">
-            <div class="show-sl-event m20">
+            <div class="show-sl-event m20" ng-show="vm.countNewEvent > 0">
                 <a href="#" style="color:#FFF">
                     <i ng-click="vm.$state.reload()" class="fa fa-refresh"></i> {{vm.countNewEvent}}  new events.
                 </a>

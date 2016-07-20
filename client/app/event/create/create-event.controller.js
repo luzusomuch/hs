@@ -12,7 +12,8 @@ class CreateEventCtrl {
 			participants: [],
 			location: {},
       public: true,
-      isRepeat: false
+      isRepeat: false,
+      startDate: new Date()
 		};
     this.shareEventInfo = {};
     this.$http = $http;
@@ -28,6 +29,13 @@ class CreateEventCtrl {
 
     $scope.$on('$destroy', function() {
       //do anything such as remove socket
+    });
+
+    $scope.$watch('vm.event.startDate', (nv) => {
+      // set end date is same as start date
+      if (nv) {
+        this.event.endDate = nv;
+      }
     });
 
     $scope.$watch('vm.event.isRepeat', (nv) => {

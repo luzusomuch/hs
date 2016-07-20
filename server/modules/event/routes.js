@@ -544,8 +544,9 @@ module.exports = function(kernel) {
   kernel.app.post('/api/v1/events/search', kernel.middleware.isAuthenticated(), (req, res) => {
     
     let page = parseInt(req.body.page);
+    let limit = parseInt(req.body.page);
     page = (page === 'NaN' || !page) ? 1 : page;
-    let limit = 4;
+    limit = (limit === 'NaN' || !limit || limit < 6 || limit > 100) ? 6 : limit;
     let skip = (page - 1) * limit;
 
     let q = {

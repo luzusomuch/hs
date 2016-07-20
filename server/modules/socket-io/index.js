@@ -69,7 +69,7 @@ exports.core = (kernel) => {
   // }));
   var socketio = require('socket.io')(kernel.httpServer, {
     //TODO - load from env, in production we dont need to serve client
-    serveClient: true,
+    serveClient: (kernel.config.env==='production') ? false : true,
     path: '/socket.io-client'
   });
   socketio.adapter(redisSocket(kernel.config.REDIS));

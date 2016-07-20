@@ -102,7 +102,7 @@ img {
 }
 .container {
     position:relative;
-    /*width:1400px;*/
+    width:1400px;
 }
 .login-page {
     padding: 40px 0px;

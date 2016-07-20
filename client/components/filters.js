@@ -85,7 +85,7 @@ angular.module('healthStarsApp')
         avatarUrl = profile.avatar || profile.google.image.url;
         break;
       case 'facebook':
-        avatarUrl = profile.avatar || `http://graph.facebook.com/${profile.facebook.id}/picture?type=square`;
+        avatarUrl = profile.avatar || `http://graph.facebook.com/${profile.facebook.id}/picture?width=300&height=300`;
         break;
       case 'twitter':
         avatarUrl = profile.avatar || profile.twitter.profile_image_url_https;
@@ -221,27 +221,27 @@ angular.module('healthStarsApp')
   };
 })
 .filter('categoryClass', () => {
-  return (category) => {
+  return (category, color) => {
     if (category) {
       let className;
       switch (category.type) {
         case 'food':
-        className = 'li-orange color-orange';
+        className = color ? 'li-orange color-orange' : 'li-orange';
         break;
       case 'action':
-        className = 'li-purple color-purple';
+        className = color ? 'li-purple color-purple' : 'li-purple';
         break;
       case 'eco':
-        className = 'li-green color-green';
+        className = color ? 'li-green color-green' : 'li-green';
         break;
       case 'social':
-        className = 'li-yellow color-yellow';
+        className = color ? 'li-yellow color-yellow' : 'li-yellow';
         break;
       case 'internation':
-        className = 'li-blue color-blue';
+        className = color ? 'li-blue color-blue' : 'li-blue';
         break;
       default:
-        className = 'li-blue color-blue';
+        className = color ? 'li-blue color-blue' : 'li-blue';
         break;
       };
       return className;

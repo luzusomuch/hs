@@ -11,7 +11,7 @@
       startDate: '',
       endDate: '',
       friendActivities: false,
-      category: ''
+      categories: []
     };
     return {
       _default: function() {
@@ -25,7 +25,7 @@
         startDate: '',
         endDate: '',
         friendActivities: false,
-        category: ''
+        categories: []
       }
     };
   }

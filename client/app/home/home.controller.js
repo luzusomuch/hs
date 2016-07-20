@@ -1,18 +1,16 @@
 'use strict';
 
 class HomeCtrl {
-	constructor($scope, EventService, LikeService, $localStorage, CategoryService, SearchParams, socket, $state, $timeout) {
+	constructor($scope, EventService, LikeService, $localStorage, CategoryService, SearchParams, socket, $state, $timeout, categories) {
+    this.categories = categories;
     this.searchParams = SearchParams.params;
+    this.searchParams.categories = _.map(categories, '_id');
     this.page = 1;
     this.loaded = false;
     this.events = {
      	items: [],
      	totalItem: 0
     };
-    this.categories = [];
-    CategoryService.getAll().then(resp => {
-      this.categories = resp.data.items;
-    });
     this.EventService = EventService;
     this.LikeService = LikeService;
     this.authUser = $localStorage.authUser;
@@ -41,7 +39,7 @@ class HomeCtrl {
         if(ttl) {
           $timeout.cancel(ttl);
         }
-        ttl = $timeout(this.search.bind(this), 500);
+        ttl = $timeout(this.search.bind(this), 250);
       }
     }, true);
 
@@ -153,7 +151,17 @@ class HomeCtrl {
   }
 
   selectCategory(category) {
-    this.searchParams.category = this.searchParams.category === category._id ? '' : category._id;
+    let index = this.searchParams.categories.indexOf(category._id);
+    if( index === -1) {
+      this.searchParams.categories.push(category._id);
+    } else {
+      this.searchParams.categories.splice(index, 1);
+    } 
+    return true;
+  }
+
+  isActive(category) {
+    return this.searchParams.categories.indexOf(category._id) !== -1;
   }
 }
 

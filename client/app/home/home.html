@@ -10,8 +10,8 @@
           <div class="col-sm-6  col-lg-8">
               <div class="menu-home">
                   <ul>
-                      <li ng-class="{'active': vm.searchParams.category === category._id}" ng-repeat="category in vm.categories">
-                          <a href ng-click="vm.selectCategory(category)" class="{{category | categoryClass}}"><img ng-src="{{category | categoryImagePath}}">
+                      <li ng-class="{'active': vm.isActive(category)}" ng-repeat="category in vm.categories">
+                          <a href ng-click="vm.selectCategory(category)" class="{{category | categoryClass: true}}"><img ng-src="{{category | categoryImagePath}}">
                             <span>{{category.type.toUpperCase()}}</span>
                           </a>
                       </li>
@@ -83,7 +83,7 @@
                     <div class="li-event {{event.categoryId | categoryClass}}">
                         <div class="top-li-event">
                             <a href="#"><img src="{{event.ownerId | avatarUrl}}"></a>
-                            <h4><a href="#">{{event.ownerId.name}}</a></h4>
+                            <h4><a href="#">{{event.ownerId.name}} &nbsp;</a></h4>
                             <i class="fa fa-clock-o"></i> {{event.createdAt | fromNow}}
                             <div class="arward-li-top">
                                 <span>{{event.ownerId.totalAwards || 0}}</span>

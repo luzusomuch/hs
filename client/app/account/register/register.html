@@ -211,7 +211,7 @@
                               <i class="fa fa-times fa-stack-1x fa-inverse fa-icon-input"></i>
                             </span>
 
-                            <p ng-show="form.password.$error.pattern && vm.submitted" class="error-text">{{'PASSWORD_PATTERN_ERROR' | translate}}</p>
+                            <p ng-show="form.password.$error.pattern && !form.password.$error.minlength && vm.submitted" class="error-text">{{'PASSWORD_PATTERN_ERROR' | translate}}</p>
                             <p ng-show="form.password.$error.minlength && vm.submitted" class="error-text">{{'PASSWORD_MIN_LENGTH_ERROR' | translate}}</p>
                             <p ng-show="form.password.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
                         </div>
@@ -231,7 +231,7 @@
                             </span>
                             
                             <p ng-show="form.repassword.$error.compareTo && vm.submitted" class="error-text">{{'CONFIRM_PASSWORD_NOT_MATCH' | translate}}</p>
-                            <p ng-show="!form.repassword.$error.compareTo && form.password.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+                            <p ng-show="(!form.repassword.$error.compareTo && form.password.$error.required) && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">

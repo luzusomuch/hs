@@ -561,7 +561,8 @@ module.exports = function(kernel) {
               must: [],
               should: [
                 { missing: { field: 'private' } },
-                { term: { private: false } } 
+                { term: { private: false } },
+                { term: { participantsId: req.user._id } }
               ]
             }
           }
@@ -585,8 +586,8 @@ module.exports = function(kernel) {
 
 
     //process categoryid 
-    if(req.body.category) {
-      q.query.filtered.filter.bool.must.push({term: {categoryId: req.body.category}});
+    if(req.body.categories instanceof Array) {
+      q.query.filtered.filter.bool.must.push({terms: {categoryId: req.body.categories}});
     }
 
     //process date

@@ -7,10 +7,16 @@ angular.module('healthStarsApp').config(function($stateProvider) {
     controller: 'HomeCtrl',
     controllerAs: 'vm',
     authenticate: true,
+    resolve: {
+      categories: function(CategoryService) {
+        return CategoryService.getAll().then(resp => {
+          return resp.data.items;
+        });
+      }
+    },
     settings: {
     	footer: false,
-      pageTitle: 'HealthStars | Home',
-      bodyClass: 'no-bg'
+      pageTitle: 'HealthStars | Home'
     }
   });
 });

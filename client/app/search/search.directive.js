@@ -62,9 +62,15 @@ angular.module('healthStarsApp')
 				elm.tagsinput('input').val('');
 			});
 
+			let first = true;
+
 			scope.$watch('items', (nv) => {
-				SearchParams.params.keywords = nv.join(',');
-				$state.go('home');
+				if(!first) {
+					SearchParams.params.keywords = nv.join(',');
+					$state.go('home');
+				}
+				first = false; 
+				console.log(first);
 			}, true);
 		}
 	}	

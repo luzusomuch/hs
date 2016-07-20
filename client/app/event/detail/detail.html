@@ -21,10 +21,9 @@
                         </div>
                         <div class="col-sm-8 col-lg-5">
                             <div class="row row-small">
-                                <div class="col-xs-5"><a hs-report id="vm.event._id" type="Event" href="#" class="btn btn-default btn-block"><i class="user-i i-new"></i> {{'REPORT_EVENT' | translate}}</a></div>
-                                <div class="col-xs-4"><a href="#" class="btn btn-default btn-block" e-id="vm.event._id" hs-event-invite><i class="user-i i-new"></i> {{'INVITE_FRIEND' | translate}} </a></div>
-                                <div class="col-xs-3"><a href="#" class="btn btn-default btn-block" ng-if="vm.isNotParticipant()"><i class="fa fa-plus"></i> {{'ATTEND' | translate}}</a></div>
-                                <div class="col-xs-3"><a href="#" class="btn btn-default btn-block" ng-if="!vm.isNotParticipant()"><i class="fa fa-user"></i> {{'ATTEND' | translate}}</a></div>
+                                <div class="col-xs-4"><a href="#" class="btn btn-default btn-block" ng-if="!vm.isNotParticipant()"><i class="fa fa-user"></i> {{'ATTEND' | translate}}</a></div>
+                                <div class="col-xs-4"><a href="#" class="btn btn-default btn-block" ng-if="vm.isNotParticipant()"><i class="fa fa-plus"></i> {{'ATTEND' | translate}}</a></div>
+                                <div class="col-xs-4"><a href="#" class="btn btn-default btn-block" ng-click="vm.like()"><i ng-class="{liked: vm.liked}" class="fa fa-heart"></i> {{(vm.liked) ? 'UNLIKE' : 'LIKE' | translate}}</a></div>
                             </div>
                         </div>
                     </div>
@@ -96,47 +95,6 @@
                         </div>
                     </div>
                     <like-comment-share data="feed" type="Feed" event-owner="vm.event.ownerId">
-                    <!-- 
-                    <div class="bottom-li-post">
-                        <div class="pull-left">
-                            <like-comment-share data="feed" type="Feed">
-                        </div>
-                    </div>
-
-                    <div class="replies-post">
-                        <ul>
-                            <li>
-                                <div class="post-li">
-                                    <div class="img-post-li">
-                                        <img src="images/48.jpg">
-                                    </div>
-                                    <div class="content-post-li">
-                                        <div class="title-post-li">
-                                            <h4 class="title-generated-home">Coffee with the Chiefs @Mollie <span class="date-post">3d ago</span> </h4>
-                                        </div>
-                                        <div class="content-post-li">
-                                            Nationwide, 43 percent of first-year drivers and 37 percent of second-year drivers are involved in car crashes.
-                                            The risk of motor vehicle crashes is higher among 16-19-year-olds than among any other age group. In fact, per mile driven,
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="post-li">
-                                    <div class="img-post-li">
-                                        <img src="images/48.jpg">
-                                    </div>
-                                    <div class="content-post-li">
-                                        <div class="replies-form">
-                                            <textarea class="form-control" placeholder="Write a reply..." onkeyup="textAreaAdjust(this)"></textarea>
-                                            <a href="#" class="replies-img-a"><i class="fa fa-share"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
-                        </ul>
-                    </div> -->
                 </div>
                 <div ng-show="vm.feeds.length < vm.pageSize">
                     <a href="#" ng-click="vm.loadMoreFeeds()">
@@ -147,7 +105,10 @@
         </div>
         <div class="col-sm-3">
             <hs-event-attending e-id="vm.event._id" e-owner="vm.event.ownerId" e-award="vm.event.awardId"></hs-event-attending>
+            <div class="box-blue"><a href="#" class="btn btn-primary btn-block" e-id="vm.event._id" hs-event-invite><i class="user-i i-new"></i> {{'INVITE_FRIEND' | translate}} </a></div>
+
             <hs-related-events e-id="vm.event._id"></hs-related-events>
+            <div class="box-blue"><a hs-report id="vm.event._id" type="Event" href="#" class="btn btn-primary btn-block"><i class="user-i i-new"></i> {{'REPORT_EVENT' | translate}}</a></div>
         </div>
     </div>
 </div>

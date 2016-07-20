@@ -262,7 +262,7 @@ angular.module('healthStarsApp')
         }
       });
       if (selectedImage && selectedImage._id) {
-        imageUrl = selectedImage.metadata.small;
+        imageUrl = (selectedImage.metadata.small) ? selectedImage.metadata.small : '/assets/photos/'+selectedImage.metadata.tmp;
       }
     }
     return imageUrl;

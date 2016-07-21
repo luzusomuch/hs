@@ -78,8 +78,8 @@
                 </a>
                 <a href="#" class="close-show"><img src="/assets/images/arrow.png" width="10"></a>
             </div>
-            <section class="grid" masonry>
-                <div class="masonry-brick grid-item" ng-repeat="event in vm.events.items">
+            <section class="grid" masonry='{ "transitionDuration" : "0.4s" , "itemSelector" : ".tile"}'>
+                <div class="grid-item tile" masonry-tile ng-repeat="event in vm.events.items">
                     <div class="li-event {{event.categoryId | categoryClass}}">
                         <div class="top-li-event">
                             <a href="#"><img src="{{event.ownerId | avatarUrl}}"></a>

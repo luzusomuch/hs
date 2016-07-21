@@ -87,6 +87,8 @@ class HealthStarsES {
   }
 }
 
+exports.HealthStarsES = HealthStarsES;
+
 exports.config = {
 	ES: {
 		options: {

@@ -117,6 +117,7 @@ exports.core = (kernel) => {
 	      // DB update
 	      kernel.model.Photo.findById(job.data._id).then(photo => {
 	      	photo.metadata = result.metadata;
+          photo.markModified('metadata');
 	      	photo.save().then(() => {
 	      		done();
 	      	}).catch(err => {

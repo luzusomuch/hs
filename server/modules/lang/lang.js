@@ -123,7 +123,10 @@ let Language = {
 		REPORT_EVENT: 'Report event',
 		EMAIL_ALREADY_USED: 'This email was already used',
 		LOAD_MORE_FEED: 'Load more feed ...',
-		AWARD_GRANTED_ERROR: 'This event award has granted to this user'
+		AWARD_GRANTED_ERROR: 'This event award has granted to this user',
+		LIKE: 'Like',
+		UNLIKE: 'Unlike',
+		COMPANY_ACCOUNT_TEXT_INFO: 'If you are creating this account for an coporation, institute or organisation, please use here the company account. It will bring additional features to your account.'
 	},
 	de: {
 

@@ -34,7 +34,7 @@ exports.core = (kernel) => {
         S3.uploadFile(result.path, options.s3Options, cb);
       }
     ], (err, s3Object) => {
-      if (err) { return cb(err); }
+      if (err) {console.log(err); return cb(err); }
 
       //remove converted file
       if (!options.originalFile) {
@@ -117,6 +117,7 @@ exports.core = (kernel) => {
 	      // DB update
 	      kernel.model.Photo.findById(job.data._id).then(photo => {
 	      	photo.metadata = result.metadata;
+          photo.markModified('metadata');
 	      	photo.save().then(() => {
 	      		done();
 	      	}).catch(err => {

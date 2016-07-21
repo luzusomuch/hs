@@ -95,7 +95,7 @@
                 <div class="row">
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group relative-div">
-                            <label>{{'FIRST_NAME' | translate}}</label>
+                            <label>{{'FIRST_NAME' | translate}} *</label>
                             <input type="text" class="form-control" ng-model="vm.user.firstName" name="firstName" required ng-class="{'error-input': form.firstName.$error.required && vm.submitted}">
 
                             <span class="fa-stack fa-lg sign-up-success-validate " ng-show="!form.firstName.$error.required">
@@ -113,7 +113,7 @@
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group relative-div">
-                            <label>{{'LAST_NAME' | translate}}</label>
+                            <label>{{'LAST_NAME' | translate}} *</label>
                             <input type="text" class="form-control" ng-model="vm.user.lastName" name="lastName" required ng-class="{'error-input': form.lastName.$error.required && vm.submitted}">
 
                             <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.lastName.$error.required">
@@ -131,7 +131,7 @@
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group relative-div">
-                            <label>{{'LOCATION' | translate}}</label>
+                            <label>{{'LOCATION' | translate}} *</label>
                             <ui-select ng-model="vm.address.selected" theme="bootstrap" append-to-body="true" reset-search-input="false">
                               <ui-select-match placeholder="{{'SELECT_YOUR_LOCATION' | translate}}">{{$select.selected.formatted_short_address}}</ui-select-match>
                               <ui-select-choices repeat="address in vm.addresses track by $index" refresh="vm.refreshAddresses($select.search)" refresh-delay="0">
@@ -155,7 +155,7 @@
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group relative-div">
-                            <label>{{'EMAIL' | translate}}</label>
+                            <label>{{'EMAIL' | translate}} *</label>
                             <input type="email" class="form-control" ng-model="vm.user.email" name="email" required ng-class="{'error-input': (form.email.$error.pattern || form.email.$error.email || form.email.$error.required) && vm.submitted}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$">
 
                             <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.email.$error.pattern && !form.email.$error.email && !form.email.$error.required">
@@ -198,7 +198,7 @@
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group relative-div">
-                            <label>{{'PASSWORD' | translate}} <span class="note-form">6 symbols min</span></label>
+                            <label>{{'PASSWORD' | translate}} * <span class="note-form">6 symbols min</span></label>
                             <input type="password" class="form-control" ng-model="vm.user.password" name="password" required ng-minlength="6" pattern="^\w*(?=\w*\d)(?=\w*[A-Za-z])\w*$" ng-class="{'error-input': (form.password.$error.minlength || form.password.$error.required) && vm.submitted}">
 
                             <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.password.$error.pattern && !form.password.$error.minlength && !form.password.$error.required">
@@ -218,7 +218,7 @@
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group relative-div">
-                            <label>{{'CONFIRM_PASSWORD' | translate}}</label>
+                            <label>{{'CONFIRM_PASSWORD' | translate}} *</label>
                             <input type="password" class="form-control" ng-model="vm.user.repassword" name="repassword" required compare-to="form.password.$$rawModelValue" ng-class="{'error-input': (form.repassword.$error.compareTo || form.password.$error.required) && vm.submitted}">
 
                             <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.repassword.$error.compareTo && !form.repassword.$error.required">
@@ -248,6 +248,9 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-lg-8">
+                      <p ng-show="vm.user.isCompanyAccount" class="box-blue p15">
+                        {{'COMPANY_ACCOUNT_TEXT_INFO' | translate}}
+                      </p>
                         <div class="form-group">
                             <label><span class="upper-case">{{'OR' | translate}}</span> {{'SIGN_UP_WITH' | translate}}</label>
                             <oauth-buttons theme="text"></oauth-buttons>

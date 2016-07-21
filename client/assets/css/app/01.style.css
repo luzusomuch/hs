@@ -1059,7 +1059,7 @@ label {
 .title-post-li h4 {
     font-size: 15px;
     margin: 0px;
-    margin-bottom: 8px;
+    margin-bottom: 3px;
     color: rgba(255,255,255,0.7);
 }
 .title-post-li h4 a {
@@ -1996,22 +1996,27 @@ span.country-name {
     font-size: 2em;
     color: red;
 }
-.title-generated-home span.comment-option-button {
+.action-comment {
     position: absolute;
     top: 15px;
     right: 0px;
     cursor: pointer;
 }
-.title-generated-home ul.comment-option {
-    position: absolute;
-    top: 31px;
-    right: 0px;
-    background: rgba(255,255,255,0.2);
-    padding: 5px;
-    text-align: right;
+.action-comment span.comment-option-button {
+    
 }
-.title-generated-home ul.comment-option li {
+.action-comment ul.comment-option {
+    position: absolute;
+    top: 20px;
+    right: -5px;
+    background: #2d3747;
+    padding: 5px;
+    border-radius: 5px;
+    width: 130px;
+}
+.action-comment ul.comment-option li {
     cursor: pointer;
+    padding:5px;
 }
 .load-more {
     margin-left: 10px;
@@ -2057,4 +2062,10 @@ span.country-name {
 }
 .bottom-li-event {
     color: #FFF;
+}
+.replies-post {
+    border-left: 3px solid rgba(255,255,255,0.1);
+}
+.replies-post .post-li {
+    padding-left: 60px;
 }

@@ -563,7 +563,8 @@ module.exports = function(kernel) {
               should: [
                 { missing: { field: 'private' } },
                 { term: { private: false } },
-                { term: { participantsId: req.user._id } }
+                { term: { participantsId: req.user._id } },
+                { term: { ownerId: req.user._id} }
               ]
             }
           }

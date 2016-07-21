@@ -2104,3 +2104,9 @@ span.country-name {
 .form-li-comment {
     padding-right: 0px;
 }
+.event-edit-button {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    width: 100px;
+}

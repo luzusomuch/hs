@@ -2,33 +2,54 @@
 
 class EditEventCtrl {
 	constructor(event, APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies) {
+		this.user = $localStorage.authUser;
+		if (event.ownerId._id!==this.user._id) {
+			$state.go('home');
+		}
+		// Init event
 		this.event = event;
+		this.event.categoryId = event.categoryId._id;
+		this.event.startDate = new Date(event.startDateTime);
+		this.event.endDate = new Date(event.endDateTime);
+		this.event.startTime = new Date(moment().hours(moment(event.startDateTime).hours()).minutes(moment(event.startDateTime).minutes()));
+		this.event.endTime = new Date(moment().hours(moment(event.endDateTime).hours()).minutes(moment(event.endDateTime).minutes()));
+		this.event.isRepeat = (event.repeat && event.repeat.type) ? true : false;
+		this.address = {
+			selected: {
+				formatted_address: event.location.fullAddress,
+				formatted_short_address: event.location.fullAddress.substr(0, 35) + ' ...',
+				geometry: {
+					location: {
+						lng: event.location.coordinates[0],
+						lat: event.location.coordinates[1]
+					}
+				},
+				address_components: [{
+					long_name: event.location.country,
+					short_name: event.location.countryCode
+				}]
+			}
+		};
+		this.event.award = event.awardId;
+		this.event.participants = event.participantsId;
+		console.log(this.event);
+		// End init event
 		this.APP_CONFIG = APP_CONFIG;
     this.Upload = Upload;
 		this.$cookies = $cookies;
 		this.files = [];
-		this.user = $localStorage.authUser;
-    this.shareEventInfo = {};
     this.$http = $http;
     this.$state = $state;
     this.EventService = EventService;
     this.RelationService = RelationService;
     this.AwardService = AwardService;
     this.$uibModal = $uibModal;
-    this.address = {};
     this.addresses = [];
     this.submitted = false;
     this.errors = {};
 
     $scope.$on('$destroy', function() {
       //do anything such as remove socket
-    });
-
-    $scope.$watch('vm.event.startDate', (nv) => {
-      // set end date is same as start date
-      if (nv) {
-        this.event.endDate = nv;
-      }
     });
 
     $scope.$watch('vm.event.isRepeat', (nv) => {
@@ -90,6 +111,7 @@ class EditEventCtrl {
           result.formatted_short_address = result.formatted_address.substr(0, 35) + ' ...';
         });
         this.addresses = response.data.results;
+        console.log(this.addresses);
       });
     }
   }
@@ -142,25 +164,34 @@ class EditEventCtrl {
 		});
   }
 
-  select($files) {
+  select($files, type) {
   	$files.forEach(file => {
       //check file
+      file.photoType = type;
       let index = _.findIndex(this.files, (f) => {
         return f.name === file.name && f.size === file.size;
       });
 
       if (index === -1) {
+      	// find out the current banner index and remove it from files array
+      	let idx = _.findIndex(this.files, (file) => {
+      		if (type==='banner') {
+      			return file.photoType === 'banner';
+      		}
+      	});
+      	if (idx !== -1) {
+      		this.files.splice(idx, 1);
+      	}
         this.files.push(file);
       }
     });
+    console.log(this.files);
+    this.newBanner = _.filter(this.files, {photoType: 'banner'});
+    this.event.bannerName = (this.newBanner.length > 0) ? this.newBanner[0].name : null;
+    console.log(this.newBanner);
   }
 
-  onTimeSet(newDate, oldDate) {
-    console.log(newDate);
-    console.log(oldDate);
-  }
-
-  create(form) {
+  edit(form) {
     this.errors = {};
     this.submitted = true;
     if (!this.event.categoryId) {
@@ -194,16 +225,17 @@ class EditEventCtrl {
       }
 
   		this.Upload.upload({
-	      url: '/api/v1/events',
+	      url: '/api/v1/events/'+this.$state.params.id,
+	      method: 'PUT',
 	      arrayKey: '',
 	      data: {file: this.files, event: this.event},
 	      headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
-	    }).then(resp =>{
-        this.event.url = `${this.APP_CONFIG.baseUrl}event/detail/${resp.data._id}`;
-	    	this.$state.go('event.detail', {id: resp.data._id});
+	    }).then(resp => {
         this.submitted = false;
+	    	this.$state.go('event.detail', {id: this.$state.params.id});
 	    }, (err) => {
 	    	console.log(err);
+	    	// TODO show error
 	    });
   	}
   }

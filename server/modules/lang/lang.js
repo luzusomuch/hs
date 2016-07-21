@@ -126,7 +126,10 @@ let Language = {
 		AWARD_GRANTED_ERROR: 'This event award has granted to this user',
 		LIKE: 'Like',
 		UNLIKE: 'Unlike',
-		COMPANY_ACCOUNT_TEXT_INFO: 'If you are creating this account for an coporation, institute or organisation, please use here the company account. It will bring additional features to your account.'
+		COMPANY_ACCOUNT_TEXT_INFO: 'If you are creating this account for an coporation, institute or organisation, please use here the company account. It will bring additional features to your account.',
+		EDIT_EVENT: 'Edit event',
+		CANCEL: 'Cancel',
+		EVENT_BANNER: 'Event banner'
 	},
 	de: {
 

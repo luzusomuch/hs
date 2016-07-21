@@ -19,6 +19,7 @@
           <div class="title-post-li">
             <h4 class="title-generated-home">{{comment.ownerId.name}}
               <span class="date-post">{{comment.createdAt | fromNow}}</span> 
+              <div class="action-comment">
               <span ng-click="comment.showOption=!comment.showOption" class="comment-option-button"><i class="fa fa-ellipsis-v"></i></span>
               <ul ng-mouseleave="comment.showOption = false" class="comment-option" ng-show="comment.showOption">
                 <li ng-show="!comment.deleted && !comment.blocked && (vm.authUser.role=='admin' || vm.authUser._id==vm.eventOwner || vm.authUser._id==vm.eventOwner._id || comment.ownerId._id==vm.authUser._id)" ng-click="comment.isEdit=!comment.isEdit; comment.showOption=false">{{'EDIT_COMMENT' | translate}}</li>
@@ -28,6 +29,7 @@
                   <span ng-show="!comment.blocked">{{'BLOCK_COMMENT' | translate}}</span>
                 </li>
               </ul>
+              </div>
             </h4>
           </div>
           <div class="content-post-li">
@@ -61,6 +63,7 @@
                       <div class="title-post-li">
                         <h4 class="title-generated-home">{{subComment.ownerId.name}}
                           <span class="date-post">{{subComment.createdAt | fromNow}}</span> 
+                          <div class="action-comment">
                           <span ng-click="subComment.showOption=!subComment.showOption" class="comment-option-button"><i class="fa fa-ellipsis-v"></i></span>
                           <ul ng-mouseleave="subComment.showOption = false" class="comment-option" ng-show="subComment.showOption">
                             <li ng-show="!subComment.deleted && !subComment.blocked && (vm.authUser.role=='admin' || vm.authUser._id==vm.eventOwner || vm.authUser._id==vm.eventOwner._id || subComment.ownerId._id==vm.authUser._id)" ng-click="vm.deleteComment(subComment)" ng-click="subComment.isEdit=!subComment.isEdit; subComment.showOption=false">{{'EDIT_COMMENT' | translate}}</li>
@@ -70,6 +73,7 @@
                               <span ng-show="!subComment.blocked">{{'BLOCK_COMMENT' | translate}}</span>
                             </li>
                           </ul>
+                          </div>
                         </h4>
                       </div>
                       <div class="content-post-li">
@@ -85,7 +89,7 @@
                   </div>
                 </li>
                 <li>
-                  <div class="post-li">
+                  <div class="post-li form-li-comment">
                     <div class="img-post-li">
                       <img ng-src="{{vm.authUser | avatarUrl}}" style="width: 40px; height: 40px">
                     </div>
@@ -112,7 +116,7 @@
     </li>
   </ul>
 </div>
-<div class="post-li" ng-show="vm.data.showComment">
+<div class="post-li form-li-comment" ng-show="vm.data.showComment">
   <div class="img-post-li">
     <img ng-src="{{vm.authUser | avatarUrl}}" style="width: 40px; height: 40px">
   </div>

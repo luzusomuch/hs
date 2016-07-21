@@ -901,7 +901,7 @@ label .note-form {
 .row-small {
     margin: 0px -3px;
 }
-.row-small .col-xs-7, .row-small .col-xs-5 {
+.row-small .col-xs-7, .row-small .col-xs-5, .row-small .col-xs-12, .row-small .col-xs-6 {
     padding: 0px 3px;
 }
 .box-blue {
@@ -1059,7 +1059,7 @@ label {
 .title-post-li h4 {
     font-size: 15px;
     margin: 0px;
-    margin-bottom: 8px;
+    margin-bottom: 3px;
     color: rgba(255,255,255,0.7);
 }
 .title-post-li h4 a {
@@ -1083,7 +1083,7 @@ label {
 .bottom-li-post {
     display: table;
     width: 100%;
-    margin-top: 15px;
+    margin-top: 0px;
 }
 .bottom-li-post i {
     margin-right: 5px;
@@ -1096,10 +1096,6 @@ label {
 .replies-form  {
     position: relative;
 }
-.replies-form .form-control {
-    padding-right: 50px;
-    height: 43px;
-}
 .replies-form .replies-img-a {
     color: #999;
     font-size: 20px;
@@ -1108,7 +1104,7 @@ label {
     right: 10px;
 }
 .img-content-post {
-    margin-top: 15px;
+    margin: 5px 0px;
 }
 .box-blue .post-li:last-child {
     border: 0px;
@@ -1375,13 +1371,14 @@ label {
 }
 .replies-form .form-control {
     padding-right: 50px;
-    height: 43px;
+    height: 31px;
+    padding: 6px 12px;
 }
 .replies-form .replies-img-a {
     color: #999;
-    font-size: 20px;
+    font-size: 16px;
     position: absolute;
-    top: 10px;
+    top: 7px;
     right: 10px;
 }
 .modal-footer .btn {
@@ -1996,22 +1993,28 @@ span.country-name {
     font-size: 2em;
     color: red;
 }
-.title-generated-home span.comment-option-button {
+.action-comment {
     position: absolute;
     top: 15px;
     right: 0px;
     cursor: pointer;
 }
-.title-generated-home ul.comment-option {
-    position: absolute;
-    top: 31px;
-    right: 0px;
-    background: rgba(255,255,255,0.2);
-    padding: 5px;
-    text-align: right;
+.action-comment span.comment-option-button {
+    
 }
-.title-generated-home ul.comment-option li {
+.action-comment ul.comment-option {
+    position: absolute;
+    top: 20px;
+    right: -5px;
+    background: #2d3747;
+    padding: 5px;
+    border-radius: 5px;
+    width: 130px;
+    z-index: 100;
+}
+.action-comment ul.comment-option li {
     cursor: pointer;
+    padding:5px;
 }
 .load-more {
     margin-left: 10px;
@@ -2057,4 +2060,47 @@ span.country-name {
 }
 .bottom-li-event {
     color: #FFF;
+}
+.replies-post {
+    border-left: 3px solid rgba(255,255,255,0.1);
+    margin: 10px 0px;
+}
+.replies-post .post-li, .form-li-comment {
+    padding-left: 50px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.replies-post ul li:first-child .post-li{
+    margin:0px;
+}
+.replies-post .post-li {
+    margin-top: 10px;
+    border: 0px;
+}
+.replies-post .post-li .img-post-li , .form-li-comment .img-post-li {
+    top: 0px;
+    left: 10px;
+}
+.replies-post .post-li .img-post-li img, .form-li-comment .img-post-li img {
+    width: 30px !important;
+    height: 30px !important;
+}
+.comment-popup .replies-post .post-li .img-post-li {
+    left: 0px;
+}
+.comment-popup .replies-post {
+    border: 0px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    padding-top: 10px;
+    height: -o-calc(100% - 200px);
+    height: -webkit-calc(100% - 200px);
+    height: -moz-calc(100%- 200px);
+    overflow: auto;
+}
+.comment-popup .user-show-pop {
+    margin-bottom: 10px;
+    min-height: 70px;
+}
+.form-li-comment {
+    padding-right: 0px;
 }

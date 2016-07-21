@@ -16,7 +16,7 @@ class HomeCtrl {
     this.authUser = $localStorage.authUser;
     this.locations = [];
     this.$state = $state;
-    if (this.authUser._id) {
+    if (this.authUser && this.authUser._id) {
       socket.socket.emit('join', this.authUser._id);
     }
     // Tracking online/offline user

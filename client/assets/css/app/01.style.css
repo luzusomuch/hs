@@ -2110,3 +2110,7 @@ span.country-name {
     left: 15px;
     width: 100px;
 }
+.comment-liked {
+    color: blue;
+    font-weight: 900;
+}

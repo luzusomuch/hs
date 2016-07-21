@@ -37,7 +37,8 @@ module.exports = {
         totalParticipants: {type: Number, default: 0},
         totalInterested: {type: Number, default: 0}
       },
-      totalComment: {type: Number, default: 0}
+      totalComment: {type: Number, default: 0},
+      banner: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Photo'}
     });
     
     //import timestamp for auto create updatedAt, createdAt field manually

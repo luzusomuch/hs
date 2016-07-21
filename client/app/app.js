@@ -4,7 +4,7 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
     'ngCookies', 'ngResource', 'ngSanitize', 'btford.socket-io', 'ui.router', 'ui.bootstrap',
     'validation.match', 'angular-growl', 'angular-loading-bar', 'ngAnimate', 'ngStorage', 
     'healthStarsApp.language', 'ui.select', 'ngFileUpload', 'healthStarsApp.photoViewer', 
-    'internationalPhoneNumber', 'wu.masonry'
+    'internationalPhoneNumber', 'masonry'
   ])
   .config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
     $urlRouterProvider.otherwise('/');

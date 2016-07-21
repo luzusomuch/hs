@@ -3,10 +3,10 @@
 // Set default node environment to development
 var env = process.env.NODE_ENV || 'development';
 console.log(`sync-data run in ${env} mode`);
-//if (env === 'development' || env === 'test') {
-  // Register the Babel require hook
-  require('babel-register');
-//}
+// //if (env === 'development' || env === 'test') {
+//   // Register the Babel require hook
+require('babel-register');
+// //}
 
 
 var mongoose = require('mongoose');

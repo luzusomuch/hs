@@ -1373,6 +1373,8 @@ label {
     padding-right: 50px;
     height: 31px;
     padding: 6px 12px;
+    resize: none;
+    overflow: hidden;
 }
 .replies-form .replies-img-a {
     color: #999;
@@ -2018,6 +2020,7 @@ span.country-name {
 }
 .load-more {
     margin-left: 10px;
+    cursor: pointer;
 }
 .input-edit-comment {
     width: 90%;
@@ -2085,6 +2088,9 @@ span.country-name {
     width: 30px !important;
     height: 30px !important;
 }
+.replies-post .content-post-li p {
+    margin-bottom: 0px;
+}
 .comment-popup .replies-post .post-li .img-post-li {
     left: 0px;
 }
@@ -2111,6 +2117,6 @@ span.country-name {
     width: 100px;
 }
 .comment-liked {
-    color: blue;
+    color: #0081c8;
     font-weight: 900;
 }

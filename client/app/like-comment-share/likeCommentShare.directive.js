@@ -7,6 +7,11 @@ angular.module('healthStarsApp').directive('likeCommentShare', () => ({
     type: '@',
     eventOwner: '='
   },
+  link: function(scopem, element, attr, ctrls) {
+    if (ctrls.type==='Photo') {
+      element.attr('ng-scrollbars');
+    }
+  },
   controller: 'likeCommentShareCtrl',
   controllerAs: 'vm',
   bindToController: true,
@@ -84,7 +89,7 @@ class likeCommentShareCtrl {
             return 0
           });
           data.pageSize = resp.data.totalItem;
-          data.page +=1;
+          data.page = (data.page) ? data.page+1 : 2;
         });
       });
     });
@@ -93,6 +98,7 @@ class likeCommentShareCtrl {
   loadMore(comment) {
     let data = (comment) ? comment : this.data;
     data.type = (comment) ? 'Comment' : this.type;
+    console.log(data);
     this.loadComment(data, data.type, {page: data.page});
   }
 

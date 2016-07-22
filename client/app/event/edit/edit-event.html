@@ -148,7 +148,7 @@
                 <table class="table-upload">
                   <tr>
                     <td width="20%">
-                      <img src="{{vm.event.banner | imageUrl: 'small'}}" width="100%" ng-show="vm.event.banner">
+                      <img src="{{vm.event.banner | imageUrl: 'small'}}" width="100%" ng-show="vm.event.banner && (!vm.newBanner || vm.newBanner.length===0)">
                       <img ngf-src="vm.newBanner[0]" width="100%" ng-show="vm.newBanner.length > 0">
                     </td>
                     <td  class="text-center">
@@ -170,9 +170,9 @@
                     <img src="{{photo | imageUrl: 'small'}}" width="100%" style="margin-bottom:5px">
                     </div>
                   </div>
-                  <div class="col-xs-6 col-sm-3" ng-repeat="file in vm.files">
+                  <div class="col-xs-6 col-sm-3" ng-repeat="file in vm.files" ng-if="file.photoType=='photo'">
                     <div class="box-picture-upload">
-                    <img ng-show="vm.files.length > 0" style="margin-bottom:5px" ngf-src="file" width="100%" ng-if="file.photoType=='photo'">
+                    <img ng-show="vm.files.length > 0" style="margin-bottom:5px" ngf-src="file" width="100%">
                     </div>
                   </div>
                   <div class="col-xs-6 col-sm-3 text-center">

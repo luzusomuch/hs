@@ -178,4 +178,26 @@ module.exports = function(kernel) {
       return res.status(500).json({type: 'SERVER_ERROR'});
     });
   });
+
+  /*Delete award if he an owner or has admin role*/
+  kernel.app.delete('/api/v1/awards/:id', kernel.middleware.isAuthenticated(), (req, res) => {
+    kernel.model.Award.findById(req.params.id).then(award => {
+      if (!award) {
+        return res.status(404).end();
+      }
+      if (req.user._id.toString()===award.ownerId.toString() || req.user.role==='admin') {
+        award.deleted = true;
+        award.deletedBy = req.user._id;
+        award.save().then(() => {
+          return res.status(200).end();
+        }).catch(err => {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        });
+      } else {
+        return res.status(403).end();
+      }
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    })
+  });
 };

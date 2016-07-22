@@ -110,7 +110,6 @@ class EditEventCtrl {
           result.formatted_short_address = result.formatted_address.substr(0, 35) + ' ...';
         });
         this.addresses = response.data.results;
-        console.log(this.addresses);
       });
     }
   }

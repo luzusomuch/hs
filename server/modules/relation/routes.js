@@ -7,7 +7,7 @@ module.exports = function(kernel) {
   Get all relation of selected user 
   */
   kernel.app.get('/api/v1/relations/:id/:type', (req, res) => {
-    kernel.model.Relation.find({status: 'completed', type: req.params.type, fromUserId: req.params.id})
+    kernel.model.Relation.find({status: 'completed', type: req.params.type, $or: [{fromUserId: req.params.id}, {toUserId: req.params.id}]})
     .populate('toUserId', '-hashedPassword -salt')
     .exec().then(relations => {
     	var result = _.map(relations, (relation) => {

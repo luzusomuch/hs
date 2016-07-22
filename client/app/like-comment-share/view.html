@@ -43,9 +43,9 @@
             <!-- start sub-comment -->
             <div class="bottom-li-post">
               <div class="pull-left relative-div">
-                <a href="#" ng-click="vm.like(comment, 'Comment')"><i class="fa fa-heart-o" ng-class="{active: comment.liked}"></i> {{comment.totalLike || 0}}</a>
-                <a href="#" ng-click="vm.showComments(comment)"><i class="fa fa-comments"></i> {{comment.totalComment || 0}}</a>
-                <a href="#" ng-click="comment.clickedShare = true"><i class="fa fa-reply" ng-class="{active: comment.shared}"></i> {{comment.totalShare || 0}}</a>
+                <a href="#" ng-click="vm.like(comment, 'Comment')"> <span ng-class="{'comment-liked': comment.liked}">{{'LIKE' | translate}}</span> {{comment.totalLike || 0}}</a>
+                <a href="#" ng-click="vm.showComments(comment)"><span>{{'REPLY' | translate}}</span> {{comment.totalComment || 0}}</a>
+                <!-- <a href="#" ng-click="comment.clickedShare = true"><i class="fa fa-reply" ng-class="{active: comment.shared}"></i> {{comment.totalShare || 0}}</a> -->
 
                 <div class="share-content" ng-show="comment.clickedShare" share-tool-box decription="comment.content" title="'Join us on HealthStar'" url="comment.url" data="comment" type="Comment" fb="true" tw="true" gg="true" shared="comment.clickedShare">
                 </div>
@@ -89,13 +89,13 @@
                   </div>
                 </li>
                 <li>
-                  <div class="post-li form-li-comment">
+                  <div class="post-li">
                     <div class="img-post-li">
                       <img ng-src="{{vm.authUser | avatarUrl}}" style="width: 40px; height: 40px">
                     </div>
                     <div class="content-post-li">
                       <div class="replies-form">
-                        <textarea class="form-control" placeholder="Write a reply..." id="reply-textarea" ng-model="subComment.content"></textarea>
+                        <textarea ng-keyup="vm.autoExpand($event)" class="form-control" placeholder="Write a reply..." id="reply-textarea" ng-model="subComment.content"></textarea>
                         <a href="#" class="replies-img-a" ng-click="vm.postComment(subComment, comment)"><i class="fa fa-share"></i></a>
                       </div>
                     </div>
@@ -116,13 +116,13 @@
     </li>
   </ul>
 </div>
-<div class="post-li form-li-comment" ng-show="vm.data.showComment">
+<div class="post-li" ng-show="vm.data.showComment">
   <div class="img-post-li">
     <img ng-src="{{vm.authUser | avatarUrl}}" style="width: 40px; height: 40px">
   </div>
   <div class="content-post-li">
     <div class="replies-form">
-      <textarea class="form-control" placeholder="Write a reply..." id="reply-textarea" ng-model="vm.comment.content"></textarea>
+      <textarea ng-keyup="vm.autoExpand($event)" class="form-control" placeholder="Write a reply..." id="reply-textarea" ng-model="vm.comment.content"></textarea>
       <a href="#" class="replies-img-a" ng-click="vm.postComment(vm.comment)"><i class="fa fa-share"></i></a>
     </div>
   </div>

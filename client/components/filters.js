@@ -267,4 +267,13 @@ angular.module('healthStarsApp')
     }
     return imageUrl;
   }
+})
+.filter('eventBanner', () => {
+  return (banner) => {
+    let image = 'assets/images/img-pro1.jpg';
+    if (banner.metadata) {
+      image = (banner.metadata.large) ? banner.metadata.large : 'assets/images/'+banner.metadata.tmp;
+    }
+    return image;
+  }
 });

@@ -168,6 +168,12 @@ class likeCommentShareCtrl {
       // TODO show error
     }
   }
+
+  autoExpand(e) {
+    let element = typeof e === 'object' ? e.target : document.getElementById(e);
+    let scrollHeight = element.scrollHeight; // replace 60 by the sum of padding-top and padding-bottom
+    element.style.height =  scrollHeight + "px";    
+  }
 }
 
 angular.module('healthStarsApp').controller('likeCommentShareCtrl', likeCommentShareCtrl);

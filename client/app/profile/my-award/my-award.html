@@ -1,20 +1,5 @@
 <div class="container">
-	<div class="box-blue hea-account">
-    <div class="menu-account">
-      <a href="#" class="toogle-menu-account"><i class="fa fa-bars"></i> {{'MENU_ACCOUNT' | translate}}</a>
-      <ul>
-          <li ng-class="{'active': vm.$state.includes('profile.home')}"><a href="#"><i class="fa fa-home"></i> <span>{{'MENU_HOME' | translate}}</span></a></li>
-          <li ng-class="{'active': vm.$state.includes('profile.myCalendar')}"><a ui-sref="profile.myCalendar"><i class="fa fa-calendar"></i> <span>{{'MENU_MY_CALENDAR' | translate}}</span></a></li>
-          <li ng-class="{'active': vm.$state.includes('profile.myAward')}"><a ui-sref="profile.myAward"><i class="fa fa-trophy"></i> <span>{{'MENU_MY_AWARDS' | translate}}</span></a></li>
-          <li ng-class="{'active': vm.$state.includes('profile.myMessenger')}"><a href="#"><i class="fa fa-envelope-o"></i> <span>{{'MENU_MY_MESSENGER' | translate}}</span></a></li>
-          <li ng-class="{'active': vm.$state.includes('profile.mySetting')}"><a href="#"><i class="fa fa-cog"></i> <span>{{'MENU_SETTINGS' | translate}}</span></a></li>
-      </ul>
-
-    </div>
-    <div class="pull-right">
-      <a ui-sref="event.create" class="create-event"><i class="fa fa-calendar-plus-o"></i> {{'CREATE_EVENT' | translate}}</a>
-    </div>
-  </div>
+	<hs-profile-menu-header></hs-profile-menu-header>
 
   <div class="box-blue p15">
     <div class="title-blue">{{'EXHIBIT' | translate}}:</div>
@@ -29,13 +14,36 @@
   </div>
 
   <div class="box-blue p15">
-  	<!-- Implement slider -->
     <div class="title-blue">{{'GRANTED_AWARDS' | translate}}</div>
+    <slick infinite="true" slides-to-show="5" slides-to-scroll="5" class="listview">
+    	<div ng-repeat="award in vm.grantedAwards.items" class="{{award.eventId.categoryId | categoryClass}}">
+    		<div class="box-award">
+    			<div class="top-li-event">
+    				<a href="#"><img src="{{award.eventId.ownerId | avatarUrl}}"></a>
+    				<h4><a href="#">{{award.eventId.ownerId.name}}&nbsp;</a> </h4>
+    				<i class="fa fa-clock-o"></i> {{award.createdAt | fromNow}}
+    				<div class="arward-li-top">
+    					<span>{{award.eventId.ownerId.totalAwards}}</span>
+    					<i class="fa fa-trophy"></i>
+    				</div>
+    			</div>
+
+    			<div class="img-award">
+    				<div class="action-award">
+    					<button><i class="fa fa-trash-o"></i> </button>
+    				</div>
+    				<img src="{{award.awardId.objectPhotoId | imageUrl: 'small'}}">
+    			</div>
+    			<div class="title-award">
+    				{{award.awardId.objectName}}
+    			</div>
+    		</div>
+    	</div>
+    </slick>
 	</div>
 
 	<div class="box-blue p15">
     <div class="title-blue">{{'OWN_AWARDS' | translate}}: <a href="#" class="btn-create" ng-click="vm.showAddMoreAwardModal()"><i class="fa fa-plus"></i> {{'CREATE_AWARD' | translate}}</a></div>
-    <!-- implement slider -->
     <slick infinite="true" slides-to-show="5" slides-to-scroll="5" class="listview">
     	<div ng-repeat="award in vm.ownAwards.items">
 	    	<div class="box-award">

@@ -750,26 +750,45 @@ label .note-form {
 .calendar-home .well {
     margin-bottom: 5px;
 }
-.calendar-home .btn-sm, .btn-group-sm > .btn {
+.calendar-home .datepicker-inline {
+    width: auto;
+}
+.calendar-home .datepicker table tr td {
     padding: 4px 5px;
     border: none;
     background: none;
+    width: auto;
+    height:  auto;
 }
-.calendar-home tr td button:hover {
+.calendar-home .datepicker table tr td.today,
+.calendar-home .datepicker table tr td.today:focus,
+.calendar-home .datepicker table tr td.today:active {
+    background-color: #2fcc71;
+    border-radius: 50%;
+    color: #fff;
+}
+.calendar-home .datepicker table tr td:hover,
+.calendar-home .datepicker table tr td:focus,  
+.calendar-home .datepicker table tr td:active  {
     background-color: #3598dc;
     border-radius: 50%;
     box-shadow: none;
 }
-.calendar-home tr td button.active {
+.calendar-home .datepicker table tr td.active,
+.calendar-home .datepicker table tr td.active:hover,
+.calendar-home .datepicker table tr td.active:active,
+.calendar-home .datepicker table tr td.active:focus {
     background-color: #e84c3d;
     border-radius: 50%;
     box-shadow: none;
 }
-.calendar-home tr th button:hover, .calendar-home tr th button:focus,  .calendar-home tr th button:active{
+.calendar-home .datepicker table tr th:hover, 
+.calendar-home .datepicker table tr th:focus,  
+.calendar-home .datepicker table tr th:active {
     background: none;
     box-shadow: none;
 }
-.calendar-home tr td button span {
+.calendar-home .datepicker table tr td button span {
     background: none;
 }
 .calendar-home .uib-month button {

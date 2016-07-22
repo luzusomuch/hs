@@ -25,15 +25,14 @@ angular.module('healthStarsApp').config(function($stateProvider) {
     },
     resolve: {
       grantedAwards: (AwardService, $location) => {
-        // return AwardService.getGrantedAwards($localStorage.authUser._id).then(
-        //   res => res.data,
-        //   err => {
-        //     if (err.status !== 401) {
-        //       return $location.path('404');
-        //     }
-        //   }
-        // );
-  			return [];
+        return AwardService.getGrantedAwards().then(
+          res => res.data,
+          err => {
+            if (err.status !== 401) {
+              return $location.path('404');
+            }
+          }
+        );
       },
       ownAwards: (AwardService, $location) => {
       	return AwardService.getAll().then(

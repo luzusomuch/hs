@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import multer from 'multer';
+import async from 'async';
 
 module.exports = function(kernel) {
   /**
@@ -125,6 +126,56 @@ module.exports = function(kernel) {
       res.status(200).json({items: awards, totalItem: awards.length});
     }).catch(err => {
       res.status(500).end();
+    });
+  });
+
+  /*
+  get list of granted awards by current user
+  */
+  kernel.app.get('/api/v1/awards/:id/grantedAwards', kernel.middleware.isAuthenticated(), (req, res) => {
+    let condition = {};
+    if (req.params.id==='me') {
+      condition = {ownerId: req.user._id};
+    } else {
+      condition = {ownerId: req.params.id};
+    }
+    kernel.model.GrantAward.find(condition)
+    .populate({
+      path: 'awardId', 
+      populate: {path: 'objectPhotoId', model: 'Photo'}
+    })
+    .populate({
+      path: 'eventId', 
+      populate: {path: 'categoryId', model: 'Category'}
+    }).exec().then(awards => {
+      let result = [];
+      async.each(awards, (award, callback) => {
+        let aw = award.toJSON();
+        kernel.model.User.findById(award.eventId.ownerId, '-password -salt')
+        .populate('avatar')
+        .then(u => {
+          if (u) {
+            let user = u.toJSON();
+            kernel.model.GrantAward.count({ownerId: user._id}).then(count => {
+              user.totalAwards = count;
+              aw.eventId.ownerId = user;
+              result.push(aw);
+              callback();
+            }).catch(callback);
+          } else {
+            result.push(aw);
+            callback({error: 'User not found'});
+          }
+        }).catch(callback);
+      }, (err) => {
+        if (err) {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        }
+        return res.status(200).json({items: result, totalItem: result.length});
+      });
+    }).catch(err => {
+      console.log(err);
+      return res.status(500).json({type: 'SERVER_ERROR'});
     });
   });
 };

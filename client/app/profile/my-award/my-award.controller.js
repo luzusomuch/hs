@@ -6,10 +6,8 @@ class MyAwardCtrl {
 		this.authUser = $localStorage.authUser;
 		this.$state = $state;
 		this.$uibModal = $uibModal;
-		console.log(grantedAwards);
-		console.log(ownAwards);
-		console.log(this.authUser);
 		this.ownAwards = ownAwards;
+		this.grantedAwards = grantedAwards;
 	}
 
 	showAddMoreAwardModal() {
@@ -23,6 +21,7 @@ class MyAwardCtrl {
 			this.ownAwards.items.push(data);
 		}, err => {
 			console.log(err);
+			// TODO show error
 		});
 	}
 }

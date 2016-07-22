@@ -720,11 +720,14 @@ module.exports = function(kernel) {
           let results = [];
           async.each(items, (item, callback) => {
             kernel.model.GrantAward.findOne({ownerId: item._id, eventId: event._id, awardId: event.awardId}).then(award => {
-              let data = item.toJSON();
+              let data = item;
               data.isGrantedAward = (award) ? true : false;
               results.push(data);
               callback();
-            }).catch(callback);
+            }).catch(err => {
+              console.log(err);
+              callback(err);
+            });
           }, () => {
             response.items = results;
             return res.status(200).json(response);

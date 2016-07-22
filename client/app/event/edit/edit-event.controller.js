@@ -32,7 +32,6 @@ class EditEventCtrl {
 		};
 		this.event.award = event.awardId;
 		this.event.participants = event.participantsId;
-		console.log(this.event);
 		// End init event
 		this.APP_CONFIG = APP_CONFIG;
     this.Upload = Upload;

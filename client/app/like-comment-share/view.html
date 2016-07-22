@@ -44,7 +44,7 @@
             <div class="bottom-li-post">
               <div class="pull-left relative-div">
                 <a href="#" ng-click="vm.like(comment, 'Comment')"> <span ng-class="{'comment-liked': comment.liked}">{{'LIKE' | translate}}</span> {{comment.totalLike || 0}}</a>
-                <a href="#" ng-click="vm.showComments(comment)"><i class="fa fa-comments"></i> {{comment.totalComment || 0}}</a>
+                <a href="#" ng-click="vm.showComments(comment)"><span>{{'REPLY' | translate}}</span> {{comment.totalComment || 0}}</a>
                 <!-- <a href="#" ng-click="comment.clickedShare = true"><i class="fa fa-reply" ng-class="{active: comment.shared}"></i> {{comment.totalShare || 0}}</a> -->
 
                 <div class="share-content" ng-show="comment.clickedShare" share-tool-box decription="comment.content" title="'Join us on HealthStar'" url="comment.url" data="comment" type="Comment" fb="true" tw="true" gg="true" shared="comment.clickedShare">

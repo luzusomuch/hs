@@ -1,6 +1,7 @@
 
 let Language = {
 	en : {
+		MENU_ACCOUNT: 'Menu Account',
 		MENU_HOME: 'Home',
 		MENU_EVENTS: 'Events',
 		MENU_ABOUT: 'About',
@@ -130,7 +131,10 @@ let Language = {
 		EDIT_EVENT: 'Edit event',
 		CANCEL: 'Cancel',
 		EVENT_BANNER: 'Event banner',
-		REPLY: 'Reply'
+		REPLY: 'Reply',
+		EXHIBIT: 'Exhibit',
+		GRANTED_AWARDS: 'Granted awards',
+		OWN_AWARDS: 'Own awards'
 	},
 	de: {
 

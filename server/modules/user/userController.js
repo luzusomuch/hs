@@ -186,6 +186,10 @@ class UserController {
    */
   me(req, res, next) {
     this.kernel.model.User.findOne({ _id: req.user._id }, '-salt -password')
+    .populate({
+      path: 'awardsExhibits.awardId',
+      populate: {path: 'objectPhotoId', model: 'Photo'}
+    })
     .then(user => { // don't ever give out the password or salt
       if (!user) {
         return res.status(401).end();

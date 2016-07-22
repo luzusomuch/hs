@@ -1,15 +1,15 @@
 
 <div class="pc-show">
-    <div class="m20">
+    <div class="m20 date-picker">
         <div class='input-group date'>
-            <input type='text' class="form-control" ng-disabled="true" value="{{ dt | date: 'dd/MM/yyyy'}}"/>
+            <input type='text' class="form-control" ng-disabled="true" value="{{dt.join(', ')}}" />
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>
             </span>
         </div>
-    </div>
+    </div> 
     <div class="calendar-home m20">
-        <uib-datepicker ng-model="dt" class="well well-sm" datepicker-options="options"></uib-datepicker>
+        <div style="margin-bottom: 5px"></div>
         <button ng-style="style" class="btn btn-primary" ng-click="filter()">Filter</button>
         <button class="btn btn-default" ng-click="clear()">Clear</button>
     </div>

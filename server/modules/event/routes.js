@@ -592,6 +592,32 @@ module.exports = function(kernel) {
       q.query.filtered.filter.bool.must.push({terms: {categoryId: req.body.categories}});
     }
 
+    //process dates
+    if(req.body.dates instanceof Array && req.body.dates.length) {
+      let should = [];
+      _.each(req.body.dates, dateString => {
+        let time = parseInt(dateString);
+        let date = moment(new Date(time));
+        if(date.isValid()) {
+          should.push({
+            range: {
+              createdAt: {
+                gte: date.startOf('date').toISOString(),
+                lte: date.endOf('date').toISOString()
+              }
+            }
+          });
+        }
+      });
+      if(should.length) {
+        q.query.filtered.filter.bool.must.push({
+          bool: {
+            should: should
+          } 
+        });
+      }
+    }
+
     //process date
     if(req.body.startDate) {
       let time = parseInt(req.body.startDate);

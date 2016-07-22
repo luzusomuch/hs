@@ -1511,15 +1511,15 @@ label {
 }
 .award-step1, .award-step2, .award-step3 {
     position: absolute;
-    top: 128px;
-    left: 78px;
+    top: 108px;
+    left: 176px;
     width: 58px;
     height: 74px;
     line-height: 74px;
 }
 .award-step2 {
-    top: 108px;
-    left: 176px;
+    top: 128px;
+    left: 78px;
 }
 .award-step3 {
     top: 143px;
@@ -1546,7 +1546,7 @@ label {
 .listview  {
     margin: 0px -10px;
 }
-.listview li {
+.listview .slick-slide {
     padding: 0px 10px;
 }
 .listview .slick-slide img {

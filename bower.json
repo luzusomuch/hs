@@ -30,6 +30,7 @@
     "weather-icons": "~2.0.10",
     "international-phone-number": "~0.0.16",
     "angular-masonry-directive": "*",
+    "bootstrap-datepicker": "~1.6.1",
     "angular-slick": "~0.2.1"
   },
   "devDependencies": {

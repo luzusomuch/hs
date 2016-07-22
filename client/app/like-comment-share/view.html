@@ -54,8 +54,8 @@
 
             <div class="replies-post" ng-show="comment.showComment && !comment.blocked">
               <ul>
-                <li>
-                  <div class="post-li" ng-repeat="subComment in comment.comments">
+                <li  ng-repeat="subComment in comment.comments">
+                  <div class="post-li">
                     <div class="img-post-li">
                       <img ng-src="{{subComment.ownerId | avatarUrl}}" style="width: 40px; height: 40px">
                     </div>
@@ -89,7 +89,7 @@
                   </div>
                 </li>
                 <li>
-                  <div class="post-li">
+                  <div class="post-li" style="padding-right:0px;">
                     <div class="img-post-li">
                       <img ng-src="{{vm.authUser | avatarUrl}}" style="width: 40px; height: 40px">
                     </div>
@@ -116,7 +116,7 @@
     </li>
   </ul>
 </div>
-<div class="post-li" ng-show="vm.data.showComment">
+<div class="post-li form-li-comment" ng-show="vm.data.showComment">
   <div class="img-post-li">
     <img ng-src="{{vm.authUser | avatarUrl}}" style="width: 40px; height: 40px">
   </div>

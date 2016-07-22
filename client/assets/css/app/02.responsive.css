@@ -287,6 +287,25 @@
         padding-right: 5px;
         font-size: 12px;
     }
+    .table-upload img {
+        width: 100px;
+    }
+    .content-popup {
+        width: 95%;
+    }
+    .row-photos {
+        padding: 0px;
+    }
+    .comment-popup {
+        width: 100%;
+        position: relative;
+    }
+    .img-popup{
+        height: 300px;
+    }
+    .popup-photo {
+        overflow: auto;
+    }
 }
 
 @media all and (min-width: 768px) and (max-width: 1024px) {

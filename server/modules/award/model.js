@@ -10,7 +10,9 @@ module.exports = {
         // gps is for every user who has gps signed from healthstar app
         // organizer meant that award will be granted by organizer
         // offline will be granted offline by healthstars (for company accounts only)
-      type: {type: String, enum: ['accepted', 'gps', 'organizer', 'offline']}
+      type: {type: String, enum: ['accepted', 'gps', 'organizer', 'offline']},
+      deleted: {type: Boolean, default: false},
+      deletedBy: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}
     });
 
     //import timestamp for auto create updatedAt, createdAt field manually

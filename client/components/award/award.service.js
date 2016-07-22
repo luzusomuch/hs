@@ -13,6 +13,11 @@
       	return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/awards/${id}/all`);
       },
 
+      getGrantedAwards(id) {
+        id = id || 'me';
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/awards/${id}/grantedAwards`);
+      },
+
       create: (award) => {
         return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/awards`, award);
       },

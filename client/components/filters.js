@@ -271,8 +271,8 @@ angular.module('healthStarsApp')
 .filter('eventBanner', () => {
   return (banner) => {
     let image = 'assets/images/img-pro1.jpg';
-    if (banner.metadata) {
-      image = (banner.metadata.large) ? banner.metadata.large : 'assets/images/'+banner.metadata.tmp;
+    if (banner && banner.metadata) {
+      image = (banner.metadata.large) ? banner.metadata.large : 'assets/photos/'+banner.metadata.tmp;
     }
     return image;
   }

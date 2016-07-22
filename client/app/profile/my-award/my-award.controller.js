@@ -10,6 +10,7 @@ class MyAwardCtrl {
 		console.log(ownAwards);
 		console.log(this.authUser);
 		this.ownAwards = ownAwards;
+		this.grantedAwards = grantedAwards;
 	}
 
 	showAddMoreAwardModal() {

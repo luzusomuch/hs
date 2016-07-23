@@ -1,0 +1,12 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{'AWARD_DETAIL' | translate}}</h3>
+</div>
+<div class="modal-body">
+	<p>award title: {{award.awardId.objectName}}</p>
+	<img src="{{award.awardId.objectPhotoId | imageUrl: 'small'}}">
+	<p>Event name: {{award.eventId.name}}</p>
+	<p>Owner: {{award.eventId.ownerId.name}}</p>
+	<div class="modal-footer">
+		<button ng-click="closeModal()" type="submit" class="btn btn-default btn-radius-20">{{'CLOSE' | translate}}</button>
+	</div>    
+</div>

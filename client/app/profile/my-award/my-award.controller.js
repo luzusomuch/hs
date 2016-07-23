@@ -70,6 +70,19 @@ class MyAwardCtrl {
 			});
 		}
 	}
+
+	viewAward(award) {
+		let modalInstance = this.$uibModal.open({
+    	animation: true,
+    	templateUrl: 'app/award/detail/detail.html',
+    	controller: 'AwardDetailCtrl',
+    	resolve: {
+    		award: () => {
+    			return award;
+    		}
+    	}
+    });
+	}
 }
 
 angular.module('healthStarsApp').controller('MyAwardCtrl', MyAwardCtrl);

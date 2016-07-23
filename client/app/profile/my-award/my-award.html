@@ -32,9 +32,9 @@
     				<div class="action-award">
     					<button ng-click="vm.delete(award, 'granted')"><i class="fa fa-trash-o"></i> </button>
     				</div>
-    				<img src="{{award.awardId.objectPhotoId | imageUrl: 'small'}}">
+    				<img class="pointer" ng-click="vm.viewAward(award)" src="{{award.awardId.objectPhotoId | imageUrl: 'small'}}">
     			</div>
-    			<div class="title-award">
+    			<div class="title-award pointer" ng-click="vm.viewAward(award)">
     				{{award.awardId.objectName}}
     			</div>
     		</div>

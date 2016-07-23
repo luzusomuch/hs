@@ -15,7 +15,7 @@
 
   <div class="box-blue p15">
     <div class="title-blue">{{'GRANTED_AWARDS' | translate}}</div>
-    <slick infinite="true" slides-to-show="5" slides-to-scroll="5" class="listview">
+    <slick infinite="true" slides-to-show="5" slides-to-scroll="5" class="listview" responsive="[{breakpoint: 1024, settings: {slidesToShow: 3, slidesToScroll: 3, infinite: true}}, {breakpoint: 600, settings: {slidesToShow: 2, slidesToScroll: 2}}, {breakpoint: 480, settings: {slidesToShow: 1, slidesToScroll: 1}}]">
     	<div ng-repeat="award in vm.grantedAwards.items" class="{{award.eventId.categoryId | categoryClass}}">
     		<div class="box-award">
     			<div class="top-li-event">
@@ -30,7 +30,7 @@
 
     			<div class="img-award">
     				<div class="action-award">
-    					<button><i class="fa fa-trash-o"></i> </button>
+    					<button ng-click="vm.delete(award, 'granted')"><i class="fa fa-trash-o"></i> </button>
     				</div>
     				<img src="{{award.awardId.objectPhotoId | imageUrl: 'small'}}">
     			</div>
@@ -44,7 +44,7 @@
 
 	<div class="box-blue p15">
     <div class="title-blue">{{'OWN_AWARDS' | translate}}: <a href="#" class="btn-create" ng-click="vm.showAddMoreAwardModal()"><i class="fa fa-plus"></i> {{'CREATE_AWARD' | translate}}</a></div>
-    <slick infinite="true" slides-to-show="5" slides-to-scroll="5" class="listview">
+    <slick ng-if="vm.ownAwardLoaded" data="vm.ownAwardLoaded" infinite="true" slides-to-show="5" slides-to-scroll="5" class="listview" responsive="[{breakpoint: 1024, settings: {slidesToShow: 3, slidesToScroll: 3, infinite: true}}, {breakpoint: 600, settings: {slidesToShow: 2, slidesToScroll: 2}}, {breakpoint: 480, settings: {slidesToShow: 1, slidesToScroll: 1}}]">
     	<div ng-repeat="award in vm.ownAwards.items">
 	    	<div class="box-award">
 	    		<div class="img-award">

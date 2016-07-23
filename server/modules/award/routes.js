@@ -120,6 +120,10 @@ module.exports = function(kernel) {
     } else {
       condition = {ownerId: req.params.id};
     }
+    // if current user id admin then load all records
+    if (req.user.role!=='admin') {
+      condition.$or = [{deleted: null}, {deleted: false}];
+    }
     kernel.model.Award.find(condition)
     .populate('objectPhotoId')
     .exec().then(awards =>{
@@ -138,6 +142,10 @@ module.exports = function(kernel) {
       condition = {ownerId: req.user._id};
     } else {
       condition = {ownerId: req.params.id};
+    }
+    // if current user id admin then load all records
+    if (req.user.role!=='admin') {
+      condition.$or = [{deleted: null}, {deleted: false}];
     }
     kernel.model.GrantAward.find(condition)
     .populate({
@@ -198,6 +206,6 @@ module.exports = function(kernel) {
       }
     }).catch(err => {
       return res.status(500).json({type: 'SERVER_ERROR'});
-    })
+    });
   });
 };

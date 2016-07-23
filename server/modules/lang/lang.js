@@ -135,7 +135,8 @@ let Language = {
 		EXHIBIT: 'Exhibit',
 		GRANTED_AWARDS: 'Granted awards',
 		OWN_AWARDS: 'Own awards',
-		AWARD_DETAIL: 'Award detail'
+		AWARD_DETAIL: 'Award detail',
+		MISSING_RANK_OR_AWARD: 'Missing rank or award'
 	},
 	de: {
 

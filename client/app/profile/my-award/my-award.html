@@ -4,8 +4,8 @@
   <div class="box-blue p15">
     <div class="title-blue">{{'EXHIBIT' | translate}}:</div>
     <div class="exhibit-award" ng-show="vm.authUser.awardsExhibits.length > 0">
-      <div class="award-step{{award.number}}" ng-repeat="award in vm.authUser.awardsExhibits">
-      	<img src="{{award.awardId.objectPhotoId | imageUrl: 'small'}}">
+      <div ng-drop="true" ng-drop-success="vm.dropData($data, $event, award.number)" class="award-step{{award.number}}" ng-repeat="award in vm.authUser.awardsExhibits">
+      	<img ng-drag="true" ng-drag-data="award" src="{{award.awardId.objectPhotoId | imageUrl: 'small'}}">
       </div>
       <!-- <div class="award-step2"><img src="assets/images/award1.png"></div>
       <div class="award-step3"><img src="assets/images/award2.png"></div> -->
@@ -16,7 +16,7 @@
   <div class="box-blue p15">
     <div class="title-blue">{{'GRANTED_AWARDS' | translate}}</div>
     <slick infinite="true" slides-to-show="5" slides-to-scroll="5" class="listview" responsive="[{breakpoint: 1024, settings: {slidesToShow: 3, slidesToScroll: 3, infinite: true}}, {breakpoint: 600, settings: {slidesToShow: 2, slidesToScroll: 2}}, {breakpoint: 480, settings: {slidesToShow: 1, slidesToScroll: 1}}]">
-    	<div ng-repeat="award in vm.grantedAwards.items" class="{{award.eventId.categoryId | categoryClass}}">
+    	<div ng-repeat="award in vm.grantedAwards.items" class="{{award.eventId.categoryId | categoryClass}}" ng-drag="true" ng-drag-data="award">
     		<div class="box-award">
     			<div class="top-li-event">
     				<a href="#"><img src="{{award.eventId.ownerId | avatarUrl}}"></a>
@@ -45,7 +45,7 @@
 	<div class="box-blue p15">
     <div class="title-blue">{{'OWN_AWARDS' | translate}}: <a href="#" class="btn-create" ng-click="vm.showAddMoreAwardModal()"><i class="fa fa-plus"></i> {{'CREATE_AWARD' | translate}}</a></div>
     <slick ng-if="vm.ownAwardLoaded" data="vm.ownAwardLoaded" infinite="true" slides-to-show="5" slides-to-scroll="5" class="listview" responsive="[{breakpoint: 1024, settings: {slidesToShow: 3, slidesToScroll: 3, infinite: true}}, {breakpoint: 600, settings: {slidesToShow: 2, slidesToScroll: 2}}, {breakpoint: 480, settings: {slidesToShow: 1, slidesToScroll: 1}}]">
-    	<div ng-repeat="award in vm.ownAwards.items">
+    	<div ng-repeat="award in vm.ownAwards.items" ng-drag="true" ng-drag-data="award">
 	    	<div class="box-award">
 	    		<div class="img-award">
 	    			<img src="{{award.objectPhotoId | imageUrl: 'small'}}">

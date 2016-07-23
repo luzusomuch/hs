@@ -4,6 +4,7 @@ exports.routes = (kernel) => {
   let userController = new UserController(kernel);
 
   kernel.app.get('/api/v1/users/me', kernel.middleware.isAuthenticated(), userController.me);
+  kernel.app.put('/api/v1/users/changeExhibit', kernel.middleware.isAuthenticated(), userController.changeExhibit);
   kernel.app.put('/api/v1/users/:id/password', kernel.middleware.isAuthenticated(), userController.changePassword);
   kernel.app.post('/api/v1/users', userController.create);
   kernel.app.post('/api/v1/users/verify-account', userController.verifyAccount);

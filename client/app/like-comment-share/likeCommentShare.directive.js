@@ -1,15 +1,17 @@
 'use strict';
 
-angular.module('healthStarsApp').directive('likeCommentShare', () => ({
+angular.module('healthStarsApp').directive('likeCommentShare', ($compile) => ({
   restrict: 'E',
   scope: {
   	data: '=',
     type: '@',
     eventOwner: '='
   },
-  link: function(scopem, element, attr, ctrls) {
-    if (ctrls.type==='Photo') {
-      element.attr('ng-scrollbars');
+  link: function(scope, element, attr, ctrls) {
+    if (ctrls.type!=='Photo') {
+      let needed = angular.element(element).find('#parentComment'+ctrls.data._id);
+      needed.removeAttr('ng-scrollbars');
+      $compile(needed)(scope);
     }
   },
   controller: 'likeCommentShareCtrl',
@@ -98,7 +100,6 @@ class likeCommentShareCtrl {
   loadMore(comment) {
     let data = (comment) ? comment : this.data;
     data.type = (comment) ? 'Comment' : this.type;
-    console.log(data);
     this.loadComment(data, data.type, {page: data.page});
   }
 

@@ -1068,7 +1068,7 @@ label {
     position: absolute;
     width: 50px;
     left: 15px;
-    top: 15px;
+    top: 9px;
 }
 .post-li .img-post-li img {
     width: 100%;
@@ -2190,4 +2190,34 @@ span.country-name {
 }
 .pointer {
     cursor: pointer;
+}
+.media {
+  margin-top: 0px;
+}
+.media:first-child {
+  margin-top: 0;
+}
+.media-right,
+.media > .pull-right {
+  padding-left: 10px;
+}
+.media-left,
+.media > .pull-left {
+  padding-right: 10px;
+}
+.media-left,
+.media-right,
+.media-body {
+  display: table-cell;
+  vertical-align: top;
+}
+.media-middle {
+  vertical-align: middle;
+}
+.media-bottom {
+  vertical-align: bottom;
+}
+.media-heading {
+  margin-top: 0;
+  margin-bottom: 5px;
 }

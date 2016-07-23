@@ -1,5 +1,9 @@
+
+<div class="modal-header ng-scope">
+    <h3 class="modal-title">{{'INVITE_FRIEND' | translate}}</h3>
+</div>
 <div class="modal-body">
-    <h3 style="margin-top: 0">{{'INVITE_FRIEND' | translate}}</h3>
+    
     <!-- <form>
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search for..."> 
@@ -18,5 +22,7 @@
         <li ng-if="!users.length" style="padding-left: 0">No friend was found</li>
     </ul>
     <hs-loading size="32" ng-show="vm.loading"></hs-loading>
+    </div>
+    <div class="modal-footer">
     <button class="btn btn-primary ng-binding" ng-click="vm.close()">Close</button>
-</div>
+    </div>

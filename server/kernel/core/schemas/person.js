@@ -21,7 +21,7 @@ module.exports = exports = function(kernel) {
       avatar: {type: Schema.Types.ObjectId, ref: 'Photo'},
       coverPhoto: {type: Schema.Types.ObjectId, ref: 'Photo'},
       awardsExhibits: [{
-        rank: Number,
+        number: Number,
         awardId: {type: Schema.Types.ObjectId, ref: 'Award'}
       }],
       location: {

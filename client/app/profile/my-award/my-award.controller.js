@@ -1,9 +1,8 @@
 'use strict';
 
 class MyAwardCtrl {
-	constructor($http, $scope, $state, $localStorage, $timeout, APP_CONFIG, grantedAwards, ownAwards, $uibModal, AwardService) {
+	constructor(User, $http, $scope, $state, $localStorage, $timeout, APP_CONFIG, grantedAwards, ownAwards, $uibModal, AwardService) {
 		this.errors = {};
-		this.authUser = $localStorage.authUser;
 		this.$state = $state;
 		this.$uibModal = $uibModal;
 		this.ownAwards = ownAwards;
@@ -14,6 +13,37 @@ class MyAwardCtrl {
 		this.grantedAwardLoaded = true;
 		this.$http = $http;
 		this.APP_CONFIG = APP_CONFIG;
+		this.User = User;
+		this.$localStorage = $localStorage;
+		this.authUser = this.$localStorage.authUser;
+
+		// check current user exhibit rank
+		if (this.authUser.awardsExhibits.length === 1) {
+			switch (this.authUser.awardsExhibits[0].number) {
+				case 1:
+					this.authUser.awardsExhibits.push({number: 2, awardId: {}});
+					this.authUser.awardsExhibits.push({number: 3, awardId: {}});
+					break;
+				case 2:
+					this.authUser.awardsExhibits.push({number: 1, awardId: {}});
+					this.authUser.awardsExhibits.push({number: 3, awardId: {}});
+					break;
+				case 3:
+					this.authUser.awardsExhibits.push({number: 1, awardId: {}});
+					this.authUser.awardsExhibits.push({number: 2, awardId: {}});
+					break;
+				default:
+					break;
+			}
+		} else if (this.authUser.awardsExhibits.length === 2) {
+			if (this.authUser.awardsExhibits[0].number===1 && this.authUser.awardsExhibits[1].number===2) {
+				this.authUser.awardsExhibits.push({number: 3, awardId: {}});
+			} else if (this.authUser.awardsExhibits[0].number===1 && this.authUser.awardsExhibits[1].number===3) {
+				this.authUser.awardsExhibits.push({number: 2, awardId: {}});
+			} else if (this.authUser.awardsExhibits[0].number===2 && this.authUser.awardsExhibits[1].number===3) {
+				this.authUser.awardsExhibits.push({number: 1, awardId: {}});
+			}
+		}
 	}
 
 	showAddMoreAwardModal() {
@@ -82,6 +112,24 @@ class MyAwardCtrl {
     		}
     	}
     });
+	}
+
+	dropData(award, event, rank) {
+		let data = {
+			rank: rank
+		};
+		if (award.awardId) {
+			data.awardId = award.awardId._id;
+		} else {
+			data.awardId = award._id;
+		}
+
+		this.User.changeExhibit(data).then(resp => {
+			this.$localStorage.authUser = resp.data;
+		}).catch(err => {
+			console.log(err);
+			// TODO show error
+		});
 	}
 }
 

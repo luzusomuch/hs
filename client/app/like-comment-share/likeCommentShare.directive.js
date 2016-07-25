@@ -1,11 +1,18 @@
 'use strict';
 
-angular.module('healthStarsApp').directive('likeCommentShare', () => ({
+angular.module('healthStarsApp').directive('likeCommentShare', ($compile) => ({
   restrict: 'E',
   scope: {
   	data: '=',
     type: '@',
     eventOwner: '='
+  },
+  link: function(scope, element, attr, ctrls) {
+    if (ctrls.type!=='Photo') {
+      let needed = angular.element(element).find('#parentComment'+ctrls.data._id);
+      needed.removeAttr('ng-scrollbars');
+      $compile(needed)(scope);
+    }
   },
   controller: 'likeCommentShareCtrl',
   controllerAs: 'vm',
@@ -84,7 +91,7 @@ class likeCommentShareCtrl {
             return 0
           });
           data.pageSize = resp.data.totalItem;
-          data.page +=1;
+          data.page = (data.page) ? data.page+1 : 2;
         });
       });
     });

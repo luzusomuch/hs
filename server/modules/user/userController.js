@@ -32,6 +32,7 @@ class UserController {
     this.destroy = this.destroy.bind(this);
     this.changePassword = this.changePassword.bind(this);
     this.verifyAccount = this.verifyAccount.bind(this);
+    this.changeExhibit = this.changeExhibit.bind(this);
     this.authCallback = this.authCallback.bind(this);
     this.info = this.info.bind(this);
     this.getFriends = this.getFriends.bind(this);
@@ -219,6 +220,44 @@ class UserController {
     }).catch(err => {return res.status(500).json(err); });
   }
 
+  /*
+  change exhibit awards
+  */
+  changeExhibit(req, res) {
+    if (!req.body.rank || !req.body.awardId) {
+      return res.status(422).json({type: 'MISSING_RANK_OR_AWARD', message: 'Missing rank or award'});
+    }
+    this.kernel.model.User.findById(req.user._id).then(user => {
+      if (!user) {
+        return res.status(404).end();
+      }
+      let index = _.findIndex(user.awardsExhibits, (award) => {
+        return award.number === req.body.rank;
+      });
+      if (index !== -1) {
+        user.awardsExhibits[index].awardId = req.body.awardId;
+      } else {
+        user.awardsExhibits.push({number: Number(req.body.rank), awardId: req.body.awardId});
+      }
+      user.save().then(data => {
+        this.kernel.model.User.populate(data, [{
+          path: 'awardsExhibits.awardId',
+          populate: {path: 'objectPhotoId', model: 'Photo'}
+        }], (err) => {
+          if (err) {
+            return res.status(500).json({type: 'SERVER_ERROR'});      
+          }
+          return res.status(200).json(data);
+        });
+      }).catch(err => {
+        return res.status(500).json({type: 'SERVER_ERROR'});  
+      });
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+  }
+
+  /* Get user info */
   info(req, res) {
     if(!this.kernel.mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({type: 'BAD_REQUEST'});

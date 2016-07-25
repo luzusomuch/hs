@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import multer from 'multer';
+import async from 'async';
 
 module.exports = function(kernel) {
   /**
@@ -119,12 +120,92 @@ module.exports = function(kernel) {
     } else {
       condition = {ownerId: req.params.id};
     }
+    // if current user id admin then load all records
+    if (req.user.role!=='admin') {
+      condition.$or = [{deleted: null}, {deleted: false}];
+    }
     kernel.model.Award.find(condition)
     .populate('objectPhotoId')
     .exec().then(awards =>{
       res.status(200).json({items: awards, totalItem: awards.length});
     }).catch(err => {
       res.status(500).end();
+    });
+  });
+
+  /*
+  get list of granted awards by current user
+  */
+  kernel.app.get('/api/v1/awards/:id/grantedAwards', kernel.middleware.isAuthenticated(), (req, res) => {
+    let condition = {};
+    if (req.params.id==='me') {
+      condition = {ownerId: req.user._id};
+    } else {
+      condition = {ownerId: req.params.id};
+    }
+    // if current user id admin then load all records
+    if (req.user.role!=='admin') {
+      condition.$or = [{deleted: null}, {deleted: false}];
+    }
+    kernel.model.GrantAward.find(condition)
+    .populate({
+      path: 'awardId', 
+      populate: {path: 'objectPhotoId', model: 'Photo'}
+    })
+    .populate({
+      path: 'eventId', 
+      populate: {path: 'categoryId', model: 'Category'}
+    }).exec().then(awards => {
+      let result = [];
+      async.each(awards, (award, callback) => {
+        let aw = award.toJSON();
+        kernel.model.User.findById(award.eventId.ownerId, '-password -salt')
+        .populate('avatar')
+        .then(u => {
+          if (u) {
+            let user = u.toJSON();
+            kernel.model.GrantAward.count({ownerId: user._id}).then(count => {
+              user.totalAwards = count;
+              aw.eventId.ownerId = user;
+              result.push(aw);
+              callback();
+            }).catch(callback);
+          } else {
+            result.push(aw);
+            callback({error: 'User not found'});
+          }
+        }).catch(callback);
+      }, (err) => {
+        if (err) {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        }
+        return res.status(200).json({items: result, totalItem: result.length});
+      });
+    }).catch(err => {
+      console.log(err);
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+  });
+
+  /*Delete award if he an owner or has admin role*/
+  kernel.app.delete('/api/v1/awards/:id', kernel.middleware.isAuthenticated(), (req, res) => {
+    kernel.model.Award.findById(req.params.id).then(award => {
+      if (!award) {
+        return res.status(404).end();
+      }
+      if (req.user._id.toString()===award.ownerId.toString() || req.user.role==='admin') {
+        award.deleted = true;
+        award.deletedBy = req.user._id;
+        award.save().then(() => {
+          return res.status(200).end();
+        }).catch(err => {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        });
+      } else {
+        return res.status(403).end();
+      }
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
     });
   });
 };

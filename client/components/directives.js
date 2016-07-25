@@ -37,14 +37,13 @@ angular.module('healthStarsApp')
     },
     template : 
       `<div>
-        <a class="share-fb-btn" ng-show="fb" href='#' ng-click="share('fb')"><i class="fa fa-facebook-square" aria-hidden="true"></i></a>
-        <a class="share-tw-btn" ng-show="tw" ng-href='{{tweetUrl}}' ng-click="share('tw')"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
-        <a class="share-gg-btn" ng-show="gg" ng-href='{{ggUrl}}' ng-click="share('gg')" onclick="javascript:window.open(this.href,
+        <a class="share-fb-btn" ng-show="fb && allowShow" href='#' ng-click="share('fb')"><i class="fa fa-facebook-square" aria-hidden="true"></i></a>
+        <a class="share-tw-btn" ng-show="tw && allowShow" ng-href='{{tweetUrl}}' ng-click="share('tw')"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
+        <a class="share-gg-btn" ng-show="gg && allowShow" ng-href='{{ggUrl}}' ng-click="share('gg')" onclick="javascript:window.open(this.href,
   '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a>
       </div>`,
     link : function($scope, element) {
       // $timeout(function () {
-
         var title, description, url;
         $scope.$watchGroup(['title', 'description', 'url'], (value) => {
           title = value[0];
@@ -64,8 +63,13 @@ angular.module('healthStarsApp')
             $scope.ggUrl = 'https://plus.google.com/share?url='+url;
           }
           if (title && description && url) {
+            $scope.allowShow = true;
             if ($scope.fb && $scope.autoShare === 'fb') {
-              angular.element(element).find('.share-fb-btn').trigger('click');
+              angular.element(element).find('.share-fb-btn').bind('click', $scope.share('fb'));
+
+              $scope.$on('$destroy', function(){
+                angular.element(element).find('.share-fb-btn').unbind('click', $scope.share());
+              });
             }
           }
         });

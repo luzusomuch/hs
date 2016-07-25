@@ -315,7 +315,15 @@ module.exports = function(kernel) {
     if(!kernel.mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({type: 'BAD_REQUEST'});
     }
-    kernel.model.Event.findById(req.params.id)
+    kernel.model.Event.findOne({
+      _id: req.params.id,
+      $or: [
+        { ownerId: req.user._id },
+        { participantsId: { $in: [req.user._id] } },
+        { private: { $exists: false } },
+        { private: false }
+      ]
+    })
     .populate('ownerId', '-password -salt')
     .populate('categoryId')
     .populate('photosId')
@@ -545,7 +553,7 @@ module.exports = function(kernel) {
   *
   */
 
-  kernel.app.get('/api/v1/events/:id/related', (req, res) => {
+  kernel.app.get('/api/v1/events/:id/related', kernel.middleware.isAuthenticated(), (req, res) => {
     if(!kernel.mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({type: 'BAD_REQUEST'});
     }
@@ -558,9 +566,15 @@ module.exports = function(kernel) {
          async.waterfall([
           (cb) => {
              kernel.model.Event.find({
+              _id: { $ne: event._id },
               categoryId: event.categoryId,
               createAt: { $lte: event.createAt },
-              _id: { $ne: event._id }
+              $or: [
+                { ownerId: req.user._id },
+                { participantsId: { $in: [req.user._id] } },
+                { private: { $exists: false } },
+                { private: false }
+              ]
             })
             .sort({ createdAt: -1 })
             .limit(3)
@@ -597,6 +611,7 @@ module.exports = function(kernel) {
           }
         ], (err, result) => {
           if(err) {
+            console.log(err);
             return  res.status(500).json({type: 'SERVER_ERROR'});
           }
           return res.status(200).json(result);

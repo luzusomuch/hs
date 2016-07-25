@@ -42,7 +42,10 @@ kernel.app.route('/:url(api|auth|components|app|bower_components|assets|lib|styl
 kernel.app.route('/*')
   .get((req, res) => {
     //TODO - get app path base on env
-    res.sendFile(path.resolve('client/index.html'));
+    if(/^\/backend.*/.test(req.url)) {
+    	return res.sendFile(path.resolve('client/backend.html'));
+    }
+    return res.sendFile(path.resolve('client/index.html'));
   });
 
 kernel.startHttpServer();

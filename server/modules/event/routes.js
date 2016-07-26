@@ -802,8 +802,12 @@ module.exports = function(kernel) {
 
 
     //process categoryid 
-    if(req.body.categories instanceof Array) {
+    if(req.body.categories instanceof Array && req.body.categories.length) {
       q.query.filtered.filter.bool.must.push({terms: {categoryId: req.body.categories}});
+    }
+
+    if(req.body.category) {
+      q.query.filtered.filter.bool.must.push({term: {categoryId: req.body.category}});
     }
 
     //process dates

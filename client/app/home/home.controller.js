@@ -5,7 +5,7 @@ class HomeCtrl {
     this.$scope = $scope;
     this.categories = categories;
     this.searchParams = SearchParams.params;
-    this.searchParams.categories = _.map(categories, '_id');
+    //this.searchParams.categories = _.map(categories, '_id');
     this.page = 1;
     this.loaded = false;
     this.events = {
@@ -160,17 +160,19 @@ class HomeCtrl {
   }
 
   selectCategory(category) {
-    let index = this.searchParams.categories.indexOf(category._id);
-    if( index === -1) {
-      this.searchParams.categories.push(category._id);
-    } else {
-      this.searchParams.categories.splice(index, 1);
-    } 
-    return true;
+    // let index = this.searchParams.categories.indexOf(category._id);
+    // if( index === -1) {
+    //   this.searchParams.categories.push(category._id);
+    // } else {
+    //   this.searchParams.categories.splice(index, 1);
+    // } 
+    // return true;
+    this.searchParams.category = category._id === this.searchParams.category ? '' : category._id;
   }
 
   isActive(category) {
-    return this.searchParams.categories.indexOf(category._id) !== -1;
+    return this.searchParams.category === category._id;
+    //return this.searchParams.categories.indexOf(category._id) !== -1;
   }
 }
 

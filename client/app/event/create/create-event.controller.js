@@ -13,7 +13,8 @@ class CreateEventCtrl {
 			location: {},
       public: true,
       isRepeat: false,
-      startDate: new Date()
+      startDate: new Date(), 
+      allowShow: false
 		};
     this.shareEventInfo = {};
     this.$http = $http;
@@ -222,6 +223,7 @@ class CreateEventCtrl {
         this.event.url = `${this.APP_CONFIG.baseUrl}event/detail/${resp.data._id}`;
 	    	this.$state.go('event.detail', {id: resp.data._id});
         this.submitted = false;
+        this.event.allowShow = true;
 	    }, (err) => {
 	    	console.log(err);
 	    });

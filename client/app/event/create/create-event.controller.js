@@ -26,6 +26,7 @@ class CreateEventCtrl {
     this.addresses = [];
     this.submitted = false;
     this.errors = {};
+    this.selectedCategory = {};
 
     $scope.$on('$destroy', function() {
       //do anything such as remove socket
@@ -70,6 +71,17 @@ class CreateEventCtrl {
       }
     });
 
+    $scope.$watch('vm.event.categoryId', (nv) => {
+      if (nv) {
+        let idx = _.findIndex(this.categories, (cat) => {
+          return cat._id===nv;
+        });
+        if (idx !== -1) {
+          this.selectedCategory = this.categories[idx];
+        }
+      }
+    });
+
     this.friends = [];
     this.RelationService.getAll({id: this.user._id, type: 'friend'}).then(resp => {
     	this.friends = resp.data.items;
@@ -78,6 +90,7 @@ class CreateEventCtrl {
     this.categories = [];
     CategoryService.getAll().then(resp => {
     	this.categories = resp.data.items;
+      this.event.categoryId = this.categories[0]._id;
     });
 
     this.options = {

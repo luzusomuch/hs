@@ -118,15 +118,63 @@ class MyAwardCtrl {
 		let data = {
 			rank: rank
 		};
+
 		if (award.awardId) {
 			data.awardId = award.awardId._id;
 		} else {
 			data.awardId = award._id;
 		}
 
+		// find out current changing award position
+		let idx = _.findIndex(this.authUser.awardsExhibits, (a) => {
+			return a.number===rank;
+		});
+		if (idx !== -1) {
+			let tmpAward = angular.copy(this.authUser.awardsExhibits[idx].awardId);
+			// replace new award to exhibit 
+			this.authUser.awardsExhibits[idx].awardId = (award.awardId) ? award.awardId : award;
+			// If its switch between exhibit awards
+			if (award.number) {
+				let replaceIdx = _.findIndex(this.authUser.awardsExhibits, (aw) => {
+					return aw.number === award.number;
+				});
+				if (replaceIdx !== -1) {
+					this.authUser.awardsExhibits[replaceIdx].awardId = tmpAward;
+				}
+			}
+		}
+
 		this.User.changeExhibit(data).then(resp => {
 			this.$localStorage.authUser = resp.data;
 		}).catch(err => {
+			console.log(err);
+			// TODO show error
+		});
+	}
+
+	editAward(award) {
+		let modalInstance = this.$uibModal.open({
+    	animation: true,
+    	templateUrl: 'app/award/edit/edit.html',
+    	controller: 'EditAwardCtrl',
+    	resolve: {
+    		award: () => {
+    			return award;
+    		}
+    	}
+    });
+		modalInstance.result.then(data => {
+			this.ownAwardLoaded = false;
+			let index = _.findIndex(this.ownAwards.items, (award) => {
+				return award._id===data._id;
+			});
+			if (index !== -1) {
+				this.ownAwards.items[index] = data;
+				this.$timeout(() => {
+					this.ownAwardLoaded = true;
+				});
+			}
+		}, err => {
 			console.log(err);
 			// TODO show error
 		});

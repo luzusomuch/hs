@@ -2,6 +2,7 @@
 
 class HomeCtrl {
 	constructor($scope, EventService, LikeService, $localStorage, CategoryService, SearchParams, socket, $state, $timeout, categories) {
+    this.$scope = $scope;
     this.categories = categories;
     this.searchParams = SearchParams.params;
     this.searchParams.categories = _.map(categories, '_id');
@@ -34,8 +35,16 @@ class HomeCtrl {
 
     let ttl;
     $scope.geoLocation = false;
-    $scope.$watch('[vm.searchParams, geoLocation]', (nv) => {
-      if(nv && nv[1]) {
+    $scope.timeout = false;
+    $timeout(() => {
+      $scope.timeout = true
+    }, 3000);
+
+    $scope.$watch('[vm.searchParams, geoLocation, timeout]', (nv) => {
+      if(nv[1]) {
+        $scope.timeout = true;
+      }
+      if(nv && ( nv[1] || nv[2])) {
         if(ttl) {
           $timeout.cancel(ttl);
         }

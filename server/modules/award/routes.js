@@ -208,4 +208,121 @@ module.exports = function(kernel) {
       return res.status(500).json({type: 'SERVER_ERROR'});
     });
   });
+
+  /*Update award detail*/
+  kernel.app.put('/api/v1/awards/:id', kernel.middleware.isAuthenticated(), (req, res) => {
+    kernel.model.Award.findById(req.params.id).then(award => {
+      if (!award) {
+        return res.status(404).end();
+      }
+      if (award.ownerId.toString()===req.user._id.toString() || req.user.role==='admin') {
+        let storage = multer.diskStorage({
+          destination: (req, file, cb) => {
+            cb(null, kernel.config.tmpPhotoFolder)
+          },
+          filename: (req, file, cb) => {
+            return cb(null, file.originalname);
+          }
+        });
+        let upload = multer({
+          storage: storage
+        }).single('file');
+
+        upload(req, res, (err) => {
+          if (err) {
+            return res.status(500).json({type: 'SERVER_ERROR'});
+          }
+          if (!req.body.award) {
+            return res.status(422).json({type: 'AWARD_MISSING_ENTITIES', path: 'all', message: 'Award is missing some entities'});
+          }
+          // validate 
+          var awardValidation = {
+            objectName: req.body.award.objectName,
+            type: req.body.award.type,
+            ownerId: req.user._id
+          };
+          var schema = Joi.object().keys({
+            objectName: Joi.string().required().options({
+              language: {
+                key: 'name'
+              }
+            }),
+            type: Joi.string().required().options({
+              language: {
+                key: 'type'
+              }
+            })
+          });
+          
+          var result = Joi.validate(awardValidation, schema, {
+            stripUnknown: true,
+            abortEarly: false,
+            allowUnknown: true
+          });
+
+          if (result.error) {
+            var errors = [];
+            result.error.details.forEach(error => {
+              var type;
+              switch (error.type) {
+                case 'string.name': 
+                  type = 'AWARD_NAME_REQUIRED';
+                  break;
+                case 'string.type':
+                  type = 'AWARD_TYPE_REQUIRED';
+                  break;
+                default:
+                  break;
+              }
+              errors.push({type: type, path: error.path, message: error.message});
+            });
+            return res.status(422).json(errors);
+          }
+
+          async.parallel([
+            (cb) => {
+              if (req.file) {
+                kernel.model.Photo.findById(award.objectPhotoId).then(photo => {
+                  if (!photo) {
+                    return cb({error: 'Photo not found', code: '404'});
+                  } 
+                  photo.metadata = {
+                   tmp: req.file.filename 
+                  };
+                  photo.save().then(saved => {
+                    console.log(saved);
+                    kernel.queue.create('PROCESS_AWS', saved).save();
+                    cb(null);
+                  }).catch(cb);
+                }).catch(cb);
+              } else {
+                cb(null);
+              }
+            }
+          ], (err) => {
+            if (err) {
+              return res.status(500).json({type: 'SERVER_ERROR'});
+            }
+            award.objectName = req.body.award.objectName;
+            award.type = req.body.award.type;
+            award.save().then(saved => {
+              kernel.model.Photo.findById(award.objectPhotoId).then(photo => {
+                let data = saved.toJSON();
+                data.objectPhotoId = (photo) ? photo : data.objectPhotoId;
+                return res.status(200).json(data);
+              }).catch(err => {
+                return res.status(500).json({type: 'SERVER_ERROR'});  
+              });
+            }).catch(err => {
+              return res.status(500).json({type: 'SERVER_ERROR'});
+            });
+          });
+        });
+      } else {
+        return res.status(403).end();
+      }
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+  });
 };

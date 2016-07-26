@@ -13,7 +13,7 @@
 	      <img src="{{award.awardId.objectPhotoId | imageUrl: 'small'}}" width="100px">
 	  </div>
 	  <div class="media-body media-middle">
-	    <p>Event name: <a href="#">{{award.eventId.name}}</a></p>
+	    <p>Event name: <a ui-sref="event.detail({id: award.eventId._id})">{{award.eventId.name}}</a></p>
 			<p>Owner: <a href="#">{{award.eventId.ownerId.name}}</a></p>
 	  </div>
 	</div>

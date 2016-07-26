@@ -151,6 +151,34 @@ class MyAwardCtrl {
 			// TODO show error
 		});
 	}
+
+	editAward(award) {
+		let modalInstance = this.$uibModal.open({
+    	animation: true,
+    	templateUrl: 'app/award/edit/edit.html',
+    	controller: 'EditAwardCtrl',
+    	resolve: {
+    		award: () => {
+    			return award;
+    		}
+    	}
+    });
+		modalInstance.result.then(data => {
+			this.ownAwardLoaded = false;
+			let index = _.findIndex(this.ownAwards.items, (award) => {
+				return award._id===data._id;
+			});
+			if (index !== -1) {
+				this.ownAwards.items[index] = data;
+				this.$timeout(() => {
+					this.ownAwardLoaded = true;
+				});
+			}
+		}, err => {
+			console.log(err);
+			// TODO show error
+		});
+	}
 }
 
 angular.module('healthStarsApp').controller('MyAwardCtrl', MyAwardCtrl);

@@ -77,6 +77,13 @@ angular.module('healthStarsApp')
             );
           }],
         }
+      }).state('terms', {
+        url: '/terms-and-condition',
+        template: 'app/account/terms/terms.html',
+        settings: {
+          footer: false,
+          header: false
+        }
       });
   })
   .run(function($rootScope) {

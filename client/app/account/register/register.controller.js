@@ -9,7 +9,8 @@ class RegisterCtrl {
     this.$http = $http;
     this.user = {
       isCompanyAccount: false,
-      location: {}
+      location: {},
+      term: true
     };
     
     this.address = {};
@@ -35,6 +36,11 @@ class RegisterCtrl {
   register(form) {
     form['email'].$setValidity('mongoose', true);
     this.submitted = true;
+    if (!this.user.term) {
+      // TODO show error
+      console.log('Please accept our terms and conditions');
+      return;
+    }
     if (form.$valid && this.address.selected) {
       if (this.user.phoneNumber) {
         this.user.phoneNumber = $("#phone").intlTelInput('getNumber');

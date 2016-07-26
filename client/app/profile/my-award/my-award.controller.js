@@ -118,10 +118,30 @@ class MyAwardCtrl {
 		let data = {
 			rank: rank
 		};
+
 		if (award.awardId) {
 			data.awardId = award.awardId._id;
 		} else {
 			data.awardId = award._id;
+		}
+
+		// find out current changing award position
+		let idx = _.findIndex(this.authUser.awardsExhibits, (a) => {
+			return a.number===rank;
+		});
+		if (idx !== -1) {
+			let tmpAward = angular.copy(this.authUser.awardsExhibits[idx].awardId);
+			// replace new award to exhibit 
+			this.authUser.awardsExhibits[idx].awardId = (award.awardId) ? award.awardId : award;
+			// If its switch between exhibit awards
+			if (award.number) {
+				let replaceIdx = _.findIndex(this.authUser.awardsExhibits, (aw) => {
+					return aw.number === award.number;
+				});
+				if (replaceIdx !== -1) {
+					this.authUser.awardsExhibits[replaceIdx].awardId = tmpAward;
+				}
+			}
 		}
 
 		this.User.changeExhibit(data).then(resp => {

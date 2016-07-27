@@ -15,16 +15,16 @@ class LoginCtrl {
 
     if (form.$valid) {
       this.Auth.login({
-          email: this.user.email,
-          password: this.user.password
-        })
-        .then(() => {
-          // Logged in, redirect to home
-          this.$state.go('home');
-        })
-        .catch((err) => {
-          this.errors.error = err.error;
-        });
+        email: this.user.email,
+        password: this.user.password
+      })
+      .then(() => {
+        // Logged in, redirect to home
+        this.$state.go('backend.dashboard');
+      })
+      .catch((err) => {
+        this.errors.error = err.error;
+      });
     }
   }
 }

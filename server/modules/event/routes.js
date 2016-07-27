@@ -778,7 +778,7 @@ module.exports = function(kernel) {
     let page = parseInt(req.body.page);
     let limit = parseInt(req.body.page);
     page = (page === 'NaN' || !page) ? 1 : page;
-    limit = (limit === 'NaN' || !limit || limit < 6 || limit > 100) ? 6 : limit;
+    limit = (limit === 'NaN' || !limit || limit < 8 || limit > 100) ? 8 : limit;
     let skip = (page - 1) * limit;
 
     let q = {
@@ -872,7 +872,8 @@ module.exports = function(kernel) {
 
     //process location
     let radius = parseInt(req.body.radius);
-    if(req.body.location && req.body.location.lat && req.body.location.lng && radius && radius !== 'NaN') {
+    let locationCheck = req.body.location && req.body.location.lat && req.body.location.lng && radius && radius !== 'NaN';
+    if(locationCheck) {
       q.query.filtered.filter.bool.must.push({
         geo_distance: {
           distance: radius + 'km',
@@ -908,14 +909,19 @@ module.exports = function(kernel) {
       });
     }
 
-    let getEvents = (friendIds, cb) => {
+    let queryResult = (friendIds, cb) => {
       if(friendIds) {
         q.query.filtered.filter.bool.must.push({ terms: {ownerId : friendIds} });
       }
-      console.log(JSON.stringify(q));
-      kernel.ES.search(q, kernel.config.ES.mapping.eventType, (err, result) => {
+      return cb(null, q);
+    };
+
+    funcs.push(queryResult);
+
+    let getEvents = (query, _cb) => {
+      kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {
         if(err) {
-          return cb(err);
+          return _cb(err);
         }
         async.each(result.items, (item, callback) => {
           item.liked = false;
@@ -958,12 +964,12 @@ module.exports = function(kernel) {
             (cb) => {
               // Populate event photo
               let populatedPhotos = [];
-              async.each(item.photosId, (photoId, callback) => {
+              async.each(item.photosId, (photoId, cb1) => {
                 kernel.model.Photo.findById(photoId).then(photo => {
                   photoId = (photo) ? photo : photoId;
                   populatedPhotos.push(photoId);
-                  callback();
-                }).catch(callback);
+                  cb1();
+                }).catch(cb1);
               }, () => {
                 item.photosId = populatedPhotos;
                 cb();
@@ -972,18 +978,32 @@ module.exports = function(kernel) {
           ], callback);
         }, (err) => {
           if(err) {
-            return cb(err);
+            return _cb(err);
           }
-          return cb(null, result);
+          return _cb(null, result);
         });
       });
-    };
+    }
 
-    funcs.push(getEvents);
-
-    async.waterfall(funcs, (err, result) => {
+    async.waterfall(funcs, (err, query) => {
       if(err) return res.status(500).json({type: 'SERVER_ERROR'});
-      return res.status(200).json(result);
+      let cb = (err, data) => {
+        console.log(radius);
+        if(err) return res.status(500).json({type: 'SERVER_ERROR'});
+        if(!locationCheck || radius > 100 || data.items.length >= limit) {
+          return res.status(200).json(data); 
+        } else {
+          radius+=10;
+          query.query.filtered.filter.bool.must.push({
+            geo_distance: {
+              distance: radius + 'km',
+              'location.coordinates': [req.body.location.lng, req.body.location.lat], 
+            }
+          });
+          getEvents(query, cb);
+        }
+      }
+      getEvents(query, cb);
     });
   });
 

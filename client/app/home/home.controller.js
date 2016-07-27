@@ -84,7 +84,7 @@ class HomeCtrl {
             lng: position.coords.longitude
           }
         };
-        this.searchParams.radius = 1000;
+        this.searchParams.radius = 10;
         $scope.geoLocation = true;
         $scope.$$phase || $scope.$apply();
       }, () => {

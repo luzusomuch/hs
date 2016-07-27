@@ -50,7 +50,7 @@
 	    		<div class="img-award">
 	    			<img src="{{award.objectPhotoId | imageUrl: 'small'}}">
 	    			<div class="action-award">
-	    				<button><i class="fa fa-pencil"></i> </button>
+	    				<button ng-click="vm.editAward(award)"><i class="fa fa-pencil"></i> </button>
 	    				<button ng-click="vm.delete(award, 'owner')"><i class="fa fa-trash-o"></i> </button>
 	    			</div>
 	    		</div>

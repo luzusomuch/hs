@@ -1,5 +1,5 @@
 <div class="container">
-  <div share-tool-box title="vm.event.name" description="vm.event.description" url="vm.event.url" fb="true" tw="false" gg="false" auto-share="fb" type="Event">
+  <div share-tool-box title="vm.event.name" description="vm.event.description" url="vm.event.url" fb="true" tw="false" gg="false"  auto-share="fb" type="Event" allow-show="vm.event.allowShow">
   </div>
 	<div class="row">
 		<div class="col-sm-8 col-lg-9">
@@ -150,6 +150,7 @@
                 <div class="upload-img-event">
                   <div class="row">
                     <div class="col-xs-3">
+                      <img ng-show="vm.files.length === 0" src="{{vm.selectedCategory | categoryImagePath}}">
                       <img ng-show="vm.files.length > 0" style="margin-bottom:5px" ng-repeat="file in vm.files" ngf-src="file" width="100%">
                     </div>
                     <div class="col-xs-9 text-center">

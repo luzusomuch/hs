@@ -13,7 +13,8 @@ class CreateEventCtrl {
 			location: {},
       public: true,
       isRepeat: false,
-      startDate: new Date()
+      startDate: new Date(), 
+      allowShow: false
 		};
     this.shareEventInfo = {};
     this.$http = $http;
@@ -26,6 +27,7 @@ class CreateEventCtrl {
     this.addresses = [];
     this.submitted = false;
     this.errors = {};
+    this.selectedCategory = {};
 
     $scope.$on('$destroy', function() {
       //do anything such as remove socket
@@ -70,6 +72,17 @@ class CreateEventCtrl {
       }
     });
 
+    $scope.$watch('vm.event.categoryId', (nv) => {
+      if (nv) {
+        let idx = _.findIndex(this.categories, (cat) => {
+          return cat._id===nv;
+        });
+        if (idx !== -1) {
+          this.selectedCategory = this.categories[idx];
+        }
+      }
+    });
+
     this.friends = [];
     this.RelationService.getAll({id: this.user._id, type: 'friend'}).then(resp => {
     	this.friends = resp.data.items;
@@ -78,6 +91,7 @@ class CreateEventCtrl {
     this.categories = [];
     CategoryService.getAll().then(resp => {
     	this.categories = resp.data.items;
+      this.event.categoryId = this.categories[0]._id;
     });
 
     this.options = {
@@ -209,6 +223,7 @@ class CreateEventCtrl {
         this.event.url = `${this.APP_CONFIG.baseUrl}event/detail/${resp.data._id}`;
 	    	this.$state.go('event.detail', {id: resp.data._id});
         this.submitted = false;
+        this.event.allowShow = true;
 	    }, (err) => {
 	    	console.log(err);
 	    });

@@ -158,6 +158,10 @@ angular.module('healthStarsApp')
     	});
 			scope.style = {};
 			scope.dt = [];
+			scope.$watch('dt', function(nv) {
+				var dates = angular.element(element).find('.calendar-home > div').datepicker('getDates');
+				SearchParams.params.dates = dates.map(function(date) { return new Date(date).getTime(); });
+			}, true);
 			
 			scope.filter = function() {
 				var dates = angular.element(element).find('.calendar-home > div').datepicker('getDates');

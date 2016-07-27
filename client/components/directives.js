@@ -33,7 +33,8 @@ angular.module('healthStarsApp')
       autoShare: '@',
       data: '=',
       type: '@',
-      shared: '='
+      shared: '=',
+      allowShow: '='
     },
     template : 
       `<div>
@@ -63,7 +64,6 @@ angular.module('healthStarsApp')
             $scope.ggUrl = 'https://plus.google.com/share?url='+url;
           }
           if (title && description && url) {
-            $scope.allowShow = true;
             if ($scope.fb && $scope.autoShare === 'fb') {
               angular.element(element).find('.share-fb-btn').bind('click', $scope.share('fb'));
 

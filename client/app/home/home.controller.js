@@ -2,9 +2,10 @@
 
 class HomeCtrl {
 	constructor($scope, EventService, LikeService, $localStorage, CategoryService, SearchParams, socket, $state, $timeout, categories) {
+    this.$scope = $scope;
     this.categories = categories;
     this.searchParams = SearchParams.params;
-    this.searchParams.categories = _.map(categories, '_id');
+    //this.searchParams.categories = _.map(categories, '_id');
     this.page = 1;
     this.loaded = false;
     this.events = {
@@ -34,8 +35,16 @@ class HomeCtrl {
 
     let ttl;
     $scope.geoLocation = false;
-    $scope.$watch('[vm.searchParams, geoLocation]', (nv) => {
-      if(nv && nv[1]) {
+    $scope.timeout = false;
+    $timeout(() => {
+      $scope.timeout = true
+    }, 3000);
+
+    $scope.$watch('[vm.searchParams, geoLocation, timeout]', (nv) => {
+      if(nv[1]) {
+        $scope.timeout = true;
+      }
+      if(nv && ( nv[1] || nv[2])) {
         if(ttl) {
           $timeout.cancel(ttl);
         }
@@ -151,17 +160,19 @@ class HomeCtrl {
   }
 
   selectCategory(category) {
-    let index = this.searchParams.categories.indexOf(category._id);
-    if( index === -1) {
-      this.searchParams.categories.push(category._id);
-    } else {
-      this.searchParams.categories.splice(index, 1);
-    } 
-    return true;
+    // let index = this.searchParams.categories.indexOf(category._id);
+    // if( index === -1) {
+    //   this.searchParams.categories.push(category._id);
+    // } else {
+    //   this.searchParams.categories.splice(index, 1);
+    // } 
+    // return true;
+    this.searchParams.category = category._id === this.searchParams.category ? '' : category._id;
   }
 
   isActive(category) {
-    return this.searchParams.categories.indexOf(category._id) !== -1;
+    return this.searchParams.category === category._id;
+    //return this.searchParams.categories.indexOf(category._id) !== -1;
   }
 }
 

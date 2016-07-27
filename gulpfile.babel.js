@@ -441,6 +441,7 @@ gulp.task('serve', cb => {
   runSequence(['clean:tmp', 'constant', 'env:all'],
     ['lint:scripts', 'inject'],
     ['wiredep:client'],
+    ['wiredep:client:backend'],
     ['transpile:client', 'styles', 'styles:backend'],
     ['start:server', 'start:client'],
     'watch',
@@ -502,6 +503,32 @@ gulp.task('test:client', ['wiredep:test', 'constant'], (done) => {
 // inject bower components
 gulp.task('wiredep:client', () => {
   return gulp.src(paths.client.mainView)
+    .pipe(wiredep({
+      exclude: [
+        /bootstrap.js/,
+        '/json3/',
+        '/es5-shim/',
+        /font-awesome\.css/,
+        /bootstrap\.css/,
+        /bootstrap-sass-official/,
+        /bootstrap-social\.css/,
+        /mansory\.js/
+      ],
+      overrides: {
+        masonry: {
+          main: 'dist/masonry.pkgd.js'
+        },
+        outlayer: {
+          main: ['item.js', 'outlayer.js']
+        }
+      },
+      ignorePath: clientPath
+    }))
+    .pipe(gulp.dest(`${clientPath}/`));
+});
+
+gulp.task('wiredep:client:backend', () => {
+  return gulp.src(paths.client.backendView)
     .pipe(wiredep({
       exclude: [
         /bootstrap.js/,
@@ -673,7 +700,7 @@ return plugins.ngConstant({
   .pipe(plugins.rename({
     basename: 'app.constant'
   }))
-  .pipe(gulp.dest(`${clientPath}/app/`))
+  .pipe(gulp.dest(`${clientPath}/components/`))
 });
 
 gulp.task('build:images', () => {

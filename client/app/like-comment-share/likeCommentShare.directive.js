@@ -7,13 +7,7 @@ angular.module('healthStarsApp').directive('likeCommentShare', ($compile) => ({
     type: '@',
     eventOwner: '='
   },
-  link: function(scope, element, attr, ctrls) {
-    if (ctrls.type!=='Photo') {
-      let needed = angular.element(element).find('#parentComment'+ctrls.data._id);
-      needed.removeAttr('ng-scrollbars');
-      $compile(needed)(scope);
-    }
-  },
+  link: function(scope, element, attr, ctrls) {},
   controller: 'likeCommentShareCtrl',
   controllerAs: 'vm',
   bindToController: true,
@@ -21,7 +15,7 @@ angular.module('healthStarsApp').directive('likeCommentShare', ($compile) => ({
 }));
 
 class likeCommentShareCtrl {
-  constructor(LikeService, CommentService, ShareService, $localStorage, $q, $timeout) {
+  constructor($scope, LikeService, CommentService, ShareService, $localStorage, $q, $timeout) {
   	this.LikeService = LikeService;
   	this.CommentService = CommentService;
     this.ShareService = ShareService;
@@ -113,7 +107,7 @@ class likeCommentShareCtrl {
   	}
   }
 
-  postComment(comment, parentComment) {
+  postComment(e, comment, parentComment) {
     if (parentComment && parentComment.blocked) {
       return console.log('This comment has been blocked');
       // TODO show error
@@ -123,7 +117,8 @@ class likeCommentShareCtrl {
   		comment.objectName = (parentComment) ? 'Comment' : this.type;
   		this.CommentService.create(comment).then(resp => {
         comment.content = null;
-  			$('#reply-textarea').css('height', '43px');
+        let element = typeof e === 'object' ? e.target : document.getElementById(e);
+        element.style.height =  "31 px";   
         let data = (parentComment) ? parentComment : this.data;
   			data.comments.push(resp.data);
   			data.totalComment = (data.totalComment) ? data.totalComment+=1 : 1;

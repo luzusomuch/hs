@@ -124,9 +124,32 @@ module.exports = function(kernel) {
             if (comment.objectName==='Feed') {
               cb(null, data.eventId);
             } else if (comment.objectName==='Photo') {
-              kernel.model.Feed.findOne({photosId: data._id}).then(data => {
-                cb(null, data.eventId);
-              }).catch(cb);
+              async.waterfall([
+                // Check all feed to get event id
+                (callback) => {
+                  kernel.model.Feed.findOne({photosId: data._id}).then(data => {
+                    if (!data) {
+                      return callback({err: 'Feed not found', code: 404});
+                    }
+                    return callback(null, data.eventId);
+                  }).catch(callback);
+                }, 
+                (result, callback) => {
+                  if (result.code===404) {
+                    kernel.model.Event.findOne({photosId: data._id}).then(data => {
+                      if (!data) {
+                        return callback({err: 'Event not found', code: 404});
+                      }
+                      return callback(null, data._id);
+                    });
+                  } else {
+                    return callback(null, result);
+                  }
+                }
+              ], (err, result) => {
+                console.log(err);
+                console.log(result);
+              });
             } else if (comment.objectName==='Comment') {
               // If it a sub-comment
               if (data.objectName==='Feed') {
@@ -147,6 +170,7 @@ module.exports = function(kernel) {
         }
       ], (err, result) => {
         if (err) {
+          console.log(err);
           return res.status(500).json({type: 'SERVER_ERROR'});
         }
         // Now we got the eventId and we can get the event owner
@@ -161,10 +185,12 @@ module.exports = function(kernel) {
           }
         })
         .catch(err => {
+          console.log(err);
           return res.status(500).json({type: 'SERVER_ERROR'});
         });
       });
     }).catch(err => {
+      console.log(err);
       return res.status(500).json(err);
     });
   });

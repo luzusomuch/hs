@@ -66,7 +66,7 @@
                           <div class="action-comment">
                           <span ng-click="subComment.showOption=!subComment.showOption" class="comment-option-button"><i class="fa fa-ellipsis-v"></i></span>
                           <ul ng-mouseleave="subComment.showOption = false" class="comment-option" ng-show="subComment.showOption">
-                            <li ng-show="!subComment.deleted && !subComment.blocked && (vm.authUser.role=='admin' || vm.authUser._id==vm.eventOwner || vm.authUser._id==vm.eventOwner._id || subComment.ownerId._id==vm.authUser._id)" ng-click="vm.deleteComment(subComment)" ng-click="subComment.isEdit=!subComment.isEdit; subComment.showOption=false">{{'EDIT_COMMENT' | translate}}</li>
+                            <li ng-show="!subComment.deleted && !subComment.blocked && (vm.authUser.role=='admin' || vm.authUser._id==vm.eventOwner || vm.authUser._id==vm.eventOwner._id || subComment.ownerId._id==vm.authUser._id)" ng-click="subComment.isEdit=!subComment.isEdit; subComment.showOption=false">{{'EDIT_COMMENT' | translate}}</li>
                             <li ng-show="!subComment.blocked && !subComment.deleted && (vm.authUser.role=='admin' || vm.authUser._id==vm.eventOwner || vm.authUser._id==vm.eventOwner._id || subComment.ownerId._id==vm.authUser._id)" ng-click="vm.deleteComment(subComment)">{{'DELETE_COMMENT' | translate}}</li>
                             <li ng-show="vm.authUser.role=='admin' || vm.authUser._id==vm.eventOwner || vm.authUser._id==vm.eventOwner._id" ng-click="vm.blockComment(subComment)">
                               <span ng-show="subComment.blocked">{{'UNBLOCK_COMMENT' | translate}}</span>
@@ -96,7 +96,7 @@
                     <div class="content-post-li">
                       <div class="replies-form">
                         <textarea ng-keyup="vm.autoExpand($event)" class="form-control" placeholder="Write a reply..." id="reply-textarea" ng-model="subComment.content"></textarea>
-                        <a href="#" class="replies-img-a" ng-click="vm.postComment(subComment, comment)"><i class="fa fa-share"></i></a>
+                        <a href="#" class="replies-img-a" ng-click="vm.postComment($event, subComment, comment)"><i class="fa fa-share"></i></a>
                       </div>
                     </div>
                   </div>
@@ -123,7 +123,7 @@
   <div class="content-post-li">
     <div class="replies-form">
       <textarea ng-keyup="vm.autoExpand($event)" class="form-control" placeholder="Write a reply..." id="reply-textarea" ng-model="vm.comment.content"></textarea>
-      <a href="#" class="replies-img-a" ng-click="vm.postComment(vm.comment)"><i class="fa fa-share"></i></a>
+      <a href="#" class="replies-img-a" ng-click="vm.postComment($event, vm.comment)"><i class="fa fa-share"></i></a>
     </div>
   </div>
 </div>

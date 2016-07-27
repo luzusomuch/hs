@@ -3,7 +3,7 @@
 
   <div class="box-blue p15">
     <div class="title-blue">{{'EXHIBIT' | translate}}:</div>
-    <div class="exhibit-award" ng-show="vm.authUser.awardsExhibits.length > 0">
+    <div class="exhibit-award">
       <div ng-drop="true" ng-drop-success="vm.dropData($data, $event, award.number)" class="award-step{{award.number}}" ng-repeat="award in vm.authUser.awardsExhibits">
       	<img ng-drag="true" ng-drag-data="award" src="{{award.awardId.objectPhotoId | imageUrl: 'small'}}">
       </div>

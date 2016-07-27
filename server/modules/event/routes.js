@@ -341,7 +341,6 @@ module.exports = function(kernel) {
       if (!event) {
         return res.status(404).json({type: 'EVENT_NOT_FOUND', message: 'Event not found'});
       }
-      console.log(event.banner);
       return res.status(200).json(event);
     }).catch(err => {
       return res.status(500).json({type: 'SERVER_ERROR'});
@@ -471,6 +470,25 @@ module.exports = function(kernel) {
           if (moment(moment(data.startDateTime).format('YYYY-MM-DD HH:mm')).isSameOrAfter(moment(data.endDateTime).format('YYYY-MM-DD HH:mm'))) {
             return res.status(422).json({type: 'CHECK_DATE_TIME_AGAIN', path: 'datetime', message: 'Check your date time again'})
           }
+
+          // add or remove event photos
+          if (req.body.event.photos) {
+            if (req.body.event.photos instanceof Array) {
+              event.photosId = req.body.event.photos;
+            } else {
+              event.photosId = [req.body.event.photos];
+            }
+          }
+          // get unique photo id
+          event.photosId = _.map(_.groupBy(event.photosId, (doc) => {
+            return doc;
+          }), (grouped) => {
+            return grouped[0];
+          });
+          // update event photos to empty when client site has removed all
+          if (Number(req.body.event.photosLength) === 0) {
+            event.photosId = [];
+          }
           // upload event photos
           let newBannerId;
           async.each(req.files, (file, callback) => {
@@ -503,7 +521,7 @@ module.exports = function(kernel) {
             event.public = (req.body.event.public==='true') ? true : false;
             event.private = !event.public;
             event.location = req.body.event.location;
-            if (req.body.event.bannerName) {
+            if (req.body.event.bannerName && req.body.event.bannerName !== 'null') {
               event.banner = newBannerId;
             }
             if (req.body.event.participants) {

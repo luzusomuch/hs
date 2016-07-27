@@ -2179,6 +2179,12 @@ span.country-name {
     line-height: 150px;
     margin: 3px 0px;
 }
+.box-picture-upload-action {
+    position: absolute;
+    top: -65px;
+    right: 10px;
+    color: red !important;
+}
 .box-picture-upload-1 {
     line-height: 20px;
     padding-top: 40px;

@@ -129,26 +129,30 @@ module.exports = function(kernel) {
                 (callback) => {
                   kernel.model.Feed.findOne({photosId: data._id}).then(data => {
                     if (!data) {
-                      return callback({err: 'Feed not found', code: 404});
+                      callback(null, {eventId: null});
+                    } else {
+                      callback(null, {eventId: data._id});
                     }
-                    return callback(null, data.eventId);
                   }).catch(callback);
                 }, 
                 (result, callback) => {
-                  if (result.code===404) {
+                  if (!result.eventId) {
                     kernel.model.Event.findOne({photosId: data._id}).then(data => {
                       if (!data) {
-                        return callback({err: 'Event not found', code: 404});
+                        callback({err: 'Event not found', code: 404});
+                      } else {
+                        callback(null, {eventId: data._id});
                       }
-                      return callback(null, data._id);
                     });
                   } else {
-                    return callback(null, result);
+                    callback(null, result);
                   }
                 }
               ], (err, result) => {
-                console.log(err);
-                console.log(result);
+                if (err) {
+                  return cb(err);
+                }
+                cb(null, result.eventId)
               });
             } else if (comment.objectName==='Comment') {
               // If it a sub-comment
@@ -228,9 +232,36 @@ module.exports = function(kernel) {
             if (comment.objectName==='Feed') {
               cb(null, data.eventId);
             } else if (comment.objectName==='Photo') {
-              kernel.model.Feed.findOne({photosId: data._id}).then(data => {
-                cb(null, data.eventId);
-              }).catch(cb);
+              async.waterfall([
+                // Check all feed to get event id
+                (callback) => {
+                  kernel.model.Feed.findOne({photosId: data._id}).then(data => {
+                    if (!data) {
+                      callback(null, {eventId: null});
+                    } else {
+                      callback(null, {eventId: data._id});
+                    }
+                  }).catch(callback);
+                }, 
+                (result, callback) => {
+                  if (!result.eventId) {
+                    kernel.model.Event.findOne({photosId: data._id}).then(data => {
+                      if (!data) {
+                        callback({err: 'Event not found', code: 404});
+                      } else {
+                        callback(null, {eventId: data._id});
+                      }
+                    });
+                  } else {
+                    callback(null, result);
+                  }
+                }
+              ], (err, result) => {
+                if (err) {
+                  return cb(err);
+                }
+                cb(null, result.eventId)
+              });
             } else if (comment.objectName==='Comment') {
               // If it a sub-comment
               if (data.objectName==='Feed') {

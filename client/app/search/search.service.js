@@ -11,6 +11,7 @@
       startDate: '',
       endDate: '',
       friendActivities: false,
+      category: '',
       categories: []
     };
     return {
@@ -26,6 +27,7 @@
         startDate: '',
         endDate: '',
         friendActivities: false,
+        category: '',
         categories: []
       }
     };

@@ -124,9 +124,36 @@ module.exports = function(kernel) {
             if (comment.objectName==='Feed') {
               cb(null, data.eventId);
             } else if (comment.objectName==='Photo') {
-              kernel.model.Feed.findOne({photosId: data._id}).then(data => {
-                cb(null, data.eventId);
-              }).catch(cb);
+              async.waterfall([
+                // Check all feed to get event id
+                (callback) => {
+                  kernel.model.Feed.findOne({photosId: data._id}).then(data => {
+                    if (!data) {
+                      callback(null, {eventId: null});
+                    } else {
+                      callback(null, {eventId: data._id});
+                    }
+                  }).catch(callback);
+                }, 
+                (result, callback) => {
+                  if (!result.eventId) {
+                    kernel.model.Event.findOne({photosId: data._id}).then(data => {
+                      if (!data) {
+                        callback({err: 'Event not found', code: 404});
+                      } else {
+                        callback(null, {eventId: data._id});
+                      }
+                    });
+                  } else {
+                    callback(null, result);
+                  }
+                }
+              ], (err, result) => {
+                if (err) {
+                  return cb(err);
+                }
+                cb(null, result.eventId)
+              });
             } else if (comment.objectName==='Comment') {
               // If it a sub-comment
               if (data.objectName==='Feed') {
@@ -147,6 +174,7 @@ module.exports = function(kernel) {
         }
       ], (err, result) => {
         if (err) {
+          console.log(err);
           return res.status(500).json({type: 'SERVER_ERROR'});
         }
         // Now we got the eventId and we can get the event owner
@@ -161,10 +189,12 @@ module.exports = function(kernel) {
           }
         })
         .catch(err => {
+          console.log(err);
           return res.status(500).json({type: 'SERVER_ERROR'});
         });
       });
     }).catch(err => {
+      console.log(err);
       return res.status(500).json(err);
     });
   });
@@ -202,9 +232,36 @@ module.exports = function(kernel) {
             if (comment.objectName==='Feed') {
               cb(null, data.eventId);
             } else if (comment.objectName==='Photo') {
-              kernel.model.Feed.findOne({photosId: data._id}).then(data => {
-                cb(null, data.eventId);
-              }).catch(cb);
+              async.waterfall([
+                // Check all feed to get event id
+                (callback) => {
+                  kernel.model.Feed.findOne({photosId: data._id}).then(data => {
+                    if (!data) {
+                      callback(null, {eventId: null});
+                    } else {
+                      callback(null, {eventId: data._id});
+                    }
+                  }).catch(callback);
+                }, 
+                (result, callback) => {
+                  if (!result.eventId) {
+                    kernel.model.Event.findOne({photosId: data._id}).then(data => {
+                      if (!data) {
+                        callback({err: 'Event not found', code: 404});
+                      } else {
+                        callback(null, {eventId: data._id});
+                      }
+                    });
+                  } else {
+                    callback(null, result);
+                  }
+                }
+              ], (err, result) => {
+                if (err) {
+                  return cb(err);
+                }
+                cb(null, result.eventId)
+              });
             } else if (comment.objectName==='Comment') {
               // If it a sub-comment
               if (data.objectName==='Feed') {

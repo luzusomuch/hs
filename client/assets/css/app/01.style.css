@@ -2120,9 +2120,10 @@ span.country-name {
     border: 0px;
     border-top: 1px solid rgba(255,255,255,0.2);
     padding-top: 10px;
-    height: -o-calc(100% - 160px);
-    height: -webkit-calc(100% - 160px);
-    height: -moz-calc(100%- 160px);
+    height: -o-calc(100% - 180px);
+    height: -webkit-calc(100% - 180px);
+    height: -moz-calc(100%- 180px);
+    height: calc(100% - 180px);
     overflow: auto;
 }
 .comment-popup .replies-post .replies-post {
@@ -2177,6 +2178,12 @@ span.country-name {
     height: 150px;
     line-height: 150px;
     margin: 3px 0px;
+}
+.box-picture-upload-action {
+    position: absolute;
+    top: -65px;
+    right: 10px;
+    color: red !important;
 }
 .box-picture-upload-1 {
     line-height: 20px;

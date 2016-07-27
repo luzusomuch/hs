@@ -18,7 +18,13 @@ class MyAwardCtrl {
 		this.authUser = this.$localStorage.authUser;
 
 		// check current user exhibit rank
-		if (this.authUser.awardsExhibits.length === 1) {
+		if (!this.authUser.awardsExhibits || this.authUser.awardsExhibits.length === 0) {
+			this.authUser.awardsExhibits = [
+				{number: 1, awardId: {}},
+				{number: 3, awardId: {}},
+				{number: 2, awardId: {}},
+			];
+		} else if (this.authUser.awardsExhibits.length === 1) {
 			switch (this.authUser.awardsExhibits[0].number) {
 				case 1:
 					this.authUser.awardsExhibits.push({number: 2, awardId: {}});

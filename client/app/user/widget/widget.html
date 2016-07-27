@@ -2,7 +2,8 @@
     <div class="img-user-main">
         <img src="{{vm.user | avatarUrl}}" width="100%;">
         <div class="code-qc">
-            <img src="assets/images/code.jpg">
+            <!-- <img src="assets/images/code.jpg"> -->
+            <qrcode version="8" error-correction-level="H" data="{{vm.link}}" href="{{vm.link}}" size="50"></qrcode>
         </div>
     </div>
     
@@ -31,31 +32,5 @@
                 </li>
             </ul>
         </div>
-        <!-- <div class="pull-left">
-            <div>
-                <label>Post</label>
-                <h2>{{vm.user.posts}}</h2>
-            </div>
-            <div>
-                <label>Followers</label>
-                <h2>{{vm.user.followers}}</h2>
-            </div>
-        </div> -->
-        <!-- <div class="pull-right">
-            <div class="cup-user">
-                <div class="arward-li-top color-green">
-                    <span>{{vm.user.awards}}</span>
-                    <i class="fa fa-trophy"></i>
-                </div>
-                <div class="arward-li-top color-blue">
-                    <span>{{vm.user.awards}}</span>
-                    <i class="fa fa-trophy"></i>
-                </div>
-                <div class="arward-li-top color-orange">
-                    <span>{{vm.user.awards}}</span>
-                    <i class="fa fa-trophy"></i>
-                </div>
-            </div>
-        </div> -->
     </div>
 </div>

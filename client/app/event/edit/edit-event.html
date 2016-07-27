@@ -166,13 +166,15 @@
                 
                 <div class="row row-small add-picture-more">
                   <div class="col-xs-6 col-sm-3" ng-repeat="photo in vm.event.photosId" >
-                    <div class="box-picture-upload">
-                    <img src="{{photo | imageUrl: 'small'}}" width="100%" style="margin-bottom:5px">
+                    <div class="box-picture-upload relative-div">
+                      <a class="box-picture-upload-action" href="#" ng-click="vm.removePhoto(photo, 'photo')"><i class="fa fa-times"></i></a>
+                      <img src="{{photo | imageUrl: 'small'}}" width="100%" style="margin-bottom:5px">
                     </div>
                   </div>
                   <div class="col-xs-6 col-sm-3" ng-repeat="file in vm.files" ng-if="file.photoType=='photo'">
-                    <div class="box-picture-upload">
-                    <img ng-show="vm.files.length > 0" style="margin-bottom:5px" ngf-src="file" width="100%">
+                    <div class="box-picture-upload relative-div">
+                      <a class="box-picture-upload-action" href="#" ng-click="vm.removePhoto(file, 'file')"><i class="fa fa-times"></i></a>
+                      <img ng-show="vm.files.length > 0" style="margin-bottom:5px" ngf-src="file" width="100%">
                     </div>
                   </div>
                   <div class="col-xs-6 col-sm-3 text-center">

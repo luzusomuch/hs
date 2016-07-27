@@ -32,8 +32,8 @@
     "angular-masonry-directive": "*",
     "bootstrap-datepicker": "~1.6.1",
     "angular-slick": "~0.2.1",
-    "ng-scrollbars": "~0.0.10",
-    "ngDraggable": "0.1.10"
+    "ngDraggable": "0.1.10",
+    "angular-qrcode": "~6.2.1"
   },
   "devDependencies": {
     "angular-mocks": "~1.5.0"

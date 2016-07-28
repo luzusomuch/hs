@@ -148,7 +148,8 @@ let Language = {
 		CATEGORY_TYPE_REQUIRED: 'Category type required',
 		CATEGORY_DESCRIPTION_REQUIRED: 'Category description required',
 		MISSING_ENTITY: 'Missing some entities',
-		CREATE_NEW_CATEGORY: 'Create new category'
+		CREATE_NEW_CATEGORY: 'Create new category',
+		MISSING_CATEGORY_IMAGE: 'Missing category image'
 	},
 	de: {
 

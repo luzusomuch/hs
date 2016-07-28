@@ -1,14 +1,15 @@
 'use strict';
 
 class UserWidgetCtrl {
-	constructor($scope, User) {
+	constructor($scope, User, APP_CONFIG) {
+		this.link = APP_CONFIG.baseUrl + 'profile/' + $scope.uId;
 		this.user = {};
 			
 		$scope.$watch('uId', nv => {
 			if(nv) {
 				User.getInfo($scope.uId).then(
 					res => {
-						this.user = res.data
+						this.user = res.data;
 					}
 				);
 			}

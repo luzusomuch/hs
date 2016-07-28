@@ -1,35 +1,30 @@
 <div class="login-page">
   <div class="container-fluid">
-  <div class="logo-login"><img src="/assets/images/logo-login.png"></div>
-  <div class="box-login">
+    <div class="logo-login"><img src="/assets/images/logo-login.png"></div>
+    <div class="box-login">
       <form class="form-login" ng-submit="vm.login(form)" name="form" novalidate>
-          <h2><span>{{'SIGN_IN' }}</span></h2>
+          <h2><span>{{'SIGN_IN' | translate}}</span></h2>
           <div class="form-group" ng-class="{'has-error': (form.email.$error.pattern || form.email.$error.email || form.email.$error.required) && vm.submitted}">
-              <label>{{'USERNAME_EMAIL' }}</label>
+              <label>{{'USERNAME_EMAIL' | translate}}</label>
               <input type="email" ng-model="vm.user.email" class="form-control" placeholder="Your Username" required name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$">
 
-              <label ng-show="(form.email.$error.pattern || form.email.$error.email) && vm.submitted" class="help-block">{{'EMAIL_TYPE_ERROR' }}</label>
-              <label ng-show="form.email.$error.required && vm.submitted" class="help-block">{{'REQUIRED_ERROR' }}</label>
+              <label ng-show="(form.email.$error.pattern || form.email.$error.email) && vm.submitted" class="help-block">{{'EMAIL_TYPE_ERROR' | translate}}</label>
+              <label ng-show="form.email.$error.required && vm.submitted" class="help-block">{{'REQUIRED_ERROR' | translate}}</label>
           </div>
           <div class="form-group" ng-class="{'has-error': form.password.$error.required && vm.submitted}">
-              <label>{{'PASSWORD' }}</label>
+              <label>{{'PASSWORD' | translate}}</label>
               <input type="password" ng-model="vm.user.password" class="form-control" placeholder="Your Password" required name="password">
 
-              <label ng-show="form.password.$error.required && vm.submitted" class="help-block">{{'REQUIRED_ERROR' }}</label>
+              <label ng-show="form.password.$error.required && vm.submitted" class="help-block">{{'REQUIRED_ERROR' | translate}}</label>
           </div>
           <div class="form-group has-error" ng-show="vm.errors.error">
             <label class="help-block">{{vm.errors.error }}</label>
           </div>
           <div class="form-group">
-              <button type="submit" class="btn btn-lg btn-primary btn-block">{{'SIGN_IN' }}</button>
+              <button type="submit" class="btn btn-lg btn-primary btn-block">{{'SIGN_IN' | translate}}</button>
           </div>
-          <a href="#" ui-sref="forgotPw" class="forgot-pass">{{'FORGOT_PASSWORD' }}</a>
-          <div class="or-login"><span>{{'OR' }}</span></div>
-          <oauth-buttons theme="icon"></oauth-buttons>
+          <a href="#" ui-sref="backend.forgotPw" class="forgot-pass">{{'FORGOT_PASSWORD' | translate}}</a>
       </form>
-      <div class="text-center">
-      {{'NOT_REGISTERED' }}? <a href="#" ui-sref="register">{{'SIGN_UP' }}</a>
-      </div>
-  </div>
+    </div>
   </div>
 </div>

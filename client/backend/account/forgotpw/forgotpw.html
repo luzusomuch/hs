@@ -1,0 +1,38 @@
+<div class="login-page">
+    <div class="container-fluid">
+      <div class="logo-login"><a ui-sref="backend.login"><img src="/assets/images/logo-login.png"></a></div>
+      <div class="clear"></div>
+      <div class="form-signup">
+        <div class="row">
+            <div class="col-sm-3 col-lg-4"></div>
+            <div class="col-sm-6 col-lg-4">
+              <div class="box-blue p15">
+              <form ng-show="!vm.success" name="form" role="form" ng-submit="vm.forgotPass(form)" novalidate>
+                <div class="form-group">
+                <h3>{{'FORGOT_PASSWORD_TITLE' | translate}}</h3>
+                <hr>
+                  {{'FORGOT_PASSWORD_LABEL' | translate }}
+                </div>
+                
+                  <div class="form-group" ng-class="{'has-error': (form.email.$error.pattern || form.email.$error.required || vm.error) && vm.submitted}">
+                      <input type="text"  
+                      name="email"
+                      type="email" 
+                      ng-pattern="vm.emailPattern"
+                      required
+                      ng-model="vm.user.email" 
+                      class="form-control">
+                      <label class="help-block" ng-show="(form.email.$error.pattern || form.email.$error.required) && vm.submitted">{{'EMAIL_INVALID' | translate}}</label>
+                      <label class="help-block" ng-show="vm.error && vm.submitted"> {{vm.error | translate}}</label>
+                  </div>
+                  <div class="form-group">
+                      <button class="btn btn-block btn-success" style="margin-top: 20px;">Send</button>
+                  </div>
+                </form>
+                <div ng-if="vm.success" class="text-center"><h4>{{'FORGOT_PASSWORD_SUCCESS' | translate}} <br> {{'OR' | translate}} <br> <a ui-sref="backend.login">{{'SIGN_IN' | translate}}</a></h4></div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>

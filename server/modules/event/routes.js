@@ -341,7 +341,6 @@ module.exports = function(kernel) {
       if (!event) {
         return res.status(404).json({type: 'EVENT_NOT_FOUND', message: 'Event not found'});
       }
-      console.log(event.banner);
       return res.status(200).json(event);
     }).catch(err => {
       return res.status(500).json({type: 'SERVER_ERROR'});
@@ -471,6 +470,25 @@ module.exports = function(kernel) {
           if (moment(moment(data.startDateTime).format('YYYY-MM-DD HH:mm')).isSameOrAfter(moment(data.endDateTime).format('YYYY-MM-DD HH:mm'))) {
             return res.status(422).json({type: 'CHECK_DATE_TIME_AGAIN', path: 'datetime', message: 'Check your date time again'})
           }
+
+          // add or remove event photos
+          if (req.body.event.photos) {
+            if (req.body.event.photos instanceof Array) {
+              event.photosId = req.body.event.photos;
+            } else {
+              event.photosId = [req.body.event.photos];
+            }
+          }
+          // get unique photo id
+          event.photosId = _.map(_.groupBy(event.photosId, (doc) => {
+            return doc;
+          }), (grouped) => {
+            return grouped[0];
+          });
+          // update event photos to empty when client site has removed all
+          if (Number(req.body.event.photosLength) === 0) {
+            event.photosId = [];
+          }
           // upload event photos
           let newBannerId;
           async.each(req.files, (file, callback) => {
@@ -503,7 +521,7 @@ module.exports = function(kernel) {
             event.public = (req.body.event.public==='true') ? true : false;
             event.private = !event.public;
             event.location = req.body.event.location;
-            if (req.body.event.bannerName) {
+            if (req.body.event.bannerName && req.body.event.bannerName !== 'null') {
               event.banner = newBannerId;
             }
             if (req.body.event.participants) {
@@ -760,7 +778,7 @@ module.exports = function(kernel) {
     let page = parseInt(req.body.page);
     let limit = parseInt(req.body.page);
     page = (page === 'NaN' || !page) ? 1 : page;
-    limit = (limit === 'NaN' || !limit || limit < 6 || limit > 100) ? 6 : limit;
+    limit = (limit === 'NaN' || !limit || limit < 8 || limit > 100) ? 8 : limit;
     let skip = (page - 1) * limit;
 
     let q = {
@@ -854,7 +872,8 @@ module.exports = function(kernel) {
 
     //process location
     let radius = parseInt(req.body.radius);
-    if(req.body.location && req.body.location.lat && req.body.location.lng && radius && radius !== 'NaN') {
+    let locationCheck = req.body.location && req.body.location.lat && req.body.location.lng && radius && radius !== 'NaN';
+    if(locationCheck) {
       q.query.filtered.filter.bool.must.push({
         geo_distance: {
           distance: radius + 'km',
@@ -890,14 +909,19 @@ module.exports = function(kernel) {
       });
     }
 
-    let getEvents = (friendIds, cb) => {
+    let queryResult = (friendIds, cb) => {
       if(friendIds) {
         q.query.filtered.filter.bool.must.push({ terms: {ownerId : friendIds} });
       }
-      console.log(JSON.stringify(q));
-      kernel.ES.search(q, kernel.config.ES.mapping.eventType, (err, result) => {
+      return cb(null, q);
+    };
+
+    funcs.push(queryResult);
+
+    let getEvents = (query, _cb) => {
+      kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {
         if(err) {
-          return cb(err);
+          return _cb(err);
         }
         async.each(result.items, (item, callback) => {
           item.liked = false;
@@ -940,12 +964,12 @@ module.exports = function(kernel) {
             (cb) => {
               // Populate event photo
               let populatedPhotos = [];
-              async.each(item.photosId, (photoId, callback) => {
+              async.each(item.photosId, (photoId, cb1) => {
                 kernel.model.Photo.findById(photoId).then(photo => {
                   photoId = (photo) ? photo : photoId;
                   populatedPhotos.push(photoId);
-                  callback();
-                }).catch(callback);
+                  cb1();
+                }).catch(cb1);
               }, () => {
                 item.photosId = populatedPhotos;
                 cb();
@@ -954,18 +978,32 @@ module.exports = function(kernel) {
           ], callback);
         }, (err) => {
           if(err) {
-            return cb(err);
+            return _cb(err);
           }
-          return cb(null, result);
+          return _cb(null, result);
         });
       });
-    };
+    }
 
-    funcs.push(getEvents);
-
-    async.waterfall(funcs, (err, result) => {
+    async.waterfall(funcs, (err, query) => {
       if(err) return res.status(500).json({type: 'SERVER_ERROR'});
-      return res.status(200).json(result);
+      let cb = (err, data) => {
+        console.log(radius);
+        if(err) return res.status(500).json({type: 'SERVER_ERROR'});
+        if(!locationCheck || radius > 100 || data.items.length >= limit) {
+          return res.status(200).json(data); 
+        } else {
+          radius+=10;
+          query.query.filtered.filter.bool.must.push({
+            geo_distance: {
+              distance: radius + 'km',
+              'location.coordinates': [req.body.location.lng, req.body.location.lat], 
+            }
+          });
+          getEvents(query, cb);
+        }
+      }
+      getEvents(query, cb);
     });
   });
 

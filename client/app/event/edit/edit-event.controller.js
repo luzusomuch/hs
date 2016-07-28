@@ -183,10 +183,28 @@ class EditEventCtrl {
         this.files.push(file);
       }
     });
-    console.log(this.files);
     this.newBanner = _.filter(this.files, {photoType: 'banner'});
     this.event.bannerName = (this.newBanner.length > 0) ? this.newBanner[0].name : null;
-    console.log(this.newBanner);
+  }
+
+  removePhoto(photo, type) {
+    if (type==='photo') {
+      let index = _.findIndex(this.event.photosId, (p) => {
+        return p._id === photo._id;
+      });
+      if (index !== -1) {
+        this.event.photosId.splice(index, 1);
+      }
+    } else if (type==='file') {
+      let index = _.findIndex(this.files, (file) => {
+        if (type !== 'banner') {
+          return file.name===photo.name;
+        }
+      });
+      if (index !== -1) {
+        this.files.splice(index, 1);
+      }
+    }
   }
 
   edit(form) {
@@ -221,6 +239,11 @@ class EditEventCtrl {
       if (moment(moment(this.event.startDateTime).format('YYYY-MM-DD HH:mm')).isSameOrAfter(moment(this.event.endDateTime).format('YYYY-MM-DD HH:mm'))) {
         return this.errors.dateTime = true;
       }
+
+      this.event.photos = _.map(this.event.photosId, (photo) => {
+        return photo._id;
+      });
+      this.event.photosLength = this.event.photos.length;
 
   		this.Upload.upload({
 	      url: '/api/v1/events/'+this.$state.params.id,

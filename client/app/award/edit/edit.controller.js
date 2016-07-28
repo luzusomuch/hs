@@ -11,7 +11,7 @@ class EditAwardCtrl {
 		$scope.file = {};
 
 		$scope.closeModal = () => {
-			$uibModalInstance.close();
+			$uibModalInstance.dismiss();
 		};
 
 		$scope.select = ($file) => {

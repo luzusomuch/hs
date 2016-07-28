@@ -139,7 +139,16 @@ let Language = {
 		MISSING_RANK_OR_AWARD: 'Missing rank or award',
 		EDIT_AWARD: 'Edit award',
 		TERM_CONDITION_AGREEMENT: 'I agree to terms and conditions',
-		CATEGORIES_LIST: 'Categories list'
+		CATEGORIES_LIST: 'Categories list',
+		CATEGORY_TYPE: 'Category type',
+		CATEGORY_DESCRIPTION: 'Category description',
+		CATEGORY_NAME: 'Category name',
+		CREATE_CATEGORY: 'Create category',
+		CATEGORY_NAME_REQUIRED: 'Category name required',
+		CATEGORY_TYPE_REQUIRED: 'Category type required',
+		CATEGORY_DESCRIPTION_REQUIRED: 'Category description required',
+		MISSING_ENTITY: 'Missing some entities',
+		CREATE_NEW_CATEGORY: 'Create new category'
 	},
 	de: {
 

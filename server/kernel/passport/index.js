@@ -81,8 +81,8 @@ exports.middleware = (kernel) => {
       return compose()
         .use(isAuthenticated())
         .use(function meetsRequirements(req, res, next) {
-          if (kernel.USER_ROLES.indexOf(req.user.role) >=
-              kernel.USER_ROLES.indexOf(roleRequired)) {
+          if (kernel.config.USER_ROLES.indexOf(req.user.role) >=
+              kernel.config.USER_ROLES.indexOf(roleRequired)) {
             next();
           } else {
             res.status(403).send('Forbidden');

@@ -6,7 +6,7 @@
     return {
       getAll() {
       	return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/categories`);
-      },
+      }
     };
   }
 

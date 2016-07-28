@@ -14,7 +14,7 @@ module.exports = function(kernel) {
     if (req.user.blocked && req.user.blocked.status) {
       return res.status(403).json({type: 'EMAIL_BLOCKED', message: 'This user email was blocked'}); 
     }
-  	// TODO - create a function to upload image to s3. Then saved s3 link to a photo schema
+    
     let storage = multer.diskStorage({
       destination: (req, file, cb) => {
         cb(null, kernel.config.tmpPhotoFolder)

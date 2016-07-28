@@ -55,7 +55,6 @@ angular.module('healthStarsApp')
 					angular.element(document.getElementById('btn-clear-location-search')).trigger('click');
 					angular.element('.calendar-home > div').datepicker('clearDates');
         });
-        console.log(SearchParams);
 			};
 
 			angular.element(element).on('click', 'ul.dropdown-menu > li > a', function(e) {

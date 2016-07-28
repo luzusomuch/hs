@@ -30,6 +30,7 @@ class CreateAwardCtrl {
 				this.$uibModalInstance.close(resp.data);
 	    }, (err) => {
 	    	console.log(err);
+	    	// TODO show error
 	    });
 		} else {
 			this.growl.error('Check your data');

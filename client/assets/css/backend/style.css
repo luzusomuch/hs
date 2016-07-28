@@ -4091,3 +4091,14 @@ Responsive Flip Scroll Tables
 .p-20 {
   padding: 20px
 }
+.relative-div {
+  position: relative;
+}
+.category-action {
+  position: absolute;
+  top: 0px;
+  right: 10px;
+}
+.error {
+  color: red;
+}

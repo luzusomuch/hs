@@ -1,0 +1,20 @@
+<div class="content p-20">
+	<h4>{{'CATEGORIES_LIST' | translate}}</h4>
+
+	<div class="row">
+		<div class="col-sm-3 col-xs-12" ng-repeat="category in vm.categories">
+			<div class="panel">
+				<div class="panel-header">
+					{{category.name}}
+				</div>
+				<div class="panel-body">
+					<div class="category-item">
+						<div class="category-img">
+							<img src="{{category | categoryImagePath}}">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

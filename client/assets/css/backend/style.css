@@ -4082,3 +4082,12 @@ Responsive Flip Scroll Tables
   .flip-scroll td:last-child { border-bottom: 1px solid #ddd; }
   
 }
+.category-item {
+  margin: 10px;
+}
+.grey-backgound {
+  background: #eee;
+}
+.p-20 {
+  padding: 20px
+}

@@ -7,13 +7,20 @@
 				<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
 			</li>
 			<li>&nbsp;</li>
-			<li class="start active">
-					<a href="index.html">
+			<li class="start" ng-class="{active: vm.$state.includes('backend.dashboard')}">
+				<a ui-sref="backend.dashboard">
 					<i class="icon-home"></i> 
 					<span class="title">Dashboard</span>
 					<span class="selected"></span>
-					</a>
-				</li>
+				</a>
+			</li>
+			<li class="start" ng-class="{active: vm.$state.includes('backend.category.list')}">
+				<a ui-sref="backend.category.list">
+					<i class="icon-home"></i> 
+					<span class="title">Categories</span>
+					<span class="selected"></span>
+				</a>
+			</li>
 		</ul>
 		<!-- END SIDEBAR MENU -->
 	</div>

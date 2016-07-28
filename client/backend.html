@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <base href="/">
-    <title></title>
+    <title ng-bind-html="appSettings.get('pageTitle') || 'HealthStars'"></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -49,7 +49,7 @@
     <!-- Add your site or application content here -->
     <div class="page-container">
       <backend-sidebar ng-hide="currentState==='backend.login' || currentState==='backend.forgotPw'"></backend-sidebar>
-      <div class="page-content" ui-view></div>
+      <div class="page-content grey-backgound" ui-view></div>
     </div>
     <backend-footer ng-if="appSettings.get('footer')"></backend-footer>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -122,6 +122,10 @@
       <script src="backend/account/account.js"></script>
       <script src="backend/account/forgotpw/forgotpw.controller.js"></script>
       <script src="backend/account/login/login.controller.js"></script>
+      <script src="backend/category/category.js"></script>
+      <script src="backend/category/create/category-create.controller.js"></script>
+      <script src="backend/category/edit/category-edit.controller.js"></script>
+      <script src="backend/category/list/category-list.controller.js"></script>
       <script src="backend/dashboard/dashboard.js"></script>
       <script src="backend/footer/footer.controller.js"></script>
       <script src="backend/footer/footer.js"></script>

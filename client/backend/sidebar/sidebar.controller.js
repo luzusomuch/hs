@@ -1,7 +1,7 @@
 'use strict';
 
 class BackendSidebarCtrl {
-	constructor($scope, $localStorage) {
+	constructor($scope, $localStorage, $state) {
 		this.user = {};
 		$scope.$watch(() => {
 			return $localStorage.authUser;
@@ -10,6 +10,7 @@ class BackendSidebarCtrl {
 				this.user = nv;
 			}
 		});
+		this.$state = $state;
 	}
 }
 

@@ -51,7 +51,9 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
   			if ($localStorage.authUser._id && $localStorage.authUser.role!=='admin') {
   				Auth.logout();
 					$location.path('/backend/login');
-  			}
+  			} else {
+          
+        }
   		} else {
   			$location.path('/backend/login');
   		}

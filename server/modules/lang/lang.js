@@ -138,7 +138,8 @@ let Language = {
 		AWARD_DETAIL: 'Award detail',
 		MISSING_RANK_OR_AWARD: 'Missing rank or award',
 		EDIT_AWARD: 'Edit award',
-		TERM_CONDITION_AGREEMENT: 'I agree to terms and conditions'
+		TERM_CONDITION_AGREEMENT: 'I agree to terms and conditions',
+		CATEGORIES_LIST: 'Categories list'
 	},
 	de: {
 

@@ -988,7 +988,6 @@ module.exports = function(kernel) {
     async.waterfall(funcs, (err, query) => {
       if(err) return res.status(500).json({type: 'SERVER_ERROR'});
       let cb = (err, data) => {
-        console.log(radius);
         if(err) return res.status(500).json({type: 'SERVER_ERROR'});
         if(!locationCheck || radius > 100 || data.items.length >= limit) {
           return res.status(200).json(data); 

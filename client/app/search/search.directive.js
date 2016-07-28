@@ -51,6 +51,11 @@ angular.module('healthStarsApp')
 			scope.removeAll = () => {
 				elm.tagsinput('removeAll');
 				scope.items = [];
+				$timeout(function(){
+					angular.element(document.getElementById('btn-clear-location-search')).trigger('click');
+					angular.element('.calendar-home > div').datepicker('clearDates');
+        });
+        console.log(SearchParams);
 			};
 
 			angular.element(element).on('click', 'ul.dropdown-menu > li > a', function(e) {
@@ -91,30 +96,31 @@ angular.module('healthStarsApp')
 		templateUrl: 'app/search/templates/location.html',
 		replace: true,
 		link: function(scope, element) {
+			scope.SearchParams = SearchParams.params;
 			scope.addresses = [];
-			scope.params = {
-				address: angular.copy(SearchParams.params.address),
-				postCode: '',
-				radius: angular.copy(SearchParams.params.radius)
-			};
+			// scope.params = {
+			// 	address: angular.copy(scope.SearchParams.address),
+			// 	postCode: '',
+			// 	radius: angular.copy(scope.SearchParams.radius)
+			// };
 
 			scope.select = function(address) {
-				scope.address = angular.copy(address);
+				scope.SearchParams.address = angular.copy(address);
 				scope.addresses = [];
 			};
 
 			scope.search = () => {
-				var address = angular.copy(scope.address);
-				var radius = angular.copy(scope.radius);
-				SearchParams.params = _.assign(SearchParams.params, {address: address, radius: radius});
+				// var address = angular.copy(scope.SearchParams.address);
+				// var radius = angular.copy(scope.SearchParams.radius);
+				// scope.SearchParams = _.assign(scope.SearchParams, {address: address, radius: radius});
 				angular.element('body').trigger('click');
 				scope.style={'background-color': '#3598dc', color: '#fff'};
 			}
 
 			scope.clear = () => {
-				scope.address = {};
-				scope.radius = '';
-				SearchParams.params = _.assign(SearchParams.params, {address: {}, radius: ''});
+				scope.SearchParams.address = {};
+				scope.SearchParams.radius = '';
+				// scope.SearchParams = _.assign(scope.SearchParams, {address: {}, radius: ''});
 				angular.element('body').trigger('click');
 				scope.style = {};
 			}

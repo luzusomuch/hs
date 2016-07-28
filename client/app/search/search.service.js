@@ -8,6 +8,7 @@
       address: {},
       postCode: '',
       radius: '',
+      dates: [],
       startDate: '',
       endDate: '',
       friendActivities: false,

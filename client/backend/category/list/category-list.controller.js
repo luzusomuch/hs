@@ -1,8 +1,7 @@
 'use strict';
 
 class BackendCategoryListCtrl {
-	constructor($scope, $localStorage, categories, CategoryService, $uibModal) {
-		this.authUser = $localStorage.authUser;
+	constructor($scope, categories, CategoryService, $uibModal) {
 		this.categories = categories;
 		this.CategoryService = CategoryService;
 		this.$uibModal = $uibModal;

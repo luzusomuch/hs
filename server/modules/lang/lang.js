@@ -149,7 +149,19 @@ let Language = {
 		CATEGORY_DESCRIPTION_REQUIRED: 'Category description required',
 		MISSING_ENTITY: 'Missing some entities',
 		CREATE_NEW_CATEGORY: 'Create new category',
-		MISSING_CATEGORY_IMAGE: 'Missing category image'
+		MISSING_CATEGORY_IMAGE: 'Missing category image',
+		DASHBOARD: 'Dashboard',
+		CATEGORIES: 'Categories',
+		EVENTS: 'Events',
+		EVENTS_LIST: 'Events list',
+		EVENT_NAME: 'Name',
+		EVENT_TOTAL_PARTICIPANTS: 'Total participants',
+		EVENT_CATEGORY: 'Category',
+		EVENT_START_DATE: 'Start date',
+		EVENT_END_DATE: 'End date',
+		EVENT_OWNER: 'Owner',
+		ACTION: 'Action',
+		LOAD_MORE_EVENTS: 'Load more events'
 	},
 	de: {
 

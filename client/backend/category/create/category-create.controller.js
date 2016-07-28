@@ -30,7 +30,7 @@ class BackendCreateCategoryCtrl {
 			} else {
 				// TODO show error
 			}
-		}
+		};
 	}
 }
 

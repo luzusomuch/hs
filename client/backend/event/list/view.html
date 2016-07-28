@@ -1,0 +1,38 @@
+<div class="content p-20">
+	<div class="row">
+		<h4>{{'EVENTS_LIST' | translate}}</h4>
+	</div>
+
+	<div class="row">
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<td><strong>{{'EVENT_NAME' | translate}}</strong></td>
+					<td><strong>{{'EVENT_OWNER' | translate}}</strong></td>
+					<td><strong>{{'EVENT_TOTAL_PARTICIPANTS' | translate}}</strong></td>
+					<td><strong>{{'EVENT_CATEGORY' | translate}}</strong></td>
+					<td><strong>{{'EVENT_START_DATE' | translate}}</strong></td>
+					<td><strong>{{'EVENT_END_DATE' | translate}}</strong></td>
+					<td><strong>{{'ACTION' | translate}}</strong></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="event in vm.events.items">
+					<td>{{event.name}}</td>
+					<td>{{event.ownerId.name}}</td>
+					<td>{{event.stats.totalParticipants || 0}}</td>
+					<td>{{event.categoryId.type}}</td>
+					<td>{{event.startDateTime | date: 'HH:mm'}} {{event.startDateTime | date: 'dd-MMMM-yyyy'}}</td>
+					<td>{{event.endDateTime | date: 'HH:mm'}} {{event.endDateTime | date: 'dd-MMMM-yyyy'}}</td>
+					<td>
+						<a href="#"><i class="fa fa-trash-o"></i></a>
+						<a href="#"><i class="fa fa-pencil"></i></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="row" ng-show="vm.events.items.length < vm.events.totalItem">
+		<a ng-click="vm.loadMore()" href="#">{{'LOAD_MORE_EVENTS' | translate}}</a>
+	</div>
+</div>

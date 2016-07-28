@@ -781,6 +781,16 @@ module.exports = function(kernel) {
     limit = (limit === 'NaN' || !limit || limit < 8 || limit > 100) ? 8 : limit;
     let skip = (page - 1) * limit;
 
+    let term = [];
+    if (req.user.role!=='admin') {
+      term = [
+        { missing: { field: 'private' } },
+        { term: { private: false } },
+        { term: { participantsId: req.user._id } },
+        { term: { ownerId: req.user._id} }
+      ];
+    }
+
     let q = {
       query: {
         filtered: {
@@ -792,12 +802,7 @@ module.exports = function(kernel) {
           filter: {
             bool: {
               must: [],
-              should: [
-                { missing: { field: 'private' } },
-                { term: { private: false } },
-                { term: { participantsId: req.user._id } },
-                { term: { ownerId: req.user._id} }
-              ]
+              should: term
             }
           }
         }

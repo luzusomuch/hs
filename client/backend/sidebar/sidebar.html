@@ -10,14 +10,21 @@
 			<li class="start" ng-class="{active: vm.$state.includes('backend.dashboard')}">
 				<a ui-sref="backend.dashboard">
 					<i class="icon-home"></i> 
-					<span class="title">Dashboard</span>
+					<span class="title">{{'DASHBOARD' | translate}}</span>
 					<span class="selected"></span>
 				</a>
 			</li>
-			<li class="start" ng-class="{active: vm.$state.includes('backend.category.list')}">
+			<li class="start" ng-class="{active: vm.$state.includes('backend.category')}">
 				<a ui-sref="backend.category.list">
 					<i class="icon-home"></i> 
-					<span class="title">Categories</span>
+					<span class="title">{{'CATEGORIES' | translate}}</span>
+					<span class="selected"></span>
+				</a>
+			</li>
+			<li class="start" ng-class="{active: vm.$state.includes('backend.event')}">
+				<a ui-sref="backend.event.list">
+					<i class="icon-home"></i> 
+					<span class="title">{{'EVENTS' | translate}}</span>
 					<span class="selected"></span>
 				</a>
 			</li>

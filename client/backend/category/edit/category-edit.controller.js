@@ -32,7 +32,7 @@ class BackendEditCategoryCtrl {
 			} else {
 				// TODO show error
 			}
-		}
+		};
 	}
 }
 

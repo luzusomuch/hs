@@ -813,6 +813,7 @@ label .note-form {
 .li-friend-event {
     padding-left: 43px;
     position: relative;
+    min-height: 30px;
 }
 .li-friend-event i.fa-user-plus {
     font-size: 23px;
@@ -1024,13 +1025,14 @@ label {
     width: 100%;
     height: 100px;
     background: rgba(15,24,56,0.87);
-    border-bottom: 1px solid rgba(255,255,255,0.1);
     resize: none;
     outline: none;
+    display: block;
 }
 .bottom-post {
     padding: 17px 80px 17px 80px;
     position: relative;
+    border-top: 1px solid rgba(255,255,255,0.1);
 }
 .bottom-post i.fa-clock-o {
     color: #1bb933;
@@ -1038,10 +1040,10 @@ label {
 }
 .form-post .post-picture {
     position: absolute;
-    padding: 11px;
+    padding: 8px;
     font-size: 18px;
     border-right: 1px solid rgba(255,255,255,0.3);
-    top: -6px;
+    top: 0px;
     left: 0px;
 }
 .form-post .post-picture i {
@@ -1191,6 +1193,9 @@ label {
 .action-event {
     color: #fff;
     margin-top: 10px;
+}
+.action-event i.fa-heart {
+    cursor: pointer;
 }
 .action-event span {
     display: inline-block;
@@ -1533,18 +1538,18 @@ label {
 .award-step1, .award-step2, .award-step3 {
     position: absolute;
     top: 108px;
-    left: 176px;
-    width: 58px;
+    left: 177px;
+    width: 55px;
     height: 74px;
     line-height: 74px;
 }
 .award-step2 {
     top: 128px;
-    left: 78px;
+    left: 80px;
 }
 .award-step3 {
     top: 143px;
-    left: 274px;
+    left: 275px;
 }
 .img-award {
     height: 200px;

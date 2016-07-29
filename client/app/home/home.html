@@ -10,9 +10,9 @@
           <div class="col-sm-6  col-lg-8">
               <div class="menu-home">
                   <ul>
-                      <li ng-class="{'active': vm.isActive(category)}" ng-repeat="category in vm.categories">
+                      <li ng-class="{'active': vm.isActive(category)}" ng-repeat="category in vm.categories | orderBy: 'order'">
                           <a href ng-click="vm.selectCategory(category)" class="{{category | categoryClass: true}}"><img height="74" ng-src="{{category | categoryImagePath}}">
-                            <span>{{category.type.toUpperCase()}}</span>
+                            <span>{{category.menuName.toUpperCase()}}</span>
                           </a>
                       </li>
                   </ul>

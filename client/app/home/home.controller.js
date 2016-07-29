@@ -3,6 +3,36 @@
 class HomeCtrl {
 	constructor($scope, EventService, LikeService, $localStorage, CategoryService, SearchParams, socket, $state, $timeout, categories) {
     this.$scope = $scope;
+    this.categories = [];
+    // re-order category
+    _.each(categories, (cat) => {
+      switch (cat.type) {
+        case 'food': 
+          cat.menuName = 'foodstar';
+          cat.order = 2;
+          break;
+        case 'action':
+          cat.menuName = 'actionstar'
+          cat.order = 5;
+          break;
+        case 'eco':
+          cat.menuName = 'ecostar';
+          cat.order = 4;
+          break;
+        case 'social': 
+          cat.menuName = 'socialstar';
+          cat.order = 3; 
+          break;
+        case 'internation':
+          cat.menuName = 'sportstar';
+          cat.order = 1;
+          break;
+        default:
+          cat.menuName = cat.type;
+          cat.order = categories.length;
+          break;
+      }
+    });
     this.categories = categories;
     this.searchParams = SearchParams.params;
     //this.searchParams.categories = _.map(categories, '_id');

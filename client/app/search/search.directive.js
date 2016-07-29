@@ -78,13 +78,20 @@ angular.module('healthStarsApp')
 
 			let first = true;
 
-			scope.$watch('items', (nv) => {
-				if(!first) {
-					SearchParams.params.keywords = nv.join(',');
-					$state.go('home');
-				}
-				first = false;
-			}, true);
+			// scope.$watch('items', (nv) => {
+			// 	console.log(nv);
+			// 	console.log(first);
+			// 	if(!first) {
+			// 		SearchParams.params.keywords = nv.join(',');
+			// 		$state.go('home');
+			// 	}
+			// 	first = false;
+			// }, true);
+
+			scope.search = () => {
+				SearchParams.params.keywords = scope.items.join(',');
+				$state.go('home');
+			};
 		}
 	}	
 })
@@ -95,7 +102,6 @@ angular.module('healthStarsApp')
 		templateUrl: 'app/search/templates/location.html',
 		replace: true,
 		link: function(scope, element) {
-			scope.SearchParams = SearchParams.params;
 			scope.addresses = [];
 			// scope.params = {
 			// 	address: angular.copy(scope.SearchParams.address),
@@ -104,22 +110,22 @@ angular.module('healthStarsApp')
 			// };
 
 			scope.select = function(address) {
-				scope.SearchParams.address = angular.copy(address);
+				scope.address = angular.copy(address);
 				scope.addresses = [];
 			};
 
 			scope.search = () => {
-				// var address = angular.copy(scope.SearchParams.address);
-				// var radius = angular.copy(scope.SearchParams.radius);
-				// scope.SearchParams = _.assign(scope.SearchParams, {address: address, radius: radius});
+				var address = angular.copy(scope.address);
+				var radius = angular.copy(scope.radius);
+				SearchParams.params = _.assign(SearchParams.params, {address: address, radius: radius});
 				angular.element('body').trigger('click');
 				scope.style={'background-color': '#3598dc', color: '#fff'};
 			}
 
 			scope.clear = () => {
-				scope.SearchParams.address = {};
-				scope.SearchParams.radius = '';
-				// scope.SearchParams = _.assign(scope.SearchParams, {address: {}, radius: ''});
+				scope.address = {};
+				scope.radius = '';
+				SearchParams.params = _.assign(SearchParams.params, {address: {}, radius: ''});
 				angular.element('body').trigger('click');
 				scope.style = {};
 			}

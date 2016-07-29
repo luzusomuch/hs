@@ -49,7 +49,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-show="!vm.search" ng-repeat="event in vm.events.items | orderBy: vm.sortType: vm.sortReverse">
+				<tr ng-show="!vm.search" ng-repeat="event in vm.events.items | activeEvents:vm.showActiveEvent | orderBy: vm.sortType: vm.sortReverse">
 					<td>{{event.name}}</td>
 					<td>{{event.ownerId.name}}</td>
 					<td>{{event.stats.totalParticipants || 0}}</td>
@@ -61,7 +61,7 @@
 						<a href="#"><i class="fa fa-pencil"></i></a>
 					</td>
 				</tr>
-				<tr ng-show="vm.search" ng-repeat="event in vm.searchItems track by $index">
+				<tr ng-show="vm.search" ng-repeat="event in vm.searchItems | activeEvents:vm.showActiveEvent | orderBy: vm.sortType: vm.sortReverse track by $index">
 					<td>{{event.name}}</td>
 					<td>{{event.ownerId.name}}</td>
 					<td>{{event.stats.totalParticipants || 0}}</td>

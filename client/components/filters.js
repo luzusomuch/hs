@@ -277,4 +277,15 @@ angular.module('healthStarsApp')
     }
     return image;
   }
+})
+.filter('activeEvents', () => {
+  return (items, isShowActive) => {
+    let now = new Date();
+    if (items && items.length > 0 && isShowActive) {
+      console.log(items[0].startDateTime)
+
+    } else {
+      return items;
+    }
+  }
 });

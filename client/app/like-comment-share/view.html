@@ -8,7 +8,7 @@
   </div>
 </div>
 
-<div id="parentComment{{vm.data._id}}" class="replies-post" ng-show="vm.data.showComment">
+<div ng-scrollbars id="parentComment{{vm.data._id}}" class="replies-post" ng-show="vm.data.showComment">
   <ul>
     <li ng-repeat="comment in vm.data.comments">
       <div class="post-li">

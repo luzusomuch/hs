@@ -9,16 +9,20 @@ class BackendEventListCtrl {
 		this.page = 2;
 		this.filterTypes = [
 			{value: 'category', text: 'CATEGORY'},
-			{value: 'owner', text: 'EVENT_OWNER'}
+			{value: 'owner', text: 'EVENT_OWNER'},
+			{value: 'name', text: 'EVENT_NAME'}
 		];
 		this.search = false;
-		$scope.$watch('vm.searchText', (nv) => {
-			if (nv && nv.trim().length > 0) {
+		$scope.$watchGroup(['vm.searchText', 'vm.selectedFilterType'], (nv) => {
+			if (nv && ((nv[0] && nv[0].trim().length > 0) || nv[1])) {
 				this.searchItems = [];
 				this.search = true;
 				_.each(this.events.items, (item) => {
-					if (this.selectedFilterType === 'category') {
-						if (item.categoryId.type.indexOf(nv) > -1) {
+					if (nv[1] === 'category') {
+						if (item.categoryId.type === 'internation') {
+							item.categoryId.type = 'sport';
+						}
+						if (item.categoryId.type.indexOf(nv[0]) > -1) {
 							let index = _.findIndex(this.searchItems, (event) => {
 								return item._id===event._id;
 							});
@@ -26,8 +30,8 @@ class BackendEventListCtrl {
 								this.searchItems.push(item);
 							}
 						}
-					} else if (this.selectedFilterType==='owner') {
-						if (item.ownerId.name.toLowerCase().indexOf(nv) > -1 || item.ownerId.name.indexOf(nv) > -1) {
+					} else if (nv[1]==='owner') {
+						if (item.ownerId.name.toLowerCase().indexOf(nv[0]) > -1 || item.ownerId.name.indexOf(nv[0]) > -1) {
 							let index = _.findIndex(this.searchItems, (event) => {
 								return item._id===event._id;
 							});
@@ -36,7 +40,7 @@ class BackendEventListCtrl {
 							}
 						}
 					} else {
-						if (item.name.indexOf(nv) > -1) {
+						if (item.name.indexOf(nv[0]) > -1) {
 							let index = _.findIndex(this.searchItems, (event) => {
 								return item._id===event._id;
 							});

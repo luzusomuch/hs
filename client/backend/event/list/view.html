@@ -37,7 +37,7 @@
 					<td>{{event.name}}</td>
 					<td>{{event.ownerId.name}}</td>
 					<td>{{event.stats.totalParticipants || 0}}</td>
-					<td>{{event.categoryId.type}}</td>
+					<td>{{(event.categoryId.type==='internation') ? 'sport' : event.categoryId.type}}</td>
 					<td>{{event.startDateTime | date: 'HH:mm'}} {{event.startDateTime | date: 'dd-MMMM-yyyy'}}</td>
 					<td>{{event.endDateTime | date: 'HH:mm'}} {{event.endDateTime | date: 'dd-MMMM-yyyy'}}</td>
 					<td>

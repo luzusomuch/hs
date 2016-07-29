@@ -58,7 +58,7 @@
 					<td>{{event.endDateTime | date: 'HH:mm'}} {{event.endDateTime | date: 'dd-MMMM-yyyy'}}</td>
 					<td>
 						<a href="#"><i class="fa fa-trash-o"></i></a>
-						<a href="#"><i class="fa fa-pencil"></i></a>
+						<a ui-sref="backend.event.edit({id: event._id})"><i class="fa fa-pencil"></i></a>
 					</td>
 				</tr>
 				<tr ng-show="vm.search" ng-repeat="event in vm.searchItems | activeEvents:vm.showActiveEvent | orderBy: vm.sortType: vm.sortReverse track by $index">
@@ -70,7 +70,7 @@
 					<td>{{event.endDateTime | date: 'HH:mm'}} {{event.endDateTime | date: 'dd-MMMM-yyyy'}}</td>
 					<td>
 						<a href="#"><i class="fa fa-trash-o"></i></a>
-						<a href="#"><i class="fa fa-pencil"></i></a>
+						<a ui-sref="backend.event.edit({id: event._id})"><i class="fa fa-pencil"></i></a>
 					</td>
 				</tr>
 			</tbody>

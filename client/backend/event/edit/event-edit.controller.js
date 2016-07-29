@@ -1,43 +1,50 @@
 'use strict';
 
-class CreateEventCtrl {
-	constructor(APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies) {
+class BackendEventEditCtrl {
+	constructor(event, APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $cookies) {
+		// Init event
+		this.event = event;
+		this.event.categoryId = event.categoryId._id;
+		this.event.startDate = new Date(event.startDateTime);
+		this.event.endDate = new Date(event.endDateTime);
+		this.event.startTime = new Date(moment().hours(moment(event.startDateTime).hours()).minutes(moment(event.startDateTime).minutes()));
+		this.event.endTime = new Date(moment().hours(moment(event.endDateTime).hours()).minutes(moment(event.endDateTime).minutes()));
+		this.event.isRepeat = (event.repeat && event.repeat.type) ? true : false;
+		this.address = {
+			selected: {
+				formatted_address: event.location.fullAddress,
+				formatted_short_address: event.location.fullAddress.substr(0, 35) + ' ...',
+				geometry: {
+					location: {
+						lng: event.location.coordinates[0],
+						lat: event.location.coordinates[1]
+					}
+				},
+				address_components: [{
+					long_name: event.location.country,
+					short_name: event.location.countryCode
+				}]
+			}
+		};
+		this.event.award = event.awardId;
+		this.event.participants = event.participantsId;
+		// End init event
 		this.APP_CONFIG = APP_CONFIG;
     this.Upload = Upload;
 		this.$cookies = $cookies;
 		this.files = [];
-		this.user = $localStorage.authUser;
-		this.event = {
-			repeat: {},
-			participants: [],
-			location: {},
-      public: true,
-      isRepeat: false,
-      startDate: new Date(), 
-      allowShow: false
-		};
-    this.shareEventInfo = {};
     this.$http = $http;
     this.$state = $state;
     this.EventService = EventService;
     this.RelationService = RelationService;
     this.AwardService = AwardService;
     this.$uibModal = $uibModal;
-    this.address = {};
     this.addresses = [];
     this.submitted = false;
     this.errors = {};
-    this.selectedCategory = {};
 
     $scope.$on('$destroy', function() {
       //do anything such as remove socket
-    });
-
-    $scope.$watch('vm.event.startDate', (nv) => {
-      // set end date is same as start date
-      if (nv) {
-        this.event.endDate = nv;
-      }
     });
 
     $scope.$watch('vm.event.isRepeat', (nv) => {
@@ -56,7 +63,7 @@ class CreateEventCtrl {
     			};
     		}, err => {
     			console.log(err);
-          this.event.isRepeat = false;
+    			this.event.isRepeat = false;
     		});
     	}
     });
@@ -73,26 +80,14 @@ class CreateEventCtrl {
       }
     });
 
-    $scope.$watch('vm.event.categoryId', (nv) => {
-      if (nv) {
-        let idx = _.findIndex(this.categories, (cat) => {
-          return cat._id===nv;
-        });
-        if (idx !== -1) {
-          this.selectedCategory = this.categories[idx];
-        }
-      }
-    });
-
     this.friends = [];
-    this.RelationService.getAll({id: this.user._id, type: 'friend'}).then(resp => {
+    this.RelationService.getAll({id: this.event.ownerId._id, type: 'friend'}).then(resp => {
     	this.friends = resp.data.items;
     });
 
     this.categories = [];
     CategoryService.getAll().then(resp => {
     	this.categories = resp.data.items;
-      this.event.categoryId = this.categories[0]._id;
     });
 
     this.options = {
@@ -164,25 +159,52 @@ class CreateEventCtrl {
 		});
   }
 
-  select($files) {
+  select($files, type) {
   	$files.forEach(file => {
       //check file
+      file.photoType = type;
       let index = _.findIndex(this.files, (f) => {
         return f.name === file.name && f.size === file.size;
       });
 
       if (index === -1) {
+      	// find out the current banner index and remove it from files array
+      	let idx = _.findIndex(this.files, (file) => {
+      		if (type==='banner') {
+      			return file.photoType === 'banner';
+      		}
+      	});
+      	if (idx !== -1) {
+      		this.files.splice(idx, 1);
+      	}
         this.files.push(file);
       }
     });
+    this.newBanner = _.filter(this.files, {photoType: 'banner'});
+    this.event.bannerName = (this.newBanner.length > 0) ? this.newBanner[0].name : null;
   }
 
-  onTimeSet(newDate, oldDate) {
-    console.log(newDate);
-    console.log(oldDate);
+  removePhoto(photo, type) {
+    if (type==='photo') {
+      let index = _.findIndex(this.event.photosId, (p) => {
+        return p._id === photo._id;
+      });
+      if (index !== -1) {
+        this.event.photosId.splice(index, 1);
+      }
+    } else if (type==='file') {
+      let index = _.findIndex(this.files, (file) => {
+        if (type !== 'banner') {
+          return file.name===photo.name;
+        }
+      });
+      if (index !== -1) {
+        this.files.splice(index, 1);
+      }
+    }
   }
 
-  create(form) {
+  edit(form) {
     this.errors = {};
     this.submitted = true;
     if (!this.event.categoryId) {
@@ -215,18 +237,23 @@ class CreateEventCtrl {
         return this.errors.dateTime = true;
       }
 
+      this.event.photos = _.map(this.event.photosId, (photo) => {
+        return photo._id;
+      });
+      this.event.photosLength = this.event.photos.length;
+
   		this.Upload.upload({
-	      url: '/api/v1/events',
+	      url: '/api/v1/events/'+this.$state.params.id,
+	      method: 'PUT',
 	      arrayKey: '',
 	      data: {file: this.files, event: this.event},
 	      headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
-	    }).then(resp =>{
-        this.event.url = `${this.APP_CONFIG.baseUrl}event/detail/${resp.data._id}`;
-	    	this.$state.go('event.detail', {id: resp.data._id});
+	    }).then(resp => {
         this.submitted = false;
-        this.event.allowShow = true;
+	    	this.$state.go('backend.event.list');
 	    }, (err) => {
 	    	console.log(err);
+	    	// TODO show error
 	    });
   	}
   }
@@ -266,6 +293,77 @@ class RepeatEventCtrl {
 	}
 }
 
+class AddParticipantsCtrl {
+	constructor($uibModalInstance, growl, friends, participants) {
+		this.friends = friends;
+		this.participants = participants;
+		_.each(this.participants, (participant) => {
+			let index = _.findIndex(this.friends, (friend) => {
+				return friend._id===participant._id;
+			});
+			if (index !== -1) {
+				this.friends[index].select = true;
+			}
+		});
+		this.$uibModalInstance = $uibModalInstance;
+		this.growl = growl;
+	}
+
+	submit() {
+		let selectedParticipants = _.filter(this.friends, {select: true});
+		this.$uibModalInstance.close(selectedParticipants);
+	}
+}
+
+class AddAwardCtrl {
+	constructor($uibModalInstance, growl, awards, selectedAward, $uibModal) {
+		this.awards = awards.data.items;
+		if (selectedAward) {
+			let index = _.findIndex(this.awards, (award) => {
+				return award._id===selectedAward._id;
+			});
+			if (index !== -1) {
+				this.awards[index].select = true;
+			}
+		}
+		this.$uibModalInstance = $uibModalInstance;
+		this.growl = growl;
+		this.$uibModal = $uibModal;
+	}
+
+	showAddMoreAwardModal() {
+		let modalInstance = this.$uibModal.open({
+    	animation: true,
+    	templateUrl: 'app/award/create/create-award-modal.html',
+    	controller: 'CreateAwardCtrl',
+    	controllerAs: 'vm'
+    });
+		modalInstance.result.then(data => {
+			this.awards.push(data);
+		}, err => {
+			console.log(err);
+		});
+	}
+
+	selectAward(award) {
+		this.awards.forEach(aw => {
+			aw.select = false;
+		});
+		award.select = true;
+	}
+
+	submit() {
+		let selectedAward = _.filter(this.awards, {select: true});
+		if (selectedAward.length > 0) {
+			this.$uibModalInstance.close(selectedAward[0]);
+		} else {
+			this.growl.error('Please select an award');
+		}
+	}
+}
+
 angular.module('healthStarsApp')
-	.controller('CreateEventCtrl', CreateEventCtrl)
-	.controller('RepeatEventCtrl', RepeatEventCtrl);
+	.controller('BackendEventEditCtrl', BackendEventEditCtrl)
+	.controller('RepeatEventCtrl', RepeatEventCtrl)
+	.controller('AddParticipantsCtrl', AddParticipantsCtrl)
+	.controller('AddAwardCtrl', AddAwardCtrl)

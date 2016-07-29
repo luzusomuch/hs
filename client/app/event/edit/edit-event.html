@@ -38,9 +38,9 @@
                 <div class="col-sm-2" style="margin-top: 5px">{{'FROM' | translate}}</div>
                 <div class="col-sm-5">
                   <div class="form-group">
-                    <div class="input-group date" ng-click="isOpenFromDate=!isOpenFromDate">
-                      <input type="text" class="form-control" id="datetimepicker1" placeholder="Date" ng-model="vm.event.startDate" required name="startDate" uib-datepicker-popup="{{'dd-MMMM-yyyy'}}" is-open="isOpenFromDate" datepicker-options="vm.options">
-                      <span class="input-group-addon">
+                    <div class="input-group date">
+                      <input type="text" class="form-control" id="datetimepicker1" placeholder="Date" ng-model="vm.event.startDate" required name="startDate" uib-datepicker-popup="{{'dd-MMMM-yyyy'}}" is-open="vm.isOpenFromDate" datepicker-options="vm.options">
+                      <span class="input-group-addon" ng-click="vm.isOpenFromDate=!vm.isOpenFromDate">
                         <span class="glyphicon glyphicon-calendar"></span>
                       </span>
                     </div>
@@ -71,9 +71,9 @@
                 <div class="col-sm-2" style="margin-top: 5px">{{'TO' | translate}}</div>
                 <div class="col-sm-5">
                   <div class="form-group">
-                    <div class="input-group date" ng-click="isOpenToDate=!isOpenToDate">
-                      <input type="text" class="form-control" id="datetimepicker3" placeholder="Date" ng-model="vm.event.endDate" required name="endDate" uib-datepicker-popup="{{'dd-MMMM-yyyy'}}" is-open="isOpenToDate" datepicker-options="vm.options">
-                      <span class="input-group-addon">
+                    <div class="input-group date">
+                      <input type="text" class="form-control" id="datetimepicker3" placeholder="Date" ng-model="vm.event.endDate" required name="endDate" uib-datepicker-popup="{{'dd-MMMM-yyyy'}}" is-open="vm.isOpenToDate" datepicker-options="vm.options">
+                      <span class="input-group-addon" ng-click="vm.isOpenToDate=!vm.isOpenToDate">
                           <span class="glyphicon glyphicon-calendar"></span>
                       </span>
                     </div>

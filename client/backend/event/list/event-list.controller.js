@@ -59,25 +59,6 @@ class BackendEventListCtrl {
 		});
 	}
 
-	edit(event) {
-		let modalInstance = this.$uibModal.open({
-    	animation: true,
-    	templateUrl: 'backend/category/edit/edit.html',
-    	controller: 'BackendEditCategoryCtrl',
-    	resolve: {
-    		category: () => {
-    			return cat;
-    		}
-    	}
-    });
-		modalInstance.result.then(data => {
-			
-		}, err => {
-			console.log(err);
-			// TODO show error
-		});
-	}
-
 	loadMore() {
 		this.EventService.search({page: this.page}).then(resp => {
   		this.page += 1;

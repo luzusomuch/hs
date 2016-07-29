@@ -106,6 +106,7 @@ class HomeCtrl {
       totalItem: 0
     };
     this.page = 1;
+    console.log(this.searchParams);
     let params = angular.copy(this.searchParams);
     params.page = this.page;
     if(params.address && params.address.geometry && params.address.geometry.location) {

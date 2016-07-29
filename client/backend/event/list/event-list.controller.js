@@ -7,6 +7,50 @@ class BackendEventListCtrl {
 		this.$uibModal = $uibModal;
 		this.EventService = EventService;
 		this.page = 2;
+		this.filterTypes = [
+			{value: 'category', text: 'CATEGORY'},
+			{value: 'owner', text: 'EVENT_OWNER'}
+		];
+		this.search = false;
+		$scope.$watch('vm.searchText', (nv) => {
+			if (nv && nv.trim().length > 0) {
+				this.searchItems = [];
+				this.search = true;
+				_.each(this.events.items, (item) => {
+					if (this.selectedFilterType === 'category') {
+						if (item.categoryId.type.indexOf(nv) > -1) {
+							let index = _.findIndex(this.searchItems, (event) => {
+								return item._id===event._id;
+							});
+							if (index === -1) {
+								this.searchItems.push(item);
+							}
+						}
+					} else if (this.selectedFilterType==='owner') {
+						if (item.ownerId.name.toLowerCase().indexOf(nv) > -1 || item.ownerId.name.indexOf(nv) > -1) {
+							let index = _.findIndex(this.searchItems, (event) => {
+								return item._id===event._id;
+							});
+							if (index === -1) {
+								this.searchItems.push(item);
+							}
+						}
+					} else {
+						if (item.name.indexOf(nv) > -1) {
+							let index = _.findIndex(this.searchItems, (event) => {
+								return item._id===event._id;
+							});
+							if (index === -1) {
+								this.searchItems.push(item);
+							}
+						}
+					}
+				});
+			} else {
+				this.search = false;
+				this.searchItems = [];
+			}
+		});
 	}
 
 	edit(event) {

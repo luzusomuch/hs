@@ -4,6 +4,22 @@
 	</div>
 
 	<div class="row">
+		<div class="col-sm-8 col-xs-12">
+			<select class="col-sm-3" ng-model="vm.selectedFilterType">
+				<option ng-value="type.value" ng-repeat="type in vm.filterTypes">{{type.text | translate}}</option>
+			</select>
+			<div class="col-sm-1"></div>
+			<input class="col-sm-8" type="text" ng-model="vm.searchText">
+		</div>
+		<div class="col-sm-4 col-xs-12">
+			<label>
+	      <input type="checkbox" ng-model="oneAtATime">
+	      {{'SHOW_ACTIVE_EVENT' | translate}}
+	    </label>
+		</div>
+	</div>
+
+	<div class="row">
 		<table class="table table-bordered table-striped">
 			<thead>
 				<tr>
@@ -17,7 +33,19 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="event in vm.events.items">
+				<tr ng-show="!vm.search" ng-repeat="event in vm.events.items">
+					<td>{{event.name}}</td>
+					<td>{{event.ownerId.name}}</td>
+					<td>{{event.stats.totalParticipants || 0}}</td>
+					<td>{{event.categoryId.type}}</td>
+					<td>{{event.startDateTime | date: 'HH:mm'}} {{event.startDateTime | date: 'dd-MMMM-yyyy'}}</td>
+					<td>{{event.endDateTime | date: 'HH:mm'}} {{event.endDateTime | date: 'dd-MMMM-yyyy'}}</td>
+					<td>
+						<a href="#"><i class="fa fa-trash-o"></i></a>
+						<a href="#"><i class="fa fa-pencil"></i></a>
+					</td>
+				</tr>
+				<tr ng-show="vm.search" ng-repeat="event in vm.searchItems track by $index">
 					<td>{{event.name}}</td>
 					<td>{{event.ownerId.name}}</td>
 					<td>{{event.stats.totalParticipants || 0}}</td>

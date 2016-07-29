@@ -18,6 +18,21 @@ angular.module('healthStarsApp')
     }
   };
 })
+.directive('autoFocus', function($timeout) {
+  return {
+    scope: {trigger: '=autoFocus'},
+    link: function(scope, element, attrs) {
+      scope.$watch('trigger', function(value) {
+        if(value === true) { 
+          $timeout(function() {
+            element[0].focus();
+            scope.trigger = false;
+          });
+        }
+      });
+    }
+  };
+})
 .directive('shareToolBox', ['$timeout', 'ShareService', '$state', 'APP_CONFIG', function($timeout, ShareService, $state, APP_CONFIG) {
   return {
     restrict : 'A',

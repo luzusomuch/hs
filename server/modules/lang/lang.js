@@ -161,7 +161,8 @@ let Language = {
 		EVENT_END_DATE: 'End date',
 		EVENT_OWNER: 'Owner',
 		ACTION: 'Action',
-		LOAD_MORE_EVENTS: 'Load more events'
+		LOAD_MORE_EVENTS: 'Load more events',
+		SHOW_ACTIVE_EVENT: 'Show active events'
 	},
 	de: {
 

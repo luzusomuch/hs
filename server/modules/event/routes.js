@@ -552,6 +552,7 @@ module.exports = function(kernel) {
             }
             event.stats.totalParticipants = event.participantsId.length;
             event.save().then(() => {
+              kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
               return res.status(200).json({type: 'EVENT_UPDATE_SUCCESS', message: 'Event updated'});
             }).catch(err => {
               return res.status(500).json({type: 'SERVER_ERROR'});
@@ -842,7 +843,7 @@ module.exports = function(kernel) {
         if(date.isValid()) {
           should.push({
             range: {
-              createdAt: {
+              startDateTime: {
                 gte: date.startOf('date').toISOString(),
                 lte: date.endOf('date').toISOString()
               }
@@ -858,7 +859,7 @@ module.exports = function(kernel) {
         });
       }
     }
-
+    
     //process date
     if(req.body.startDate) {
       let time = parseInt(req.body.startDate);
@@ -866,7 +867,7 @@ module.exports = function(kernel) {
       if(date.isValid()) {
         q.query.filtered.filter.bool.must.push({
           range: {
-            createdAt: {
+            startDateTime: {
               gte: date.startOf('date').toISOString(),
               lte: date.endOf('date').toISOString()
             }

@@ -14,7 +14,7 @@
 		<div class="col-sm-4 col-xs-12">
 			<label>
 	      <input type="checkbox" ng-model="vm.showActiveEvent">
-	      {{'SHOW_ACTIVE_EVENT' | translate}}
+	      {{'SHOW_INACTIVE_EVENT' | translate}}
 	    </label>
 		</div>
 	</div>
@@ -57,7 +57,7 @@
 					<td>{{event.startDateTime | date: 'HH:mm'}} {{event.startDateTime | date: 'dd-MMMM-yyyy'}}</td>
 					<td>{{event.endDateTime | date: 'HH:mm'}} {{event.endDateTime | date: 'dd-MMMM-yyyy'}}</td>
 					<td>
-						<a href="#"><i class="fa fa-trash-o"></i></a>
+						<a href="#" ng-click="vm.delete(event)"><i class="fa fa-trash-o"></i></a>
 						<a ui-sref="backend.event.edit({id: event._id})"><i class="fa fa-pencil"></i></a>
 					</td>
 				</tr>
@@ -69,7 +69,7 @@
 					<td>{{event.startDateTime | date: 'HH:mm'}} {{event.startDateTime | date: 'dd-MMMM-yyyy'}}</td>
 					<td>{{event.endDateTime | date: 'HH:mm'}} {{event.endDateTime | date: 'dd-MMMM-yyyy'}}</td>
 					<td>
-						<a href="#"><i class="fa fa-trash-o"></i></a>
+						<a href="#" ng-click="vm.delete(event)"><i class="fa fa-trash-o"></i></a>
 						<a ui-sref="backend.event.edit({id: event._id})"><i class="fa fa-pencil"></i></a>
 					</td>
 				</tr>

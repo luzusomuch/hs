@@ -162,7 +162,10 @@ let Language = {
 		EVENT_OWNER: 'Owner',
 		ACTION: 'Action',
 		LOAD_MORE_EVENTS: 'Load more events',
-		SHOW_ACTIVE_EVENT: 'Show active events'
+		SHOW_INACTIVE_EVENT: 'Show in-active events',
+		EVENT_BLOCKED: 'Event blocked',
+		TRUE: 'True',
+		FALSE: 'False'
 	},
 	de: {
 

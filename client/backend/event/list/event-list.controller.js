@@ -2,6 +2,7 @@
 
 class BackendEventListCtrl {
 	constructor($scope, $localStorage, events, $uibModal, EventService) {
+		this.showActiveEvent = false;
 		this.sortType = 'startDateTime';
 		this.sortReverse = false;
 		this.events = events;
@@ -63,6 +64,15 @@ class BackendEventListCtrl {
 		this.EventService.search({page: this.page}).then(resp => {
   		this.page += 1;
   		this.events.items = this.events.items.concat(resp.data.items);
+		}).catch(err => {
+			console.log(err);
+			// TODO show error
+		});
+	}
+
+	delete(event) {
+		this.EventService.delete(event._id).then(() => {
+
 		}).catch(err => {
 			console.log(err);
 			// TODO show error

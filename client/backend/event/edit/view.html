@@ -32,6 +32,17 @@
               <label for="radio2"> {{'PRIVATE' | translate}}</label>
             </div>
           </div>
+          <div class="form-group">
+            <label>{{'EVENT_BLOCKED' | translate}}</label>
+            <div class="radio-l">
+              <input id="radio3" ng-model="vm.event.blocked" type="radio" name="eventblocked" checked="" value="radio3" ng-value="true">
+              <label for="radio3"> {{'TRUE' | translate}}</label>
+            </div>
+            <div class="radio-l">
+              <input id="radio4" ng-model="vm.event.blocked" type="radio" name="eventblocked" ng-value="false" value="radio4">
+              <label for="radio4"> {{'FALSE' | translate}}</label>
+            </div>
+          </div>
           <div class="form-group event-info-form">
             <label>{{'EVENT_INFORMATION' | translate}}</label>
             <div class="row">

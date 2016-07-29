@@ -2,8 +2,9 @@
 
 class BackendEventListCtrl {
 	constructor($scope, $localStorage, events, $uibModal, EventService) {
+		this.sortType = 'startDateTime';
+		this.sortReverse = false;
 		this.events = events;
-		console.log(this.events);
 		this.$uibModal = $uibModal;
 		this.EventService = EventService;
 		this.page = 2;
@@ -13,8 +14,9 @@ class BackendEventListCtrl {
 			{value: 'name', text: 'EVENT_NAME'}
 		];
 		this.search = false;
+		this.selectedFilterType = this.filterTypes[2].value;
 		$scope.$watchGroup(['vm.searchText', 'vm.selectedFilterType'], (nv) => {
-			if (nv && ((nv[0] && nv[0].trim().length > 0) || nv[1])) {
+			if (nv && (nv[0] && nv[0].trim().length > 0) && nv[1]) {
 				this.searchItems = [];
 				this.search = true;
 				_.each(this.events.items, (item) => {

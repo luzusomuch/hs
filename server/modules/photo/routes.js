@@ -3,6 +3,25 @@ import async from 'async';
 import _ from 'lodash';
 
 module.exports = function(kernel) {
+	/*Get all photos restrict admin*/
+	kernel.app.get('/api/v1/photos', kernel.middleware.hasRole('admin'), (req, res) => {
+		let page = req.query.page || 1;
+		let pageSize = req.query.pageSize || 10;
+		kernel.model.Photo.find({})
+    .limit(Number(pageSize))
+    .skip(pageSize * (page-1))
+    .populate('ownerId', '-password -salt')
+    .exec().then(photos => {
+      kernel.model.Photo.count({}).then(count => {
+      	return res.status(200).json({items: photos, totalItem: count});
+      }).catch(err => {
+      	return res.status(500).json({type: 'SERVER_ERROR'});	
+      });
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+	});
+
 	kernel.app.get('/api/v1/photos/view',kernel.middleware.isAuthenticated(), (req, res) => {
 		if(!req.query.id || !kernel.mongoose.Types.ObjectId.isValid(req.query.id)) {
 			return res.status(400).json({type: 'BAD_REQUEST', message: 'Invalid Id'});

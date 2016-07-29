@@ -35,7 +35,7 @@
       <!-- endinjector -->
     <!-- endbuild -->
   </head>
-  <body class="{{appSettings.get('bodyClass')}}">
+  <body ng-class="{'pagenote': backgroundAvailable.indexOf(currentState)!==-1, 'pagenode1': backgroundAvailable.indexOf(currentState)===-1}" class="{{appSettings.get('bodyClass')}}">
     <!--[if lt IE 7]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -55,6 +55,8 @@
       ga('create', 'UA-XXXXX-X');
       ga('send', 'pageview');
     </script>
+
+    <div class="bottom-body"><img src="/assets/images/bottom-bg.png"></div>
 
     <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_lylswA70OwfWFKv89glwhdlTTSiOCCk&libraries=places"/> -->
 

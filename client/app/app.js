@@ -38,6 +38,7 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
   	};
   })
   .run(function($rootScope, $state, Auth, AppSettings, $localStorage, Language) {
+    $rootScope.backgroundAvailable = ['login', 'register', 'verifyAccount', 'forgotPw', 'resetPw', 'terms'];
     let lang = $localStorage.language || 'en';
     Language.set(lang);
     FB.init({

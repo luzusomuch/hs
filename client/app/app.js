@@ -37,7 +37,7 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
   		}
   	};
   })
-  .run(function($rootScope, $state, Auth, AppSettings, $localStorage, Language) {
+  .run(function($rootScope, $state, Auth, AppSettings, $localStorage, Language, $window) {
     $rootScope.backgroundAvailable = ['login', 'register', 'verifyAccount', 'forgotPw', 'resetPw', 'terms'];
     let lang = $localStorage.language || 'en';
     Language.set(lang);
@@ -79,5 +79,19 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
     });
     $rootScope.$on('$stateChangeSuccess', (event, state) => {
       $rootScope.currentState = state.name;
+    });
+
+    $rootScope.pageWidth = $window.innerWidth;
+    console.log($rootScope.pageWidth);
+    angular.element($window).bind('resize', function () {
+      $rootScope.pageWidth = $window.innerWidth;
+      var div1 = $('#div-1');
+      var parent = div1.parent();
+                    if (($rootScope.pageWidth <= 768) && ($rootScope.pageWidth >= 320)) {
+                        parent.append(div1);
+                    }
+                    else {
+                        parent.prepend(div1);
+                    }
     });
   });

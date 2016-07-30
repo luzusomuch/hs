@@ -95,6 +95,9 @@
         z-index: 10;
         display: none;
     }
+    .menu > ul.toogle-menu {
+        display: block;
+    }
     .menu ul li {
         float: none;
     }
@@ -230,7 +233,7 @@
         position: relative;
         top: 0px;
         right: 0px;
-        width: auto;
+        width: 100%;
     }
     .profile-top ul li a {
         padding-left: 15px;

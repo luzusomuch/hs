@@ -3,8 +3,8 @@
         <div class="logo"><a ui-sref="home"><img src="/assets/images/logo.png"></a></div>
 
         <div class="menu">
-            <a href="#" class="toggle-menu"><i class="fa fa-bars"></i></a>
-            <ul>
+            <a href="#" class="toggle-menu" ng-click="dropdowmenu = !dropdowmenu"><i class="fa fa-bars"></i></a>
+            <ul ng-class="{'toogle-menu': dropdowmenu}">
                 <li><a ui-sref="home"><i class="fa fa-home"></i> {{'MENU_HOME' | translate}}</a></li>
                 <li><a href="#"><i class="fa fa-calendar-check-o"></i> {{'MENU_EVENTS' | translate}}</a></li>
                 <li><a href="#"><i class="fa fa-exclamation-circle"></i> {{'MENU_ABOUT' | translate}}</a></li>

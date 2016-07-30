@@ -72,6 +72,12 @@
 
 
         <div class="col-sm-6 col-lg-8"  id="div-2">
+            <div class="m20 mobile-show">
+                <search-location></search-location>
+            </div>
+            <div class="m20 mobile-show">
+                <search-date></search-date>
+            </div>
             <div class="show-sl-event m20" ng-show="vm.countNewEvent > 0">
                 <a href="#" style="color:#FFF">
                     <i ng-click="vm.$state.reload()" class="fa fa-refresh"></i> {{vm.countNewEvent}}  new events.
@@ -117,7 +123,9 @@
         </div>
 
         <div class="col-sm-3 col-lg-2"  id="div-3">
-            <search-date></search-date>
+            <div class="pc-show">
+                <search-date></search-date>
+            </div>
             <hs-joined-events></hs-joined-events>
         </div>
 

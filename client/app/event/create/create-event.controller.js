@@ -6,6 +6,7 @@ class CreateEventCtrl {
     this.Upload = Upload;
 		this.$cookies = $cookies;
 		this.files = [];
+    this.newBanner = [];
 		this.user = $localStorage.authUser;
 		this.event = {
 			repeat: {},
@@ -164,17 +165,23 @@ class CreateEventCtrl {
 		});
   }
 
-  select($files) {
-  	$files.forEach(file => {
-      //check file
-      let index = _.findIndex(this.files, (f) => {
-        return f.name === file.name && f.size === file.size;
-      });
+  select($files, type) {
+    if (type==='banner') {
+      this.newBanner = $files;
+      this.event.bannerName = (this.newBanner.length > 0) ? this.newBanner[0].name : null;
+    } else {
+    	$files.forEach(file => {
+        file.photoType = type;
+        //check file
+        let index = _.findIndex(this.files, (f) => {
+          return f.name === file.name && f.size === file.size;
+        });
 
-      if (index === -1) {
-        this.files.push(file);
-      }
-    });
+        if (index === -1) {
+          this.files.push(file);
+        }
+      });
+    }
   }
 
   onTimeSet(newDate, oldDate) {
@@ -214,6 +221,8 @@ class CreateEventCtrl {
       if (moment(moment(this.event.startDateTime).format('YYYY-MM-DD HH:mm')).isSameOrAfter(moment(this.event.endDateTime).format('YYYY-MM-DD HH:mm'))) {
         return this.errors.dateTime = true;
       }
+
+      this.files = _.union(this.files, this.newBanner);
 
   		this.Upload.upload({
 	      url: '/api/v1/events',

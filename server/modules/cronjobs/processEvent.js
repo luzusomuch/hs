@@ -82,6 +82,7 @@ module.exports = (kernel, cb) => {
               public: event.public,
               location: event.location,
               private: event.private,
+              banner: event.banner,
               stats: {
                 totalParticipants: event.participantsId.length
               }

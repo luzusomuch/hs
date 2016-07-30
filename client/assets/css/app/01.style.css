@@ -1895,9 +1895,23 @@ label {
     display: table-cell;
     vertical-align: middle;
 }
+.img-popup {
+    position: relative;
+}
 .img-popup img {
     max-width: 100%;
     max-height: 100%;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    position: absolute;
+}
+.img-popup:hover .photo-prev, .img-popup:hover .photo-next {
+    display: block;
+    color: #fff;
+    opacity: 1;
 }
 .comment-popup {
     width: 350px;
@@ -2262,3 +2276,9 @@ span.country-name {
 .intl-tel-input {
     display: block;
 }
+.box-comment-detail .mCSB_container_wrapper {
+    position: relative;
+}
+.box-comment-detail  .mCSB_vertical_horizontal {
+    max-height: none !important;
+ }

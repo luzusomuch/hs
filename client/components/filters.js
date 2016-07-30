@@ -278,7 +278,7 @@ angular.module('healthStarsApp')
     return image;
   }
 })
-.filter('activeEvents', () => {
+.filter('showBlocked', () => {
   return (items, isShowActive) => {
     if (items && items.length > 0) {
       let result = _.filter(items, (item) => {

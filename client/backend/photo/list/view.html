@@ -1,5 +1,5 @@
-<div class="content p-20">
-	<div class="row">
+<div class="page-content">
+	<div>
 		<h4>{{'PHOTOS_LSIT' | translate}}</h4>
 	</div>
 
@@ -9,21 +9,22 @@
 				<option ng-value="type.value" ng-repeat="type in vm.filterTypes">{{type.text | translate}}</option>
 			</select>
 			<div class="col-sm-1"></div>
-			<input class="col-sm-8" type="text" ng-model="vm.searchText">
+			<input class="col-sm-8" type="text" ng-model="vm.searchText[vm.selectedFilterType]">
 		</div>
 		<div class="col-sm-4 col-xs-12">
 			<label>
-	      <input type="checkbox" ng-model="vm.showActiveEvent">
-	      {{'SHOW_INACTIVE_EVENT' | translate}}
+	      <input type="checkbox" ng-model="vm.showBlockedPhotos">
+	      {{'SHOW_BLOCKED' | translate}} {{'PHOTOS' | translate}}
 	    </label>
 		</div>
 	</div>
 
-	<div class="row">
+	<div>
 		<table class="table table-bordered table-striped">
 			<thead>
 				<tr>
 					<td><strong>{{'PHOTO_OWNER_NAME' | translate}}</strong></td>
+					<td><strong>{{'EVENT_NAME' | translate}}</strong></td>
 					<td><strong>{{'PREVIEW_IMAGE' | translate}}</strong></td>
 					<td>
 						<strong>
@@ -39,31 +40,20 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-show="!vm.search" ng-repeat="photo in vm.photos.items | orderBy: vm.sortType: vm.sortReverse">
+				<tr ng-repeat="photo in vm.photos.items | filter: vm.searchText[vm.selectedFilterType] | showBlocked: vm.showBlockedPhotos | orderBy: vm.sortType: vm.sortReverse">
 					<td>{{photo.ownerId.name}}</td>
+					<td>{{photo.event.name}}</td>
 					<td><img src="{{photo | imageUrl: 'small'}}"></td>
 					<td>{{photo.createdAt | date: 'HH:mm'}} {{photo.createdAt | date: 'dd-MMMM-yyyy'}}</td>
 					<td>{{(photo.blocked) ? 'TRUE' : 'FALSE' | translate}}</td>
 					<td>
-						<a href="#" ng-click="vm.delete(event)"><i class="fa fa-trash-o"></i></a>
-					</td>
-				</tr>
-				<tr ng-show="vm.search" ng-repeat="event in vm.searchItems | activeEvents:vm.showActiveEvent | orderBy: vm.sortType: vm.sortReverse track by $index">
-					<td>{{event.name}}</td>
-					<td>{{event.ownerId.name}}</td>
-					<td>{{event.stats.totalParticipants || 0}}</td>
-					<td>{{event.categoryId.type}}</td>
-					<td>{{event.startDateTime | date: 'HH:mm'}} {{event.startDateTime | date: 'dd-MMMM-yyyy'}}</td>
-					<td>{{event.endDateTime | date: 'HH:mm'}} {{event.endDateTime | date: 'dd-MMMM-yyyy'}}</td>
-					<td>
-						<a href="#" ng-click="vm.delete(event)"><i class="fa fa-trash-o"></i></a>
-						<a ui-sref="backend.event.edit({id: event._id})"><i class="fa fa-pencil"></i></a>
+						<a uib-tooltip="{{(!photo.blocked) ? 'Block this photo' : 'Unblock this photo'}}" href="#" ng-click="vm.block(photo)"><i class="fa" ng-class="{'fa-eye': !photo.blocked, 'fa-eye-slash': photo.blocked}"></i></a>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
-	<div class="row" ng-show="vm.events.items.length < vm.events.totalItem">
-		<a ng-click="vm.loadMore()" href="#">{{'LOAD_MORE_EVENTS' | translate}}</a>
+	<div ng-show="vm.photos.items.length < vm.photos.totalItem">
+		<a ng-click="vm.loadMore()" href="#">{{'LOAD_MORE_PHOTOS' | translate}}</a>
 	</div>
 </div>

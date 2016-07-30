@@ -154,7 +154,7 @@ let Language = {
 		CATEGORIES: 'Categories',
 		EVENTS: 'Events',
 		EVENTS_LIST: 'Events list',
-		EVENT_NAME: 'Name',
+		EVENT_NAME: 'Event name',
 		EVENT_TOTAL_PARTICIPANTS: 'Total participants',
 		EVENT_CATEGORY: 'Category',
 		EVENT_START_DATE: 'Start date',
@@ -171,7 +171,9 @@ let Language = {
 		PHOTO_OWNER_NAME: 'Owner name',
 		BLOCKED_STATUS: 'Blocked status',
 		CREATED_AT: 'Created date',
-		PREVIEW_IMAGE: 'Preview image'
+		PREVIEW_IMAGE: 'Preview image',
+		LOAD_MORE_PHOTOS: 'Load more photos...',
+		SHOW_BLOCKED: 'Show blocked'
 	},
 	de: {
 

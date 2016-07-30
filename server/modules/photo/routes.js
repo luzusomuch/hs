@@ -12,11 +12,57 @@ module.exports = function(kernel) {
     .skip(pageSize * (page-1))
     .populate('ownerId', '-password -salt')
     .exec().then(photos => {
-      kernel.model.Photo.count({}).then(count => {
-      	return res.status(200).json({items: photos, totalItem: count});
-      }).catch(err => {
-      	return res.status(500).json({type: 'SERVER_ERROR'});	
-      });
+    	let results = [];
+    	// get photo's project info
+    	async.each(photos, (photo, callback) => {
+    		async.waterfall([
+    			(cb) => {
+    				kernel.model.Feed.findOne({photosId: photo._id}).then(feed => {
+    					if (!feed) {
+    						cb(null, {eventId: null});
+    					} else {
+    						cb(null, {eventId: feed.eventId});
+    					}
+    				}).catch(cb);
+    			},
+    			(result, cb) => {
+    				if (result.eventId) {
+    					cb(null, result);
+    				} else {
+    					kernel.model.Event.findOne({photosId: photo._id}).then(event => {
+    						if (!event) {
+    							cb({error: 'Event not found', code: 404});
+    						} else {
+    							cb(null, {eventId: event._id});
+    						}
+    					}).catch(cb);
+    				}
+    			}
+  			], (err, result) => {
+  				photo = photo.toJSON();
+  				if (err) {
+  					photo.event = null;
+  					callback();
+  				} else {
+	  				kernel.model.Event.findById(result.eventId).then(event => {
+	  					photo.event = event;
+	  					results.push(photo);
+	  					callback();
+	  				}).catch(err => {
+	  					callback(err);
+	  				});
+  				}
+  			});
+    	}, (err) => {
+    		if (err) {
+    			return res.status(500).json({type: 'SERVER_ERROR'});
+    		}
+	      kernel.model.Photo.count({}).then(count => {
+	      	return res.status(200).json({items: results, totalItem: count});
+	      }).catch(err => {
+	      	return res.status(500).json({type: 'SERVER_ERROR'});	
+	      });
+    	});
     }).catch(err => {
       return res.status(500).json({type: 'SERVER_ERROR'});
     });
@@ -110,33 +156,71 @@ module.exports = function(kernel) {
 	});
 
 	kernel.app.put('/api/v1/photos/:id/block', kernel.middleware.isAuthenticated(), (req, res) => {
-		if (!req.body.eventId) {
-			return res.status(422).json({type: 'MISSING_EVENT_ID', message: 'Missing event id'});
-		}
-		kernel.model.Event.findById(req.body.eventId).then(event => {
-			if (!event) {
-				return res.status(404).end();
-			}
-			if (req.user.role === 'admin' || event.ownerId.toString()===req.user._id.toString()) {
-				kernel.model.Photo.findById(req.params.id).then(photo => {
-					if (!photo) {
-						return res.status(404).end();
+		async.parallel([
+			(cb) => {
+				if (req.user.role === 'admin') {
+					cb(null, true);
+				} else {
+					if (!req.body.eventId) {
+						return cb({code: 422, type: 'MISSING_EVENT_ID', message: 'Missing event id'});
 					}
-					photo.blocked = !photo.blocked;
-					photo.blockedBy = (photo.blocked) ? req.user._id : null;
-					photo.save().then(photo => {
-						return res.status(200).json({blocked: photo.blocked});
-					}).catch(err => {
-						return res.status(500).json({type: 'SERVER_ERROR'});
+					kernel.model.Event.findById(req.body.eventId).then(event => {
+						if (!event) {
+							return cb({code: 404, type: 'EVENT_NOT_FOUND', message: 'Event not found'});
+						}
+						if (event.ownerId.toString()===req.user._id.toString()) {
+							cb(null, true);
+						} else {
+							cb({code: 403, type: 'NOT_ALLOW', messsage: 'Not allow'});
+						}
 					});
+				}
+			}
+		], (err, result) => {
+			if (err) {
+				return res.status(err.code).json({type: err.type, message: err.message});
+			}
+			kernel.model.Photo.findById(req.params.id).then(photo => {
+				if (!photo) {
+					return res.status(404).end();
+				}
+				photo.blocked = !photo.blocked;
+				photo.blockedBy = (photo.blocked) ? req.user._id : null;
+				photo.save().then(photo => {
+					return res.status(200).json({blocked: photo.blocked});
 				}).catch(err => {
 					return res.status(500).json({type: 'SERVER_ERROR'});
 				});
-			} else {
-				return res.status(403).end();
-			}
-		}).catch(err => {
-			return res.status(500).json({type: 'SERVER_ERROR'});
+			}).catch(err => {
+				return res.status(500).json({type: 'SERVER_ERROR'});
+			});
 		});
+		// return;
+		
+		// kernel.model.Event.findById(req.body.eventId).then(event => {
+		// 	if (!event) {
+		// 		return res.status(404).end();
+		// 	}
+		// 	if (req.user.role === 'admin' || event.ownerId.toString()===req.user._id.toString()) {
+		// 		kernel.model.Photo.findById(req.params.id).then(photo => {
+		// 			if (!photo) {
+		// 				return res.status(404).end();
+		// 			}
+		// 			photo.blocked = !photo.blocked;
+		// 			photo.blockedBy = (photo.blocked) ? req.user._id : null;
+		// 			photo.save().then(photo => {
+		// 				return res.status(200).json({blocked: photo.blocked});
+		// 			}).catch(err => {
+		// 				return res.status(500).json({type: 'SERVER_ERROR'});
+		// 			});
+		// 		}).catch(err => {
+		// 			return res.status(500).json({type: 'SERVER_ERROR'});
+		// 		});
+		// 	} else {
+		// 		return res.status(403).end();
+		// 	}
+		// }).catch(err => {
+		// 	return res.status(500).json({type: 'SERVER_ERROR'});
+		// });
 	});
 };

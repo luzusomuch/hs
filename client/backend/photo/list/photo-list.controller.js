@@ -10,6 +10,8 @@ class BackendPhotoListCtrl {
 		this.showBlockedPhotos = false;
 		this.filterTypes = [{value: 'ownerId.name', text: 'Owner'}, {value: 'event.name', text: 'Event'}];
 		this.selectedFilterType = this.filterTypes[0].value;
+		this.sortType = 'createdAt';
+		this.sortReverse = false;
 	}
 
 	loadMore() {
@@ -48,4 +50,4 @@ function PhotoService($http, APP_CONFIG) {
 
 angular.module('healthStarsApp')
 	.controller('BackendPhotoListCtrl', BackendPhotoListCtrl)
-	.factory('PhotoService', PhotoService);;
+	.factory('PhotoService', PhotoService);

@@ -8,9 +8,9 @@
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/awards/${id}`);
       },
 
-      getAll(id) {
+      getAll(id, params) {
       	id = id || 'me';
-      	return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/awards/${id}/all`);
+      	return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/awards/${id}/all`, {params: params});
       },
 
       getGrantedAwards(id) {

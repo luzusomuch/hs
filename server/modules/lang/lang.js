@@ -167,13 +167,15 @@ let Language = {
 		TRUE: 'True',
 		FALSE: 'False',
 		PHOTOS: 'Photos',
-		PHOTOS_LSIT: 'Photos list',
+		PHOTOS_LIST: 'Photos list',
 		PHOTO_OWNER_NAME: 'Owner name',
 		BLOCKED_STATUS: 'Blocked status',
 		CREATED_AT: 'Created date',
 		PREVIEW_IMAGE: 'Preview image',
 		LOAD_MORE_PHOTOS: 'Load more photos...',
-		SHOW_BLOCKED: 'Show blocked'
+		SHOW_BLOCKED: 'Show blocked',
+		AWARDS: 'Awards',
+		LOAD_MORE_AWARDS: 'Load more awards...'
 	},
 	de: {
 

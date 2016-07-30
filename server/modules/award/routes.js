@@ -114,9 +114,13 @@ module.exports = function(kernel) {
    * Get list of awards created by current user
    */
   kernel.app.get('/api/v1/awards/:id/all', kernel.middleware.isAuthenticated(), (req, res) => {
-    var condition = {};
+    let condition = {};
+    let page = req.params.page || 1;
+    let pageSize = req.params.pageSize || 10;
     if (req.params.id==='me') {
       condition = {ownerId: req.user._id};
+    } else if (req.params.id==='null' && req.user.role==='admin') {
+      condition = {};
     } else {
       condition = {ownerId: req.params.id};
     }
@@ -125,11 +129,36 @@ module.exports = function(kernel) {
       condition.$or = [{deleted: null}, {deleted: false}];
     }
     kernel.model.Award.find(condition)
+    .limit(Number(pageSize))
+    .skip(pageSize * (page-1))
     .populate('objectPhotoId')
+    .populate('ownerId', '-password -salt')
     .exec().then(awards =>{
-      res.status(200).json({items: awards, totalItem: awards.length});
+      kernel.model.Award.count(condition).then(count => {
+        // This params is get from awards backend
+        if (req.params.id==='null' && req.user.role==='admin') {
+          let results = [];
+          async.each(awards, (award, callback) => {
+            award = award.toJSON();
+            kernel.model.Event.findOne({awardId: award._id}).then(event => {
+              award.event = (event) ? event : null;
+              results.push(award);
+              callback();
+            }).catch(callback);
+          }, (err) => {
+            if (err) {
+              return res.status(500).json({type: 'SERVER_ERROR'});
+            }
+            return res.status(200).json({items: results, totalItem: count});
+          });
+        } else {
+          return res.status(200).json({items: awards, totalItem: count});
+        }
+      }).catch(err => {
+        return res.status(500).json({type: 'SERVER_ERROR'});
+      });
     }).catch(err => {
-      res.status(500).end();
+      return res.status(500).json({type: 'SERVER_ERROR'});
     });
   });
 

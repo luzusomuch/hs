@@ -31,26 +31,29 @@
     <!-- build:css({.tmp,client}) backend/app.css -->
       <link rel="stylesheet" href="backend/app.css">
       <!-- injector:css -->
-      <link rel="stylesheet" href="assets/css/backend/blue.css">
-      <link rel="stylesheet" href="assets/css/backend/bootstrap-responsive.min.css">
-      <link rel="stylesheet" href="assets/css/backend/custom.css">
+      <link rel="stylesheet" href="assets/css/backend/login.css">
+      <link rel="stylesheet" href="assets/css/backend/components.css">
       <link rel="stylesheet" href="assets/css/backend/plugins.css">
-      <link rel="stylesheet" href="assets/css/backend/style-metronic.css">
-      <link rel="stylesheet" href="assets/css/backend/style-responsive.css">
+      <link rel="stylesheet" href="assets/css/backend/layout.css">
+      <link rel="stylesheet" href="assets/css/backend/darkblue.css">
+      <link rel="stylesheet" href="assets/css/backend/custom.css">
+      <!-- <link rel="stylesheet" href="assets/css/backend/bootstrap-responsive.min.css"> -->
+      <!-- <link rel="stylesheet" href="assets/css/backend/style-metronic.css"> -->
+      <!-- <link rel="stylesheet" href="assets/css/backend/style-responsive.css"> -->
       <link rel="stylesheet" href="assets/css/backend/style.css">
       <!-- endinjector -->
     <!-- endbuild -->
   </head>
-  <body ng-app="healthStarsApp" class="page-header-fixed">
+  <body ng-app="healthStarsApp" ng-class="{login: currentState==='backend.login' || currentState==='backend.forgotPw'}" class="page-header-fixed">
     <!--[if lt IE 7]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <backend-header></backend-header>
+    <backend-header ng-hide="currentState==='backend.login' || currentState==='backend.forgotPw'"></backend-header>
     <div class="clearfix"></div>
     <!-- Add your site or application content here -->
     <div class="page-container">
       <backend-sidebar ng-hide="currentState==='backend.login' || currentState==='backend.forgotPw'"></backend-sidebar>
-      <div class="page-content grey-backgound" ui-view></div>
+      <div class="page-content-wrapper" ui-view></div>
     </div>
     <backend-footer ng-if="appSettings.get('footer')"></backend-footer>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->

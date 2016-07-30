@@ -3,6 +3,7 @@
 class BackendAwardListCtrl {
 	constructor($scope, $uibModal, $http, AwardService) {
 		this.page = 1;
+		this.$uibModal = $uibModal;
 		this.$http = $http;
 		this.awards = {};
 		this.AwardService = AwardService;
@@ -35,6 +36,32 @@ class BackendAwardListCtrl {
 		this.AwardService.block(photo._id).then(resp => {
 			photo.blocked = resp.data.blocked;
 		}).catch(err => {
+			console.log(err);
+			// TODO show error
+		});
+	}
+
+	edit(award) {
+		let modalInstance = this.$uibModal.open({
+    	animation: true,
+    	templateUrl: 'app/award/edit/edit.html',
+    	controller: 'BackendEditAwardCtrl',
+    	resolve: {
+    		award: () => {
+    			return award;
+    		}
+    	}
+    });
+		modalInstance.result.then(data => {
+			let index = _.findIndex(this.awards.items, (award) => {
+				return award._id===data._id;
+			});
+			if (index !== -1) {
+				data.event = award.event;
+				data.ownerId = award.ownerId;
+				this.awards.items[index] = data;
+			}
+		}, err => {
 			console.log(err);
 			// TODO show error
 		});

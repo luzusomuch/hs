@@ -6,12 +6,21 @@ class BackendPhotoListCtrl {
 		this.$http = $http;
 		this.photos = {};
 		this.PhotoService = PhotoService;
-		this.loadMore();
 		this.showBlockedPhotos = false;
 		this.filterTypes = [{value: 'ownerId.name', text: 'Owner'}, {value: 'event.name', text: 'Event'}];
 		this.selectedFilterType = this.filterTypes[0].value;
 		this.sortType = 'createdAt';
 		this.sortReverse = false;
+		this.loadMore();
+
+		$scope.$watch('vm.photos.items', (nv) => {
+			if (nv && nv.length > 0) {
+				let nonBlockedPhotos = _.filter(nv, {blocked: false});
+				if (nonBlockedPhotos.length <= 5 && nv.length < this.photos.totalItem) {
+					this.loadMore();
+				}
+			}
+		});
 	}
 
 	loadMore() {
@@ -19,7 +28,6 @@ class BackendPhotoListCtrl {
   		this.page += 1;
   		this.photos.items = (this.photos.items) ? this.photos.items.concat(resp.data.items) : resp.data.items;
   		this.photos.totalItem = resp.data.totalItem;
-  		console.log(this.photos);
 		}).catch(err => {
 			console.log(err);
 			// TODO show error
@@ -32,7 +40,7 @@ class BackendPhotoListCtrl {
 		}).catch(err => {
 			console.log(err);
 			// TODO show error
-		})
+		});
 	}
 }
 

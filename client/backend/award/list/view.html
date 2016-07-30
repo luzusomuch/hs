@@ -24,6 +24,7 @@
 			<thead>
 				<tr>
 					<td><strong>{{'AWARD_TITLE' | translate}}</strong></td>
+					<td><strong>{{'AWARD_TYPE' | translate}}</strong></td>
 					<td><strong>{{'PHOTO_OWNER_NAME' | translate}}</strong></td>
 					<td><strong>{{'EVENT_NAME' | translate}}</strong></td>
 					<td><strong>{{'PREVIEW_IMAGE' | translate}}</strong></td>
@@ -43,6 +44,7 @@
 			<tbody>
 				<tr ng-repeat="award in vm.awards.items | filter: vm.searchText[vm.selectedFilterType] | showDeleted: vm.showBlockedAwards | orderBy: vm.sortType: vm.sortReverse">
 					<td>{{award.objectName}}</td>
+					<td>{{award.type}}</td>
 					<td>{{award.ownerId.name}}</td>
 					<td>{{award.event.name}}</td>
 					<td><img width="100" src="{{award.objectPhotoId | imageUrl: 'small'}}"></td>
@@ -50,6 +52,7 @@
 					<td>{{(award.deleted) ? 'TRUE' : 'FALSE' | translate}}</td>
 					<td>
 						<a uib-tooltip="{{(!award.deleted) ? 'Block this award' : 'Unblock this award'}}" href="#" ng-click="vm.block(award)"><i class="fa" ng-class="{'fa-eye': !award.blocked, 'fa-eye-slash': award.blocked}"></i></a>
+						<a href="#" ng-click="vm.edit(award)"><i class="fa fa-edit"></i></a>
 					</td>
 				</tr>
 			</tbody>

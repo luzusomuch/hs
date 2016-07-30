@@ -296,7 +296,6 @@ angular.module('healthStarsApp')
       let result = _.filter(items, (item) => {
         return item.deleted===isShowActive;
       });
-      console.log(result);
       return result;
     } else {
       return items;

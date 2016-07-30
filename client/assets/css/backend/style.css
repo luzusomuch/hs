@@ -4102,3 +4102,32 @@ Responsive Flip Scroll Tables
 .error {
   color: red;
 }
+.choose-category img {
+  width: 35px;
+}
+.radio-l {
+  display: inline-block;
+}
+.form-group .form-control {
+  border-radius: 30px;
+}
+.list-user-add, .add-award-event {
+  background: rgba(255,255,255,0.2);
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+.upload-img-event {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px dashed #fff;
+}
+.add-picture-more {
+  text-align: center;
+}
+.box-picture-upload-action {
+  position: absolute;
+  top: 0px;
+  right: 10px;
+  color: red !important;
+}

@@ -23,5 +23,22 @@ angular.module('healthStarsApp')
 	    		});
 		    }
 	    } 
+    })
+    .state('backend.event.edit', {
+      url: '/:id/edit',
+      templateUrl: 'backend/event/edit/view.html',
+      controller: 'BackendEventEditCtrl',
+      controllerAs: 'vm',
+      authenticate: true,
+      settings: {
+        pageTitle: 'HealthStars Backend | Event Edit'
+      },
+      resolve: {
+        event: (EventService, $stateParams) => {
+          return EventService.get($stateParams.id).then(
+            res => res.data
+          );
+        }
+      } 
     });
   });

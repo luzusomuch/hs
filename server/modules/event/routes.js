@@ -368,7 +368,6 @@ module.exports = function(kernel) {
 
         upload(req, res, (err) => {
           if (err) {
-            console.log(err);
             return res.status(500).json({type: 'SERVER_ERROR'});
           }
           // validation
@@ -521,6 +520,11 @@ module.exports = function(kernel) {
             event.public = (req.body.event.public==='true') ? true : false;
             event.private = !event.public;
             event.location = req.body.event.location;
+            // if current user is admin then update the event blocked status
+            if (req.user.role==='admin') {
+              event.blocked = (req.body.event.blocked==='true') ? true : false;
+            }
+
             if (req.body.event.bannerName && req.body.event.bannerName !== 'null') {
               event.banner = newBannerId;
             }
@@ -775,7 +779,6 @@ module.exports = function(kernel) {
   /* Get event */
 
   kernel.app.post('/api/v1/events/search', kernel.middleware.isAuthenticated(), (req, res) => {
-    
     let page = parseInt(req.body.page);
     let limit = parseInt(req.body.page);
     page = (page === 'NaN' || !page) ? 1 : page;
@@ -783,6 +786,7 @@ module.exports = function(kernel) {
     let skip = (page - 1) * limit;
 
     let term = [];
+    let must = [];
     if (req.user.role!=='admin') {
       term = [
         { missing: { field: 'private' } },
@@ -790,6 +794,7 @@ module.exports = function(kernel) {
         { term: { participantsId: req.user._id } },
         { term: { ownerId: req.user._id} }
       ];
+      must = [{ term: { blocked: false } }];
     }
 
     let q = {
@@ -802,7 +807,7 @@ module.exports = function(kernel) {
           },
           filter: {
             bool: {
-              must: [],
+              must: must,
               should: term
             }
           }
@@ -859,7 +864,7 @@ module.exports = function(kernel) {
         });
       }
     }
-    
+
     //process date
     if(req.body.startDate) {
       let time = parseInt(req.body.startDate);

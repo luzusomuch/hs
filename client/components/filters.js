@@ -280,10 +280,11 @@ angular.module('healthStarsApp')
 })
 .filter('activeEvents', () => {
   return (items, isShowActive) => {
-    let now = new Date();
-    if (items && items.length > 0 && isShowActive) {
-      console.log(items[0].startDateTime)
-
+    if (items && items.length > 0) {
+      let result = _.filter(items, (item) => {
+        return item.blocked===isShowActive;
+      });
+      return result;
     } else {
       return items;
     }

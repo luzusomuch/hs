@@ -162,7 +162,16 @@ let Language = {
 		EVENT_OWNER: 'Owner',
 		ACTION: 'Action',
 		LOAD_MORE_EVENTS: 'Load more events',
-		SHOW_ACTIVE_EVENT: 'Show active events'
+		SHOW_INACTIVE_EVENT: 'Show in-active events',
+		EVENT_BLOCKED: 'Event blocked',
+		TRUE: 'True',
+		FALSE: 'False',
+		PHOTOS: 'Photos',
+		PHOTOS_LSIT: 'Photos list',
+		PHOTO_OWNER_NAME: 'Owner name',
+		BLOCKED_STATUS: 'Blocked status',
+		CREATED_AT: 'Created date',
+		PREVIEW_IMAGE: 'Preview image'
 	},
 	de: {
 

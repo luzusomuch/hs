@@ -2,6 +2,7 @@
 
 class BackendEventListCtrl {
 	constructor($scope, $localStorage, events, $uibModal, EventService) {
+		this.showActiveEvent = false;
 		this.sortType = 'startDateTime';
 		this.sortReverse = false;
 		this.events = events;
@@ -59,29 +60,19 @@ class BackendEventListCtrl {
 		});
 	}
 
-	edit(event) {
-		let modalInstance = this.$uibModal.open({
-    	animation: true,
-    	templateUrl: 'backend/category/edit/edit.html',
-    	controller: 'BackendEditCategoryCtrl',
-    	resolve: {
-    		category: () => {
-    			return cat;
-    		}
-    	}
-    });
-		modalInstance.result.then(data => {
-			
-		}, err => {
+	loadMore() {
+		this.EventService.search({page: this.page}).then(resp => {
+  		this.page += 1;
+  		this.events.items = this.events.items.concat(resp.data.items);
+		}).catch(err => {
 			console.log(err);
 			// TODO show error
 		});
 	}
 
-	loadMore() {
-		this.EventService.search({page: this.page}).then(resp => {
-  		this.page += 1;
-  		this.events.items = this.events.items.concat(resp.data.items);
+	delete(event) {
+		this.EventService.delete(event._id).then(() => {
+
 		}).catch(err => {
 			console.log(err);
 			// TODO show error

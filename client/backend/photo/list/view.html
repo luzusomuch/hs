@@ -1,6 +1,6 @@
 <div class="content p-20">
 	<div class="row">
-		<h4>{{'EVENTS_LIST' | translate}}</h4>
+		<h4>{{'PHOTOS_LSIT' | translate}}</h4>
 	</div>
 
 	<div class="row">
@@ -23,42 +23,29 @@
 		<table class="table table-bordered table-striped">
 			<thead>
 				<tr>
-					<td><strong>{{'EVENT_NAME' | translate}}</strong></td>
-					<td><strong>{{'EVENT_OWNER' | translate}}</strong></td>
-					<td><strong>{{'EVENT_TOTAL_PARTICIPANTS' | translate}}</strong></td>
-					<td><strong>{{'EVENT_CATEGORY' | translate}}</strong></td>
+					<td><strong>{{'PHOTO_OWNER_NAME' | translate}}</strong></td>
+					<td><strong>{{'PREVIEW_IMAGE' | translate}}</strong></td>
 					<td>
 						<strong>
-							<a href="#" ng-click="vm.sortType='startDateTime'; vm.sortReverse=!vm.sortReverse">
-								{{'EVENT_START_DATE' | translate}}
-								<span ng-show="vm.sortType == 'startDateTime' && !vm.sortReverse" class="fa fa-caret-down"></span>
-	          		<span ng-show="vm.sortType == 'startDateTime' && vm.sortReverse" class="fa fa-caret-up"></span>
+							<a href="#" ng-click="vm.sortType='createdAt'; vm.sortReverse=!vm.sortReverse">
+								{{'CREATED_AT' | translate}}
+								<span ng-show="vm.sortType == 'createdAt' && !vm.sortReverse" class="fa fa-caret-down"></span>
+	          		<span ng-show="vm.sortType == 'createdAt' && vm.sortReverse" class="fa fa-caret-up"></span>
 							</a>
 						</strong>
 					</td>
-					<td>
-						<strong>
-							<a href="#" ng-click="vm.sortType='endDateTime'; vm.sortReverse=!vm.sortReverse">
-								{{'EVENT_END_DATE' | translate}}
-								<span ng-show="vm.sortType == 'endDateTime' && !vm.sortReverse" class="fa fa-caret-down"></span>
-            		<span ng-show="vm.sortType == 'endDateTime' && vm.sortReverse" class="fa fa-caret-up"></span>
-							</a>
-						</strong>
-					</td>
+					<td><strong>{{'BLOCKED_STATUS' | translate}}</strong></td>
 					<td><strong>{{'ACTION' | translate}}</strong></td>
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-show="!vm.search" ng-repeat="event in vm.events.items | activeEvents:vm.showActiveEvent | orderBy: vm.sortType: vm.sortReverse">
-					<td>{{event.name}}</td>
-					<td>{{event.ownerId.name}}</td>
-					<td>{{event.stats.totalParticipants || 0}}</td>
-					<td>{{(event.categoryId.type==='internation') ? 'sport' : event.categoryId.type}}</td>
-					<td>{{event.startDateTime | date: 'HH:mm'}} {{event.startDateTime | date: 'dd-MMMM-yyyy'}}</td>
-					<td>{{event.endDateTime | date: 'HH:mm'}} {{event.endDateTime | date: 'dd-MMMM-yyyy'}}</td>
+				<tr ng-show="!vm.search" ng-repeat="photo in vm.photos.items | orderBy: vm.sortType: vm.sortReverse">
+					<td>{{photo.ownerId.name}}</td>
+					<td><img src="{{photo | imageUrl: 'small'}}"></td>
+					<td>{{photo.createdAt | date: 'HH:mm'}} {{photo.createdAt | date: 'dd-MMMM-yyyy'}}</td>
+					<td>{{(photo.blocked) ? 'TRUE' : 'FALSE' | translate}}</td>
 					<td>
 						<a href="#" ng-click="vm.delete(event)"><i class="fa fa-trash-o"></i></a>
-						<a ui-sref="backend.event.edit({id: event._id})"><i class="fa fa-pencil"></i></a>
 					</td>
 				</tr>
 				<tr ng-show="vm.search" ng-repeat="event in vm.searchItems | activeEvents:vm.showActiveEvent | orderBy: vm.sortType: vm.sortReverse track by $index">

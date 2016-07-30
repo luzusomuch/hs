@@ -67,6 +67,7 @@ class EditEventCtrl {
     			};
     		}, err => {
     			console.log(err);
+          this.event.isRepeat = false;
     		});
     	}
     });

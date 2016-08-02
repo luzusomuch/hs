@@ -1,40 +1,46 @@
-	<div class="page-sidebar nav-collapse">
-		<!-- BEGIN SIDEBAR MENU -->        
-		<ul class="page-sidebar-menu">
-			<li>
-				<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-				<div class="sidebar-toggler hidden-phone"></div>
-				<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-			</li>
-			<li>&nbsp;</li>
-			<li class="start" ng-class="{active: vm.$state.includes('backend.dashboard')}">
-				<a ui-sref="backend.dashboard">
-					<i class="icon-home"></i> 
-					<span class="title">{{'DASHBOARD' | translate}}</span>
-					<span class="selected"></span>
-				</a>
-			</li>
-			<li class="start" ng-class="{active: vm.$state.includes('backend.category')}">
-				<a ui-sref="backend.category.list">
-					<i class="icon-home"></i> 
-					<span class="title">{{'CATEGORIES' | translate}}</span>
-					<span class="selected"></span>
-				</a>
-			</li>
-			<li class="start" ng-class="{active: vm.$state.includes('backend.event')}">
-				<a ui-sref="backend.event.list">
-					<i class="icon-home"></i> 
-					<span class="title">{{'EVENTS' | translate}}</span>
-					<span class="selected"></span>
-				</a>
-			</li>
-			<li class="start" ng-class="{active: vm.$state.includes('backend.photo')}">
-				<a ui-sref="backend.photo.list">
-					<i class="icon-home"></i> 
-					<span class="title">{{'PHOTOS' | translate}}</span>
-					<span class="selected"></span>
-				</a>
-			</li>
-		</ul>
-		<!-- END SIDEBAR MENU -->
+	<div class="page-sidebar-wrapper">
+		<div class="page-sidebar navbar-collapse collapse">
+			<ul class="page-sidebar-menu">
+				<li class="sidebar-toggler-wrapper">
+					<div class="sidebar-toggler">
+					</div>
+				</li>
+				<li>&nbsp;</li>
+				<li class="start" ng-class="{active: vm.$state.includes('backend.dashboard')}">
+					<a ui-sref="backend.dashboard">
+						<i class="icon-home"></i> 
+						<span class="title">{{'DASHBOARD' | translate}}</span>
+						<span class="selected"></span>
+					</a>
+				</li>
+				<li class="start" ng-class="{active: vm.$state.includes('backend.category')}">
+					<a ui-sref="backend.category.list">
+						<i class="icon-home"></i> 
+						<span class="title">{{'CATEGORIES' | translate}}</span>
+						<span class="selected"></span>
+					</a>
+				</li>
+				<li class="start" ng-class="{active: vm.$state.includes('backend.event')}">
+					<a ui-sref="backend.event.list">
+						<i class="icon-home"></i> 
+						<span class="title">{{'EVENTS' | translate}}</span>
+						<span class="selected"></span>
+					</a>
+				</li>
+				<li class="start" ng-class="{active: vm.$state.includes('backend.photo')}">
+					<a ui-sref="backend.photo.list">
+						<i class="icon-home"></i> 
+						<span class="title">{{'PHOTOS' | translate}}</span>
+						<span class="selected"></span>
+					</a>
+				</li>
+				<li class="start" ng-class="{active: vm.$state.includes('backend.award')}">
+					<a ui-sref="backend.award.list">
+						<i class="icon-home"></i> 
+						<span class="title">{{'AWARDS' | translate}}</span>
+						<span class="selected"></span>
+					</a>
+				</li>
+			</ul>
+		</div>
 	</div>

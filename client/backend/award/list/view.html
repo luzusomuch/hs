@@ -1,11 +1,11 @@
 <div class="page-content">
 	<div>
-		<h4>{{'PHOTOS_LIST' | translate}}</h4>
+		<h4>{{'AWARDS_LIST' | translate}}</h4>
 	</div>
 
 	<div class="row">
 		<div class="col-sm-8 col-xs-12">
-			<select class="col-sm-3" ng-model="vm.selectedFilterType">
+			<select class="col-sm-3" ng-change="vm.changeFilter(vm.selectedFilterType)" ng-model="vm.selectedFilterType">
 				<option ng-value="type.value" ng-repeat="type in vm.filterTypes">{{type.text | translate}}</option>
 			</select>
 			<div class="col-sm-1"></div>
@@ -13,7 +13,7 @@
 		</div>
 		<div class="col-sm-4 col-xs-12">
 			<label>
-	      <input type="checkbox" ng-model="vm.showBlockedPhotos">
+	      <input type="checkbox" ng-model="vm.showBlockedAwards">
 	      {{'SHOW_BLOCKED' | translate}} {{'PHOTOS' | translate}}
 	    </label>
 		</div>
@@ -23,6 +23,8 @@
 		<table class="table table-bordered table-striped">
 			<thead>
 				<tr>
+					<td><strong>{{'AWARD_TITLE' | translate}}</strong></td>
+					<td><strong>{{'AWARD_TYPE' | translate}}</strong></td>
 					<td><strong>{{'PHOTO_OWNER_NAME' | translate}}</strong></td>
 					<td><strong>{{'EVENT_NAME' | translate}}</strong></td>
 					<td><strong>{{'PREVIEW_IMAGE' | translate}}</strong></td>
@@ -40,20 +42,23 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="photo in vm.photos.items | filter: vm.searchText[vm.selectedFilterType] | showBlocked: vm.showBlockedPhotos | orderBy: vm.sortType: vm.sortReverse">
-					<td>{{photo.ownerId.name}}</td>
-					<td>{{photo.event.name}}</td>
-					<td><img src="{{photo | imageUrl: 'small'}}"></td>
-					<td>{{photo.createdAt | date: 'HH:mm'}} {{photo.createdAt | date: 'dd-MMMM-yyyy'}}</td>
-					<td>{{(photo.blocked) ? 'TRUE' : 'FALSE' | translate}}</td>
+				<tr ng-repeat="award in vm.awards.items | filter: vm.searchText[vm.selectedFilterType] | showDeleted: vm.showBlockedAwards | orderBy: vm.sortType: vm.sortReverse">
+					<td>{{award.objectName}}</td>
+					<td>{{award.type}}</td>
+					<td>{{award.ownerId.name}}</td>
+					<td>{{award.event.name}}</td>
+					<td><img width="100" src="{{award.objectPhotoId | imageUrl: 'small'}}"></td>
+					<td>{{award.createdAt | date: 'HH:mm'}} {{award.createdAt | date: 'dd-MMMM-yyyy'}}</td>
+					<td>{{(award.deleted) ? 'TRUE' : 'FALSE' | translate}}</td>
 					<td>
-						<a uib-tooltip="{{(!photo.blocked) ? 'Block this photo' : 'Unblock this photo'}}" href="#" ng-click="vm.block(photo)"><i class="fa" ng-class="{'fa-eye': !photo.blocked, 'fa-eye-slash': photo.blocked}"></i></a>
+						<a uib-tooltip="{{(!award.deleted) ? 'Block this award' : 'Unblock this award'}}" href="#" ng-click="vm.block(award)"><i class="fa" ng-class="{'fa-eye': !award.blocked, 'fa-eye-slash': award.blocked}"></i></a>
+						<a href="#" ng-click="vm.edit(award)"><i class="fa fa-edit"></i></a>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
-	<div ng-show="vm.photos.items.length < vm.photos.totalItem">
-		<a ng-click="vm.loadMore()" href="#">{{'LOAD_MORE_PHOTOS' | translate}}</a>
+	<div ng-show="vm.awards.items.length < vm.awards.totalItem">
+		<a ng-click="vm.loadMore()" href="#">{{'LOAD_MORE_AWARDS' | translate}}</a>
 	</div>
 </div>

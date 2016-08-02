@@ -24,6 +24,7 @@ module.exports = function(kernel) {
         return res.status(500).json({type: 'SERVER_ERROR'});
       }
       let uploadedPhotoIds = [];
+      let newBannerId;
       // validation
       if (req.user.deleted && req.user.deleted.status) {
         return res.status(403).json({type: 'EMAIL_DELETED', message: 'This user email was deleted'});
@@ -159,7 +160,11 @@ module.exports = function(kernel) {
         };
         let model = new kernel.model.Photo(photo);
         model.save().then(saved => {
-          uploadedPhotoIds.push(saved._id);
+          if (req.body.event.bannerName && req.body.event.bannerName===file.filename) {
+            newBannerId = saved._id;
+          } else {
+            uploadedPhotoIds.push(saved._id);
+          }
           kernel.queue.create('PROCESS_AWS', saved).save();
           callback(null, uploadedPhotoIds);
         }).catch(err => {
@@ -167,6 +172,9 @@ module.exports = function(kernel) {
         });
       }, () => {
         data.photosId = uploadedPhotoIds;
+        if (req.body.event.bannerName && req.body.event.bannerName !== 'null') {
+          data.banner = newBannerId;
+        }
         data.stats = {
           totalParticipants: data.participantsId.length
         };
@@ -973,11 +981,11 @@ module.exports = function(kernel) {
               }).catch(cb);
             },
             (cb) => {
-              // Populate event photo
+              // Populate event photos
               let populatedPhotos = [];
               async.each(item.photosId, (photoId, cb1) => {
                 kernel.model.Photo.findById(photoId).then(photo => {
-                  photoId = (photo) ? photo : photoId;
+                  photoId = (photo && !photo.blocked) ? photo : photoId;
                   populatedPhotos.push(photoId);
                   cb1();
                 }).catch(cb1);
@@ -985,6 +993,20 @@ module.exports = function(kernel) {
                 item.photosId = populatedPhotos;
                 cb();
               });
+            },
+            (cb) => {
+              // Populate event banner
+              if (item.banner) {
+                kernel.model.Photo.findById(item.banner).then(banner => {
+                  if (!banner) {
+                    return cb();
+                  }
+                  item.banner = (banner && !banner.blocked) ? banner : item.banner;
+                  cb();
+                }).catch(cb);
+              } else {
+                cb();
+              }
             }
           ], callback);
         }, (err) => {

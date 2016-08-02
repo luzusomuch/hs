@@ -1,8 +1,10 @@
-<div class="content p-20">
-	<div class="row">
+<div class="page-content">
+	<div>
 		<h4>{{'CATEGORIES_LIST' | translate}}</h4>
 		<a href="#" ng-click="vm.create()"><i class="fa fa-plus"></i>{{'CREATE_NEW_CATEGORY' | translate}}</a>
 	</div>
+
+	<hr>
 
 	<div class="row">
 		<div class="col-sm-3 col-xs-12" ng-repeat="category in vm.categories">

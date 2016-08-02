@@ -5,7 +5,7 @@ module.exports = {
     	reporterId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
     	description: String,
     	reportedItemId: kernel.mongoose.Schema.Types.ObjectId,
-    	type: {type: String, enum: ['User', 'Event', 'Photo', 'Comment']},
+    	type: {type: String, enum: ['User', 'Event', 'Photo', 'Comment', 'Feed']},
         checked: {type: Boolean, default: false},
         checkedBy: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}
     });

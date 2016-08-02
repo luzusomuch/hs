@@ -1,0 +1,60 @@
+<div class="page-content">
+	<div>
+		<h4>{{'REPORTS_LIST' | translate}}</h4>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-8 col-xs-12">
+			<select class="col-sm-3" ng-model="vm.selectedFilterType">
+				<option ng-value="type.value" ng-repeat="type in vm.filterTypes">{{type.text | translate}}</option>
+			</select>
+			<div class="col-sm-1"></div>
+			<input class="col-sm-8" type="text" ng-model="vm.searchText[vm.selectedFilterType]">
+		</div>
+		<div class="col-sm-4 col-xs-12">
+			<label>
+	      <input type="checkbox" ng-model="vm.showCheckedReports">
+	      {{'SHOW_CHECKED_REPORTS' | translate}}
+	    </label>
+		</div>
+	</div>
+
+	<div>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<td><strong>{{'PHOTO_OWNER_NAME' | translate}}</strong></td>
+					<td><strong>{{'REPORT_TYPE' | translate}}</strong></td>
+					<td><strong>{{'EVENT_NAME' | translate}}</strong></td>
+					<td>
+						<strong>
+							<a href="#" ng-click="vm.sortType='createdAt'; vm.sortReverse=!vm.sortReverse">
+								{{'CREATED_AT' | translate}}
+								<span ng-show="vm.sortType == 'createdAt' && !vm.sortReverse" class="fa fa-caret-down"></span>
+	          		<span ng-show="vm.sortType == 'createdAt' && vm.sortReverse" class="fa fa-caret-up"></span>
+							</a>
+						</strong>
+					</td>
+					<td><strong>{{'CHECKED_STATUS' | translate}}</strong></td>
+					<td><strong>{{'ACTION' | translate}}</strong></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="report in vm.reports.items | filter: vm.searchText[vm.selectedFilterType] | showChecked: vm.showCheckedReports | orderBy: vm.sortType: vm.sortReverse">
+					<td>{{report.reporterId.name}}</td>
+					<td>{{report.type}}</td>
+					<td>{{report.event.name}}</td>
+					<td>{{report.createdAt | date: 'HH:mm'}} {{report.createdAt | date: 'dd-MMMM-yyyy'}}</td>
+					<td>{{(report.checked) ? 'TRUE' : 'FALSE' | translate}}</td>
+					<td>
+						<a ng-show="!report.checked" uib-tooltip="{{'MARK_AS_CHECKED' | translate}}" href="#" ng-click="vm.markAsChecked(report)"><i class="fa fa-check"></i></a>
+						<a uib-tooltip="{{'VIEW_REPORT' | translate}}" href="#" ng-click="vm.view(report)"><i class="fa fa-eye"></i></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div ng-show="vm.reports.items.length < vm.reports.totalItem">
+		<a ng-click="vm.loadMore()" href="#">{{'LOAD_MORE_REPORTS' | translate}}</a>
+	</div>
+</div>

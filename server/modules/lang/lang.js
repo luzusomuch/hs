@@ -177,7 +177,16 @@ let Language = {
 		AWARDS: 'Awards',
 		LOAD_MORE_AWARDS: 'Load more awards...',
 		BLOCK_AWARD: 'Block award',
-		UNBLOCK_AWARD: 'Unblok award'
+		UNBLOCK_AWARD: 'Unblok award',
+		REPORTS_LIST: 'Reports list',
+		SHOW_CHECKED_REPORTS: 'Show checked reports',
+		REPORTS: 'Reports',
+		LOAD_MORE_REPORTS: 'Load more reports',
+		REPORTER: 'Reporter',
+		CHECKED_STATUS: 'Checked status',
+		MARK_AS_CHECKED: 'Mark as checked',
+		VIEW_REPORT: 'View report',
+		REPORT_TYPE: 'Report type'
 	},
 	de: {
 

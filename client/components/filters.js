@@ -301,4 +301,16 @@ angular.module('healthStarsApp')
       return items;
     }
   }
+})
+.filter('showChecked', () => {
+  return (items, isShowActive) => {
+    if (items && items.length > 0) {
+      let result = _.filter(items, (item) => {
+        return item.checked===isShowActive;
+      });
+      return result;
+    } else {
+      return items;
+    }
+  }
 });

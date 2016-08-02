@@ -175,7 +175,9 @@ let Language = {
 		LOAD_MORE_PHOTOS: 'Load more photos...',
 		SHOW_BLOCKED: 'Show blocked',
 		AWARDS: 'Awards',
-		LOAD_MORE_AWARDS: 'Load more awards...'
+		LOAD_MORE_AWARDS: 'Load more awards...',
+		BLOCK_AWARD: 'Block award',
+		UNBLOCK_AWARD: 'Unblok award'
 	},
 	de: {
 

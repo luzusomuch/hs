@@ -1,0 +1,29 @@
+<div class="page-content">
+	<div>
+		<h4>{{'ABOUT' | translate}}</h4>
+		<a href="#" ng-click="vm.create()"><i class="fa fa-plus"></i> {{'ADD_NEW_ABOUT'}}</a>
+	</div>
+	<hr>
+	<div>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<td>{{'CONTENT' | translate}}</td>
+					<td>{{'LANGUAGE' | translate}}</td>
+					<td>{{'ACTION' | translate}}</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="about in vm.abouts.items">
+					<td>{{about.content}}</td>
+					<td>{{about.language}}</td>
+					<td>
+						<a href="#"><i class="fa fa-eye"></i></a>
+						<a href="#"><i class="fa fa-pencil"></i></a>
+						<a href="#"><i class="fa fa-trash-o"></i></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

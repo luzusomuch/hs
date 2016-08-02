@@ -13,38 +13,55 @@
 						<span class="selected"></span>
 					</a>
 				</li>
-				<li class="start" ng-class="{active: vm.$state.includes('backend.category')}">
+				<li class="" ng-class="{active: vm.$state.includes('backend.category')}">
 					<a ui-sref="backend.category.list">
 						<i class="icon-home"></i> 
 						<span class="title">{{'CATEGORIES' | translate}}</span>
 						<span class="selected"></span>
 					</a>
 				</li>
-				<li class="start" ng-class="{active: vm.$state.includes('backend.event')}">
+				<li class="" ng-class="{active: vm.$state.includes('backend.event')}">
 					<a ui-sref="backend.event.list">
 						<i class="icon-home"></i> 
 						<span class="title">{{'EVENTS' | translate}}</span>
 						<span class="selected"></span>
 					</a>
 				</li>
-				<li class="start" ng-class="{active: vm.$state.includes('backend.photo')}">
+				<li class="" ng-class="{active: vm.$state.includes('backend.photo')}">
 					<a ui-sref="backend.photo.list">
 						<i class="icon-home"></i> 
 						<span class="title">{{'PHOTOS' | translate}}</span>
 						<span class="selected"></span>
 					</a>
 				</li>
-				<li class="start" ng-class="{active: vm.$state.includes('backend.award')}">
+				<li class="" ng-class="{active: vm.$state.includes('backend.award')}">
 					<a ui-sref="backend.award.list">
 						<i class="icon-home"></i> 
 						<span class="title">{{'AWARDS' | translate}}</span>
 						<span class="selected"></span>
 					</a>
 				</li>
-				<li class="start" ng-class="{active: vm.$state.includes('backend.report')}">
+				<li class="" ng-class="{active: vm.$state.includes('backend.report')}">
 					<a ui-sref="backend.report.list">
 						<i class="icon-home"></i> 
 						<span class="title">{{'REPORTS' | translate}}</span>
+						<span class="selected"></span>
+					</a>
+				</li>
+				<li class="heading">
+					<h3 class="uppercase">{{'CONTENT_MANAGER' | translate}}</h3>
+				</li>
+				<li ng-class="{active: vm.$state.includes('backend.contentManager.homePage')}">
+					<a ui-sref="backend.contentManager.homePage">
+						<i class="icon-home"></i> 
+						<span class="title">{{'HOME_PAGE' | translate}}</span>
+						<span class="selected"></span>
+					</a>
+				</li>
+				<li ng-class="{active: vm.$state.includes('backend.contentManager.about')}">
+					<a ui-sref="backend.contentManager.about">
+						<i class="icon-home"></i> 
+						<span class="title">{{'ABOUT' | translate}}</span>
 						<span class="selected"></span>
 					</a>
 				</li>

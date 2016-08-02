@@ -3,7 +3,7 @@
 angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constants',
   'ngCookies', 'ngResource', 'ngSanitize', 'btford.socket-io', 'ui.router', 'ui.bootstrap',
   'validation.match', 'angular-growl', 'angular-loading-bar', 'ngAnimate', 
-  'healthStarsApp.language', 'ngFileUpload', 'ui.select'
+  'healthStarsApp.language', 'ngFileUpload', 'ui.select', 'puigcerber.countryPicker'
 ])
 .config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider, $stateProvider) {
   $urlRouterProvider.otherwise('/backend/login');

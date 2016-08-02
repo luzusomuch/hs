@@ -186,7 +186,17 @@ let Language = {
 		CHECKED_STATUS: 'Checked status',
 		MARK_AS_CHECKED: 'Mark as checked',
 		VIEW_REPORT: 'View report',
-		REPORT_TYPE: 'Report type'
+		REPORT_TYPE: 'Report type',
+		CONTENT_MANAGER: 'Content manager',
+		HOME_PAGE: 'Home page',
+		ABOUT: 'About',
+		CONTENT: 'Content',
+		LANGUAGE: 'Language',
+		ADD_NEW_ABOUT: 'Add new about',
+		ABOUT_CONTENT_REQUIRED: 'About content is required',
+		ABOUT_LANGUAGE_REQUIRED: 'About language is required',
+		ABOUT_CONTENT: 'About content',
+		ABOUT_LANGUAGE: 'About language'
 	},
 	de: {
 

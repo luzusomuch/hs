@@ -28,7 +28,6 @@ class BackendReportListCtrl {
   		this.page += 1;
   		this.reports.items = (this.reports.items) ? this.reports.items.concat(resp.data.items) : resp.data.items;
   		this.reports.totalItem = resp.data.totalItem;
-  		console.log(this.reports);
 		}).catch(err => {
 			console.log(err);
 			// TODO show error

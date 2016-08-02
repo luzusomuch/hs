@@ -201,8 +201,8 @@ angular.module('healthStarsApp')
 }])
 .filter('imageUrl', () => {
   return (image, type) => {
+    let imagePath = '/assets/images/img.jpg';
     if (image) {
-      let imagePath;
       switch (type) {
         case 'small':
           imagePath = (image.metadata.small) ? image.metadata.small : '/assets/photos/'+image.metadata.tmp;
@@ -217,8 +217,8 @@ angular.module('healthStarsApp')
           imagePath = '/assets/photos/'+image.metadata.tmp;
           break;
       }
-      return imagePath;
     }
+    return imagePath;
   };
 })
 .filter('categoryClass', () => {

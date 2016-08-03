@@ -196,7 +196,10 @@ let Language = {
 		ABOUT_CONTENT_REQUIRED: 'About content is required',
 		ABOUT_LANGUAGE_REQUIRED: 'About language is required',
 		ABOUT_CONTENT: 'About content',
-		ABOUT_LANGUAGE: 'About language'
+		ABOUT_LANGUAGE: 'About language',
+		ABOUT_CONTENT_EXISTED: 'This about content language is existed',
+		EDIT_ABOUT_CONTENT: 'Edit about content',
+		
 	},
 	de: {
 

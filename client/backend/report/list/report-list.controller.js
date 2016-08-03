@@ -35,7 +35,7 @@ class BackendReportListCtrl {
 	}
 
 	markAsChecked(report) {
-		this.ReportService.markAsChecked(report._id).then(resp => {
+		this.ReportService.markAsChecked(report._id).then(() => {
 			report.checked = true;
 		}).catch(err => {
 			console.log(err);

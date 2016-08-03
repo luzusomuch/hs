@@ -1,11 +1,11 @@
 'use strict';
 
-class BackendCreateAboutContentCtrl {
-	constructor(AboutService, $uibModalInstance) {
+class BackendEditAboutContentCtrl {
+	constructor(AboutService, $uibModalInstance, about) {
 		this.AboutService = AboutService;
 		this.$uibModalInstance = $uibModalInstance;
 		this.page = 1;
-		this.about = {};
+		this.about = about;
 		this.submitted = false;
 		this.languages = [{value: 'en', text: 'English'}, {value: 'de', text: 'German'}];
 	}
@@ -17,7 +17,7 @@ class BackendCreateAboutContentCtrl {
 	submit(form) {
 		this.submitted = true;
 		if (form.$valid) {
-			this.AboutService.create(this.about).then(resp => {
+			this.AboutService.update(this.about._id, this.about).then(resp => {
 				this.$uibModalInstance.close(resp.data);
 			}).catch(err => {
 				console.log(err);
@@ -29,4 +29,4 @@ class BackendCreateAboutContentCtrl {
 	}
 }
 
-angular.module('healthStarsApp').controller('BackendCreateAboutContentCtrl', BackendCreateAboutContentCtrl);
+angular.module('healthStarsApp').controller('BackendEditAboutContentCtrl', BackendEditAboutContentCtrl);

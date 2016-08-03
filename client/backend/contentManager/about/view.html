@@ -1,7 +1,7 @@
 <div class="page-content">
 	<div>
 		<h4>{{'ABOUT' | translate}}</h4>
-		<a href="#" ng-click="vm.create()"><i class="fa fa-plus"></i> {{'ADD_NEW_ABOUT'}}</a>
+		<a href="#" ng-click="vm.create()"><i class="fa fa-plus"></i> {{'ADD_NEW_ABOUT' | translate}}</a>
 	</div>
 	<hr>
 	<div>
@@ -18,9 +18,8 @@
 					<td>{{about.content}}</td>
 					<td>{{about.language}}</td>
 					<td>
-						<a href="#"><i class="fa fa-eye"></i></a>
-						<a href="#"><i class="fa fa-pencil"></i></a>
-						<a href="#"><i class="fa fa-trash-o"></i></a>
+						<a href="#" ng-click="vm.edit(about)"><i class="fa fa-pencil"></i></a>
+						<a href="#" ng-click="vm.delete(about)"><i class="fa fa-trash-o"></i></a>
 					</td>
 				</tr>
 			</tbody>

@@ -19,6 +19,10 @@
 
       update: (id, about) => {
         return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/abouts/${id}`, about);
+      },
+
+      delete(id) {
+        return $http.delete(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/abouts/${id}`);
       }
     };
   }

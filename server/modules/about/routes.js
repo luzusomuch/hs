@@ -1,7 +1,9 @@
 import async from 'async';
 import Joi from 'joi';
+import multer from 'multer';
 
 module.exports = function(kernel) {
+
 	/*Get all abouts content*/
 	kernel.app.get('/api/v1/abouts/all', kernel.middleware.hasRole('admin'), (req, res) => {
 		kernel.model.About.find({}).then(abouts => {
@@ -75,6 +77,28 @@ module.exports = function(kernel) {
       return res.status(500).json({type: 'SERVER_ERROR'});
     });
 	});
+
+  /*Upload sound for landing page*/
+  kernel.app.post('/api/v1/abouts/sound', kernel.middleware.hasRole('admin'), (req, res) => {
+    let storage = multer.diskStorage({
+      destination: (req, file, cb) => {
+        cb(null, kernel.config.tmpSoundFolder)
+      },
+      filename: (req, file, cb) => {
+        return cb(null, 'main.mp3');
+      }
+    });
+    let upload = multer({
+      storage: storage
+    }).single('file');
+
+    upload(req, res, (err) => {
+      if (err) {
+        return res.status(500).json({type: 'SERVER_ERROR'});
+      }
+      return res.status(200).end();
+    });
+  });
 
   /*Delete selected language*/
   kernel.app.delete('/api/v1/abouts/:id', kernel.middleware.hasRole('admin'), (req, res) => {

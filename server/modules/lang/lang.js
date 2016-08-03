@@ -199,7 +199,8 @@ let Language = {
 		ABOUT_LANGUAGE: 'About language',
 		ABOUT_CONTENT_EXISTED: 'This about content language is existed',
 		EDIT_ABOUT_CONTENT: 'Edit about content',
-		
+		CURRENT_SOUND: 'Current sound',
+		UPLOAD_MP3_FILE: 'Upload mp3 file',
 	},
 	de: {
 

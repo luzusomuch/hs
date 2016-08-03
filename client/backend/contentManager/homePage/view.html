@@ -1,9 +1,21 @@
 <div class="page-content">
 	<div>
-		<h4></h4>
+		<h4>{{'HOME_PAGE' | translate}}</h4>
 	</div>
 	<hr>
 	<div>
-		
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label class="col-md-3">{{'CURRENT_SOUND' | translate}}</label>
+				<div class="col-md-9">
+					<audio controls>
+					  <source src="/assets/sound/main.mp3" type="audio/mpeg">
+					</audio>
+				</div>
+			</div>
+			<div class="form-group">
+				<p><a href="#" class="btn" ngf-select="vm.select($file)" ngf-multiple="false" accept="audio/mpeg">{{'UPLOAD_MP3_FILE' | translate}}</a></p>
+			</div>
+		</form>
 	</div>
 </div>

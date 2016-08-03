@@ -64,4 +64,4 @@ class BackendReportListCtrl {
 }
 
 angular.module('healthStarsApp')
-	.controller('BackendReportListCtrl', BackendReportListCtrl)
+	.controller('BackendReportListCtrl', BackendReportListCtrl);

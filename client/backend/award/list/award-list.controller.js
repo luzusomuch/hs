@@ -68,4 +68,4 @@ class BackendAwardListCtrl {
 }
 
 angular.module('healthStarsApp')
-	.controller('BackendAwardListCtrl', BackendAwardListCtrl)
+	.controller('BackendAwardListCtrl', BackendAwardListCtrl);

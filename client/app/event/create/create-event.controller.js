@@ -100,6 +100,21 @@ class CreateEventCtrl {
       minDate: new Date(),
       showWeeks: true
     };
+
+    this.checkValidTime = (time) => {
+      if (time) {
+        let splittedTime = time.split(':');
+        let validFormat = time.indexOf(':') > -1 && splittedTime.length > 0 && (splittedTime[0] >= 0 && splittedTime[0] < 24) && (splittedTime[1] >= 0 && splittedTime[1] < 60);
+        if (validFormat) {
+          let newTime = new Date(moment().hours(splittedTime[0]).minutes(splittedTime[1]));
+          return {valid: true, time: newTime};
+        } else {
+          return {valid: false};
+        }
+      } else {
+        return {valid: false};
+      }
+    }
   }
 
   refreshAddresses(address) {
@@ -184,14 +199,21 @@ class CreateEventCtrl {
     }
   }
 
-  onTimeSet(newDate, oldDate) {
-    console.log(newDate);
-    console.log(oldDate);
-  }
-
   create(form) {
     this.errors = {};
     this.submitted = true;
+    if (!this.event.startTime && this.checkValidTime(this.event.startTimeFormatted).valid) {
+      this.event.startTime = this.checkValidTime(this.event.startTimeFormatted).time;
+    } else {
+      this.errors.startDateTime = true;
+    }
+
+    if (!this.event.endTime && this.checkValidTime(this.event.endTimeFormatted).valid) {
+      this.event.endTime = this.checkValidTime(this.event.endTimeFormatted).time;
+    } else {
+      this.errors.endDateTime = true;
+    }
+
     if (!this.event.categoryId) {
       this.errors.category = true;
     }

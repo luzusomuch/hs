@@ -234,7 +234,8 @@ class BackendEventEditCtrl {
   		this.event.endDateTime = new Date(moment(this.event.endDate).hours(moment(this.event.endTime).hours()).minutes(moment(this.event.endTime).minutes()));
 
       if (moment(moment(this.event.startDateTime).format('YYYY-MM-DD HH:mm')).isSameOrAfter(moment(this.event.endDateTime).format('YYYY-MM-DD HH:mm'))) {
-        return this.errors.dateTime = true;
+        this.errors.dateTime = true;
+        return;
       }
 
       this.event.photos = _.map(this.event.photosId, (photo) => {
@@ -248,7 +249,7 @@ class BackendEventEditCtrl {
 	      arrayKey: '',
 	      data: {file: this.files, event: this.event},
 	      headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
-	    }).then(resp => {
+	    }).then( () => {
         this.submitted = false;
 	    	this.$state.go('backend.event.list');
 	    }, (err) => {
@@ -407,4 +408,4 @@ angular.module('healthStarsApp')
 	.controller('RepeatEventCtrl', RepeatEventCtrl)
 	.controller('AddParticipantsCtrl', AddParticipantsCtrl)
   .controller('AddAwardCtrl', AddAwardCtrl)
-	.controller('CreateAwardCtrl', CreateAwardCtrl)
+	.controller('CreateAwardCtrl', CreateAwardCtrl);

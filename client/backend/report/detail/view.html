@@ -1,0 +1,15 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{'VIEW_REPORT' | translate}}</h3>
+</div>
+<div class="modal-body">
+  <div class="form-group">
+  	<p>{{'REPORTER' | translate}}: {{report.reporterId.name}}</p>
+  	<p>{{'EVENT_NAME' | translate}}: {{report.event.name}}</p>
+  	<p>{{'REPORT_TYPE' | translate}}: {{report.type}}</p>
+  	<p>{{'CHECKED_STATUS' | translate}}: {{report.checked}}</p>
+  </div>
+</div>
+<div class="modal-footer">
+	<button ng-click="close()" type="button" class="btn btn-default btn-radius-20">{{'CANCEL' | translate}}</button>
+</div>    
+

@@ -1,0 +1,28 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{'ADD_NEW_ABOUT' | translate}}</h3>
+</div>
+
+<form class="form-horizontal" ng-submit="vm.submit(form)" name="form" novalidate>
+  <div class="modal-body">
+	  <div class="form-group" ng-class="{'has-error': form.content.$error.required && vm.submitted}">
+	  	<label class="col-sm-3">{{'ABOUT_CONTENT' | translate}}</label>
+	  	<div class="col-sm-9">
+		  	<textarea class="form-control" ng-model="vm.about.content" name="content" rows="5" required></textarea>
+		    <span class="help-block" ng-show="vm.submitted && form.content.$error.required">{{'REQUIRED_ERROR' | translate}}</span>
+	  	</div>
+	  </div>
+	  <div class="form-group" ng-class="{'has-error': form.language.$error.required && vm.submitted}">
+	  	<label class="col-sm-3">{{'ABOUT_LANGUAGE' | translate}}</label>
+	  	<div class="col-sm-9">
+		  	<select required class="form-control" name="language" ng-model="vm.about.language">
+		  		<option ng-repeat="language in vm.languages" ng-value="language.value">{{language.text | translate}}</option>
+		  	</select>
+		    <span class="help-block" ng-show="vm.submitted && form.language.$error.required">{{'REQUIRED_ERROR' | translate}}</span>
+	  	</div>
+	  </div>
+  </div>
+	<div class="modal-footer">
+		<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>
+		<button ng-click="vm.close()" type="button" class="btn btn-default btn-radius-20">{{'CANCEL' | translate}}</button>
+	</div>    
+</form>

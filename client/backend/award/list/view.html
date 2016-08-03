@@ -14,7 +14,7 @@
 		<div class="col-sm-4 col-xs-12">
 			<label>
 	      <input type="checkbox" ng-model="vm.showBlockedAwards">
-	      {{'SHOW_BLOCKED' | translate}} {{'PHOTOS' | translate}}
+	      {{'SHOW_BLOCKED' | translate}} {{'AWARDS' | translate}}
 	    </label>
 		</div>
 	</div>
@@ -47,12 +47,12 @@
 					<td>{{award.type}}</td>
 					<td>{{award.ownerId.name}}</td>
 					<td>{{award.event.name}}</td>
-					<td><img width="100" src="{{award.objectPhotoId | imageUrl: 'small'}}"></td>
+					<td><img width="150" src="{{award.objectPhotoId | imageUrl: 'small'}}"></td>
 					<td>{{award.createdAt | date: 'HH:mm'}} {{award.createdAt | date: 'dd-MMMM-yyyy'}}</td>
 					<td>{{(award.deleted) ? 'TRUE' : 'FALSE' | translate}}</td>
 					<td>
-						<a uib-tooltip="{{(!award.deleted) ? 'Block this award' : 'Unblock this award'}}" href="#" ng-click="vm.block(award)"><i class="fa" ng-class="{'fa-eye': !award.blocked, 'fa-eye-slash': award.blocked}"></i></a>
-						<a href="#" ng-click="vm.edit(award)"><i class="fa fa-edit"></i></a>
+						<a ng-show="!award.deleted" uib-tooltip="{{(!award.deleted) ? 'BLOCK_AWARD' : 'UNBLOCK_AWARD' | translate}}" href="#" ng-click="vm.block(award)"><i class="fa" ng-class="{'fa-trash-o': !award.deleted, 'fa-eye-slash': award.deleted}"></i></a>
+						<a ng-show="!award.deleted" href="#" ng-click="vm.edit(award)"><i class="fa fa-edit"></i></a>
 					</td>
 				</tr>
 			</tbody>

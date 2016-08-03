@@ -25,16 +25,15 @@ class BackendAwardListCtrl {
   		this.page += 1;
   		this.awards.items = (this.awards.items) ? this.awards.items.concat(resp.data.items) : resp.data.items;
   		this.awards.totalItem = resp.data.totalItem;
-  		console.log(this.awards);
 		}).catch(err => {
 			console.log(err);
 			// TODO show error
 		});
 	}
 
-	block(photo) {
-		this.AwardService.block(photo._id).then(resp => {
-			photo.blocked = resp.data.blocked;
+	block(award) {
+		this.AwardService.delete(award._id).then(() => {
+			award.deleted = true;
 		}).catch(err => {
 			console.log(err);
 			// TODO show error

@@ -31,6 +31,7 @@ module.exports = {
   },
   tmpFolder: path.resolve(__dirname, '../..//assets/.tmp'),
   tmpPhotoFolder: path.resolve(__dirname, '../../..//client/assets/photos'),
+  tmpSoundFolder: path.resolve(__dirname, '../../..//client/assets/sound'),
   watermarkFile: path.resolve(__dirname, '../../assets/watermark.png'),
   AWS: {
     accessKeyId: 'AKIAI7KKFT6PBJRLBZKQ',

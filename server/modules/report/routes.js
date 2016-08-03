@@ -1,5 +1,8 @@
-import Joi from 'joi'
+import Joi from 'joi';
+import async from 'async';
+
 module.exports = function(kernel) {
+  /*Create new report*/
 	kernel.app.post('/api/v1/reports', kernel.middleware.isAuthenticated(), (req, res) => {
 		if (req.user.deleted && req.user.deleted.status) {
       return res.status(403).json({type: 'EMAIL_DELETED', message: 'This user email was deleted'});
@@ -61,4 +64,123 @@ module.exports = function(kernel) {
     	return res.status(500).json({type: 'SERVER_ERROR'});
     })
 	});
+
+  /*get all reports for admin*/
+  kernel.app.get('/api/v1/reports/all', kernel.middleware.hasRole('admin'), (req, res) => {
+    let pageSize = req.query.pageSize || 10;
+    let page = req.query.page || 1;
+    kernel.model.Report.find({}).limit(Number(pageSize))
+    .skip(pageSize * (page-1))
+    .populate('reporterId', '-password -salt')
+    .exec().then(reports => {
+      kernel.model.Report.count({}).then(count => {
+        let results = [];
+        async.each(reports, (report, callback) => {
+          let item = report.toJSON();
+          if (report.type === 'User') {
+            item.event = null;
+            results.push(item);
+            callback();
+          } else {
+            let eventId;
+            async.parallel([
+              (cb) => {
+                if (report.type==='Event') {
+                  eventId = report.reportedItemId;
+                  cb(null);
+                } else if (report.type==='Photo') {
+                  async.waterfall([
+                    (_cb) => {
+                      kernel.model.Feed.findOne({photosId: report.reportedItemId}).then(feed => {
+                        if (!feed) {
+                          _cb(null, {eventId: null});
+                        } else {
+                          _cb(null, {eventId: feed.eventId});
+                        }
+                      }).catch(_cb);
+                    },
+                    (result, _cb) => {
+                      if (result.eventId) {
+                        _cb(null, result);
+                      } else {
+                        kernel.model.Event.findOne({photosId: report.reportedItemId}).then(event => {
+                          if (!event) {
+                            _cb({error: 'Event not found', code: 404});
+                          } else {
+                            _cb(null, {eventId: event._id});
+                          }
+                        }).catch(_cb);
+                      }
+                    }
+                  ], (err, result) => {
+                    if (err) {
+                      return cb(err);
+                    }
+                    eventId = result.eventId;
+                    cb(null);
+                  });
+                } else if (report.type==='Feed') {
+                  kernel.model.Feed.findById(report.reportedItemId).then(feed => {
+                    if (!feed) {
+                      cb(null);
+                    } else {
+                      eventId = feed.eventId;
+                      cb(null);
+                    }
+                  }).catch(cb);
+                } else if (report.type==='Comment') {
+                  cb(null);
+                } else {
+                  cb(null);
+                }
+              }
+            ], (err) => {
+              if (err) {
+                results.push(item);
+                return callback(err);
+              }
+              if (eventId) {
+                kernel.model.Event.findById(eventId).then(event => {
+                  item.event = (event) ? event : null;
+                  results.push(item);
+                  callback();
+                }).catch(callback);
+              } else {
+                item.event = null;
+                results.push(item);
+                callback();
+              }
+            });
+          }
+        }, (err) => {
+          if (err) {
+            return res.status(500).json({type: 'SERVER_ERROR'});    
+          }
+          return res.status(200).json({items: results, totalItem: count});
+        });
+      }).catch(err => {
+        return res.status(500).json({type: 'SERVER_ERROR'});  
+      });
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+  });
+
+  /*Mark report as checked*/
+  kernel.app.put('/api/v1/reports/:id/checked', kernel.middleware.hasRole('admin'), (req, res) => {
+    kernel.model.Report.findById(req.params.id).then(report => {
+      if (!report) {
+        return res.status(404).end();
+      }
+      report.checked = true;
+      report.checkedBy = req.user._id;
+      report.save().then(() => {
+        return res.status(200).end();
+      }).catch(err => {
+        return res.status(500).json({type: 'SERVER_ERROR'});  
+      });
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+  });
 };

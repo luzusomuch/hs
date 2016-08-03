@@ -1,6 +1,6 @@
 <div class="page-content">
 	<div>
-		<h4>{{'PHOTOS_LIST' | translate}}</h4>
+		<h4>{{'REPORTS_LIST' | translate}}</h4>
 	</div>
 
 	<div class="row">
@@ -13,8 +13,8 @@
 		</div>
 		<div class="col-sm-4 col-xs-12">
 			<label>
-	      <input type="checkbox" ng-model="vm.showBlockedPhotos">
-	      {{'SHOW_BLOCKED' | translate}} {{'PHOTOS' | translate}}
+	      <input type="checkbox" ng-model="vm.showCheckedReports">
+	      {{'SHOW_CHECKED_REPORTS' | translate}}
 	    </label>
 		</div>
 	</div>
@@ -24,8 +24,8 @@
 			<thead>
 				<tr>
 					<td><strong>{{'PHOTO_OWNER_NAME' | translate}}</strong></td>
+					<td><strong>{{'REPORT_TYPE' | translate}}</strong></td>
 					<td><strong>{{'EVENT_NAME' | translate}}</strong></td>
-					<td><strong>{{'PREVIEW_IMAGE' | translate}}</strong></td>
 					<td>
 						<strong>
 							<a href="#" ng-click="vm.sortType='createdAt'; vm.sortReverse=!vm.sortReverse">
@@ -35,25 +35,26 @@
 							</a>
 						</strong>
 					</td>
-					<td><strong>{{'BLOCKED_STATUS' | translate}}</strong></td>
+					<td><strong>{{'CHECKED_STATUS' | translate}}</strong></td>
 					<td><strong>{{'ACTION' | translate}}</strong></td>
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="photo in vm.photos.items | filter: vm.searchText[vm.selectedFilterType] | showBlocked: vm.showBlockedPhotos | orderBy: vm.sortType: vm.sortReverse">
-					<td>{{photo.ownerId.name}}</td>
-					<td>{{photo.event.name}}</td>
-					<td><img width="150" src="{{photo | imageUrl: 'small'}}"></td>
-					<td>{{photo.createdAt | date: 'HH:mm'}} {{photo.createdAt | date: 'dd-MMMM-yyyy'}}</td>
-					<td>{{(photo.blocked) ? 'TRUE' : 'FALSE' | translate}}</td>
+				<tr ng-repeat="report in vm.reports.items | filter: vm.searchText[vm.selectedFilterType] | showChecked: vm.showCheckedReports | orderBy: vm.sortType: vm.sortReverse">
+					<td>{{report.reporterId.name}}</td>
+					<td>{{report.type}}</td>
+					<td>{{report.event.name}}</td>
+					<td>{{report.createdAt | date: 'HH:mm'}} {{report.createdAt | date: 'dd-MMMM-yyyy'}}</td>
+					<td>{{(report.checked) ? 'TRUE' : 'FALSE' | translate}}</td>
 					<td>
-						<a uib-tooltip="{{(!photo.blocked) ? 'BLOCK_PHOTO' : 'UNBLOCK_PHOTO' | translate}}" href="#" ng-click="vm.block(photo)"><i class="fa" ng-class="{'fa-eye': !photo.blocked, 'fa-eye-slash': photo.blocked}"></i></a>
+						<a ng-show="!report.checked" uib-tooltip="{{'MARK_AS_CHECKED' | translate}}" href="#" ng-click="vm.markAsChecked(report)"><i class="fa fa-check"></i></a>
+						<a uib-tooltip="{{'VIEW_REPORT' | translate}}" href="#" ng-click="vm.view(report)"><i class="fa fa-eye"></i></a>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
-	<div ng-show="vm.photos.items.length < vm.photos.totalItem">
-		<a ng-click="vm.loadMore()" href="#">{{'LOAD_MORE_PHOTOS' | translate}}</a>
+	<div ng-show="vm.reports.items.length < vm.reports.totalItem">
+		<a ng-click="vm.loadMore()" href="#">{{'LOAD_MORE_REPORTS' | translate}}</a>
 	</div>
 </div>

@@ -749,9 +749,11 @@ label .note-form {
 }
 .calendar-home {
     overflow: hidden;
+    background: #273141;
+    padding: 5px;
 }
 .calendar-home * {
-    background: #273141;
+    
     color: rgba(255,255,255,0.7);
     outline: none;
 }
@@ -2278,7 +2280,16 @@ span.country-name {
 }
 .box-comment-detail .mCSB_container_wrapper {
     position: relative;
+
+}
+.box-comment-detail .mCSB_container {
 }
 .box-comment-detail  .mCSB_vertical_horizontal {
     max-height: none !important;
+ }
+ .datepicker table {
+    width: 100%;
+ }
+ .mCSB_container >ul>li:last-child .action-comment ul.comment-option {
+    top: -75px;
  }

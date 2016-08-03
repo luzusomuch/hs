@@ -22,7 +22,7 @@ class BackendContentManagerAboutCtrl {
 		let modalInstance = this.$uibModal.open({
     	animation: true,
     	templateUrl: 'app/contentManager/create-about-content/view.html',
-    	controller: 'BackendCreateAboutContentCtrl'
+    	controller: 'BackendCreateAboutContentCtrl',
     	controllerAs: 'vm'
     });
 		modalInstance.result.then(data => {

@@ -72,7 +72,7 @@ class BackendEventListCtrl {
 
 	delete(event) {
 		this.EventService.delete(event._id).then(() => {
-
+			event.blocked = true;
 		}).catch(err => {
 			console.log(err);
 			// TODO show error

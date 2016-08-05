@@ -57,8 +57,8 @@
 					<td>{{event.startDateTime | date: 'HH:mm'}} {{event.startDateTime | date: 'dd-MMMM-yyyy'}}</td>
 					<td>{{event.endDateTime | date: 'HH:mm'}} {{event.endDateTime | date: 'dd-MMMM-yyyy'}}</td>
 					<td>
-						<a href="#" ng-click="vm.delete(event)"><i class="fa fa-trash-o"></i></a>
-						<a ui-sref="backend.event.edit({id: event._id})"><i class="fa fa-pencil"></i></a>
+						<a ng-show="!event.blocked" href="#" ng-click="vm.delete(event)"><i class="fa fa-trash-o"></i></a>
+						<a ng-show="!event.blocked" ui-sref="backend.event.edit({id: event._id})"><i class="fa fa-pencil"></i></a>
 					</td>
 				</tr>
 				<tr ng-show="vm.search" ng-repeat="event in vm.searchItems | showBlocked:vm.showActiveEvent | orderBy: vm.sortType: vm.sortReverse track by $index">
@@ -69,8 +69,8 @@
 					<td>{{event.startDateTime | date: 'HH:mm'}} {{event.startDateTime | date: 'dd-MMMM-yyyy'}}</td>
 					<td>{{event.endDateTime | date: 'HH:mm'}} {{event.endDateTime | date: 'dd-MMMM-yyyy'}}</td>
 					<td>
-						<a href="#" ng-click="vm.delete(event)"><i class="fa fa-trash-o"></i></a>
-						<a ui-sref="backend.event.edit({id: event._id})"><i class="fa fa-pencil"></i></a>
+						<a ng-show="!event.blocked" href="#" ng-click="vm.delete(event)"><i class="fa fa-trash-o"></i></a>
+						<a ng-show="!event.blocked" ui-sref="backend.event.edit({id: event._id})"><i class="fa fa-pencil"></i></a>
 					</td>
 				</tr>
 			</tbody>

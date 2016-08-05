@@ -528,10 +528,6 @@ module.exports = function(kernel) {
             event.public = (req.body.event.public==='true') ? true : false;
             event.private = !event.public;
             event.location = req.body.event.location;
-            // if current user is admin then update the event blocked status
-            if (req.user.role==='admin') {
-              event.blocked = (req.body.event.blocked==='true') ? true : false;
-            }
 
             if (req.body.event.bannerName && req.body.event.bannerName !== 'null') {
               event.banner = newBannerId;
@@ -662,7 +658,9 @@ module.exports = function(kernel) {
       if (event.ownerId.toString()===req.user._id.toString() || req.user.role==='admin') {
         event.blocked = true;
         event.blockedByUserId = req.user._id;
-        event.save().then(() => {
+        event.save().then(saved => {
+          kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: saved._id.toString(), data: saved}).save();
+          kernel.queue.create('DELETE_EVENT', {event: saved, user: req.user}).save();
           return res.status(200).end();
         }).catch(err => {
           return res.status(500).json({type: 'SERVER_ERROR'});

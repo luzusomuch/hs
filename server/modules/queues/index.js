@@ -338,4 +338,47 @@ exports.core = (kernel) => {
       done(err);
     })
   });
+
+  /*queue excute when delete an event*/
+  kernel.queue.process('DELETE_EVENT', (job, done) => {
+    let event = job.data.event;
+    let user = job.data.user;
+    async.parallel([
+      (cb) => {
+        // Update event's photos status
+        async.each(event.photosId, (photoId, callback) => {
+          kernel.model.Photo.findById(photoId).then(photo => {
+            if (!photo) {
+              return callback();
+            }
+            photo.blocked = event.blocked;
+            photo.blockedBy = (photo.blocked) ? user._id : null;
+            photo.save(callback);
+          }).catch(callback);
+        }, cb);
+      },
+      (cb) => {
+        // Update event's feeds status
+        kernel.model.Feed.find({eventId: event._id}).then(feeds => {
+          async.each(feeds, (feed, callback) => {
+            async.each(feed.photosId, (photoId, _callback) => {
+              // Update feed's photos status
+              kernel.model.Photo.findById(photoId).then(photo => {
+                if (!photo) {
+                  return _callback();
+                }
+                photo.blocked = event.blocked;
+                photo.blockedBy = (photo.blocked) ? user._id : null;
+                photo.save(_callback);
+              }).catch(_callback);
+            }, () => {
+              feed.blocked = event.blocked;
+              feed.blockedByUserId = (feed.blocked) ? user._id : null;
+              feed.save(callback);
+            });
+          }, cb);
+        }).catch(cb);
+      }
+    ], done);
+  });
 };

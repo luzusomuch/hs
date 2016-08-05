@@ -235,47 +235,163 @@ module.exports = function(kernel) {
       let friendIds = _.map(friends, (friend) => {
         return friend.fromUserId.toString() === req.user._id.toString() ? friend.toUserId : friend.fromUserId;
       });
-      kernel.model.Event.find({
-        $or: [{participantsId: {$in: friendIds}}, {ownerId: {$in: friendIds}}]
-      })
-      .populate('awardId')
-      .populate('categoryId')
-      .populate({
-        path: 'participantsId', 
-        select: '-password -salt', 
-        populate: {path: 'avatar', model: 'Photo'}
-      })
-      .populate({
-        path: 'ownerId', 
-        select: '-password -salt', 
-        populate: {path: 'avatar', model: 'Photo'}
-      })
-      .limit(4).exec().then(events => {
-        let results = [];
-        async.each(events, (item, callback) => {
-          if (item.ownerId && item.ownerId._id && item.awardId) {
-            kernel.model.GrantAward.findOne({ownerId: (item.ownerId._id) ? item.ownerId._id : item.ownerId, eventId: item._id, awardId: item.awardId._id}).then(award => {
-              let data = item.ownerId.toJSON();
-              data.isGrantedAward = (award) ? true : false;
-              item.ownerId = data;
-              results.push(item);
-              callback();
-            }).catch(callback);
-          } else {
-            callback();
+
+      let page = parseInt(req.query.page);
+      let limit = parseInt(req.query.page);
+      page = (page === 'NaN' || !page) ? 1 : page;
+      limit = (limit === 'NaN' || !limit || limit < 8 || limit > 100) ? 3 : limit;
+      let skip = (page - 1) * limit;
+
+      let q = {
+        query: {
+          filtered: {
+            query: {
+              bool: {
+                should: []
+              }
+            },
+            filter: {
+              bool: {
+                must: [
+                  { term: { blocked: false } }
+                ],
+                should: [
+                  { missing: { field: 'private' } },
+                  { term: { private: false } },
+                  { term: { participantsId: friendIds}},
+                  { term: { ownerId: friendIds}}
+                ]
+              }
+            }
           }
+        },
+        from: skip,
+        size: limit,
+        sort: [
+          { createdAt: 'desc' }
+        ]
+      };
+      kernel.ES.search(q, kernel.config.ES.mapping.eventType, (err, result) => {
+        if (err) {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        }
+        let results = [];
+        async.each(result.items, (item, callback) => {
+          async.waterfall([
+            (cb) => {
+              kernel.model.Award.findById(item.awardId).then(award => {
+                if (!award) {
+                  return cb(null, item);
+                }
+                item.awardId = award;
+                cb(null, item);
+              }).catch(cb);
+            },
+            (result, cb) => {
+              kernel.model.Category.findById(result.categoryId).then(category => {
+                if (!category) {
+                  return cb(null, result);
+                }
+                result.categoryId = category;
+                cb(null, result);
+              }).catch(cb);
+            }, 
+            (result, cb) => {
+              kernel.model.User.findById(result.ownerId, '-password -salt')
+              .populate('avatar').exec().then(owner => {
+                if (!owner) {
+                  return cb(null, result);
+                }
+                kernel.model.GrantAward.count({ownerId: owner._id}).then(count => {
+                  owner.totalAwards = count;
+                  result.ownerId = owner;
+                  cb(null, result);
+                }).catch(err => {
+                  owner.totalAwards = 0;
+                  result.ownerId = owner;
+                  cb(null, result);
+                })
+              }).catch(cb);
+            }, 
+            (result, cb) => {
+              let participants = [];
+              async.each(result.participantsId, (userId, _callback) => {
+                kernel.model.User.findById(userId, '-password -salt')
+                .populate('avatar').exec().then(participant => {
+                  if (!participant) {
+                    participants.push(userId);
+                    _callback(null);
+                  } else {
+                    participants.push(participant);
+                    _callback(null);
+                  }
+                }).catch(_callback);
+              }, () => {
+                result.participantsId = participants;
+                cb(null, result);
+              });
+            },
+            (result, cb) => {
+              cb(null, result);
+            }
+          ], (err, result) => {
+            results.push(result);
+            callback();
+          });
+          // if (item.ownerId && item.ownerId._id && item.awardId) {
+          //   kernel.model.GrantAward.findOne({ownerId: (item.ownerId._id) ? item.ownerId._id : item.ownerId, eventId: item._id, awardId: item.awardId._id}).then(award => {
+          //     data.isGrantedAward = (award) ? true : false;
+          //     item.ownerId = data;
+          //     callback();
+          //   }).catch(callback);
+          // } else {
+          //   callback();
+          // }
         }, () => {
-          return res.status(200).json({events: results});
+          return res.status(200).json({items: results, totalItem: result.totalItem});
         });
-      }).catch(err => {
-        console.log(err);
-        return res.status(500).json({type: 'SERVER_ERROR'});  
-      })
+      });
     }).catch(err => {
-      console.log(err);
       return res.status(500).json({type: 'SERVER_ERROR'});
     });
   });
+      // kernel.model.Event.find({
+      //   $or: [{participantsId: {$in: friendIds}}, {ownerId: {$in: friendIds}}]
+      // })
+      // .populate('awardId')
+      // .populate('categoryId')
+      // .populate({
+      //   path: 'participantsId', 
+      //   select: '-password -salt', 
+      //   populate: {path: 'avatar', model: 'Photo'}
+      // })
+      // .populate({
+      //   path: 'ownerId', 
+      //   select: '-password -salt', 
+      //   populate: {path: 'avatar', model: 'Photo'}
+      // })
+      // .limit(4).exec().then(events => {
+      //   let results = [];
+      //   async.each(events, (item, callback) => {
+      //     if (item.ownerId && item.ownerId._id && item.awardId) {
+      //       kernel.model.GrantAward.findOne({ownerId: (item.ownerId._id) ? item.ownerId._id : item.ownerId, eventId: item._id, awardId: item.awardId._id}).then(award => {
+      //         let data = item.ownerId.toJSON();
+      //         data.isGrantedAward = (award) ? true : false;
+      //         item.ownerId = data;
+      //         results.push(item);
+      //         callback();
+      //       }).catch(callback);
+      //     } else {
+      //       callback();
+      //     }
+      //   }, () => {
+      //     return res.status(200).json({events: results});
+      //   });
+      // }).catch(err => {
+      //   console.log(err);
+      //   return res.status(500).json({type: 'SERVER_ERROR'});  
+      // })
+    
 
   /* suggest for searching */
   kernel.app.get('/api/v1/events/suggest', kernel.middleware.isAuthenticated(), (req, res) => {
@@ -1075,7 +1191,8 @@ module.exports = function(kernel) {
               }
               
               kernel.model.Photo.find({
-                _id: { $in: photosId}
+                _id: { $in: photosId},
+                blocked: false
               })
               .sort({createdAt: -1}).limit(limit).exec(_cb);
             }
@@ -1089,7 +1206,8 @@ module.exports = function(kernel) {
             ids = ids.splice(remaining);
           }
           kernel.model.Photo.find({
-            _id: { $in: ids }
+            _id: { $in: ids },
+            blocked: false
           }, (err, eventPhotos) => {
             if(err) return cb(err);
             return cb(null, photos.concat(eventPhotos));

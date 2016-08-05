@@ -1,11 +1,11 @@
-<div class="box-1 m20" ng-show="friendsEvents.length > 0">
-  <div class="title-box-1">Event List</div>
+<div class="box-1 m20" ng-show="friendsEvents.items.length > 0">
+  <div class="title-box-1">{{'EVENTS_LIST' | translate}}</div>
   <div class="body-box-1 event-home-right">
   	<ul class="event-list">
-  		<li class="{{event.categoryId | categoryClass}}" ng-repeat="event in friendsEvents">
+  		<li class="{{event.categoryId | categoryClass}}" ng-repeat="event in friendsEvents.items">
   			<div class="top-li-event">
           <a href="#"><img src="{{event.ownerId | avatarUrl}}"></a>
-          <h4><a href="#">{{event.ownerId.name}}</a></h4>
+          <h4><a href="#">{{event.ownerId.name}} &nbsp;</a></h4>
           <i class="fa fa-clock-o"></i> {{event.createdAt | fromNow}}
           <div class="arward-li-top">
             <span>{{event.ownerId.totalAwards || 0}}</span>
@@ -24,6 +24,9 @@
           </div>
         </div>
   		</li>
+      <li ng-show="friendsEvents.items.length < friendsEvents.totalItem">
+        <a href="#" ng-click="loadMore()">{{'LOAD_MORE_EVENTS' | translate}}</a>
+      </li>
   	</ul>
   </div>
 </div>

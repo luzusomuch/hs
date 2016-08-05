@@ -6,7 +6,7 @@
     return {
 
       getFriendsEvents(params) {
-        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/friendsEvents`);
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/friendsEvents`, {params: params});
       },
 
       search: (body) => {

@@ -250,9 +250,11 @@ angular.module('healthStarsApp')
   }
 })
 .filter('eventThumbnail', () => {
-  return (photos) => {
+  return (event) => {
     let imageUrl = '/assets/images/img.jpg';
     let selectedImage;
+    let photos = event.photosId;
+    let category = event.categoryId;
     if (photos.length > 0) {
       angular.forEach(photos, (photo) => {
         if (!photo.blocked && photo._id) {
@@ -264,6 +266,27 @@ angular.module('healthStarsApp')
       });
       if (selectedImage && selectedImage._id) {
         imageUrl = (selectedImage.metadata.small) ? selectedImage.metadata.small : '/assets/photos/'+selectedImage.metadata.tmp;
+      }
+    } else if (event.categoryId.type && category.imagePath) {
+      switch (event.categoryId.type) {
+        case 'food':
+          imageUrl = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : '/assets/images/star1.png';
+          break;
+        case 'action':
+          imageUrl = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : '/assets/images/star4.png';
+          break;
+        case 'eco':
+          imageUrl = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : '/assets/images/star3.png';
+          break;
+        case 'social':
+          imageUrl = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : '/assets/images/star2.png';
+          break;
+        case 'internation':
+          imageUrl = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : '/assets/images/star.png';
+          break;
+        default:
+          imageUrl = category.imagePath;
+          break;
       }
     }
     return imageUrl;

@@ -97,7 +97,7 @@
                             </div>
                         </div>
                         <div class="box-event-li">
-                            <a ui-sref="event.detail({id: event._id})" class="img-eventbox"><img src="{{event.banner | imageUrl: 'small'}}" width="100%"></a>
+                            <a ui-sref="event.detail({id: event._id})" class="img-eventbox"><img src="{{event | eventThumbnail}}" width="100%"></a>
                             <div class="text-li-event">
                                 <h3>{{event.name}}</h3>
                                 <i class="fa fa-calendar"></i> {{event.startDateTime | date : 'dd.MM.yyyy'}} <i class="fa fa-clock-o"></i> {{event.startDateTime | date: 'HH:mm'}}<br>

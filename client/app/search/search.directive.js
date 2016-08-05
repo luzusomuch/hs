@@ -57,6 +57,7 @@ angular.module('healthStarsApp')
 					SearchParams.params.category = '';
 					SearchParams.params.categories = [];
 					SearchParams.params.friendActivities = false;
+					angular.element(element).find('button').trigger('click');
         });
 			};
 

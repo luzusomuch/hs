@@ -458,20 +458,20 @@ label .note-form {
 }
 .search-top {
     padding: 0px 375px;
-    text-align: center;
-    margin-top: 20px;
+    text-align: right;
+    /*margin-top: 20px;*/
 }
 .search-top span.title-search {
     text-decoration: underline;
-    position: absolute;
+    /*position: absolute;
     top: 10px;
-    left: 0px;
+    left: 0px;*/
     cursor: pointer;
 }
 .search-top button {
     position: absolute;
-    top: 7px;
-    right: 7px;
+    top: 25px;
+    right: 10px;
     font-size: 18px;
     color: #9fa9b9;
     border: 0px;

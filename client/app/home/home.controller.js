@@ -1,7 +1,7 @@
 'use strict';
 
 class HomeCtrl {
-	constructor($scope, EventService, LikeService, $localStorage, CategoryService, SearchParams, socket, $state, $timeout, categories) {
+	constructor($rootScope, $scope, EventService, LikeService, $localStorage, CategoryService, SearchParams, socket, $state, $timeout, categories) {
     this.$scope = $scope;
     this.categories = [];
     // re-order category
@@ -113,6 +113,10 @@ class HomeCtrl {
             lat: position.coords.latitude,
             lng: position.coords.longitude
           }
+        };
+        $rootScope.location = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
         };
         this.searchParams.radius = 100;
         $scope.geoLocation = true;

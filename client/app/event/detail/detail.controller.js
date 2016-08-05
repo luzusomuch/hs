@@ -4,6 +4,8 @@ class EventDetailCtrl {
 	constructor($scope, event, $localStorage, liked, LikeService, Upload, $cookies, $stateParams, FeedService, PhotoViewer, APP_CONFIG) {
 		this.event = event;
 		this.event.url = APP_CONFIG.baseUrl + 'event/detail/'+event._id;
+		this.event.location.lat = this.event.location.coordinates[1];
+		this.event.location.lng = this.event.location.coordinates[0];
 		this.viewer = PhotoViewer;
 		this.submitted = false;
 		this.feed = {};

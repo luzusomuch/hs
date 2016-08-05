@@ -4,7 +4,7 @@ class EventWeatherCtrl {
 	constructor() {}
 }
 
-angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI, Util) => {
+angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI, Util, $rootScope, SearchParams) => {
 	return {
 		restrict: 'E',
 		scope: {
@@ -38,9 +38,17 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 			};
 			scope.$watch('location', function(nv) {
 				scope.valid = false;
-				if(nv && nv.coordinates) {
-					params.lon = nv.coordinates[0];
-					params.lat = nv.coordinates[1];
+				if(nv) {
+					// Update weather location when change search place
+					params.lon = nv.lng;
+					params.lat = nv.lat;
+				} else if ($rootScope.location) {
+					// When user clear search location, then we use the current location of user to get weather
+					params.lon = $rootScope.location.lng;
+					params.lat = $rootScope.location.lat;
+				}
+
+				if (params.lon && params.lat) {
 					var query = Util.obToquery(params);
 					WeatherAPI.get(query).then(function(res) {
 						if(res.data.cod === '200') {
@@ -51,6 +59,18 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 							scope.valid = true;
 						}
 					});
+				}
+			});
+
+			scope.searchParams = SearchParams.params;
+			scope.$watch('searchParams.dates', (nv) => {
+				if (nv && nv.length > 0) {
+					let date = nv[nv.length-1];
+					if (scope.data) {
+						scope.$index = _.findIndex(scope.data.list, (item) => {
+							return moment(date).days()===moment(item.dt*1000).days();
+						});
+					}
 				}
 			});
 		}

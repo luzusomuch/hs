@@ -14,8 +14,8 @@
                     <div class="row ">
                         <div class="col-sm-4 col-lg-7">
                             <div class="action-event">
-                                <span><i class="fa fa-user"></i> by {{vm.event.ownerId.name}}</span>
-                                <span><i class="fa fa-clock-o"></i> {{vm.event.createdAt | hsDate: 'MMMM DD, YYYY HH:mm a'}}</span>
+                                <span><i class="fa fa-user"></i> {{'BY' | translate}} {{vm.event.ownerId.name}}</span>
+                                <span><i class="fa fa-clock-o"></i> {{'FROM' | translate }} {{vm.event.startDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}} {{'TO' | translate}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}}</span>
                                 <span ng-click="vm.like()"><i class="fa fa-heart" ng-class="{liked: vm.liked}"></i> {{vm.event.totalLike || 0}}</span>
                                 <span><i class="fa fa-comment"></i> {{vm.event.totalComment || 0}}</span>
                                 <span ng-if="!vm.event.private"><i class="fa fa-unlock"></i> {{'PUBLIC_EVENT' | translate}}</span>

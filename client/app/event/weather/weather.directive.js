@@ -53,7 +53,7 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 					WeatherAPI.get(query).then(function(res) {
 						if(res.data.cod === '200') {
 							scope.data = res.data;
-							scope.$index = _.findIndex(scope.data.list, function(item) {
+							$rootScope.$index = scope.$index = _.findIndex(scope.data.list, function(item) {
 								return moment(item.dt * 1000).days() === moment().days();
 							});
 							scope.valid = true;
@@ -71,6 +71,8 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 							return moment(date).days()===moment(item.dt*1000).days();
 						});
 					}
+				} else {
+					scope.$index = $rootScope.$index;
 				}
 			});
 		}

@@ -56,6 +56,7 @@ angular.module('healthStarsApp')
 					angular.element('.calendar-home > div').datepicker('clearDates');
 					SearchParams.params.category = '';
 					SearchParams.params.categories = [];
+					SearchParams.params.friendActivities = false;
         });
 			};
 

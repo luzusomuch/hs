@@ -293,10 +293,32 @@ angular.module('healthStarsApp')
   }
 })
 .filter('eventBanner', () => {
-  return (banner) => {
+  return (event) => {
+    let banner = event.banner;
+    let category = event.categoryId;
     let image = 'assets/images/img-pro1.jpg';
     if (banner && banner.metadata) {
       image = (banner.metadata.large) ? banner.metadata.large : 'assets/photos/'+banner.metadata.tmp;
+    } else if (category && category._id) {
+      switch (category.type) {
+        case 'food':
+          image = 'assets/images/foodstar.jpg';
+          break;
+        case 'action':
+          image = 'assets/images/actionstar.jpg';
+          break;
+        case 'eco':
+          image = 'assets/images/ecostar.jpg';
+          break;
+        case 'social':
+          image = 'assets/images/socialstar.jpg';
+          break;
+        case 'internation':
+          image = 'assets/images/sport.jpg';
+          break;
+        default:
+          break;
+      }
     }
     return image;
   }

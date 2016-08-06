@@ -29,6 +29,20 @@ module.exports = {
   SECRETS: {
     session: 'app-secret'
   },
+
+  REST_PREFIX: '/api/v1/',
+
+  QUEUE_NAME: 'mean',
+  QUEUE_CONFIG: {
+    prefix: 'q',
+    redis: {
+      host: '127.0.0.1',
+      port: 6379,
+      db: 0,
+      options: {}
+    }
+  },
+  
   tmpFolder: path.resolve(__dirname, '../..//assets/.tmp'),
   tmpPhotoFolder: path.resolve(__dirname, '../../..//client/assets/photos'),
   tmpSoundFolder: path.resolve(__dirname, '../../..//client/assets/sound'),
@@ -37,6 +51,9 @@ module.exports = {
     accessKeyId: 'AKIAI7KKFT6PBJRLBZKQ',
     secretAccessKey: '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',
     region: 'us-west-2'
+  },
+  S3: {
+    bucket: 'hvs3'
   },
   FACEBOOK: {
     clientID:     process.env.FACEBOOK_ID || '1405403066433083',
@@ -54,8 +71,5 @@ module.exports = {
     clientID:     process.env.GOOGLE_ID || '370450171698-3mng1t1reg27ughuh1jn80ilhaj0rfum.apps.googleusercontent.com',
     clientSecret: process.env.GOOGLE_SECRET || 'ZJ08JCu7ECso7Y9GgZg_6BUw',
     callbackURL:  baseUrl + 'auth/google/callback'
-  },
-  S3: {
-    bucket: 'hvs3'
   }
 };

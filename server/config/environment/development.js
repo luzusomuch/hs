@@ -50,6 +50,9 @@ module.exports = {
     secretAccessKey: 'rOJuVka7csujVJV6PocVfJQ4MxGqhOVL5o8cfud7',
     region: 'us-west-2'
   },
+  S3: {
+    bucket: 'hvs3'
+  }
   FACEBOOK: {
     clientID:     process.env.FACEBOOK_ID || '151467955264025',
     clientSecret: process.env.FACEBOOK_SECRET || 'b3fb8c3ac0b6fb90f6d4849128c7ac18',
@@ -66,9 +69,5 @@ module.exports = {
     clientID:     process.env.GOOGLE_ID || '370450171698-3mng1t1reg27ughuh1jn80ilhaj0rfum.apps.googleusercontent.com',
     clientSecret: process.env.GOOGLE_SECRET || 'ZJ08JCu7ECso7Y9GgZg_6BUw',
     callbackURL:  baseUrl + 'auth/google/callback'
-  },
-
-  S3: {
-    bucket: 'hvs3'
   }
 };

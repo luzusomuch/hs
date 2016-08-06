@@ -51,7 +51,7 @@ class BackendEventEditCtrl {
     	if (nv) {
     		let modalInstance = $uibModal.open({
 		    	animation: true,
-		    	templateUrl: 'app/event/modal/repeat-event.html',
+		    	templateUrl: 'backend/event/edit/repeat-event.html',
 		    	controller: 'RepeatEventCtrl',
 		    	controllerAs: 'vm'
 		    });
@@ -114,7 +114,7 @@ class BackendEventEditCtrl {
   showAddParticipantsModal() {
   	let modalInstance = this.$uibModal.open({
     	animation: true,
-    	templateUrl: 'app/event/modal/add-participants.html',
+    	templateUrl: 'backend/event/edit/add-participants.html',
     	controller: 'AddParticipantsCtrl',
     	controllerAs: 'vm',
     	resolve: {
@@ -140,7 +140,7 @@ class BackendEventEditCtrl {
   showAddAwardModal() {
   	let modalInstance = this.$uibModal.open({
     	animation: true,
-    	templateUrl: 'app/event/modal/add-award.html',
+    	templateUrl: 'backend/event/edit/add-award.html',
     	controller: 'AddAwardCtrl',
     	controllerAs: 'vm',
     	resolve: {
@@ -335,7 +335,7 @@ class AddAwardCtrl {
 	showAddMoreAwardModal() {
 		let modalInstance = this.$uibModal.open({
     	animation: true,
-    	templateUrl: 'app/award/create/create-award-modal.html',
+    	templateUrl: 'backend/award/create/create-award.html',
     	controller: 'CreateAwardCtrl',
     	controllerAs: 'vm'
     });

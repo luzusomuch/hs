@@ -43,7 +43,7 @@ class BackendAwardListCtrl {
 	edit(award) {
 		let modalInstance = this.$uibModal.open({
     	animation: true,
-    	templateUrl: 'app/award/edit/edit.html',
+    	templateUrl: 'backend/award/edit/edit.html',
     	controller: 'BackendEditAwardCtrl',
     	resolve: {
     		award: () => {

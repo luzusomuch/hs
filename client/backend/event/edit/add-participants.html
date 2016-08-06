@@ -1,0 +1,16 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{'ADD_PARTICIPANTS' | translate}}</h3>
+</div>
+<div class="modal-body">
+	<form ng-submit="vm.submit()" name="form">
+    <h4>{{'FRIENDS_LIST' | translate}}</h4>
+    <div class="form-group">
+      <div class="checkbox" ng-repeat="friend in vm.friends">
+        <label><input type="checkbox" ng-checked="friend.select" ng-click="friend.select=!friend.select">{{friend.name}}</label>
+      </div>
+    </div>
+		<div class="modal-footer">
+			<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>
+		</div>    
+  </form>
+</div>

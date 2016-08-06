@@ -1,0 +1,35 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{'CREATE_AWARD' | translate}}</h3>
+</div>
+
+	<form ng-submit="vm.submit(form)" name="form">
+    <div class="modal-body">
+    <div class="form-group">
+    	<label>{{'AWARD_TITLE' | translate}}</label>
+      <input type="text" class="form-control" ng-model="vm.award.name" required>
+    </div>
+    <div class="form-group">
+    	<label>{{'AWARD_TYPE' | translate}}</label>
+    	<select ng-model="vm.award.type" class="form-control dropdown-toggle">
+    		<option ng-repeat="type in vm.types" ng-value="type.value"><a href="#">{{type.text}}</a></option>
+    	</select>
+    </div>
+    
+
+    <div class="upload-img-event">
+                  <div class="row">
+                    <div class="col-xs-3">
+                      <img ng-show="vm.file.name" style="margin-bottom:5px" ngf-src="vm.file" width="100%">
+                    </div>
+                    <div class="col-xs-9 text-center ng-binding">
+                      <p><a href="#" class="btn btn-danger" ngf-select="vm.select($file)" ngf-multiple="false" accept="image/*">{{'UPLOAD_PICTURE' | translate}}</a></p>
+                      {{'FILE_REQUIREMENT' | translate}}
+                    </div>
+                  </div>
+                </div>
+                </div>
+		<div class="modal-footer">
+			<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>
+		</div>    
+  </form>
+

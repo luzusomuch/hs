@@ -63,8 +63,8 @@ function uploadFile(filePath, options, cb) {
   var params = _.merge({
     Bucket: config.S3.bucket,
     Key: filename,
-    Body: fs.createReadStream(filePath),
-    ContentType: StringHelper.getContentType(ext)
+    Body: fs.createReadStream(filePath)
+    // ContentType: StringHelper.getContentType(ext)
   }, options.s3Params);
 
   //check options to add folder to aws s3

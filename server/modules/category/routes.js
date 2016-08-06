@@ -86,6 +86,8 @@ module.exports = function(kernel) {
         },
         folder: 'photos'
       }, (err, result) => {
+        console.log(err);
+        console.log(result);
         if (err) {
           return res.status(500).json({type: 'SERVER_ERROR', err: err});
         }

@@ -199,6 +199,51 @@ angular.module('healthStarsApp')
         return $sce.trustAsResourceUrl(val);
     };
 }])
+.filter('eventAwardImageUrl', () => {
+  return (award, type) => {
+    if (award) {
+      let url = '/assets/images/img.jpg';
+      let photo = award.objectPhotoId;
+      if (photo && photo.metadata) {
+        switch (type) {
+          case 'small':
+            url = (photo.metadata.small) ? photo.metadata.small : '/assets/photos/'+photo.metadata.tmp;
+            break;
+          case 'medium':
+            url = (photo.metadata.medium) ? photo.metadata.medium : '/assets/photos/'+photo.metadata.tmp;
+            break;
+          case 'large':
+            url = (photo.metadata.large) ? photo.metadata.large : '/assets/photos/'+photo.metadata.tmp;
+            break;
+          default:
+            url = '/assets/photos/'+photo.metadata.tmp;
+            break;
+        }
+      } else {
+        switch (award.objectName) {
+          case 'Foodstar Point': 
+            url = '/assets/images/star1.png';
+            break;
+          case 'Sportstar Point':
+            url = '/assets/images/star.png';
+            break;
+          case 'Socialstar Point':
+            url = '/assets/images/star2.png';
+            break;
+          case 'Actionstar Point':
+            url = '/assets/images/star4.png';
+            break;
+          case 'Ecostar Point':
+            url = '/assets/images/star3.png';
+            break;
+          default:
+            break;
+        }
+      }
+      return url;
+    }
+  }
+})
 .filter('imageUrl', () => {
   return (image, type) => {
     let imagePath = '/assets/images/img.jpg';

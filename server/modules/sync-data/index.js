@@ -1,5 +1,6 @@
 'use strict';
 import async from 'async';
+import _ from 'lodash';
 import KernelFactory from './../../kernel';
 import es from './../../modules/es';
 import Mapping from './../../modules/es/mapping';
@@ -11,12 +12,14 @@ kernel.ES = new es.HealthStarsES(es.config.ES, m.mapping);
 
 
 kernel.loadModule(require('./../../modules/event'));
+kernel.loadModule(require('./../../modules/award'));
+kernel.loadModule(require('./../../modules/user'));
 kernel.compose();
 kernel.ES.index((err) => {
 		if(err) {
-		  console.log(err);
-		  process.exit(0);
-		  return;
+		  console.log('Error: '+ err);
+		  // process.exit(0);
+		  // return;
 		}
 		async.parallel([
 			(cb) => {
@@ -34,6 +37,31 @@ kernel.ES.index((err) => {
 							callback()
 						});
 					}, cb);
+				}).catch(cb);
+			},
+			(cb) => {
+				// implement these standard awards
+				kernel.model.User.findOne({role: 'admin'}).then(user => {
+					if (!user) {
+						return cb();
+					}
+					let awards = [
+						{objectName: 'Foodstar Point', ownerId: user._id, type: 'accepted'},
+						{objectName: 'Sportstar Point', ownerId: user._id, type: 'accepted'},
+						{objectName: 'Socialstar Point', ownerId: user._id, type: 'accepted'},
+						{objectName: 'Actionstar Point', ownerId: user._id, type: 'accepted'},
+						{objectName: 'Ecostar Point', ownerId: user._id, type: 'accepted'},
+					];
+					let awardName = _.map(awards, 'objectName');
+					kernel.model.Award.remove({objectName: {$in: awardName}}, (err, data) => {
+						if (err) {
+							return cb(err);
+						}
+						console.log('removed old awards which in awards name list success');
+						async.each(awards, (award, callback) => {
+							kernel.model.Award(award).save().then(callback).catch(callback);
+						}, cb);
+					});
 				}).catch(cb);
 			}
 		], () => {

@@ -1,6 +1,7 @@
 import Joi from 'joi';
 import multer from 'multer';
 import async from 'async';
+import _ from 'lodash';
 
 module.exports = function(kernel) {
   /**
@@ -134,26 +135,38 @@ module.exports = function(kernel) {
     .populate('objectPhotoId')
     .populate('ownerId', '-password -salt')
     .exec().then(awards =>{
-      kernel.model.Award.count(condition).then(count => {
-        // This params is get from awards backend
-        if (req.params.id==='null' && req.user.role==='admin') {
-          let results = [];
-          async.each(awards, (award, callback) => {
-            award = award.toJSON();
-            kernel.model.Event.findOne({awardId: award._id}).then(event => {
-              award.event = (event) ? event : null;
-              results.push(award);
-              callback();
-            }).catch(callback);
-          }, (err) => {
-            if (err) {
-              return res.status(500).json({type: 'SERVER_ERROR'});
-            }
-            return res.status(200).json({items: results, totalItem: count});
-          });
-        } else {
-          return res.status(200).json({items: awards, totalItem: count});
-        }
+      // get default awards
+      let defaultAwards = ['Foodstar Point', 'Sportstar Point', 'Socialstar Point', 'Actionstar Point', 'Ecostar Point'];
+      kernel.model.Award.find({objectName: {$in: defaultAwards}}).then(defaultAwards => {
+        awards = awards.concat(defaultAwards);
+        awards = _.map(_.groupBy(awards,function(doc){
+            return doc._id;
+        }),function(grouped){
+            return grouped[0];
+        });
+        kernel.model.Award.count(condition).then(count => {
+          // This params is get from awards backend
+          if (req.params.id==='null' && req.user.role==='admin') {
+            let results = [];
+            async.each(awards, (award, callback) => {
+              award = award.toJSON();
+              kernel.model.Event.findOne({awardId: award._id}).then(event => {
+                award.event = (event) ? event : null;
+                results.push(award);
+                callback();
+              }).catch(callback);
+            }, (err) => {
+              if (err) {
+                return res.status(500).json({type: 'SERVER_ERROR'});
+              }
+              return res.status(200).json({items: results, totalItem: count+5});
+            });
+          } else {
+            return res.status(200).json({items: awards, totalItem: count+5});
+          }
+        }).catch(err => {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        });
       }).catch(err => {
         return res.status(500).json({type: 'SERVER_ERROR'});
       });

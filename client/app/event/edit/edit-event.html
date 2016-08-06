@@ -16,7 +16,7 @@
               <div class="choose-category">
                 <div class="radio-l" ng-repeat="category in vm.categories">
                   <input id="{{category._id}}" type="radio" name="category" value="{{category._id}}" ng-model="vm.event.categoryId">
-                  <label for="{{category._id}}"> <img ng-src="{{category | categoryImagePath}}" ></label>
+                  <label for="{{category._id}}"> <img src="{{category | categoryImagePath}}" ></label>
                 </div>
               </div>
               <p ng-show="vm.errors.category && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
@@ -209,7 +209,7 @@
               <div class="add-award-event">
                 <div class="row">
                   <div class="col-xs-3 col-sm-2">
-                    <img ng-show="vm.event.award" ng-src="{{vm.event.award.objectPhotoId | imageUrl: 'small'}}" width="100%">
+                    <img ng-show="vm.event.award" src="{{vm.event.award | eventAwardImageUrl: 'small'}}" width="100%">
                   </div>
                   <div class="col-xs-9 col-sm-10 text-center" style="margin-top: 10px">
                     <button class="btn btn-danger btn-sm" type="button" ng-click="vm.showAddAwardModal()">{{'ADD_AWARD' | translate}}</button>

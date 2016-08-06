@@ -52,7 +52,7 @@ module.exports = {
   },
   S3: {
     bucket: 'hvs3'
-  }
+  },
   FACEBOOK: {
     clientID:     process.env.FACEBOOK_ID || '151467955264025',
     clientSecret: process.env.FACEBOOK_SECRET || 'b3fb8c3ac0b6fb90f6d4849128c7ac18',

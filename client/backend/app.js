@@ -41,11 +41,20 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
 		}
 	};
 })
-.run(function($rootScope, $localStorage, Language, Auth, $location, $timeout) {
+.run(function($rootScope, $localStorage, Language, Auth, $location, $timeout, AppSettings) {
 	let lang = $localStorage.language || 'en';
   Language.set(lang);
+  $rootScope.appSettings = AppSettings;
 
   $rootScope.$on('$stateChangeStart', function(event, next) {
+    for(let key in AppSettings.getSettings()) {
+      if(next.settings && next.settings.hasOwnProperty(key)) {
+        AppSettings.set(key, next.settings[key]);
+      } else {
+        let _default = AppSettings.getDefaultSettings();
+        AppSettings.set(key, _default[key]);
+      }
+    }
   	Auth.isLoggedIn(logged => {
   		if (logged) {
   			if ($localStorage.authUser._id && $localStorage.authUser.role!=='admin') {

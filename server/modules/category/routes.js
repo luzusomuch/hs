@@ -20,7 +20,7 @@ module.exports = function(kernel) {
 
     upload(req, res, (err) => {
       if (err) {
-        return res.status(500).json({type: 'SERVER_ERROR'});    
+        return res.status(500).json({type: 'SERVER_ERROR', err: err});    
       }
       if (!req.file) {
         return res.status(422).json({type: 'MISSING_CATEGORY_IMAGE'});
@@ -87,14 +87,14 @@ module.exports = function(kernel) {
         folder: 'photos'
       }, (err, result) => {
         if (err) {
-          return res.status(500).json({type: 'SERVER_ERROR'});
+          return res.status(500).json({type: 'SERVER_ERROR', err: err});
         }
         data.imagePath = S3.getPublicUrl(result.key);
         let model = new kernel.model.Category(data);
         model.save().then(category => {
           res.status(200).json(category);
         }).catch(err => {
-          return res.status(500).json({type: 'SERVER_ERROR'});
+          return res.status(500).json({type: 'SERVER_ERROR', err: err});
         });
       });
     });

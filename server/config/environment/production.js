@@ -48,9 +48,9 @@ module.exports = {
   tmpSoundFolder: path.resolve(__dirname, '../../..//client/assets/sound'),
   watermarkFile: path.resolve(__dirname, '../../assets/watermark.png'),
   AWS: {
-    accessKeyId: 'AKIAI7KKFT6PBJRLBZKQ',
-    secretAccessKey: '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',
-    region: 'us-west-2'
+    accessKeyId: "AKIAI7KKFT6PBJRLBZKQ",
+    secretAccessKey: "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",
+    region: "us-west-2"
   },
   S3: {
     bucket: 'hvs3'

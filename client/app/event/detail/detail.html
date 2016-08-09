@@ -39,11 +39,15 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-3">
-        <hs-user-widget u-id="vm.event.ownerId._id"></hs-user-widget>
-        <hs-weather location="vm.event.location"></hs-weather >          
-        <hs-event-best-pics e-owner="vm.event.ownerId" e-id="vm.event._id" limit="4"></hs-event-best-pics>          
-        <hs-event-map locations="[vm.event.location]" title="{{'EVENT_LOCATION' | translate}}"></hs-event-map>
-
+            <hs-user-widget u-id="vm.event.ownerId._id"></hs-user-widget>
+            <div class="event-award box-blue p15">
+                <div class="title-blue">{{'AWARD_DETAIL' | translate}}</div>
+                <img width="100%" src="{{vm.event.awardId | eventAwardImageUrl: 'small'}}">
+                <p>{{'AWARD_TYPE' | translate}}: {{vm.event.awardId.type.toUpperCase() | translate}}</p>
+            </div>
+            <hs-weather location="vm.event.location"></hs-weather >          
+            <hs-event-best-pics e-owner="vm.event.ownerId" e-id="vm.event._id" limit="4"></hs-event-best-pics>          
+            <hs-event-map locations="[vm.event.location]" title="{{'EVENT_LOCATION' | translate}}"></hs-event-map>
         </div>
         <div class="col-sm-6">
 

@@ -6,6 +6,7 @@ class EventDetailCtrl {
 		this.event.url = APP_CONFIG.baseUrl + 'event/detail/'+event._id;
 		this.event.location.lat = this.event.location.coordinates[1];
 		this.event.location.lng = this.event.location.coordinates[0];
+		
 		this.viewer = PhotoViewer;
 		this.submitted = false;
 		this.feed = {};

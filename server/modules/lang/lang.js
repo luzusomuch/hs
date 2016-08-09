@@ -204,7 +204,11 @@ let Language = {
 		BY: 'By',
 		TERMS_AND_CONDITIONS: 'Terms and conditions',
 		APPLY: 'Apply',
-		REJECT: 'Reject'
+		REJECT: 'Reject',
+		ACCEPTED: 'For every users who accepted this event',
+		GPS: 'For every users who has signal from Healthstars Apps',
+		ORGANIZER: 'This award will be granted by organizer',
+		OFFLINE: 'This award will be granted offline'
 	},
 	de: {
 

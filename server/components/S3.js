@@ -68,10 +68,10 @@ function uploadFile(filePath, options, cb) {
 
   //check options to add folder to aws s3
   var folder = '';
-  if (options.folder) {
-    folder = options.folder.charAt(0) === '/' ? options.folder.replace('/', '') : options.folder;
-    params.Bucket += (options.folder.charAt(0) === '/' ? '' : '/') + options.folder;
-  }
+  // if (options.folder) {
+  //   folder = options.folder.charAt(0) === '/' ? options.folder.replace('/', '') : options.folder;
+  //   params.Bucket += (options.folder.charAt(0) === '/' ? '' : '/') + options.folder;
+  // }
 
   s3.putObject(params, function (err, res) {
     var key = (folder ? folder + '/' : '') + filename;

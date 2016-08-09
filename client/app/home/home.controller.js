@@ -121,11 +121,13 @@ class HomeCtrl {
         this.searchParams.radius = 100;
         $scope.geoLocation = true;
         $scope.$$phase || $scope.$apply();
-      }, () => {
+      }, (err) => {
+        console.log(err);
         $scope.geoLocation = true;
         $scope.$$phase || $scope.$apply();
       });
     } else {
+      console.log(this.searchParams);
       $scope.geoLocation = true;
     }
   }

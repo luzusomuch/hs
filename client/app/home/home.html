@@ -1,28 +1,28 @@
 <div class="line-menu-home">
-  <div class="container">
-      <div class="row">
-          <div class="col-sm-3 col-lg-2">
-              <div class="checkbox-l">
-                  <input id="checkbox1" type="checkbox" ng-model="vm.searchParams.friendActivities" name="checkbox" value="checkbox1" >
-                  <label for="checkbox1"> Friends activities</label>
-              </div>
-          </div>
-          <div class="col-sm-6  col-lg-8">
-              <div class="menu-home">
-                  <ul>
-                      <li ng-class="{'active': vm.isActive(category)}" ng-repeat="category in vm.categories | orderBy: 'order'">
-                          <a href ng-click="vm.selectCategory(category)" class="{{category | categoryClass: true}}"><img height="74" ng-src="{{category | categoryImagePath}}">
-                            <span>{{category.menuName.toUpperCase()}}</span>
-                          </a>
-                      </li>
-                  </ul>
-              </div>
-          </div>
-          <div class="col-sm-3  col-lg-2">
-              <a ui-sref="event.create" class="create-event"><i class="fa fa-calendar-plus-o"></i> Create Event</a>
-          </div>
-      </div>
-  </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3 col-lg-2">
+                <div class="checkbox-l">
+                    <input id="checkbox1" type="checkbox" ng-model="vm.searchParams.friendActivities" name="checkbox" value="checkbox1" >
+                    <label for="checkbox1"> Friends activities</label>
+                </div>
+            </div>
+            <div class="col-sm-6  col-lg-8">
+                <div class="menu-home">
+                    <ul>
+                        <li ng-class="{'active': vm.isActive(category)}" ng-repeat="category in vm.categories | orderBy: 'order'">
+                            <a href ng-click="vm.selectCategory(category)" class="{{category | categoryClass: true}}"><img height="74" ng-src="{{category | categoryImagePath}}">
+                                <span>{{category.menuName.toUpperCase()}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-3  col-lg-2">
+                <a ui-sref="event.create" class="create-event"><i class="fa fa-calendar-plus-o"></i> Create Event</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="container">

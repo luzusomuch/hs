@@ -102,7 +102,7 @@ angular.module('healthStarsApp')
             method: 'feed',
             name: $scope.title,
             link: $scope.url,
-            picture: ($scope.photo) ? $scope.photo.metadata.medium : null,
+            picture: ($scope.photo) ? $scope.photo.metadata.medium : '/assets/photos/'+$scope.photo.metadata.tmp,
             caption: $scope.title,
             description: $scope.description
           }, function(response) {

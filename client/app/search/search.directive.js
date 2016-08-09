@@ -107,11 +107,21 @@ angular.module('healthStarsApp')
 		replace: true,
 		link: function(scope, element) {
 			scope.addresses = [];
-			// scope.params = {
-			// 	address: angular.copy(scope.SearchParams.address),
-			// 	postCode: '',
-			// 	radius: angular.copy(scope.SearchParams.radius)
-			// };
+			scope.radius = SearchParams.params.radius = 100;
+			scope.params = {
+				address: SearchParams.params.address,
+				postCode: '',
+				radius: angular.copy(SearchParams.params.radius)
+			};
+
+			scope.$watch('params.address.geometry', (nv) => {
+				if (nv && nv.location) {
+					$http.get('http://maps.googleapis.com/maps/api/geocode/json?latlng='+nv.location.lat+','+nv.location.lng)
+					.then( res => {
+						scope.address = res.data.results[0];
+		      		});
+				}
+			});
 
 			scope.select = function(address) {
 				scope.address = angular.copy(address);

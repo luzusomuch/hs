@@ -470,7 +470,7 @@ label .note-form {
 }
 .search-top button {
     position: absolute;
-    top: 25px;
+    top: 7px;
     right: 10px;
     font-size: 18px;
     color: #9fa9b9;
@@ -498,7 +498,6 @@ label .note-form {
 .box-search {
     display: inline-block;
     position: relative;
-    padding-left: 100px;
 }
 .create-event, .btn-create {
     background: rgba(255,255,255,0.19);
@@ -2293,3 +2292,6 @@ span.country-name {
  .mCSB_container >ul>li:last-child .action-comment ul.comment-option {
     top: -75px;
  }
+.search-input {
+    position: relative;
+}

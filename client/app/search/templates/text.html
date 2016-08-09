@@ -1,12 +1,14 @@
 <div class="venue-box">
 	<div class="box-search location-dropdown">
 		<span class="title-search" ng-click="removeAll()">Reset Search</span>
-		<input type="text" ng-model="vm.text" />
-		<button ng-click="search()"><i class="fa fa-search"></i></button>
-		<ul class="dropdown-menu" ng-show="suggests.length" style="right: 0;left: 100px;display: block;width: auto">
-	    <li ng-repeat="suggest in suggests">
-	    	<a title="{{suggest}}" href>{{suggest}}</a>
-	    </li>
-		</ul>
+		<div class="search-input">
+			<input type="text" ng-model="vm.text" />
+			<button ng-click="search()"><i class="fa fa-search"></i></button>
+			<ul class="dropdown-menu" ng-show="suggests.length" style="right: 0;left: 100px;display: block;width: auto">
+		    <li ng-repeat="suggest in suggests">
+		    	<a title="{{suggest}}" href>{{suggest}}</a>
+		    </li>
+			</ul>
+		</div>
 	 </div>
  </div>

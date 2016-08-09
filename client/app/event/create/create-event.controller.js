@@ -202,13 +202,13 @@ class CreateEventCtrl {
   create(form) {
     this.errors = {};
     this.submitted = true;
-    if (!this.event.startTime && this.checkValidTime(this.event.startTimeFormatted).valid) {
+    if (this.checkValidTime(this.event.startTimeFormatted).valid) {
       this.event.startTime = this.checkValidTime(this.event.startTimeFormatted).time;
     } else {
       this.errors.startDateTime = true;
     }
 
-    if (!this.event.endTime && this.checkValidTime(this.event.endTimeFormatted).valid) {
+    if (this.checkValidTime(this.event.endTimeFormatted).valid) {
       this.event.endTime = this.checkValidTime(this.event.endTimeFormatted).time;
     } else {
       this.errors.endDateTime = true;

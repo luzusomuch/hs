@@ -201,7 +201,10 @@ let Language = {
 		EDIT_ABOUT_CONTENT: 'Edit about content',
 		CURRENT_SOUND: 'Current sound',
 		UPLOAD_MP3_FILE: 'Upload mp3 file',
-		BY: 'By'
+		BY: 'By',
+		TERMS_AND_CONDITIONS: 'Terms and conditions',
+		APPLY: 'Apply',
+		REJECT: 'Reject'
 	},
 	de: {
 

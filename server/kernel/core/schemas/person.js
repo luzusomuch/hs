@@ -13,7 +13,7 @@ module.exports = exports = function(kernel) {
     schema.defaults({
       address: Schema.Types.Mixed,
       notificationSetting: {
-        isVisibleFriendsList: {type: Boolean, defaults: false},
+        isVisibleFriendsList: {type: Boolean, defaults: true},
         invitedToEvent: {type: Boolean, defaults: true},
         friendInvitation: {type: Boolean, defaults: true},
         newPost: {type: Boolean, defaults: true},

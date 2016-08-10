@@ -136,7 +136,6 @@
 	                                            <button class="btn btn-block btn-success">Sent</button>
 	                                        </div>
 	                                    </div>
-
 	                                </div>
 	                            </form>
 	                        </div>
@@ -145,34 +144,33 @@
                 			<div role="tabpanel" class="tab-pane" id="settings">
 	                            <table class="table-main">
 	                                <tr>
-	                                    <td>Notifications for invites to events.</td>
+	                                    <td>{{'NOTIFICATION_FOR_INVITE_EVENT' | translate}}</td>
 	                                    <td  class="text-right">
 	                                        <div class="checkbox-l">
-	                                            <input id="checkbox1" type="checkbox" name="checkbox" value="checkbox1">
+	                                            <input ng-click="vm.notificationSetting('invitedToEvent')" id="checkbox1" type="checkbox" name="checkbox" value="checkbox1" ng-model="vm.authUser.notificationSetting.invitedToEvent">
 	                                            <label for="checkbox1"></label>
 	                                        </div>
 	                                    </td>
 	                                </tr>
 	                                <tr>
-	                                    <td>Notifications for friendship invites.</td>
+	                                    <td>{{'NOTIFICATION_FOR_FRIEND_INVITE'| translate}}</td>
 	                                    <td class="text-right">
 	                                        <div class="checkbox-l">
-	                                            <input id="checkbox2" type="checkbox" name="checkbox" value="checkbox2">
+	                                            <input ng-click="vm.notificationSetting('friendInvitation')" id="checkbox2" type="checkbox" name="checkbox" value="checkbox2" ng-model="vm.authUser.notificationSetting.friendInvitation">
 	                                            <label for="checkbox2"></label>
 	                                        </div>
 	                                    </td>
 	                                </tr>
 	                                <tr>
-	                                    <td>Notifcations new posting in accepted/ interested event.</td>
+	                                    <td>{{'NOTIFICATION_FOR_NEW_POST' | translate}}</td>
 	                                    <td  class="text-right">
 	                                        <div class="checkbox-l">
-	                                            <input id="checkbox3" type="checkbox" name="checkbox" value="checkbox3">
+	                                            <input ng-click="vm.notificationSetting('newPost')" id="checkbox3" type="checkbox" name="checkbox" value="checkbox3" ng-model="vm.authUser.notificationSetting.newPost">
 	                                            <label for="checkbox3"></label>
 	                                        </div>
 	                                    </td>
 	                                </tr>
 	                            </table>
-
 	                        </div>
                 		</uib-tab>
                 	</uib-tabset>

@@ -40,6 +40,7 @@ class UserController {
     this.getFriends = this.getFriends.bind(this);
     this.updateProfile = this.updateProfile.bind(this);
     this.changePictrue = this.changePictrue.bind(this);
+    this.changeNotificationsSetting = this.changeNotificationsSetting.bind(this);
   }
 
   /**
@@ -111,6 +112,12 @@ class UserController {
     newUser.emailVerifiedToken = StringHelper.randomString(10);
     newUser.deleted.status = false;
     newUser.blocked.status = false;
+    newUser.notificationSetting = {
+      isVisibleFriendsList: true,
+      invitedToEvent: true,
+      friendInvitation: true,
+      newPost: true
+    };
 
     newUser.save()
     .then((user) => {
@@ -447,6 +454,25 @@ class UserController {
     ], (err, friends) => {
       if(err) return res.status(500).json({type: 'SERVER_ERROR', message: JSON.stringify(err)});
       return res.status(200).json(friends);
+    });
+  }
+
+  changeNotificationsSetting(req, res) {
+    if (!req.body.type) {
+      return res.status(422).end();
+    }
+    let user = req.user;
+    if (!user.notificationSetting) {
+      user.notificationSetting = {};
+      user.notificationSetting[req.body.type] = true;
+    } else {
+      user.notificationSetting[req.body.type] = !user.notificationSetting[req.body.type];
+    }
+
+    user.save().then(saved => {
+      return res.status(200).json(saved);
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
     });
   }
 

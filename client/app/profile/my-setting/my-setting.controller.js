@@ -74,8 +74,19 @@ class MySettingCtrl {
 	    	this.authUser[resp.data.type] = resp.data.photo;
 	    	this.Auth.setAuthUser(this.authUser);
 	    }, (err) => {
+	    	// TODO show error
 	    	console.log(err);
 	    });
+  	}
+
+  	notificationSetting(type) {
+  		this.User.changeNotificationsSetting({type: type}).then(resp => {
+			this.authUser.notificationSetting = resp.data.notificationSetting;
+			this.Auth.setAuthUser(resp.data.notificationSetting, 'notificationSetting');
+  		}).catch(err => {
+  			// TODO show err
+  			console.log(err);
+  		});
   	}
 }
 

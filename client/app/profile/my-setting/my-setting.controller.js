@@ -28,7 +28,6 @@ class MySettingCtrl {
 		this.Auth = Auth;
 		this.Upload = Upload;
 		this.$cookies = $cookies;
-		console.log(this.authUser);
 	}
 
 	updateAccount(form) {
@@ -87,6 +86,27 @@ class MySettingCtrl {
   			// TODO show err
   			console.log(err);
   		});
+  	}
+
+  	addAccount(type) {
+  		if (type === 'fb') {
+  			FB.api('/me', function(response) {
+  				console.log(response);
+		    });
+  		} else if (type === 'tw') {
+  			this.$http.get('https://api.twitter.com/1.1/account/verify_credentials.json').then(resp => {
+  				console.log(resp);
+  			}).catch(err => {
+  				console.log(err);
+  				// TODO show error
+  			});
+  		} else if (type === 'gg') {
+  			this.$http.get('https://www.googleapis.com/auth/userinfo.profile').then(resp => {
+  				console.log(resp);
+  			}).catch(err => {
+  				console.log(err);
+  			})
+  		}
   	}
 }
 

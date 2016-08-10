@@ -27,8 +27,11 @@
 
       getFriends: (page) => {
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/friends/${page}`);
-      }
+      },
 
+      updateProfile: (data) => {
+        return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/profile`, data);
+      }
     };
   }
 

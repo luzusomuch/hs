@@ -82,17 +82,20 @@ angular.module('healthStarsApp')
     }
     switch(profile.provider) {
       case 'google':
-        avatarUrl = profile.avatar || profile.google.image.url;
+        avatarUrl = profile.google.image.url;
         break;
       case 'facebook':
-        avatarUrl = profile.avatar || `http://graph.facebook.com/${profile.facebook.id}/picture?width=300&height=300`;
+        avatarUrl = `http://graph.facebook.com/${profile.facebook.id}/picture?width=300&height=300`;
         break;
       case 'twitter':
-        avatarUrl = profile.avatar || profile.twitter.profile_image_url_https;
+        avatarUrl = profile.twitter.profile_image_url_https;
         break;
       default:
-        avatarUrl = profile.avatar || avatarUrl;
+        avatarUrl = avatarUrl;
         break;
+    }
+    if (profile.avatar && profile.avatar.metadata) {
+      avatarUrl = (profile.avatar.metadata.tmp) ? '/assets/photos/'+profile.avatar.metadata.tmp : profile.avatar.metadata.small;
     }
     return avatarUrl;
   };
@@ -402,5 +405,14 @@ angular.module('healthStarsApp')
     } else {
       return items;
     }
+  }
+})
+.filter('userBannerUrl', () => {
+  return (user) => {
+    let url = '/assets/images/img-pro.jpg';
+    if (user && user.coverPhoto) {
+      url = (user.coverPhoto.metadata.large) ? user.coverPhoto.metadata.large : '/assets/photos/'+user.coverPhoto.metadata.tmp;
+    }
+    return url;
   }
 });

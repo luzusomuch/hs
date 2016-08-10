@@ -1507,6 +1507,7 @@ label {
     top: 10px;
     left: 10px;
     border: 0px;
+    z-index: 9999;
 }
 .upload-avatar {
     position: absolute;
@@ -2294,4 +2295,12 @@ span.country-name {
  }
 .search-input {
     position: relative;
+}
+div.menu-tab > ul {
+    border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+}
+div.menu-tab > ul>li>a {
+    color: #FFF !important;
+    border: none !important;
+    background-color: transparent !important;
 }

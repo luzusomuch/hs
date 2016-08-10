@@ -226,6 +226,15 @@
       getToken() {
         return $cookies.get('token');
       },
+
+      /*Set localStorage.authUser*/
+      setAuthUser(value, type) {
+        if (type) {
+          return $localStorage.authUser[type] = value;
+        } else {
+          return $localStorage.authUser = value;
+        }
+      }
     };
 
     return Auth;

@@ -54,11 +54,11 @@ class MyAwardCtrl {
 
 	showAddMoreAwardModal() {
 		let modalInstance = this.$uibModal.open({
-    	animation: true,
-    	templateUrl: 'app/award/create/create-award-modal.html',
-    	controller: 'CreateAwardCtrl',
-    	controllerAs: 'vm'
-    });
+	    	animation: true,
+	    	templateUrl: 'app/award/create/create-award-modal.html',
+	    	controller: 'CreateAwardCtrl',
+	    	controllerAs: 'vm'
+	    });
 		modalInstance.result.then(data => {
 			this.ownAwardLoaded = false;
 			this.ownAwards.items.push(data);
@@ -109,15 +109,15 @@ class MyAwardCtrl {
 
 	viewAward(award) {
 		let modalInstance = this.$uibModal.open({
-    	animation: true,
-    	templateUrl: 'app/award/detail/detail.html',
-    	controller: 'AwardDetailCtrl',
-    	resolve: {
-    		award: () => {
-    			return award;
-    		}
-    	}
-    });
+	    	animation: true,
+	    	templateUrl: 'app/award/detail/detail.html',
+	    	controller: 'AwardDetailCtrl',
+	    	resolve: {
+	    		award: () => {
+	    			return award;
+	    		}
+	    	}
+	    });
 	}
 
 	dropData(award, event, rank) {
@@ -160,15 +160,15 @@ class MyAwardCtrl {
 
 	editAward(award) {
 		let modalInstance = this.$uibModal.open({
-    	animation: true,
-    	templateUrl: 'app/award/edit/edit.html',
-    	controller: 'EditAwardCtrl',
-    	resolve: {
-    		award: () => {
-    			return award;
-    		}
-    	}
-    });
+	    	animation: true,
+	    	templateUrl: 'app/award/edit/edit.html',
+	    	controller: 'EditAwardCtrl',
+	    	resolve: {
+	    		award: () => {
+	    			return award;
+	    		}
+	    	}
+	    });
 		modalInstance.result.then(data => {
 			this.ownAwardLoaded = false;
 			let index = _.findIndex(this.ownAwards.items, (award) => {

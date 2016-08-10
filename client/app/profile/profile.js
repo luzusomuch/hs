@@ -45,5 +45,14 @@ angular.module('healthStarsApp').config(function($stateProvider) {
     		);
       }
     }
+  }).state('profile.mySetting', {
+    url: '/my-setting',
+    templateUrl: 'app/profile/my-setting/my-setting.html',
+    controller: 'MySettingCtrl',
+    controllerAs: 'vm',
+    authenticate: true,
+    settings: {
+      pageTitle: 'HealthStars | My Setting'
+    }
   });
 });

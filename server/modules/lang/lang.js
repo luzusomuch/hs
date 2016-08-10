@@ -208,7 +208,13 @@ let Language = {
 		ACCEPTED: 'For every users who accepted this event',
 		GPS: 'For every users who has signal from Healthstars Apps',
 		ORGANIZER: 'This award will be granted by organizer',
-		OFFLINE: 'This award will be granted offline'
+		OFFLINE: 'This award will be granted offline',
+		ACCOUNT_INFORMATION: 'Account information',
+		ADD_OTHER_ACCOUNTS: 'Add other accounts',
+		IMAGES_PROFILE: 'Images profile',
+		CHANGE_PASSWORD: 'Change password',
+		NOTIFICATIONS_SETTING: 'Notifications setting',
+		UPDATE_ACCOUNT: 'Update account'
 	},
 	de: {
 

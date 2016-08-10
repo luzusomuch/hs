@@ -1,0 +1,183 @@
+<div class="container">
+	<hs-profile-menu-header></hs-profile-menu-header>
+	<div class="row">
+        <div class="col-sm-4 col-lg-3">
+            <div class="box-blue p15 pc-show">
+                <div class="img-user-main">
+                    <img src="{{vm.authUser | avatarUrl}}" width="100%;">
+                    <div class="code-qc">
+                        <!-- <img src="images/code.jpg"> -->
+                        <qrcode version="8" error-correction-level="H" data="{{vm.authUser.link}}" href="{{vm.authUser.link}}" size="50"></qrcode>
+                    </div>
+                </div>
+                <div class="bottom-user-main">
+                    <h3 style="margin-top: 0px">{{vm.authUser.name}}</h3>
+                    <div class="clear"></div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-8 col-lg-9">
+            <div class="box-blue">
+                <div class="p15">
+                	<uib-tabset class="menu-tab">
+                		<uib-tab index="0" heading="{{'ACCOUNT_INFORMATION' | translate}}">
+                			<div class="tab-content" class="tab-pane">
+                				<div class="row">
+	                                <div class="col-sm-4">
+	                                    <label>{{'ADD_OTHER_ACCOUNTS' | translate}}</label>
+	                                    <div class="sign-social social-account">
+	                                        <a href="#" class="twitter-sign"><i class="fa fa-twitter"></i> Twitter </a>
+	                                        <a href="#" class="facebook-sign"><i class="fa fa-facebook"></i> Facebook </a>
+	                                        <a href="#" class="google-sign"><i class="fa fa-google-plus"></i> Google </a>
+	                                    </div>
+	                                </div>
+	                                <div class="col-sm-8">
+	                                    <div class="form-account" >
+	                                        <form ng-submit="vm.updateAccount(form)" name="form">
+	                                            <div class="row">
+	                                                <div class="col-md-6">
+	                                                    <div class="form-group">
+	                                                        <label>{{'FIRST_NAME' | translate}}</label>
+	                                                        <input type="text" class="form-control" ng-model="vm.authUser.firstName">
+	                                                    </div>
+	                                                </div>
+	                                                <div class="col-md-6">
+	                                                    <div class="form-group">
+	                                                        <label>{{'LAST_NAME' | translate}}</label>
+	                                                        <input type="text" class="form-control" ng-model="vm.authUser.lastName">
+	                                                    </div>
+	                                                </div>
+	                                                <div class="col-md-6">
+	                                                    <div class="form-group">
+	                                                        <label>{{'LOCATION' | translate}}</label>
+	                                                        <ui-select ng-model="vm.address.selected" theme="bootstrap" append-to-body="true" reset-search-input="false">
+								                              	<ui-select-match placeholder="{{'SELECT_YOUR_LOCATION' | translate}}">{{$select.selected.formatted_address}}</ui-select-match>
+								                              	<ui-select-choices repeat="address in vm.addresses track by $index" refresh="vm.refreshAddresses($select.search)" refresh-delay="0">
+								                                	<div ng-bind-html="address.formatted_address"></div>
+								                              	</ui-select-choices>
+								                            </ui-select>
+	                                                    </div>
+	                                                </div>
+	                                                <div class="col-md-6">
+	                                                    <div class="form-group">
+	                                                        <label>{{'EMAIL' | translate}}</label>
+	                                                        <input type="text" class="form-control" ng-model="vm.authUser.email">
+	                                                    </div>
+	                                                </div>
+	                                                <div class="col-md-6">
+	                                                    <div class="form-group">
+	                                                        <label>{{'PHONE' | translate}}</label>
+	                                                        <input type="text" class="form-control" ng-model="vm.authUser.phoneNumber">
+	                                                    </div>
+	                                                </div>
+	                                                <div class="col-md-6">
+	                                                    <div class="form-group">
+	                                                        <label>{{'ZIP_CODE' | translate }}</label>
+	                                                        <input type="text" class="form-control" ng-model="vm.authUser.location.zipCode">
+	                                                    </div>
+	                                                </div>
+	                                                <div class="col-md-6">
+	                                                    <div class="form-group">
+	                                                        <label style="margin-bottom: 10px;">{{'COMPANY_ACCOUNT' | translate}}</label>
+	                                                        <div class="radio-l">
+	                                                            <input id="radio1" type="radio" name="radio" ng-value="true" ng-model="vm.authUser.isCompanyAccount">
+                                								<label for="radio1"> {{'YES' | translate}}</label>
+	                                                        </div>
+	                                                        <div class="radio-l">
+	                                                            <input id="radio2" type="radio" name="radio" ng-value="false" ng-model="vm.authUser.isCompanyAccount">
+                                								<label for="radio2"> {{'NO' | translate}}</label>
+	                                                        </div>
+	                                                    </div>
+	                                                </div>
+
+	                                                <div class="col-md-6">
+	                                                    <div class="form-group">
+	                                                        <button type="submit" class="btn btn-block btn-success" style="margin-top: 20px;">{{'UPDATE_ACCOUNT' | translate}}</button>
+	                                                    </div>
+	                                                </div>
+	                                            </div>
+	                                        </form>
+	                                    </div>
+	                                </div>
+	                            </div>
+                			</div>
+                		</uib-tab>
+                		<uib-tab index="1" heading="{{'IMAGES_PROFILE' | translate}}">
+                			<div role="tabpanel" class="tab-pane" id="profile-img">
+	                            <div class="p15">
+	                                <div class="upload-img">
+	                                    <button type="button" class="uploadimg-a" data-toggle="tooltip" data-placement="top" title="Upload image" ngf-select="vm.upload($files, 'coverPhoto')" accept="image/*"><i class="fa fa-picture-o"></i></button>
+	                                    <div class="img-timline bg-cover" style="background-image: url({{vm.authUser | userBannerUrl}})"></div>
+	                                    <!-- <img src="{{vm.authUser | userBannerUrl}}" width="100%"> -->
+	                                    <div class="upload-avatar">
+	                                        <button type="button" class="uploadimg-a" data-toggle="tooltip" data-placement="top" title="Upload Avatar" ngf-select="vm.upload($files, 'avatar')" accept="image/*"><i class="fa fa-picture-o"></i></button>
+	                                        <img src="{{vm.authUser | avatarUrl}}">
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+                		</uib-tab>
+                		<uib-tab index="2" heading="{{'CHANGE_PASSWORD' | translate}}">
+                			<div role="tabpanel" class="tab-pane" id="change-pass">
+	                            <form>
+	                                <div class="row">
+	                                    <div class="col-md-4">
+	                                        <div class="form-group">
+	                                            <label>New Password</label>
+	                                            <input type="Password" class="form-control">
+	                                        </div>
+	                                        <div class="form-group">
+	                                            <label>Confirm New Password</label>
+	                                            <input type="Password" class="form-control">
+	                                        </div>
+	                                        <div class="form-group">
+	                                            <button class="btn btn-block btn-success">Sent</button>
+	                                        </div>
+	                                    </div>
+
+	                                </div>
+	                            </form>
+	                        </div>
+                		</uib-tab>
+                		<uib-tab index="3" heading="{{'NOTIFICATIONS_SETTING' | translate}}">
+                			<div role="tabpanel" class="tab-pane" id="settings">
+	                            <table class="table-main">
+	                                <tr>
+	                                    <td>Notifications for invites to events.</td>
+	                                    <td  class="text-right">
+	                                        <div class="checkbox-l">
+	                                            <input id="checkbox1" type="checkbox" name="checkbox" value="checkbox1">
+	                                            <label for="checkbox1"></label>
+	                                        </div>
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td>Notifications for friendship invites.</td>
+	                                    <td class="text-right">
+	                                        <div class="checkbox-l">
+	                                            <input id="checkbox2" type="checkbox" name="checkbox" value="checkbox2">
+	                                            <label for="checkbox2"></label>
+	                                        </div>
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td>Notifcations new posting in accepted/ interested event.</td>
+	                                    <td  class="text-right">
+	                                        <div class="checkbox-l">
+	                                            <input id="checkbox3" type="checkbox" name="checkbox" value="checkbox3">
+	                                            <label for="checkbox3"></label>
+	                                        </div>
+	                                    </td>
+	                                </tr>
+	                            </table>
+
+	                        </div>
+                		</uib-tab>
+                	</uib-tabset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

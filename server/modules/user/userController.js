@@ -7,6 +7,8 @@ import config from '../../config/environment';
 import Joi from 'joi';
 import _ from 'lodash';
 import async from 'async';
+import multer from 'multer';
+
 function validationError(res, statusCode) {
   statusCode = statusCode || 422;
   return function(err) {
@@ -36,6 +38,8 @@ class UserController {
     this.authCallback = this.authCallback.bind(this);
     this.info = this.info.bind(this);
     this.getFriends = this.getFriends.bind(this);
+    this.updateProfile = this.updateProfile.bind(this);
+    this.changePictrue = this.changePictrue.bind(this);
   }
 
   /**
@@ -131,6 +135,48 @@ class UserController {
     });
   }
 
+  changePictrue(req, res) {
+    let storage = multer.diskStorage({
+      destination: (req, file, cb) => {
+        cb(null, this.kernel.config.tmpPhotoFolder)
+      },
+      filename: (req, file, cb) => {
+        return cb(null, file.originalname);
+      }
+    });
+    let upload = multer({
+      storage: storage
+    }).single('file');
+
+    upload(req, res, (err) => {
+      if (err) {return res.status(500).json({type: 'SERVER_ERROR'});}
+      if (!req.file || !req.body.type) {
+        return res.status(422).end();
+      }
+      let availableType = ['avatar', 'coverPhoto'];
+      if (availableType.indexOf(req.body.type) === -1) {
+        return res.status(422).end();
+      }
+      this.kernel.model.Photo({
+        ownerId: req.user._id,
+        metadata: {
+          tmp: req.file.filename
+        }
+      }).save().then(photo => {
+        this.kernel.queue.create('PROCESS_AWS', photo).save();
+        let user = req.user;
+        user[req.body.type] = photo._id;
+        user.save().then(() => {
+          return res.status(200).json({type: req.body.type, photo: photo});
+        }).catch(err => {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        });
+      }).catch(err => {
+        return res.status(500).json({type: 'SERVER_ERROR'});
+      });
+    });
+  }
+
   /**
    * Get a single user
    */
@@ -191,6 +237,8 @@ class UserController {
       path: 'awardsExhibits.awardId',
       populate: {path: 'objectPhotoId', model: 'Photo'}
     })
+    .populate('avatar')
+    .populate('coverPhoto')
     .then(user => { // don't ever give out the password or salt
       if (!user) {
         return res.status(401).end();
@@ -218,6 +266,58 @@ class UserController {
         return res.status(200).end();
       }).catch(err => {return res.status(500).json(err); });
     }).catch(err => {return res.status(500).json(err); });
+  }
+
+  /*Update profile*/
+  updateProfile(req, res) {
+    if (!req.body) {
+      return res.status(422).end();
+    }
+    // Validate
+    var schema = Joi.object().keys({
+      name: Joi.string().required(),
+      email: Joi.string().email().required().options({
+        language: {
+          key: 'Email '
+        }
+      })
+    });
+    var result = Joi.validate(req.body, schema, {
+      stripUnknown: true,
+      abortEarly: false,
+      allowUnknown: true
+    });
+    if (result.error) {
+      var err = [];
+      _.each(result.error.details, (error) => {
+        let type;
+        switch(error.type) {
+          case 'string.email' :
+            type = 'EMAIL_INVALID';
+            break;
+          case 'string.min': 
+            type = 'PASSWORD_MIN_LENGTH_ERROR';
+            break;
+          default:
+            break;
+        }
+        err.push({type: type, path: error.path, message: error.message});
+      });
+      return res.status(422).json(err);
+    }
+    let user = req.user;
+    user.name = req.body.name;
+    user.phoneNumber = req.body.phoneNumber;
+    user.location = req.body.location;
+    user.location.type = 'Point';
+    user.email = req.body.email;
+    user.isCompanyAccount = req.body.isCompanyAccount;
+
+    user.save().then(() => {
+      return res.status(200).end();
+    }).catch(() => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
   }
 
   /*

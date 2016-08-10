@@ -54,7 +54,8 @@ module.exports = exports = function(kernel) {
       stats: {
         totalJoinedEvent: {type: Number, default: 0},
         totalCreatedEvent: {type: Number, default: 0}
-      }
+      },
+      isCompanyAccount: {type: Boolean, default: false}
     });
   };
 

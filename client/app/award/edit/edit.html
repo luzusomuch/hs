@@ -20,7 +20,7 @@
       <div class="row">
         <div class="col-xs-3">
           <img ng-show="file.name" style="margin-bottom:5px" ngf-src="file" width="100%">
-          <img ng-show="!file.name" src="{{award.objectPhotoId | imageUrl: 'small'}}" width="100%">
+          <img ng-show="!file.name" src="{{award | eventAwardImageUrl: 'small'}}" width="100%">
         </div>
         <div class="col-xs-9 text-center ng-binding">
           <p><a href="#" class="btn btn-danger" ngf-select="select($file)" ngf-multiple="false" accept="image/*">{{'UPLOAD_PICTURE' | translate}}</a></p>

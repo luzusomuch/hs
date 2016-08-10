@@ -1061,7 +1061,8 @@ module.exports = function(kernel) {
           async.parallel([
             (cb) => {
               // populate ownerId
-              kernel.model.User.findById(item.ownerId, '-password -salt').then(u => {
+              kernel.model.User.findById(item.ownerId, '-password -salt')
+              .populate('avatar').exec().then(u => {
                 if (u) {
                   let user = u.toJSON();
                   kernel.model.GrantAward.count({ownerId: user._id}).then(count => {

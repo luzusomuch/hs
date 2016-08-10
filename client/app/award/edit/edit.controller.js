@@ -7,7 +7,7 @@ class EditAwardCtrl {
 			{value: 'offline', text: 'Award will be granted by Healthstars offline (only for company accounts)'}
 		];
 		$scope.submitted = false;
-		$scope.award = award;
+		$scope.award = angular.copy(award);
 		$scope.file = {};
 
 		$scope.closeModal = () => {
@@ -22,17 +22,17 @@ class EditAwardCtrl {
 			$scope.submitted = true;
 			if (form.$valid) {
 				Upload.upload({
-		      url: '/api/v1/awards/'+$scope.award._id,
-		      arrayKey: '',
-		      method: 'PUT',
-		      data: {file: $scope.file, award: $scope.award},
-		      headers: {'Authorization': `Bearer ${$cookies.get('token')}`}
-		    }).then(resp =>{
+			      	url: '/api/v1/awards/'+$scope.award._id,
+			      	arrayKey: '',
+			      	method: 'PUT',
+			      	data: {file: $scope.file, award: $scope.award},
+			      	headers: {'Authorization': `Bearer ${$cookies.get('token')}`}
+			    }).then(resp =>{
 					$uibModalInstance.close(resp.data);
-		    }, (err) => {
-		    	console.log(err);
-		    	// TODO show error
-		    });
+			    }, (err) => {
+			    	console.log(err);
+			    	// TODO show error
+			    });
 			} else {
 				// TODO show error
 			}

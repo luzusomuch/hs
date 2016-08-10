@@ -127,7 +127,6 @@ class HomeCtrl {
         $scope.$$phase || $scope.$apply();
       });
     } else {
-      console.log(this.searchParams);
       $scope.geoLocation = true;
     }
   }

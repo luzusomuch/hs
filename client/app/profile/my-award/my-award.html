@@ -48,7 +48,7 @@
     	<div ng-repeat="award in vm.ownAwards.items" ng-drag="true" ng-drag-data="award">
 	    	<div class="box-award">
 	    		<div class="img-award">
-	    			<img src="{{award.objectPhotoId | imageUrl: 'small'}}">
+	    			<img src="{{award | eventAwardImageUrl: 'small'}}">
 	    			<div class="action-award">
 	    				<button ng-click="vm.editAward(award)"><i class="fa fa-pencil"></i> </button>
 	    				<button ng-click="vm.delete(award, 'owner')"><i class="fa fa-trash-o"></i> </button>

@@ -54,8 +54,8 @@ module.exports = {
     bucket: 'hvs3'
   },
   FACEBOOK: {
-    clientID:     process.env.FACEBOOK_ID || '151467955264025',
-    clientSecret: process.env.FACEBOOK_SECRET || 'b3fb8c3ac0b6fb90f6d4849128c7ac18',
+    clientID:     process.env.FACEBOOK_ID || '1573466596291608',
+    clientSecret: process.env.FACEBOOK_SECRET || 'f00bb8424ab1521b1c7c6a844b378357',
     callbackURL:  baseUrl + 'auth/facebook/callback'
   },
 

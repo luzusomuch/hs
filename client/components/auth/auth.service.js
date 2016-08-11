@@ -89,17 +89,26 @@
        * @return {Promise}
        */
       changePassword(oldPassword, newPassword, callback) {
-        return User.changePassword({
-            id: currentUser._id
-          }, {
-            oldPassword: oldPassword,
-            newPassword: newPassword
-          }, function() {
-            return safeCb(callback)(null);
-          }, function(err) {
-            return safeCb(callback)(err);
-          })
-          .$promise;
+        let deferred = $q.defer();
+        $http.put(`/api/${APP_CONFIG.apiVer}/users/${currentUser._id}/password`, {
+          oldPassword: oldPassword, newPassword: newPassword
+        }).then(resp => {
+          return deferred.resolve(resp);
+        }).catch(err => {
+          return deferred.reject(err);
+        });
+        return deferred.promise;
+        // return User.changePassword({
+        //     id: currentUser._id
+        //   }, {
+        //     oldPassword: oldPassword,
+        //     newPassword: newPassword
+        //   }, function() {
+        //     return safeCb(callback)(null);
+        //   }, function(err) {
+        //     return safeCb(callback)(err);
+        //   })
+        //   .$promise;
       },
 
       forgotPassword(email) {

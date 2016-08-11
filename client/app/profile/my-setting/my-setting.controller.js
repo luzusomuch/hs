@@ -52,6 +52,7 @@ class MySettingCtrl {
 
 	      	this.User.updateProfile(this.authUser).then(() => {
 	      		this.Auth.setAuthUser(this.authUser);
+	      		this.submitted = false;
 	      	}).catch(err => {
 	      		console.log(err);
 	      		// TODO show error
@@ -136,6 +137,19 @@ class MySettingCtrl {
   					console.log(err);
   				});
 			});
+  		}
+  	}
+
+  	changePassword(form) {
+  		this.submitted = true;
+  		if (form.$valid) {
+  			this.Auth.changePassword(this.oldpassword, this.password).then(() => {
+  				// TODO show success
+  			}).catch(() => {
+  				// TODO show error
+  			});
+  		} else {
+  			// TODO show error
   		}
   	}
 }

@@ -225,7 +225,7 @@ class UserController {
     .then(user => {
       if (user.authenticate(oldPass)) {
         user.password = newPass;
-        return this.kernel.model.User.update()
+        return user.save()
           .then(() => {
             res.status(204).end();
           })

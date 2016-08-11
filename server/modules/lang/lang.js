@@ -218,7 +218,9 @@ let Language = {
 		NOTIFICATION_FOR_INVITE_EVENT: 'Notifications for invites to events.',
 		NOTIFICATION_FOR_FRIEND_INVITE: 'Notifications for friendship invites.',
 		NOTIFICATION_FOR_NEW_POST: 'Notifcations new posting in accepted/ interested event.',
-		VISIBLE_FRIENDS_LIST: 'Visible friends list'
+		VISIBLE_FRIENDS_LIST: 'Visible friends list',
+		OLD_PASSWORD: 'Old password',
+		NEW_PASSWORD: 'New password'
 	},
 	de: {
 

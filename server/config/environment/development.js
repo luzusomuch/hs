@@ -66,8 +66,8 @@ module.exports = {
   },
 
   GOOGLE: {
-    clientID:     process.env.GOOGLE_ID || '370450171698-3mng1t1reg27ughuh1jn80ilhaj0rfum.apps.googleusercontent.com',
-    clientSecret: process.env.GOOGLE_SECRET || 'ZJ08JCu7ECso7Y9GgZg_6BUw',
+    clientID:     process.env.GOOGLE_ID || '825525519990-0uf8b2cs1i4alptais0nk53pmajpdtnr.apps.googleusercontent.com',
+    clientSecret: process.env.GOOGLE_SECRET || '9KA0LX54f6GPsOTxW5Vhj5Sl',
     callbackURL:  baseUrl + 'auth/google/callback'
   }
 };

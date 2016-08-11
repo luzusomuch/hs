@@ -41,6 +41,7 @@ class UserController {
     this.updateProfile = this.updateProfile.bind(this);
     this.changePictrue = this.changePictrue.bind(this);
     this.changeNotificationsSetting = this.changeNotificationsSetting.bind(this);
+    this.addSocialAccount = this.addSocialAccount.bind(this);
   }
 
   /**
@@ -474,6 +475,23 @@ class UserController {
     }).catch(err => {
       return res.status(500).json({type: 'SERVER_ERROR'});
     });
+  }
+
+  /*Add social account to current user*/
+  addSocialAccount(req, res) {
+    console.log(req.body);
+    let validAccountType = ['google', 'twitter', 'facebook'];
+    if (validAccountType.indexOf(req.body.type) !== -1) {
+      let user = req.user;
+      user[req.body.type] = req.body.data;
+      user.save().then(() => {
+        return res.status(200).end();
+      }).catch(err => {
+        return res.status(500).json({type: 'SERVER_ERROR'});
+      })
+    } else {
+      return res.status(442).end();
+    }
   }
 
   /**

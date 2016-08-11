@@ -1,7 +1,7 @@
 'use strict';
 
 class MySettingCtrl {
-	constructor($scope, $state, $localStorage, APP_CONFIG, $http, User, Auth, Upload, $cookies) {
+	constructor($scope, $state, $localStorage, APP_CONFIG, $http, User, Auth, Upload, $cookies, $timeout) {
 		this.submitted =false;
 		this.errors = {};
 		this.authUser = $localStorage.authUser;
@@ -28,6 +28,16 @@ class MySettingCtrl {
 		this.Auth = Auth;
 		this.Upload = Upload;
 		this.$cookies = $cookies;
+		this.APP_CONFIG = APP_CONFIG;
+		$timeout(() => {
+			gapi.load('auth2', () => {
+				this.auth2 = gapi.auth2.init({
+					client_id: this.APP_CONFIG.apiKey.ggAppId,
+					fetch_basic_profile: false,
+					scope: 'profile'
+				});
+			});
+		}, 1000);
 	}
 
 	updateAccount(form) {
@@ -90,22 +100,42 @@ class MySettingCtrl {
 
   	addAccount(type) {
   		if (type === 'fb') {
-  			FB.api('/me', function(response) {
-  				console.log(response);
+  			FB.api('/me', (response) => {
+  				if (!response.error) {
+	  				let data = {
+	  					data: response,
+	  					type: 'facebook'
+	  				};
+	  				this.User.addSocialAccount(data).then(() => {
+	  					// TODO show success message
+	  				}).catch(err => {
+	  					// TODO show error
+	  					console.log(err);
+	  				});
+  				} else {
+  					console.log(response.error);
+  					// TODO show error
+  				}
 		    });
   		} else if (type === 'tw') {
-  			this.$http.get('https://api.twitter.com/1.1/account/verify_credentials.json').then(resp => {
-  				console.log(resp);
-  			}).catch(err => {
-  				console.log(err);
-  				// TODO show error
-  			});
-  		} else if (type === 'gg') {
-  			this.$http.get('https://www.googleapis.com/auth/userinfo.profile').then(resp => {
+  			this.$http.post('https://api.twitter.com/oauth/authenticate').then(resp => {
   				console.log(resp);
   			}).catch(err => {
   				console.log(err);
   			})
+  		} else if (type === 'gg') {
+  			this.auth2.signIn().then(() => {
+  				let data = {
+  					data: {id: this.auth2.currentUser.get().getId()},
+  					type: 'google'
+  				};
+				this.User.addSocialAccount(data).then(() => {
+					// TODO show success message
+  				}).catch(err => {
+  					// TODO show error
+  					console.log(err);
+  				});
+			});
   		}
   	}
 }

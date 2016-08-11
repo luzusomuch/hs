@@ -170,6 +170,15 @@
 	                                        </div>
 	                                    </td>
 	                                </tr>
+	                                <tr>
+	                                    <td>{{'VISIBLE_FRIENDS_LIST' | translate}}</td>
+	                                    <td  class="text-right">
+	                                        <div class="checkbox-l">
+	                                            <input ng-click="vm.notificationSetting('isVisibleFriendsList')" id="checkbox4" type="checkbox" name="checkbox" value="checkbox3" ng-model="vm.authUser.notificationSetting.isVisibleFriendsList">
+	                                            <label for="checkbox4"></label>
+	                                        </div>
+	                                    </td>
+	                                </tr>
 	                            </table>
 	                        </div>
                 		</uib-tab>

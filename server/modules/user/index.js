@@ -7,6 +7,7 @@ exports.routes = (kernel) => {
   kernel.app.put('/api/v1/users/profile', kernel.middleware.isAuthenticated(), userController.updateProfile);
   kernel.app.put('/api/v1/users/changeExhibit', kernel.middleware.isAuthenticated(), userController.changeExhibit);
   kernel.app.put('/api/v1/users/notifications-setting', kernel.middleware.isAuthenticated(), userController.changeNotificationsSetting);
+  kernel.app.put('/api/v1/users/add-social-account', kernel.middleware.isAuthenticated(), userController.addSocialAccount);
   kernel.app.put('/api/v1/users/:id/password', kernel.middleware.isAuthenticated(), userController.changePassword);
   kernel.app.post('/api/v1/users', userController.create);
   kernel.app.post('/api/v1/users/verify-account', userController.verifyAccount);

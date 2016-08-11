@@ -82,7 +82,6 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
     });
 
     $rootScope.pageWidth = $window.innerWidth;
-    console.log($rootScope.pageWidth);
     angular.element($window).bind('resize', function () {
       $rootScope.pageWidth = $window.innerWidth;
       var div1 = $('#div-1');

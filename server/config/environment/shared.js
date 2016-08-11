@@ -9,8 +9,10 @@ exports = module.exports = {
   socketUrl: config.socketUrl,
   apiVer : 'v1',
   apiKey: {
-  	google: 'AIzaSyBhg6JbSzbbB1rC9iqukJdiAXzUOYlpf-4',
+  	google: 'AIzaSyCLpMBiJ3YEMigY0dRLHlS3oH85vRdwXLQ',
   	weather: 'd6ce4efe26d8a70511337db70401d39c',
-  	fbAppId: config.FACEBOOK.clientID
+  	fbAppId: config.FACEBOOK.clientID,
+    twAppId: config.TWITTER.clientID,
+    ggAppId: config.GOOGLE.clientID
   }
 };

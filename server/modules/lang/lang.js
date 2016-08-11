@@ -220,7 +220,9 @@ let Language = {
 		NOTIFICATION_FOR_NEW_POST: 'Notifcations new posting in accepted/ interested event.',
 		VISIBLE_FRIENDS_LIST: 'Visible friends list',
 		OLD_PASSWORD: 'Old password',
-		NEW_PASSWORD: 'New password'
+		NEW_PASSWORD: 'New password',
+		DELETE_ACCOUNT: 'Delete account',
+		USER_DELETED: 'This user was deleted'
 	},
 	de: {
 

@@ -205,11 +205,21 @@ class UserController {
    * restriction: 'admin'
    */
   destroy(req, res) {
-    return this.kernel.model.User.removeById(req.params.id)
-      .then(function() {
-        res.status(204).end();
-      })
-      .catch(handleError(res));
+    this.kernel.model.User.findById(req.params.id).then(user => {
+      if (req.user._id.toString()===user._id.toString() || req.user.role==='admin') {
+        user.deleted.status = true;
+        user.deleted.byUserId = req.user._id;
+        user.save().then(() => {
+          return res.status(200).end();
+        }).catch(err => {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        });
+      } else {
+        return res.status(403).end();
+      }
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    })
   }
 
   /**

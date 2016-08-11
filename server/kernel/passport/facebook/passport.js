@@ -15,6 +15,17 @@ export function setup(User, config) {
     User.findOne({'facebook.id': profile.id}).exec()
       .then(user => {
         if (user) {
+          if (user.deleted && user.deleted.status) {
+            return done(null, false, {
+              message: 'This user was deleted',
+              error: 'USER_DELETED'
+            });
+          } else if (user.blocked && user.blocked.status) {
+            return done(null, false, {
+              message: 'This email was blocked',
+              error: 'EMAIL_BLOCKED'
+            });
+          }
           return done(null, user);
         }
 

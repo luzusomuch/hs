@@ -39,6 +39,10 @@
 
       addSocialAccount: (data) => {
         return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/add-social-account`, data);
+      },
+
+      deleteAccount: (id) => {
+        return $http.delete(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/${id}`);
       }
     };
   }

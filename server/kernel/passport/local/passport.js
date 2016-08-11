@@ -23,6 +23,11 @@ function localAuthenticate(User, email, password, done) {
             message: 'This email was blocked',
             error: 'EMAIL_BLOCKED'
           });
+        } else if (user.deleted && user.deleted.status) {
+          return done(null, false, {
+            message: 'This user was deleted',
+            error: 'USER_DELETED'
+          });
         } else {
           return done(null, user);
         }

@@ -152,6 +152,16 @@ class MySettingCtrl {
   			// TODO show error
   		}
   	}
+
+  	deleteAccount() {
+  		this.User.deleteAccount(this.authUser._id).then(() => {
+  			this.Auth.logout();
+  			this.$state.go('home');
+  		}).catch(err => {
+  			console.log(err);
+  			// TODO show eror
+  		});
+  	}
 }
 
 angular.module('healthStarsApp').controller('MySettingCtrl', MySettingCtrl);

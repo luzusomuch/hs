@@ -8,10 +8,20 @@ export function setup(User, config) {
     callbackURL: config.TWITTER.callbackURL
   },
   function(token, tokenSecret, profile, done) {
-    console.log(profile);
     User.findOne({'twitter.id_str': profile.id}).exec()
       .then(user => {
         if (user) {
+          if (user.deleted && user.deleted.status) {
+            return done(null, false, {
+              message: 'This user was deleted',
+              error: 'USER_DELETED'
+            });
+          } else if (user.blocked && user.blocked.status) {
+            return done(null, false, {
+              message: 'This email was blocked',
+              error: 'EMAIL_BLOCKED'
+            });
+          }
           return done(null, user);
         }
 

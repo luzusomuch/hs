@@ -12,7 +12,7 @@ exports.routes = (kernel) => {
   kernel.app.post('/api/v1/users', userController.create);
   kernel.app.post('/api/v1/users/verify-account', userController.verifyAccount);
   kernel.app.post('/api/v1/users/change-picture', kernel.middleware.isAuthenticated(), userController.changePictrue);
-  kernel.app.delete('/api/v1/users/:id', kernel.middleware.hasRole('admin'), userController.destroy);
+  kernel.app.delete('/api/v1/users/:id', kernel.middleware.isAuthenticated(), userController.destroy);
   kernel.app.get('/api/v1/users', kernel.middleware.hasRole('admin'), userController.index);
   kernel.app.get('/api/v1/users/:id/info', kernel.middleware.isAuthenticated(), userController.info);
   kernel.app.get('/api/v1/users/friends/:page', kernel.middleware.isAuthenticated(), userController.getFriends);

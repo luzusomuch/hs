@@ -19,7 +19,6 @@ class BackendPhotoListCtrl {
 	  		this.page += 1;
 	  		this.photos.items = (this.photos.items) ? this.photos.items.concat(resp.data.items) : resp.data.items;
 	  		this.photos.totalItem = resp.data.totalItem;
-	  		console.log(this.photos);
 		}).catch(err => {
 			console.log(err);
 			// TODO show error

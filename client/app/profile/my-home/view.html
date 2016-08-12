@@ -1,0 +1,173 @@
+<div class="container">
+	<hs-profile-menu-header></hs-profile-menu-header>
+	<div class="row">
+		<div class="col-sm-4 col-lg-3  pc-show">
+            <div class="box-blue p15">
+                <div class="img-user-main">
+                    <img src="{{vm.authUser | avatarUrl}}" width="100%;">
+                    <div class="code-qc">
+                        <qrcode version="20" error-correction-level="H" data="{{vm.authUser.link}}" href="{{vm.authUser.link}}" size="50"></qrcode>
+                    </div>
+                </div>
+                <div class="bottom-user-main">
+                    <h3 style="margin-top: 0px">{{vm.authUser.name}}</h3>
+                    <div class="clear"></div>
+                </div>
+            </div>
+
+            <div class="box-blue p15">
+                <div class="title-blue">{{'PHOTOS' | translate}} <a href="#" class="show-all-box">{{'SHOW_ALL' | translate}}</a></div>
+                <ul class="row row-small list-photo">
+                    <li class="col-xs-6" ng-repeat="photo in vm.photos.items">
+                    	<a href="#" ng-click="vm.viewPhoto(photo)"><div class="bg-cover" style="background-image: url('{{photo | imageUrl:'small'}}')"></div></a>
+                	</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-8 col-lg-9">
+            <div class="box-blue p15">
+                <div class="title-blue">{{'FRIENDS_LIST' | translate}}</div>
+                <div class="search-main m20 pull-right">
+                    <input type="text" class="form-control" placeholder="Search Friend">
+                    <button><i class="fa fa-search"></i></button>
+                </div>
+                <div class="clear"></div>
+                <ul class="row friends">
+                    <li class="col-sm-6">
+                        <div class="box-frends">
+                            <a href="#"><img src="images/user.jpg"></a>
+                            <div class="text-box-friend">
+
+                                <h4><a href="#">Caroline Sanders @Barbara</a></h4>
+                                <span class="text-mo">Sales Lead</span>
+                                <a href="#" class="btn btn-create unfriend">Unfriend</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col-sm-6">
+                        <div class="box-frends">
+                            <a href="#"><img src="images/user.jpg"></a>
+                            <div class="text-box-friend">
+
+                                <h4><a href="#">Caroline Sanders @Barbara</a></h4>
+                                <span class="text-mo">Sales Lead</span>
+                                <a href="#" class="btn btn-create unfriend">Unfriend</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col-sm-6">
+                        <div class="box-frends">
+                            <a href="#"><img src="images/user.jpg"></a>
+                            <div class="text-box-friend">
+
+                                <h4><a href="#">Caroline Sanders @Barbara</a></h4>
+                                <span class="text-mo">Sales Lead</span>
+                                <a href="#" class="btn btn-create unfriend">Unfriend</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col-sm-6">
+                        <div class="box-frends">
+                            <a href="#"><img src="images/user.jpg"></a>
+                            <div class="text-box-friend">
+
+                                <h4><a href="#">Caroline Sanders @Barbara</a></h4>
+                                <span class="text-mo">Sales Lead</span>
+                                <a href="#" class="btn btn-create unfriend">Unfriend</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col-sm-6">
+                        <div class="box-frends">
+                            <a href="#"><img src="images/user.jpg"></a>
+                            <div class="text-box-friend">
+
+                                <h4><a href="#">Caroline Sanders @Barbara</a></h4>
+                                <span class="text-mo">Sales Lead</span>
+                                <a href="#" class="btn btn-create unfriend">Unfriend</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col-sm-6">
+                        <div class="box-frends">
+                            <a href="#"><img src="images/user.jpg"></a>
+                            <div class="text-box-friend">
+
+                                <h4><a href="#">Caroline Sanders @Barbara</a></h4>
+                                <span class="text-mo">Sales Lead</span>
+                                <a href="#" class="btn btn-create unfriend">Unfriend</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col-sm-6">
+                        <div class="box-frends">
+                            <a href="#"><img src="images/user.jpg"></a>
+                            <div class="text-box-friend">
+
+                                <h4><a href="#">Caroline Sanders @Barbara</a></h4>
+                                <span class="text-mo">Sales Lead</span>
+                                <a href="#" class="btn btn-create unfriend">Unfriend</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col-sm-6">
+                        <div class="box-frends">
+                            <a href="#"><img src="images/user.jpg"></a>
+                            <div class="text-box-friend">
+
+                                <h4><a href="#">Caroline Sanders @Barbara</a></h4>
+                                <span class="text-mo">Sales Lead</span>
+                                <a href="#" class="btn btn-create unfriend">Unfriend</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col-sm-6">
+                        <div class="box-frends">
+                            <a href="#"><img src="images/user.jpg"></a>
+                            <div class="text-box-friend">
+
+                                <h4><a href="#">Caroline Sanders @Barbara</a></h4>
+                                <span class="text-mo">Sales Lead</span>
+                                <a href="#" class="btn btn-create unfriend">Unfriend</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col-sm-6">
+                        <div class="box-frends">
+                            <a href="#"><img src="images/user.jpg"></a>
+                            <div class="text-box-friend">
+
+                                <h4><a href="#">Caroline Sanders @Barbara</a></h4>
+                                <span class="text-mo">Sales Lead</span>
+                                <a href="#" class="btn btn-create unfriend">Unfriend</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col-sm-6">
+                        <div class="box-frends">
+                            <a href="#"><img src="images/user.jpg"></a>
+                            <div class="text-box-friend">
+
+                                <h4><a href="#">Caroline Sanders @Barbara</a></h4>
+                                <span class="text-mo">Sales Lead</span>
+                                <a href="#" class="btn btn-create unfriend">Unfriend</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col-sm-6">
+                        <div class="box-frends">
+                            <a href="#"><img src="images/user.jpg"></a>
+                            <div class="text-box-friend">
+
+                                <h4><a href="#">Caroline Sanders @Barbara</a></h4>
+                                <span class="text-mo">Sales Lead</span>
+                                <a href="#" class="btn btn-create unfriend">Unfriend</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+	</div>
+</div>

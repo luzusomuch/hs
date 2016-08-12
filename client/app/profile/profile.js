@@ -5,6 +5,15 @@ angular.module('healthStarsApp').config(function($stateProvider) {
     url: '/profile',
     template: '<ui-view/>',
     abstract: true
+  }).state('profile.home', {
+    url: '/',
+    templateUrl: 'app/profile/my-home/view.html',
+    controller: 'MyHomeCtrl',
+    controllerAs: 'vm',
+    authenticate: true,
+    settings: {
+      pageTitle: 'HealthStars | My Profile'
+    }
   }).state('profile.myCalendar', {
   	url: '/my-calendar',
   	templateUrl: 'app/profile/my-calendar/my-calendar.html',

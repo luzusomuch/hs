@@ -7,16 +7,14 @@
                     <img src="{{vm.authUser | avatarUrl}}" width="100%;">
                     <div class="code-qc">
                         <!-- <img src="images/code.jpg"> -->
-                        <qrcode version="8" error-correction-level="H" data="{{vm.authUser.link}}" href="{{vm.authUser.link}}" size="50"></qrcode>
+                        <qrcode version="20" error-correction-level="H" data="{{vm.authUser.link}}" href="{{vm.authUser.link}}" size="50"></qrcode>
                     </div>
                 </div>
                 <div class="bottom-user-main">
                     <h3 style="margin-top: 0px">{{vm.authUser.name}}</h3>
                     <div class="clear"></div>
-
                 </div>
             </div>
-
         </div>
         <div class="col-sm-8 col-lg-9">
             <div class="box-blue">
@@ -28,7 +26,7 @@
 	                                <div class="col-sm-4">
 	                                    <label>{{'ADD_OTHER_ACCOUNTS' | translate}}</label>
 	                                    <div class="sign-social social-account">
-	                                        <a ng-click="vm.addAccount('tw')" href="#" class="twitter-sign"><i class="fa fa-twitter"></i> Twitter </a>
+	                                        <!-- <a ng-click="vm.addAccount('tw')" href="#" class="twitter-sign"><i class="fa fa-twitter"></i> Twitter </a> -->
 	                                        <a ng-click="vm.addAccount('fb')" href="#" class="facebook-sign"><i class="fa fa-facebook"></i> Facebook </a>
 	                                        <a ng-click="vm.addAccount('gg')" href="#" class="google-sign"><i class="fa fa-google-plus"></i> Google </a>
 	                                    </div>

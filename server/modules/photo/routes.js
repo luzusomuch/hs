@@ -156,6 +156,24 @@ module.exports = function(kernel) {
 		});
 	});
 
+	/*get my photos*/
+	kernel.app.get('/api/v1/photos/my-photos', kernel.middleware.isAuthenticated(), (req, res) => {
+		let page = req.query.page || 1;
+		let pageSize = req.query.pageSize || 10;
+		kernel.model.Photo.find({ownerId: (req.query.userId) ? req.query.userId : req.user._id, blocked: false})
+		.limit(Number(pageSize))
+	    .skip(pageSize * (page-1))
+	    .then(photos => {
+	    	kernel.model.Photo.count({ownerId: (req.query.userId) ? req.query.userId : req.user._id, blocked: false}).then(count => {
+	    		return res.status(200).json({items: photos, totalItem: count});
+	    	}).catch(err => {
+	    		return res.status(500).json({type: 'SERVER_ERROR'});	
+	    	});
+		}).catch(err => {
+			return res.status(500).json({type: 'SERVER_ERROR'});
+		});
+	});
+
 	kernel.app.put('/api/v1/photos/:id/block', kernel.middleware.isAuthenticated(), (req, res) => {
 		async.parallel([
 			(cb) => {
@@ -196,32 +214,5 @@ module.exports = function(kernel) {
 				return res.status(500).json({type: 'SERVER_ERROR'});
 			});
 		});
-		// return;
-		
-		// kernel.model.Event.findById(req.body.eventId).then(event => {
-		// 	if (!event) {
-		// 		return res.status(404).end();
-		// 	}
-		// 	if (req.user.role === 'admin' || event.ownerId.toString()===req.user._id.toString()) {
-		// 		kernel.model.Photo.findById(req.params.id).then(photo => {
-		// 			if (!photo) {
-		// 				return res.status(404).end();
-		// 			}
-		// 			photo.blocked = !photo.blocked;
-		// 			photo.blockedBy = (photo.blocked) ? req.user._id : null;
-		// 			photo.save().then(photo => {
-		// 				return res.status(200).json({blocked: photo.blocked});
-		// 			}).catch(err => {
-		// 				return res.status(500).json({type: 'SERVER_ERROR'});
-		// 			});
-		// 		}).catch(err => {
-		// 			return res.status(500).json({type: 'SERVER_ERROR'});
-		// 		});
-		// 	} else {
-		// 		return res.status(403).end();
-		// 	}
-		// }).catch(err => {
-		// 	return res.status(500).json({type: 'SERVER_ERROR'});
-		// });
 	});
 };

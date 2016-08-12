@@ -4,7 +4,6 @@ import passport from 'passport';
 exports.routes = (kernel) => {
   let userController = new UserController(kernel);
 
-  kernel.app.get('/api/v1/users/twitter-account', userController.twitterAccount);
   kernel.app.get('/api/v1/users/me', kernel.middleware.isAuthenticated(), userController.me);
   kernel.app.put('/api/v1/users/profile', kernel.middleware.isAuthenticated(), userController.updateProfile);
   kernel.app.put('/api/v1/users/changeExhibit', kernel.middleware.isAuthenticated(), userController.changeExhibit);

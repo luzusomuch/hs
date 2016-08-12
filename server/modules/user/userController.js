@@ -43,7 +43,6 @@ class UserController {
     this.changePictrue = this.changePictrue.bind(this);
     this.changeNotificationsSetting = this.changeNotificationsSetting.bind(this);
     this.addSocialAccount = this.addSocialAccount.bind(this);
-    this.twitterAccount = this.twitterAccount.bind(this);
   }
 
   /**
@@ -208,6 +207,10 @@ class UserController {
    */
   destroy(req, res) {
     this.kernel.model.User.findById(req.params.id).then(user => {
+      // Not allow to delete admin user
+      if (user.role==='admin') {
+        return res.status(500).json({type: 'SERVER_ERROR'});
+      }
       if (req.user._id.toString()===user._id.toString() || req.user.role==='admin') {
         user.deleted.status = true;
         user.deleted.byUserId = req.user._id;
@@ -504,12 +507,6 @@ class UserController {
     } else {
       return res.status(442).end();
     }
-  }
-
-  twitterAccount(req, res) {
-    console.log('aaaaaaaaaaaaaaaaaaaaaaa');
-    console.log(req.query);
-    res.redirect('/profile/my-setting');
   }
 
   /**

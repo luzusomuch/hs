@@ -116,8 +116,9 @@ module.exports = function(kernel) {
    */
   kernel.app.get('/api/v1/awards/:id/all', kernel.middleware.isAuthenticated(), (req, res) => {
     let condition = {};
-    let page = req.params.page || 1;
-    let pageSize = req.params.pageSize || 10;
+    let page = req.query.page || 1;
+    let pageSize = req.query.pageSize || 10;
+    // let defaultAwardLoaded = req.params.defaultAwardLoaded || false;
     if (req.params.id==='me') {
       condition = {ownerId: req.user._id};
     } else if (req.params.id==='null' && req.user.role==='admin') {
@@ -134,15 +135,27 @@ module.exports = function(kernel) {
     .skip(pageSize * (page-1))
     .populate('objectPhotoId')
     .populate('ownerId', '-password -salt')
-    .exec().then(awards =>{
-      // get default awards
-      let defaultAwards = ['Foodstar Point', 'Sportstar Point', 'Socialstar Point', 'Actionstar Point', 'Ecostar Point'];
-      kernel.model.Award.find({objectName: {$in: defaultAwards}}).then(defaultAwards => {
+    .exec().then(awards => {
+      let defaultAwards = [];
+      async.parallel([
+        (cb) => {
+          if (page===1) {
+            // get default awards
+            let defaultAwards = ['Foodstar Point', 'Sportstar Point', 'Socialstar Point', 'Actionstar Point', 'Ecostar Point'];
+              kernel.model.Award.find({objectName: {$in: defaultAwards}}).then(defaultAwards => {
+                defaultAwards = defaultAwards;
+                cb(null);
+              }).catch(cb);
+          } else {
+            cb(null);
+          }
+        }
+      ], () => {
         awards = awards.concat(defaultAwards);
         awards = _.map(_.groupBy(awards,function(doc){
-            return doc._id;
+          return doc._id;
         }),function(grouped){
-            return grouped[0];
+          return grouped[0];
         });
         kernel.model.Award.count(condition).then(count => {
           // This params is get from awards backend
@@ -159,16 +172,14 @@ module.exports = function(kernel) {
               if (err) {
                 return res.status(500).json({type: 'SERVER_ERROR'});
               }
-              return res.status(200).json({items: results, totalItem: count+5});
+              return res.status(200).json({items: results, totalItem: (page===1) ? count+5 : count});
             });
           } else {
-            return res.status(200).json({items: awards, totalItem: count+5});
+            return res.status(200).json({items: awards, totalItem: (page===1) ? count+5 : count});
           }
         }).catch(err => {
           return res.status(500).json({type: 'SERVER_ERROR'});
         });
-      }).catch(err => {
-        return res.status(500).json({type: 'SERVER_ERROR'});
       });
     }).catch(err => {
       return res.status(500).json({type: 'SERVER_ERROR'});

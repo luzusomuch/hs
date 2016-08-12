@@ -47,7 +47,7 @@
 					<td>{{award.type}}</td>
 					<td>{{award.ownerId.name}}</td>
 					<td>{{award.event.name}}</td>
-					<td><img width="150" src="{{award.objectPhotoId | imageUrl: 'small'}}"></td>
+					<td><img width="150" src="{{award | eventAwardImageUrl: 'small'}}"></td>
 					<td>{{award.createdAt | date: 'HH:mm'}} {{award.createdAt | date: 'dd-MMMM-yyyy'}}</td>
 					<td>{{(award.deleted) ? 'TRUE' : 'FALSE' | translate}}</td>
 					<td>

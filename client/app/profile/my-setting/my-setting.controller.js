@@ -120,12 +120,7 @@ class MySettingCtrl {
   				}
 		    });
   		} else if (type === 'tw') {
-  			this.$http.get('https://api.twitter.com/oauth/authorize').then(resp => {
-  				console.log(resp);
-  			}).catch(err => {
-  				console.log(err);
-  			});
-  			// this.$window.location.href = '/auth/twitter/user?userId='+this.authUser._id;
+  			// TODO create function to get current twitter account
   		} else if (type === 'gg') {
   			this.auth2.signIn().then(() => {
   				let data = {

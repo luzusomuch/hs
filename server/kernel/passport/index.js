@@ -10,14 +10,12 @@ exports.core = (kernel) => {
   require('./facebook/passport').setup(kernel.model.User, kernel.config);
   require('./google/passport').setup(kernel.model.User, kernel.config);
   require('./twitter/passport').setup(kernel.model.User, kernel.config);
-  require('./twitter-user/passport').setup(kernel.model.User, kernel.config);
 };
 
 exports.routes = (kernel) => {
   kernel.app.use('/auth/local', require('./local').default);
   kernel.app.use('/auth/facebook', require('./facebook').default);
   kernel.app.use('/auth/twitter', require('./twitter').default);
-  kernel.app.use('/auth/twitter/user', require('./twitter-user').default);
   kernel.app.use('/auth/google', require('./google').default);
 };
 

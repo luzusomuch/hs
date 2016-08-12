@@ -21,10 +21,12 @@ class BackendAwardListCtrl {
 	}
 
 	loadMore() {
+		console.log(this.page);
 		this.AwardService.getAll('null', {page: this.page}).then(resp => {
-  		this.page += 1;
-  		this.awards.items = (this.awards.items) ? this.awards.items.concat(resp.data.items) : resp.data.items;
-  		this.awards.totalItem = resp.data.totalItem;
+	  		this.page += 1;
+	  		this.awards.items = (this.awards.items) ? this.awards.items.concat(resp.data.items) : resp.data.items;
+	  		this.awards.totalItem = resp.data.totalItem;
+	  		console.log(this.awards);
 		}).catch(err => {
 			console.log(err);
 			// TODO show error
@@ -42,15 +44,15 @@ class BackendAwardListCtrl {
 
 	edit(award) {
 		let modalInstance = this.$uibModal.open({
-    	animation: true,
-    	templateUrl: 'backend/award/edit/edit.html',
-    	controller: 'BackendEditAwardCtrl',
-    	resolve: {
-    		award: () => {
-    			return award;
-    		}
-    	}
-    });
+	    	animation: true,
+	    	templateUrl: 'backend/award/edit/edit.html',
+	    	controller: 'BackendEditAwardCtrl',
+	    	resolve: {
+	    		award: () => {
+	    			return award;
+	    		}
+	    	}
+	    });
 		modalInstance.result.then(data => {
 			let index = _.findIndex(this.awards.items, (award) => {
 				return award._id===data._id;

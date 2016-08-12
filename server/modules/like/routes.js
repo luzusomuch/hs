@@ -23,6 +23,9 @@ module.exports = function(kernel) {
     	if (!obj) {
     		return res.status(404).end();
     	}
+      if (req.body.objectName==='Event' && obj.blocked) {
+        return res.status(500).json({type: 'EVENT_BLOCKED', message: 'Event blocked'});
+      }
     	kernel.model.Like.findOne({
         ownerId: req.user._id,
         objectName: req.body.objectName,

@@ -43,6 +43,10 @@
 
       deleteAccount: (id) => {
         return $http.delete(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/${id}`);
+      },
+
+      getCurrentTwitterUser: () => {
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/get-current-twitter-user`);
       }
     };
   }

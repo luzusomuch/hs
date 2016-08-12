@@ -1,7 +1,7 @@
 'use strict';
 
 class MySettingCtrl {
-	constructor($scope, $state, $localStorage, APP_CONFIG, $http, User, Auth, Upload, $cookies, $timeout) {
+	constructor($scope, $state, $localStorage, APP_CONFIG, $http, User, Auth, Upload, $cookies, $timeout, $window) {
 		this.submitted =false;
 		this.errors = {};
 		this.authUser = $localStorage.authUser;
@@ -38,6 +38,7 @@ class MySettingCtrl {
 				});
 			});
 		}, 1000);
+		this.$window = $window;
 	}
 
 	updateAccount(form) {
@@ -119,11 +120,12 @@ class MySettingCtrl {
   				}
 		    });
   		} else if (type === 'tw') {
-  			this.$http.post('https://api.twitter.com/oauth/authenticate').then(resp => {
+  			this.$http.get('https://api.twitter.com/oauth/authorize').then(resp => {
   				console.log(resp);
   			}).catch(err => {
   				console.log(err);
-  			})
+  			});
+  			// this.$window.location.href = '/auth/twitter/user?userId='+this.authUser._id;
   		} else if (type === 'gg') {
   			this.auth2.signIn().then(() => {
   				let data = {

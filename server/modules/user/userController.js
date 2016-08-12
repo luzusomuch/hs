@@ -8,6 +8,7 @@ import Joi from 'joi';
 import _ from 'lodash';
 import async from 'async';
 import multer from 'multer';
+import {Strategy as TwitterStrategy} from 'passport-twitter';
 
 function validationError(res, statusCode) {
   statusCode = statusCode || 422;
@@ -42,6 +43,7 @@ class UserController {
     this.changePictrue = this.changePictrue.bind(this);
     this.changeNotificationsSetting = this.changeNotificationsSetting.bind(this);
     this.addSocialAccount = this.addSocialAccount.bind(this);
+    this.twitterAccount = this.twitterAccount.bind(this);
   }
 
   /**
@@ -502,6 +504,12 @@ class UserController {
     } else {
       return res.status(442).end();
     }
+  }
+
+  twitterAccount(req, res) {
+    console.log('aaaaaaaaaaaaaaaaaaaaaaa');
+    console.log(req.query);
+    res.redirect('/profile/my-setting');
   }
 
   /**

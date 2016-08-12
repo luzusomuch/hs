@@ -12,22 +12,14 @@ class BackendPhotoListCtrl {
 		this.sortType = 'createdAt';
 		this.sortReverse = false;
 		this.loadMore();
-
-		$scope.$watch('vm.photos.items', (nv) => {
-			if (nv && nv.length > 0) {
-				let nonBlockedPhotos = _.filter(nv, {blocked: false});
-				if (nonBlockedPhotos.length <= 5 && nv.length < this.photos.totalItem) {
-					this.loadMore();
-				}
-			}
-		});
 	}
 
 	loadMore() {
 		this.PhotoService.getPhotos({page: this.page}).then(resp => {
-  		this.page += 1;
-  		this.photos.items = (this.photos.items) ? this.photos.items.concat(resp.data.items) : resp.data.items;
-  		this.photos.totalItem = resp.data.totalItem;
+	  		this.page += 1;
+	  		this.photos.items = (this.photos.items) ? this.photos.items.concat(resp.data.items) : resp.data.items;
+	  		this.photos.totalItem = resp.data.totalItem;
+	  		console.log(this.photos);
 		}).catch(err => {
 			console.log(err);
 			// TODO show error

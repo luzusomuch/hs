@@ -8,64 +8,65 @@ module.exports = function(kernel) {
 		let page = req.query.page || 1;
 		let pageSize = req.query.pageSize || 10;
 		kernel.model.Photo.find({})
-    .limit(Number(pageSize))
-    .skip(pageSize * (page-1))
-    .populate('ownerId', '-password -salt')
-    .exec().then(photos => {
-    	let results = [];
-    	// get photo's project info
-    	async.each(photos, (photo, callback) => {
-    		async.waterfall([
-    			(cb) => {
-    				kernel.model.Feed.findOne({photosId: photo._id}).then(feed => {
-    					if (!feed) {
-    						cb(null, {eventId: null});
-    					} else {
-    						cb(null, {eventId: feed.eventId});
-    					}
-    				}).catch(cb);
-    			},
-    			(result, cb) => {
-    				if (result.eventId) {
-    					cb(null, result);
-    				} else {
-    					kernel.model.Event.findOne({photosId: photo._id}).then(event => {
-    						if (!event) {
-    							cb({error: 'Event not found', code: 404});
-    						} else {
-    							cb(null, {eventId: event._id});
-    						}
-    					}).catch(cb);
-    				}
-    			}
-  			], (err, result) => {
-  				photo = photo.toJSON();
-  				if (err) {
-  					photo.event = null;
-  					callback();
-  				} else {
-	  				kernel.model.Event.findById(result.eventId).then(event => {
-	  					photo.event = event;
+	    .limit(Number(pageSize))
+	    .skip(pageSize * (page-1))
+	    .populate('ownerId', '-password -salt')
+	    .exec().then(photos => {
+    		let results = [];
+	    	// get photo's project info
+	    	async.each(photos, (photo, callback) => {
+	    		async.waterfall([
+	    			(cb) => {
+	    				kernel.model.Feed.findOne({photosId: photo._id}).then(feed => {
+	    					if (!feed) {
+	    						cb(null, {eventId: null});
+	    					} else {
+	    						cb(null, {eventId: feed.eventId});
+	    					}
+	    				}).catch(cb);
+	    			},
+	    			(result, cb) => {
+	    				if (result.eventId) {
+	    					cb(null, result);
+	    				} else {
+	    					kernel.model.Event.findOne({photosId: photo._id}).then(event => {
+	    						if (!event) {
+	    							cb({error: 'Event not found', code: 404});
+	    						} else {
+	    							cb(null, {eventId: event._id});
+	    						}
+	    					}).catch(cb);
+	    				}
+	    			}
+	  			], (err, result) => {
+	  				photo = photo.toJSON();
+	  				if (err) {
+	  					photo.event = null;
 	  					results.push(photo);
 	  					callback();
-	  				}).catch(err => {
-	  					callback(err);
-	  				});
-  				}
-  			});
-    	}, (err) => {
-    		if (err) {
-    			return res.status(500).json({type: 'SERVER_ERROR'});
-    		}
-	      kernel.model.Photo.count({}).then(count => {
-	      	return res.status(200).json({items: results, totalItem: count});
-	      }).catch(err => {
-	      	return res.status(500).json({type: 'SERVER_ERROR'});	
-	      });
-    	});
-    }).catch(err => {
-      return res.status(500).json({type: 'SERVER_ERROR'});
-    });
+	  				} else {
+		  				kernel.model.Event.findById(result.eventId).then(event => {
+		  					photo.event = event;
+		  					results.push(photo);
+		  					callback();
+		  				}).catch(err => {
+		  					callback(err);
+		  				});
+	  				}
+	  			});
+	    	}, (err) => {
+	    		if (err) {
+	    			return res.status(500).json({type: 'SERVER_ERROR'});
+	    		}
+		      	kernel.model.Photo.count({}).then(count => {
+		      		return res.status(200).json({items: results, totalItem: count});
+		      	}).catch(err => {
+		      		return res.status(500).json({type: 'SERVER_ERROR'});	
+		      	});
+	    	});
+	    }).catch(err => {
+	      	return res.status(500).json({type: 'SERVER_ERROR'});
+	    });
 	});
 
 	kernel.app.get('/api/v1/photos/view',kernel.middleware.isAuthenticated(), (req, res) => {

@@ -92,39 +92,48 @@ module.exports = function(kernel) {
       	});
       	return res.status(422).json(errors);
       }
-
-      async.each(req.files, (file, callback) => {
-      	var photo = {
-          ownerId: req.user._id,
-          metadata: {
-            tmp: file.filename
+      kernel.model.Event.findById(data.eventId).then(event => {
+        if (!event) {
+          return res.status(404).json({type: 'EVENT_NOT_FOUND', message: 'Event not found'});
+        }
+        if (event.blocked) {
+          return res.status(500).json({type: 'EVENT_BLOCKED', message: 'Event blocked'});
+        }
+        async.each(req.files, (file, callback) => {
+          var photo = {
+            ownerId: req.user._id,
+            metadata: {
+              tmp: file.filename
+            }
+          };
+          let model = new kernel.model.Photo(photo);
+          model.save().then(saved => {
+            uploadedPhotoIds.push(saved._id);
+            kernel.queue.create('PROCESS_AWS', saved).save();
+            callback(null, uploadedPhotoIds);
+          }).catch(err => {
+            callback(err);
+          });
+        }, (err, result) => {
+          if (err) {
+            return res.status(500).json({type: 'SERVER_ERROR'})
           }
-        };
-        let model = new kernel.model.Photo(photo);
-        model.save().then(saved => {
-          uploadedPhotoIds.push(saved._id);
-          kernel.queue.create('PROCESS_AWS', saved).save();
-          callback(null, uploadedPhotoIds);
-        }).catch(err => {
-          callback(err);
+          data.photosId = uploadedPhotoIds;
+          data.ownerId = req.user._id;
+          kernel.model.Feed(data).save().then(feed => {
+            kernel.model.Feed.populate(feed, [
+              {path: 'ownerId', select: '-password -salt'},
+              {path: 'photosId'}
+            ], (err, result) => {
+              return res.status(200).json(result);
+            });
+          }).catch(err => {
+            console.log(err);
+            return res.status(500).json({type: 'SERVER_ERROR'})
+          })
         });
-      }, (err, result) => {
-      	if (err) {
-      		return res.status(500).json({type: 'SERVER_ERROR'})
-      	}
-      	data.photosId = uploadedPhotoIds;
-      	data.ownerId = req.user._id;
-      	kernel.model.Feed(data).save().then(feed => {
-      		kernel.model.Feed.populate(feed, [
-      			{path: 'ownerId', select: '-password -salt'},
-      			{path: 'photosId'}
-    			], (err, result) => {
-    				return res.status(200).json(result);
-    			});
-      	}).catch(err => {
-      		console.log(err);
-      		return res.status(500).json({type: 'SERVER_ERROR'})
-      	})
+      }).catch(err => {
+        return res.status(500).json({type: 'SERVER_ERROR'});
       });
     });
 	});

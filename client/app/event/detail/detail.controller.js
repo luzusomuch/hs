@@ -1,7 +1,12 @@
 'use strict';
 
 class EventDetailCtrl {
-	constructor($scope, event, $localStorage, liked, LikeService, Upload, $cookies, $stateParams, FeedService, PhotoViewer, APP_CONFIG) {
+	constructor($scope, $state, event, $localStorage, liked, LikeService, Upload, $cookies, $stateParams, FeedService, PhotoViewer, APP_CONFIG) {
+		if (event.blocked) {
+			// TODO show alert event has delete
+			alert('This event has deleted');
+			$state.go('home');
+		}
 		this.event = event;
 		this.event.url = APP_CONFIG.baseUrl + 'event/detail/'+event._id;
 		this.event.location.lat = this.event.location.coordinates[1];

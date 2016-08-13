@@ -18,9 +18,7 @@ class MyHomeCtrl {
 	}
 
 	viewPhoto(photo) {
-		this.PhotoViewer.setPhoto(photo, {
-			
-		});
+		this.PhotoViewer.setPhoto(photo, {});
 		this.PhotoViewer.toggle(true);
 	}
 }

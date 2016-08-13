@@ -32,7 +32,7 @@ class EventDetailCtrl {
 	}
 
 	loadMoreFeeds() {
-		this.FeedService.getAllByEventId(this.$stateParams.id, {page: this.page}).then(resp => {
+		this.FeedService.getAll(this.$stateParams.id, 'event', {page: this.page}).then(resp => {
 			this.feeds = this.feeds.concat(resp.data.items);
 			this.pageSize = resp.data.totalItem;
 			this.page += 1;
@@ -40,7 +40,7 @@ class EventDetailCtrl {
 	}
 
 	getFeeds(params) {
-		this.FeedService.getAllByEventId(this.$stateParams.id, params).then(resp => {
+		this.FeedService.getAll(this.$stateParams.id, 'event', params).then(resp => {
 			this.feeds = resp.data.items;
 			this.pageSize = resp.data.totalItem;
 			this.page += 1;
@@ -78,33 +78,33 @@ class EventDetailCtrl {
 	}
 
 	select($files) {
-  	$files.forEach(file => {
-      //check file
-      let index = _.findIndex(this.files, (f) => {
-        return f.name === file.name && f.size === file.size;
-      });
+	  	$files.forEach(file => {
+	      	//check file
+	      	let index = _.findIndex(this.files, (f) => {
+	        	return f.name === file.name && f.size === file.size;
+	      	});
 
-      if (index === -1) {
-      	this.files.push(file);
-      	this.checkNude(file, (result) => {
-      		file.nude = result;
-      	});
-      }
-    });
-  }
+	      	if (index === -1) {
+		      	this.files.push(file);
+		      	this.checkNude(file, (result) => {
+		      		file.nude = result;
+		      	});
+      		}
+    	});
+  	}
 
-  checkNude(file, cb) {
-  	setTimeout(function() {
-  		nude.load(file.name);
-	  	nude.scan(result => {
-	  		cb(result);
-	  	});
-  	}, 500);
-  }
+  	checkNude(file, cb) {
+	  	setTimeout(function() {
+	  		nude.load(file.name);
+		  	nude.scan(result => {
+		  		cb(result);
+		  	});
+	  	}, 500);
+  	}
 
-  removeImage(index) {
-  	this.files.splice(index, 1);
-  }
+  	removeImage(index) {
+  		this.files.splice(index, 1);
+  	}
 
 	createNewFeed(feed) {
 		this.submitted = true;
@@ -115,19 +115,20 @@ class EventDetailCtrl {
 		if (feed.content && feed.content.trim().length > 0) {
 			feed.eventId = this.$stateParams.id;
 			this.Upload.upload({
-	      url: '/api/v1/feeds',
-	      arrayKey: '',
-	      data: {file: this.files, feed: feed},
-	      headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
-	    }).then(resp =>{
-        this.submitted = false;
-        this.feed = {};
-        this.files = [];
-        this.feeds.push(resp.data);
-        this.event.totalComment = (this.event.totalComment) ? this.event.totalComment+1 : 1;
-	    }, (err) => {
-	    	console.log(err);
-	    });
+	      		url: '/api/v1/feeds',
+	      		arrayKey: '',
+	      		data: {file: this.files, feed: feed},
+	      		headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
+	    	}).then(resp =>{
+		        this.submitted = false;
+		        this.feed = {};
+		        this.files = [];
+		        this.feeds.push(resp.data);
+		        this.event.totalComment = (this.event.totalComment) ? this.event.totalComment+1 : 1;
+		    }, (err) => {
+		    	console.log(err);
+		    	// TODO show error
+		    });
 		} else {
 			this.errors.content = true;
 		}

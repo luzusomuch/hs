@@ -1,0 +1,218 @@
+<div class="top-detail">
+	<div class="img-timline bg-cover" style="background-image: url('{{vm.user | userBannerUrl}}')"></div>
+	<div class="text-top-detail">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-3"></div>
+                <div class="col-sm-9">
+                    <h2 class="title-detail">{{vm.user.name}}</h2>
+                    <div class="row ">
+                        <div class="col-sm-4 col-lg-7">
+                            <div class="last-online">{{'LAST_ONLINE' | translate}} <i class="fa fa-clock-o"></i>  {{vm.user.lastAccess | fromNow}}</div>
+                        </div>
+                        <div class="col-sm-8 col-lg-5">
+                            <div class="row row-small action-user-detail">
+                                <div class="col-xs-6"><a href="#" class="btn btn-default btn-block"><i class="user-i i-new"></i> {{'ADD_TO_FRIENDS' | translate}}</a></div>
+                                <div class="col-xs-3"><a href="#" class="btn btn-default btn-block"><i class="fa fa-rss"></i> {{'FOLLOW' | translate}}</a></div>
+                                <div class="col-xs-3"><a href="#" class="btn btn-default btn-block"><i class="fa fa-envelope-o"></i> {{'MESSAGE' | translate}}</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="content-home">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <hs-user-widget u-id="vm.user._id"></hs-user-widget>
+                <div class="box-blue p15">
+                    <ul class="list-info-user">
+                        <li><i class="map-i i-new"></i>  {{vm.user.location.fullAddress}}</li>
+                        <li><i class="business-i i-new"></i>  {{vm.user.job}}</li>
+                        <li><i class="achive-i i-new"></i>  {{vm.user.posts || 0}} {{'EVENTS' | translate}}</li>
+                    </ul>
+                </div>
+                <div class="box-blue p15">
+                    <div class="title-blue">{{vm.user.name}} {{'PHOTOS' | translate}}</div>
+                    <ul class="row row-small list-photo">
+                    	<li class="col-xs-6" ng-repeat="photo in vm.photos.items">
+	                    	<a href="#" ng-click="vm.viewPhoto(photo)"><div class="bg-cover" style="background-image: url('{{photo | imageUrl:'small'}}')"></div></a>
+	                	</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="box-blue">
+                    <div class="form-post">
+                        <textarea ng-model="vm.feed.content" placeholder="Write something....."></textarea>
+                        <div class="row new-feed-preview-images" ng-show="vm.files.length > 0">
+	                        <div ng-repeat="file in vm.files" class="col-sm-3 relative-div">
+	                            <img ng-class="{'nude-image': file.nude}" id="{{file.name}}" ngf-thumbnail="file" width="150" height="150">
+	                            <a class="remove-icon" ng-click="vm.removeImage($index)" href="#"><i class="fa fa-times"></i></a>
+	                        </div>
+	                    </div>
+                        <div class="bottom-post">
+                        	<a href="#" class="post-picture" ngf-select="vm.select($files)" ngf-multiple="true" accept="image/jpg"><i class="fa fa-picture-o"></i></a>
+	                        &nbsp;
+	                        <p class="new-feed-error" ng-show="vm.errors.content && vm.submitted">{{'FEED_CONTENT_REQUIRED' | translate}}</p>
+	                        <p class="new-feed-error" ng-show="vm.errors.file && vm.submitted">{{'NUDE_FOUND' | translate}}</p>
+	                        <button class="btn btn-primary" ng-click="vm.createNewFeed(vm.feed)">{{'POST' | translate}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-blue">
+                    <div class="post-li">
+                        <div class="img-post-li">
+                            <img src="images/48.jpg">
+                        </div>
+                        <div class="content-post-li">
+                            <div class="title-post-li">
+                                <h4 class="title-generated-home">Mollie Richardson @Mollie <span class="date-post">3m</span> </h4>
+                            </div>
+                            <div class="content-post-li">
+                                I shared this on my fb wall a few months back, and I thought I'd share it here again because it's such a great read. "You already found your passion.” You are just ignoring it. The problem isn't passion. It's never passion. It's priorities.
+                            </div>
+                            <div class="img-content-post">
+                                <div class="row row-small">
+                                    <div class="col-xs-6">
+                                        <div class="bg-cover " style="background-image: url('images/photo.jpg'); height: 150px"></div>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <div class="bg-cover " style="background-image: url('images/photo1.jpg'); height: 150px"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bottom-li-post">
+                            <div class="pull-left">
+                                <a href="#"><i class="fa fa-heart-o active"></i> 12</a>
+                                <a href="#"><i class="fa fa-comments"></i> 30</a>
+                                <a href="#"><i class="fa fa-reply"></i> 10</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="post-li">
+                        <div class="img-post-li">
+                            <img src="images/48.jpg">
+                        </div>
+                        <div class="content-post-li">
+                            <div class="title-post-li">
+                                <h4 class="title-generated-home">Mollie Richardson @Mollie <span class="date-post">5m</span> </h4>
+                            </div>
+                            <div class="content-post-li">
+                                This is such a beautiful detail on iBooks.
+                            </div>
+
+                        </div>
+                        <div class="bottom-li-post">
+                            <div class="pull-left">
+                                <a href="#"><i class="fa fa-heart-o"></i> 12</a>
+                                <a href="#"><i class="fa fa-comments"></i> 30</a>
+                                <a href="#"><i class="fa fa-reply"></i> 10</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post-li">
+                        <div class="img-post-li">
+                            <img src="images/48.jpg">
+                        </div>
+                        <div class="content-post-li">
+                            <div class="title-post-li">
+                                <h4 class="title-generated-home">Mollie Richardson @Mollie <span class="date-post">12m</span> </h4>
+                            </div>
+                            <div class="content-post-li">
+                                I shared this on my fb wall a few months back, and I thought I'd share it here again because it's such a great read. "You already found your passion.” You are just ignoring it. The problem isn't passion. It's never passion. It's priorities.
+                            </div>
+                            <div class="img-content-post">
+                                <div class="row row-small">
+                                    <div class="col-xs-6">
+                                        <div class="bg-cover " style="background-image: url('images/photo2.jpg'); height: 150px"></div>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <div class="bg-cover " style="background-image: url('images/img3.jpg'); height: 150px"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bottom-li-post">
+                            <div class="pull-left">
+                                <a href="#"><i class="fa fa-heart-o"></i> 12</a>
+                                <a href="#"><i class="fa fa-comments"></i> 30</a>
+                                <a href="#"><i class="fa fa-reply active"></i> 10</a>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="col-sm-3">
+
+                <div class="box-blue p15">
+                    <div class="title-blue">Friends  (652) <a href="#" class="show-all-box">Show all</a></div>
+                    <ul class="list-media list-friend list-friend-1">
+                        <li>
+                            <div class="img-media">
+                                <a href="#"></a><a href="#"><img src="images/48.jpg"></a>
+                            </div>
+                            <h4><a href="#">Caroline Sanders @Barbara</a></h4>
+                            <span class="text-mo">Your Friend</span>
+                        </li>
+                        <li>
+                            <div class="img-media">
+                                <a href="#"></a><a href="#"><img src="images/48.jpg"></a>
+                            </div>
+                            <h4><a href="#">Caroline Sanders @Barbara</a></h4>
+                            <a href="#" class="btn-follow"><i class="i-new user-i-1"></i> Follow</a>
+                        </li>
+                        <li>
+                            <div class="img-media">
+                                <a href="#"></a><a href="#"><img src="images/48.jpg"></a>
+                            </div>
+                            <h4><a href="#">Caroline Sanders @Barbara</a></h4>
+                            <a href="#" class="btn-follow"><i class="i-new user-i-1"></i> Follow</a>
+                        </li>
+                        <li>
+                            <div class="img-media">
+                                <a href="#"></a><a href="#"><img src="images/48.jpg"></a>
+                            </div>
+                            <h4><a href="#">Caroline Sanders @Barbara</a></h4>
+                            <a href="#" class="btn-follow"><i class="i-new user-i-1"></i> Follow</a>
+                        </li>
+                        <li>
+                            <div class="img-media">
+                                <a href="#"></a><a href="#"><img src="images/48.jpg"></a>
+                            </div>
+                            <h4><a href="#">Caroline Sanders @Barbara</a></h4>
+                            <a href="#" class="btn-follow"><i class="i-new user-i-1"></i> Follow</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="box-blue p15">
+                    <div class="title-blue">ALEX EVENTS <a href="#" class="show-all-box">Show all</a></div>
+                    <ul class="list-my-event">
+                        <li>
+                            <p><a href="#">A couple of the objects that live on my bedside table are some Aesop hand cream.</a></p>
+                            July 04,2016 / Comments 4
+                        </li>
+                        <li>
+                            <p><a href="#">A couple of the objects that live on my bedside table are some Aesop hand cream.</a></p>
+                            July 04,2016 / Comments 4
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

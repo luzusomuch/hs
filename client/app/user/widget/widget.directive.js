@@ -2,7 +2,7 @@
 
 class UserWidgetCtrl {
 	constructor($scope, User, APP_CONFIG) {
-		this.link = APP_CONFIG.baseUrl + 'profile/' + $scope.uId;
+		this.link = APP_CONFIG.baseUrl + 'profile/' + $scope.uId + '/detail';
 		this.user = {};
 			
 		$scope.$watch('uId', nv => {

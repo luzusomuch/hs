@@ -63,5 +63,32 @@ angular.module('healthStarsApp').config(function($stateProvider) {
     settings: {
       pageTitle: 'HealthStars | My Setting'
     }
+  }).state('profile.detail', {
+    url: '/:id/detail',
+    templateUrl: 'app/profile/detail/view.html',
+    controller: 'ProfileDetailCtrl',
+    controllerAs: 'vm',
+    authenticate: true,
+    settings: {
+      pageTitle: 'HealthStars | Profile Detail'
+    },
+    resolve: {
+      user: (User, $stateParams, $location) => {
+        return User.getInfo($stateParams.id).then(
+          res => {
+            if ((res.data.blocked && res.data.blocked.status) || (res.data.deleted && res.data.deleted.status)) {
+              return $location.path('404');
+            } else {
+              return res.data;
+            }
+          },
+          err => {
+            if (err.status !== 401) {
+              return $location.path('404');
+            }
+          }
+        );
+      }
+    }
   });
 });

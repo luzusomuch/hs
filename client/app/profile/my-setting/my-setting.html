@@ -111,7 +111,7 @@
 	                            <div class="p15">
 	                                <div class="upload-img">
 	                                    <button type="button" class="uploadimg-a" data-toggle="tooltip" data-placement="top" title="Upload image" ngf-select="vm.upload($files, 'coverPhoto')" accept="image/*"><i class="fa fa-picture-o"></i></button>
-	                                    <div class="img-timline bg-cover" style="background-image: url({{vm.authUser | userBannerUrl}})"></div>
+	                                    <div class="img-timline bg-cover" style="background-image: url('{{vm.authUser | userBannerUrl}}')"></div>
 	                                    <!-- <img src="{{vm.authUser | userBannerUrl}}" width="100%"> -->
 	                                    <div class="upload-avatar">
 	                                        <button type="button" class="uploadimg-a" data-toggle="tooltip" data-placement="top" title="Upload Avatar" ngf-select="vm.upload($files, 'avatar')" accept="image/*"><i class="fa fa-picture-o"></i></button>

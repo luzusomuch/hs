@@ -11,7 +11,7 @@
                 <li class="profile-top" uib-dropdown>
                     <a href="#" uib-dropdown-toggle><img ng-src="{{vm.user | avatarUrl}}"><i class="fa fa-angle-down"></i></a>
                     <ul uib-dropdown-menu>
-                        <li><a href="#"><i class="fa fa-home"></i> <span>{{'MENU_HOME' | translate}}</span></a></li>
+                        <li><a ui-sref="profile.home"><i class="fa fa-home"></i> <span>{{'MENU_HOME' | translate}}</span></a></li>
                         <li><a ui-sref="profile.myCalendar"><i class="fa fa-calendar"></i> <span>{{'MENU_MY_CALENDAR' | translate}}</span></a></li>
                         <li><a ui-sref="profile.myAward"><i class="fa fa-trophy"></i> <span>{{'MENU_MY_AWARDS' | translate}}</span></a></li>
                         <li><a href="#"><i class="fa fa-envelope-o"></i> <span>{{'MENU_MY_MESSENGER' | translate}}</span></a></li>

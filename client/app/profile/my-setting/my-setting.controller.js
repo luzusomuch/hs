@@ -7,7 +7,7 @@ class MySettingCtrl {
 		this.authUser = $localStorage.authUser;
 		this.address = {};
 		if (this.authUser) {
-			this.authUser.link = APP_CONFIG.baseUrl + 'profile/' + this.authUser._id;
+			this.authUser.link = APP_CONFIG.baseUrl + 'profile/' + this.authUser._id + '/detail';
 			this.authUser.firstName = this.authUser.name.substr(0,this.authUser.name.indexOf(' '));
 			this.authUser.lastName = this.authUser.name.substr(this.authUser.name.indexOf(' ')+1);
 			if (this.authUser.location) {

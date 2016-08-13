@@ -88,8 +88,8 @@
                 <div class="grid-item tile" masonry-tile ng-repeat="event in vm.events.items">
                     <div class="li-event {{event.categoryId | categoryClass}}">
                         <div class="top-li-event">
-                            <a href="#"><img src="{{event.ownerId | avatarUrl}}"></a>
-                            <h4><a href="#">{{event.ownerId.name}} &nbsp;</a></h4>
+                            <a ui-sref="profile.detail({id: event.ownerId._id})"><img src="{{event.ownerId | avatarUrl}}"></a>
+                            <h4><a ui-sref="profile.detail({id: event.ownerId._id})">{{event.ownerId.name}} &nbsp;</a></h4>
                             <i class="fa fa-clock-o"></i> {{event.createdAt | fromNow}}
                             <div class="arward-li-top">
                                 <span>{{event.ownerId.totalAwards || 0}}</span>

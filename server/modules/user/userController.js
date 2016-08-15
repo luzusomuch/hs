@@ -430,6 +430,43 @@ class UserController {
               callback();
             }).catch(callback);
           }, cb);
+        },
+        (cb) => {
+          // Check selected user and current user is friend or not
+          this.kernel.model.Relation.findOne({
+            type: 'friend', 
+            $or: [{
+              fromUserId: req.params.id, 
+              toUserId: req.user._id
+            }, {
+              fromUserId: req.user._id, 
+              toUserId: req.params.id
+            }]
+          }).then(friend => {
+            if (!friend) {
+              cb(null, 'none');
+            } else {
+              cb(null, friend.status);
+            }
+          }).catch(cb);
+        },
+        (cb) => {
+          this.kernel.model.Relation.findOne({
+            type: 'follow', 
+            $or: [{
+              fromUserId: req.params.id, 
+              toUserId: req.user._id
+            }, {
+              fromUserId: req.user._id, 
+              toUserId: req.params.id
+            }]
+          }).then(friend => {
+            if (!friend) {
+              cb(null, 'none');
+            } else {
+              cb(null, friend.status);
+            }
+          }).catch(cb);
         }
       ], (err, result) => {
         if(err) {
@@ -439,6 +476,8 @@ class UserController {
         data.awards = result[0];
         data.posts = result[1];
         data.followers = result[2];
+        data.isFriend = result[4];
+        data.isFollow = result[5];
         return res.status(200).json(data);
       });
     }, err => res.status(500).json({type: 'SERVER_ERROR', message: JSON.stringify(err)}))

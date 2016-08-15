@@ -225,10 +225,13 @@ let Language = {
 		USER_DELETED: 'This user was deleted',
 		LAST_ONLINE: 'Last online',
 		FOLLOW: 'Follow',
+		UNFOLLOW: 'Unfollow',
 		ADD_TO_FRIENDS: 'Add to Friends',
 		MESSAGE: 'Message',
 		MISSING_USER_ID: 'Missing user id',
-		USER_NOT_FOUND: 'User not found'
+		USER_NOT_FOUND: 'User not found',
+		PENDING_FRIEND_REQUEST: 'Pending friend request',
+		FRIEND: 'Friend'
 	},
 	de: {
 

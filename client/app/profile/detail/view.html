@@ -12,8 +12,15 @@
                         </div>
                         <div class="col-sm-8 col-lg-5">
                             <div class="row row-small action-user-detail">
-                                <div class="col-xs-6"><a href="#" class="btn btn-default btn-block"><i class="user-i i-new"></i> {{'ADD_TO_FRIENDS' | translate}}</a></div>
-                                <div class="col-xs-3"><a href="#" class="btn btn-default btn-block"><i class="fa fa-rss"></i> {{'FOLLOW' | translate}}</a></div>
+                                <div class="col-xs-6"><a ng-click="vm.addFriend()" href="#" class="btn btn-default btn-block">
+                                    <span ng-show="vm.user.isFriend==='none'"><i class="user-i i-new"></i> {{'ADD_TO_FRIENDS' | translate}}</span>
+                                    <span ng-show="vm.user.isFriend==='pending'"><i class="fa fa-spinner"></i> {{'PENDING_FRIEND_REQUEST' | translate}}</span>
+                                    <span ng-show="vm.user.isFriend==='completed'"><i class="fa fa-check"></i> {{'FRIEND' | translate}}</span>
+                                </a></div>
+                                <div class="col-xs-3"><a ng-click="vm.follow()" href="#" class="btn btn-default btn-block">
+                                    <span ng-show="vm.user.isFollow==='none'"><i class="fa fa-rss"></i> {{'FOLLOW' | translate}}</span>
+                                    <span ng-show="vm.user.isFollow==='completed'"><i class="fa fa-rss"></i> {{'UNFOLLOW' | translate}}</span>
+                                </a></div>
                                 <div class="col-xs-3"><a href="#" class="btn btn-default btn-block"><i class="fa fa-envelope-o"></i> {{'MESSAGE' | translate}}</a></div>
                             </div>
                         </div>

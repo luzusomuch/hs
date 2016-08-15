@@ -163,6 +163,7 @@ module.exports = function(kernel) {
 		kernel.model.Photo.find({ownerId: (req.query.userId) ? req.query.userId : req.user._id, blocked: false})
 		.limit(Number(pageSize))
 	    .skip(pageSize * (page-1))
+	    .sort({createdAt: 'desc'})
 	    .then(photos => {
 	    	kernel.model.Photo.count({ownerId: (req.query.userId) ? req.query.userId : req.user._id, blocked: false}).then(count => {
 	    		return res.status(200).json({items: photos, totalItem: count});

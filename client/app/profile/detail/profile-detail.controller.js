@@ -1,16 +1,18 @@
 'use strict';
 
 class ProfileDetailCtrl {
-	constructor($scope, $state, $localStorage, APP_CONFIG, PhotoViewer, user, $cookies, Upload, FeedService, EventService) {
+	constructor($scope, $state, $localStorage, APP_CONFIG, PhotoViewer, user, $cookies, Upload, FeedService, EventService, RelationService) {
 		this.errors = {};
 		this.page = 1;
 		this.Upload = Upload;
 		this.FeedService = FeedService;
 		this.EventService = EventService;
+		this.RelationService = RelationService;
 		this.$cookies = $cookies;
 		this.authUser = $localStorage.authUser;
 		this.user = user;
 		this.user.link = APP_CONFIG.baseUrl + 'profile/' + this.user._id;
+		console.log(this.user);
 		this.$state = $state;
 		this.PhotoViewer = PhotoViewer;
 
@@ -30,8 +32,11 @@ class ProfileDetailCtrl {
 			page: 1
 		};
 
+		this.friends = {};
+
 		this.getFeeds({page: this.page});
 		this.getUserEvent();
+		this.getuserFriend();
 	}
 
 	getFeeds(params) {
@@ -122,6 +127,30 @@ class ProfileDetailCtrl {
 			this.events.items = (this.events.items) ? this.events.items.concat(resp.data.items) : resp.data.items;
 			this.events.totalItem = resp.data.totalItem;
 			this.events.page +=1;
+		});
+	}
+
+	getuserFriend() {
+		this.RelationService.getAll({id: this.user._id, type: 'friend'}).then(resp => {
+			console.log(resp);
+		});
+	}
+
+	addFriend() {
+		this.RelationService.create({userId: this.user._id, type: 'friend'}).then(resp => {
+			this.user.isFriend = resp.data.type;
+		}).catch(err => {
+			console.log(err);
+			// TODO show error
+		});
+	}
+
+	follow() {
+		this.RelationService.create({userId: this.user._id, type: 'follow'}).then(resp => {
+			this.user.isFollow = resp.data.type;
+		}).catch(err => {
+			console.log(err);
+			// TODO show error
 		});
 	}
 }

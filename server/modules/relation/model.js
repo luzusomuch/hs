@@ -5,7 +5,7 @@ module.exports = {
     	fromUserId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
     	toUserId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
     	type: {type: String, enum: ['friend', 'follow']},
-    	status: {type: String, enum: ['pending', 'completed', 'deleted']}
+    	status: {type: String, enum: ['pending', 'completed'], default: 'pending'}
     });
 
     //import timestamp for auto create updatedAt, createdAt field manually

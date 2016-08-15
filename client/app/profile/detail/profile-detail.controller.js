@@ -1,11 +1,12 @@
 'use strict';
 
 class ProfileDetailCtrl {
-	constructor($scope, $state, $localStorage, APP_CONFIG, PhotoViewer, user, $cookies, Upload, FeedService) {
+	constructor($scope, $state, $localStorage, APP_CONFIG, PhotoViewer, user, $cookies, Upload, FeedService, EventService) {
 		this.errors = {};
 		this.page = 1;
 		this.Upload = Upload;
 		this.FeedService = FeedService;
+		this.EventService = EventService;
 		this.$cookies = $cookies;
 		this.authUser = $localStorage.authUser;
 		this.user = user;
@@ -25,13 +26,17 @@ class ProfileDetailCtrl {
 		this.feeds = {};
 		this.files = [];
 
-		this.getFeeds({page: this.page});
+		this.events = {
+			page: 1
+		};
 
+		this.getFeeds({page: this.page});
+		this.getUserEvent();
 	}
 
 	getFeeds(params) {
 		this.FeedService.getAll(this.user._id, 'user', params).then(resp => {
-			this.feeds.items = (this.feeds.items) ? this.feeds.concat(resp.data.items) : resp.data.items;
+			this.feeds.items = (this.feeds.items) ? this.feeds.items.concat(resp.data.items) : resp.data.items;
 			this.feeds.totalItem = resp.data.totalItem;
 			this.page += 1;
 		});
@@ -109,6 +114,14 @@ class ProfileDetailCtrl {
 		}).catch(err => {
 			console.log(err);
 			// TODO show error
+		});
+	}
+
+	getUserEvent() {
+		this.EventService.getUserEvent({userId: this.user._id, pageSize: 2, page: this.events.page}).then(resp => {
+			this.events.items = (this.events.items) ? this.events.items.concat(resp.data.items) : resp.data.items;
+			this.events.totalItem = resp.data.totalItem;
+			this.events.page +=1;
 		});
 	}
 }

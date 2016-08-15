@@ -4,7 +4,7 @@ class MyHomeCtrl {
 	constructor($scope, $state, $localStorage, APP_CONFIG, PhotoViewer) {
 		this.errors = {};
 		this.authUser = $localStorage.authUser;
-		this.authUser.link = APP_CONFIG.baseUrl + 'profile/' + this.authUser._id;
+		this.authUser.link = APP_CONFIG.baseUrl + 'profile/' + this.authUser._id +'/detail';
 		this.$state = $state;
 		this.PhotoViewer = PhotoViewer;
 

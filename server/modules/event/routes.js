@@ -221,6 +221,47 @@ module.exports = function(kernel) {
     });
   });
 
+  /*Get selected user's events list*/
+  kernel.app.get('/api/v1/events/user-events', kernel.middleware.isAuthenticated(), (req, res) => {
+    let page = req.query.page || 1;
+    let pageSize = req.query.pageSize || 10;
+    let skip = (page -1) * pageSize;
+    let date = moment(new Date());
+    let query = {
+      query: {
+        filtered: {
+          query: {
+            bool: {
+              should: []
+            }
+          },
+          filter: {
+            bool: {
+              must: [
+                { term: { blocked: false } },
+                { term: { private: false } },
+              ],
+              should: [
+                { term: { ownerId: (req.query.userId) ? req.query.userId : req.user._id}}
+              ]
+            }
+          }
+        }
+      },
+      from: skip,
+      size: pageSize,
+      sort: [
+        { createdAt: 'desc' }
+      ]
+    };
+    kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {
+      if (err) {
+        return res.status(500).json({type: 'SERVER_ERROR'});
+      }
+      return res.status(200).json(result);
+    });
+  });
+
   // Get events list for current user base on friends
   kernel.app.get('/api/v1/events/friendsEvents', kernel.middleware.isAuthenticated(), (req, res) => {
     // Get all friends
@@ -355,42 +396,6 @@ module.exports = function(kernel) {
       return res.status(500).json({type: 'SERVER_ERROR'});
     });
   });
-      // kernel.model.Event.find({
-      //   $or: [{participantsId: {$in: friendIds}}, {ownerId: {$in: friendIds}}]
-      // })
-      // .populate('awardId')
-      // .populate('categoryId')
-      // .populate({
-      //   path: 'participantsId', 
-      //   select: '-password -salt', 
-      //   populate: {path: 'avatar', model: 'Photo'}
-      // })
-      // .populate({
-      //   path: 'ownerId', 
-      //   select: '-password -salt', 
-      //   populate: {path: 'avatar', model: 'Photo'}
-      // })
-      // .limit(4).exec().then(events => {
-      //   let results = [];
-      //   async.each(events, (item, callback) => {
-      //     if (item.ownerId && item.ownerId._id && item.awardId) {
-      //       kernel.model.GrantAward.findOne({ownerId: (item.ownerId._id) ? item.ownerId._id : item.ownerId, eventId: item._id, awardId: item.awardId._id}).then(award => {
-      //         let data = item.ownerId.toJSON();
-      //         data.isGrantedAward = (award) ? true : false;
-      //         item.ownerId = data;
-      //         results.push(item);
-      //         callback();
-      //       }).catch(callback);
-      //     } else {
-      //       callback();
-      //     }
-      //   }, () => {
-      //     return res.status(200).json({events: results});
-      //   });
-      // }).catch(err => {
-      //   console.log(err);
-      //   return res.status(500).json({type: 'SERVER_ERROR'});  
-      // })
     
 
   /* suggest for searching */

@@ -12,7 +12,6 @@ class ProfileDetailCtrl {
 		this.authUser = $localStorage.authUser;
 		this.user = user;
 		this.user.link = APP_CONFIG.baseUrl + 'profile/' + this.user._id;
-		console.log(this.user);
 		this.$state = $state;
 		this.PhotoViewer = PhotoViewer;
 
@@ -32,11 +31,13 @@ class ProfileDetailCtrl {
 			page: 1
 		};
 
-		this.friends = {};
+		this.friends = {
+			page: 1
+		};
 
 		this.getFeeds({page: this.page});
 		this.getUserEvent();
-		this.getuserFriend();
+		this.getUserFriend();
 	}
 
 	getFeeds(params) {
@@ -130,9 +131,12 @@ class ProfileDetailCtrl {
 		});
 	}
 
-	getuserFriend() {
+	getUserFriend() {
 		this.RelationService.getAll({id: this.user._id, type: 'friend'}).then(resp => {
-			console.log(resp);
+			this.friends.items = (this.friends.items) ? this.friends.items.concat(resp.data.items) : resp.data.items;
+			this.friends.totalItem = resp.data.totalItem;
+			this.friends.page +=1;
+			console.log(this.friends);
 		});
 	}
 

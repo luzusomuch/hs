@@ -7,13 +7,42 @@ module.exports = function(kernel) {
   Get all relation of selected user 
   */
   kernel.app.get('/api/v1/relations/:id/:type', kernel.middleware.isAuthenticated(), (req, res) => {
-    kernel.model.Relation.find({status: 'completed', type: req.params.type, $or: [{fromUserId: req.params.id}, {toUserId: req.params.id}]})
-    .populate('toUserId', '-hashedPassword -salt')
+    let page = req.query.page || 1;
+    let pageSize = req.query.pageSize || 20;
+    kernel.model.Relation.find({
+      status: 'completed', 
+      type: req.params.type, 
+      $or: [{fromUserId: req.params.id}, {toUserId: req.params.id}]
+    })
+    .limit(Number(pageSize))
+    .skip(pageSize * (page-1))
+    .populate('toUserId', '-password -salt')
     .exec().then(relations => {
     	var result = _.map(relations, (relation) => {
     		return relation.toUserId;
     	});
-      return res.status(200).json({items: result, totalItem: result.length});
+      kernel.model.Relation.count({
+        status: 'completed', 
+        type: req.params.type, 
+        $or: [{fromUserId: req.params.id}, {toUserId: req.params.id}]
+      }).then(count => {
+        if (req.params.type==='friend') {
+          kernel.model.findById(req.params.id).then(user => {
+            if (!user) {
+              return res.status(404).end();
+            }
+            if (user.notificationSetting && user.notificationSetting.isVisibleFriendsList) {
+              return res.status(200).json({items: [], totalItem: 0});
+            }
+          }).catch(err => {
+            return res.status(500).json({type: 'SERVER_ERROR'});      
+          });
+        } else {
+          return res.status(200).json({items: result, totalItem: count});
+        }
+      }).catch(err => {
+        return res.status(500).json({type: 'SERVER_ERROR'});  
+      });
     }).catch(err => {
       return res.status(500).json({type: 'SERVER_ERROR'});
     });

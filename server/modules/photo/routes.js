@@ -179,6 +179,20 @@ module.exports = function(kernel) {
 			(cb) => {
 				if (req.user.role === 'admin') {
 					cb(null, true);
+				} else if (req.body.type==='user-profile') {
+					if (!req.body.userId) {
+						return cb({code: 422, type: 'MISSING_USER_ID', message: 'Missing user id'});
+					}
+					kernel.model.User.findById(req.body.userId).then(user => {
+						if (!user) {
+							return cb({code: 404, type: 'USER_NOT_FOUND', message: 'USER not found'});
+						}
+						if (user._id.toString()===req.user._id.toString()) {
+							cb(null, true);
+						} else {
+							cb({code: 403, type: 'NOT_ALLOW', messsage: 'Not allow'});
+						}
+					});
 				} else {
 					if (!req.body.eventId) {
 						return cb({code: 422, type: 'MISSING_EVENT_ID', message: 'Missing event id'});

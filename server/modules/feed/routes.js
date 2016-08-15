@@ -5,11 +5,17 @@ import multer from 'multer';
 
 module.exports = function(kernel) {
 
-	/*Get all feeds by event id*/
-	kernel.app.get('/api/v1/feeds/:id/event', kernel.middleware.isAuthenticated(), (req, res) => {
+	/*Get all feeds by id and type user or event*/
+	kernel.app.get('/api/v1/feeds/:id/:type', kernel.middleware.isAuthenticated(), (req, res) => {
 		let page = req.query.page || 1;
     let pageSize = req.query.pageSize || 5;
-		kernel.model.Feed.find({eventId: req.params.id})
+    let condition = {};
+    if (req.params.type==='event') {
+      condition = {eventId: req.params.id};
+    } else {
+      condition = {userId: req.params.id};
+    }
+		kernel.model.Feed.find(condition)
 		.populate({
 			path: 'ownerId', 
 			select: '-password -salt', 
@@ -19,7 +25,7 @@ module.exports = function(kernel) {
 		.limit(Number(pageSize))
     .skip(pageSize * (page-1))
     .exec().then(feeds => {
-      kernel.model.Feed.count({eventId: req.params.id}).then(count => {
+      kernel.model.Feed.count(condition).then(count => {
     	 return res.status(200).json({items: feeds, totalItem: count});
       }).catch(err => {
         return res.status(500).json({type: 'SERVER_ERROR'});  
@@ -47,23 +53,28 @@ module.exports = function(kernel) {
     	if (err) {
         return res.status(500).json({type: 'SERVER_ERROR'});
       }
+      if (!req.body.feed) {
+        return res.status(422).end();
+      }
       let uploadedPhotoIds = [];
-
       // validation
       let data = {
-      	content: req.body.feed.content,
-      	eventId: req.body.feed.eventId
+        content: req.body.feed.content
       };
-
+      if (req.body.feed.userFeed === 'true') {
+        // Create new feed for specific user
+        data.userId = req.body.feed.userId;
+      } else {
+        // Create new feed for an event
+        if (!req.body.feed.eventId) {
+          return res.status(422).end();
+        }
+        data.eventId = req.body.feed.eventId;
+      }
       let schema = Joi.object().keys({
       	content: Joi.string().required().options({
           language: {
             key: 'content'
-          }
-        }),
-        eventId: Joi.string().required().options({
-          language: {
-            key: 'eventId'
           }
         })
       });
@@ -82,9 +93,6 @@ module.exports = function(kernel) {
       			case 'string.content':
       				type = 'FEED_CONTENT_REQUIRED';
       				break;
-      			case 'string.eventId':
-      				type = 'FEED_EVENT_REQUIRED';
-      				break;
       			default:
       				break;
       		}
@@ -92,12 +100,25 @@ module.exports = function(kernel) {
       	});
       	return res.status(422).json(errors);
       }
-      kernel.model.Event.findById(data.eventId).then(event => {
-        if (!event) {
-          return res.status(404).json({type: 'EVENT_NOT_FOUND', message: 'Event not found'});
+      async.parallel([
+        (cb) => {
+          if (data.eventId) {
+            kernel.model.Event.findById(data.eventId).then(event => {
+              if (!event) {
+                return cb({type: 'EVENT_NOT_FOUND', code: 404, message: 'Event not found'});
+              }
+              if (event.blocked) {
+                return cb({type: 'EVENT_BLOCKED', code: 500, message: 'Event blocked'});
+              }
+              cb(null);
+            }).catch(cb);
+          } else {
+            cb(null);
+          }
         }
-        if (event.blocked) {
-          return res.status(500).json({type: 'EVENT_BLOCKED', message: 'Event blocked'});
+      ], (err) => {
+        if (err) {
+          return res.status(err.code).json({type: err.type, message: err.message});
         }
         async.each(req.files, (file, callback) => {
           var photo = {
@@ -132,8 +153,6 @@ module.exports = function(kernel) {
             return res.status(500).json({type: 'SERVER_ERROR'})
           })
         });
-      }).catch(err => {
-        return res.status(500).json({type: 'SERVER_ERROR'});
       });
     });
 	});

@@ -91,8 +91,8 @@ angular.module('healthStarsApp.photoViewer', ['healthStarsApp.constants', 'healt
 			var query = Util.obToquery(params);
 			return $http.get(`${config.baseUrl}api/${config.apiVer}/photos/view?${query}`);
 		},
-		blockPhoto(id, eventId) {
-			return $http.put(`${config.baseUrl}api/${config.apiVer}/photos/${id}/block`, {eventId: eventId});
+		blockPhoto(id, data) {
+			return $http.put(`${config.baseUrl}api/${config.apiVer}/photos/${id}/block`, data);
 		},
 		myPhotos(params) {
 			return $http.get(`${config.baseUrl}api/${config.apiVer}/photos/my-photos`, {params: params});	

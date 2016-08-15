@@ -5,7 +5,9 @@ module.exports = {
     	ownerId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
     	content: String,
     	photosId: [{type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Photo'}],
-    	eventId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Event', required: true},
+      eventId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Event'},
+      // userId meant some one post a feed in her/his wall
+    	userId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
       blocked: {type: Boolean, default: false},
       blockedByUserId : {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}
     });
@@ -22,13 +24,15 @@ module.exports = {
       if (doc.wasNew) {
         let attachModel = kernel.model;
         //TODO - fire event such as totalcomment added to event detail
-        attachModel.Event.findByIdAndUpdate(doc.eventId, {$inc: {totalComment: 1}}).then(data => {
-          data.set('totalComment', data.get('totalComment') + 1);
-          kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: data._id.toString(), data: data}).save();
-        }).catch(err => {
-          console.log(err);
-          return;
-        });
+        if (doc.eventId) {
+          attachModel.Event.findByIdAndUpdate(doc.eventId, {$inc: {totalComment: 1}}).then(data => {
+            data.set('totalComment', data.get('totalComment') + 1);
+            kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: data._id.toString(), data: data}).save();
+          }).catch(err => {
+            console.log(err);
+            return;
+          });
+        }
       }
     });
 

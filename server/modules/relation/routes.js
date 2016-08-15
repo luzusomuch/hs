@@ -18,4 +18,6 @@ module.exports = function(kernel) {
       return res.status(500).json({type: 'SERVER_ERROR'});
     });
   });
+
+  /**/
 };

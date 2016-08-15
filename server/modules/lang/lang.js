@@ -222,7 +222,13 @@ let Language = {
 		OLD_PASSWORD: 'Old password',
 		NEW_PASSWORD: 'New password',
 		DELETE_ACCOUNT: 'Delete account',
-		USER_DELETED: 'This user was deleted'
+		USER_DELETED: 'This user was deleted',
+		LAST_ONLINE: 'Last online',
+		FOLLOW: 'Follow',
+		ADD_TO_FRIENDS: 'Add to Friends',
+		MESSAGE: 'Message',
+		MISSING_USER_ID: 'Missing user id',
+		USER_NOT_FOUND: 'User not found'
 	},
 	de: {
 

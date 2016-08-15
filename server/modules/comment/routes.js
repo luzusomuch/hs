@@ -122,7 +122,11 @@ module.exports = function(kernel) {
         (cb) => {
           kernel.model[comment.objectName].findById(comment.objectId).then(data => {
             if (comment.objectName==='Feed') {
-              cb(null, data.eventId);
+              if (data.eventId) {
+                cb(null, {type: 'Event', _id: data.eventId});
+              } else {
+                cb(null, {type: 'User', _id: data.userId});
+              }
             } else if (comment.objectName==='Photo') {
               async.waterfall([
                 // Check all feed to get event id
@@ -131,7 +135,7 @@ module.exports = function(kernel) {
                     if (!data) {
                       callback(null, {eventId: null});
                     } else {
-                      callback(null, {eventId: data._id});
+                      callback(null, {eventId: data.eventId});
                     }
                   }).catch(callback);
                 }, 
@@ -139,7 +143,7 @@ module.exports = function(kernel) {
                   if (!result.eventId) {
                     kernel.model.Event.findOne({photosId: data._id}).then(data => {
                       if (!data) {
-                        callback({err: 'Event not found', code: 404});
+                        callback(null, {eventId: null});
                       } else {
                         callback(null, {eventId: data._id});
                       }
@@ -147,22 +151,40 @@ module.exports = function(kernel) {
                   } else {
                     callback(null, result);
                   }
+                }, 
+                (result, callback) => {
+                  if (!result.eventId) {
+                    callback(null, {type: 'User', _id: data.ownerId});
+                  } else {
+                    callback(null, {type: 'Event', _id: result.eventId});
+                  }
                 }
               ], (err, result) => {
                 if (err) {
                   return cb(err);
                 }
-                cb(null, result.eventId)
+                cb(null, result)
               });
             } else if (comment.objectName==='Comment') {
               // If it a sub-comment
               if (data.objectName==='Feed') {
                 kernel.model[data.objectName].findById(data.objectId).then(feed => {
-                  cb(null, feed.eventId);
+                  if (feed.eventId) {
+                    cb(null, {type: 'Event', _id: feed.eventId});
+                  } else {
+                    cb(null, {type: 'User', _id: feed.userId});
+                  }
                 }).catch(cb);
               } else if (data.objectName==='Photo') {
                 kernel.model.Feed.findOne({photosId: data.objectId}).then(feed => {
-                  cb(null, feed.eventId);
+                  if (!feed) {
+                    return cb(null, {type: 'User', _id: data.ownerId});
+                  }
+                  if (feed.eventId) {
+                    cb(null, {type: 'Event', _id: feed.eventId});
+                  } else {
+                    cb(null, {type: 'User', _id: feed.userId});
+                  }
                 }).catch(cb);
               } else {
                 cb({error: 'Not found'});
@@ -174,27 +196,33 @@ module.exports = function(kernel) {
         }
       ], (err, result) => {
         if (err) {
-          console.log(err);
           return res.status(500).json({type: 'SERVER_ERROR'});
         }
-        // Now we got the eventId and we can get the event owner
-        kernel.model.Event.findById(result[0]).then(event => {
-          if (req.user._id.toString()=== event.ownerId.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin'){
+        kernel.model[result[0].type].findById(result[0]._id).then(data => {
+          if (!data) {
+            return res.status(404).end();
+          }
+          let allow = false;
+          if (result[0].type==='Event' && (req.user._id.toString()=== data.ownerId.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin')) {
+            allow = true;
+          } else if (result[0].type==='User' && (req.user._id.toString()=== data._id.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin')) {
+            allow = true;
+          }
+          if (allow) {
             comment.content = req.body.content;
             comment.save().then(updated =>{
               return res.status(200).json(updated);
+            }).catch(err => {
+              return res.status(500).json({type: 'SERVER_ERROR'});
             });
           } else {
             return res.status(403).end();
           }
-        })
-        .catch(err => {
-          console.log(err);
+        }).catch(err => {
           return res.status(500).json({type: 'SERVER_ERROR'});
         });
       });
     }).catch(err => {
-      console.log(err);
       return res.status(500).json(err);
     });
   });
@@ -230,7 +258,11 @@ module.exports = function(kernel) {
         (cb) => {
           kernel.model[comment.objectName].findById(comment.objectId).then(data => {
             if (comment.objectName==='Feed') {
-              cb(null, data.eventId);
+              if (data.eventId) {
+                cb(null, {type: 'Event', _id: data.eventId});
+              } else {
+                cb(null, {type: 'User', _id: data.userId});
+              }
             } else if (comment.objectName==='Photo') {
               async.waterfall([
                 // Check all feed to get event id
@@ -239,7 +271,7 @@ module.exports = function(kernel) {
                     if (!data) {
                       callback(null, {eventId: null});
                     } else {
-                      callback(null, {eventId: data._id});
+                      callback(null, {eventId: data.eventId});
                     }
                   }).catch(callback);
                 }, 
@@ -247,7 +279,7 @@ module.exports = function(kernel) {
                   if (!result.eventId) {
                     kernel.model.Event.findOne({photosId: data._id}).then(data => {
                       if (!data) {
-                        callback({err: 'Event not found', code: 404});
+                        callback(null, {eventId: null});
                       } else {
                         callback(null, {eventId: data._id});
                       }
@@ -255,22 +287,40 @@ module.exports = function(kernel) {
                   } else {
                     callback(null, result);
                   }
+                }, 
+                (result, callback) => {
+                  if (!result.eventId) {
+                    callback(null, {type: 'User', _id: data.ownerId});
+                  } else {
+                    callback(null, {type: 'Event', _id: result.eventId});
+                  }
                 }
               ], (err, result) => {
                 if (err) {
                   return cb(err);
                 }
-                cb(null, result.eventId)
+                cb(null, result)
               });
             } else if (comment.objectName==='Comment') {
               // If it a sub-comment
               if (data.objectName==='Feed') {
                 kernel.model[data.objectName].findById(data.objectId).then(feed => {
-                  cb(null, feed.eventId);
+                  if (feed.eventId) {
+                    cb(null, {type: 'Event', _id: feed.eventId});
+                  } else {
+                    cb(null, {type: 'User', _id: feed.userId});
+                  }
                 }).catch(cb);
               } else if (data.objectName==='Photo') {
                 kernel.model.Feed.findOne({photosId: data.objectId}).then(feed => {
-                  cb(null, feed.eventId);
+                  if (!feed) {
+                    return cb(null, {type: 'User', _id: data.ownerId});
+                  }
+                  if (feed.eventId) {
+                    cb(null, {type: 'Event', _id: feed.eventId});
+                  } else {
+                    cb(null, {type: 'User', _id: feed.userId});
+                  }
                 }).catch(cb);
               } else {
                 cb({error: 'Not found'});
@@ -284,9 +334,17 @@ module.exports = function(kernel) {
         if (err) {
           return res.status(500).json({type: 'SERVER_ERROR'});
         }
-        // Now we got the eventId and we can get the event owner
-        kernel.model.Event.findById(result[0]).then(event => {
-          if (req.user._id.toString()=== event.ownerId.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin'){
+        kernel.model[result[0].type].findById(result[0]._id).then(data => {
+          if (!data) {
+            return res.status(404).end();
+          }
+          let allow = false;
+          if (result[0].type==='Event' && (req.user._id.toString()=== data.ownerId.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin')) {
+            allow = true;
+          } else if (result[0].type==='User' && (req.user._id.toString()=== data._id.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin')) {
+            allow = true;
+          }
+          if (allow) {
             comment.deleted = true;
             comment.deletedByUserId = (comment.deleted) ? req.user._id : null;
             // we not delete the comment. We just update status of the comment
@@ -300,7 +358,7 @@ module.exports = function(kernel) {
           }
         }).catch(err => {
           return res.status(500).json({type: 'SERVER_ERROR'});
-        })
+        });
       });
     }).catch(err => {
       return res.status(500).json(err);
@@ -312,25 +370,76 @@ module.exports = function(kernel) {
   */
   kernel.app.put('/api/v1/comments/:id/block', kernel.middleware.isAuthenticated(), (req, res) => {
     kernel.model.Comment.findById(req.params.id).then(comment => {
-      if (!comment) {return res.status(404).end();}
+      if (!comment) {
+        return res.status(404).end();
+      }
       async.parallel([
         (cb) => {
           kernel.model[comment.objectName].findById(comment.objectId).then(data => {
             if (comment.objectName==='Feed') {
-              cb(null, data.eventId);
+              if (data.eventId) {
+                cb(null, {type: 'Event', _id: data.eventId});
+              } else {
+                cb(null, {type: 'User', _id: data.userId});
+              }
             } else if (comment.objectName==='Photo') {
-              kernel.model.Feed.findOne({photosId: data._id}).then(data => {
-                cb(null, data.eventId);
-              }).catch(cb);
+              async.waterfall([
+                // Check all feed to get event id
+                (callback) => {
+                  kernel.model.Feed.findOne({photosId: data._id}).then(data => {
+                    if (!data) {
+                      callback(null, {eventId: null});
+                    } else {
+                      callback(null, {eventId: data.eventId});
+                    }
+                  }).catch(callback);
+                }, 
+                (result, callback) => {
+                  if (!result.eventId) {
+                    kernel.model.Event.findOne({photosId: data._id}).then(data => {
+                      if (!data) {
+                        callback(null, {eventId: null});
+                      } else {
+                        callback(null, {eventId: data._id});
+                      }
+                    });
+                  } else {
+                    callback(null, result);
+                  }
+                }, 
+                (result, callback) => {
+                  if (!result.eventId) {
+                    callback(null, {type: 'User', _id: data.ownerId});
+                  } else {
+                    callback(null, {type: 'Event', _id: result.eventId});
+                  }
+                }
+              ], (err, result) => {
+                if (err) {
+                  return cb(err);
+                }
+                cb(null, result)
+              });
             } else if (comment.objectName==='Comment') {
               // If it a sub-comment
               if (data.objectName==='Feed') {
                 kernel.model[data.objectName].findById(data.objectId).then(feed => {
-                  cb(null, feed.eventId);
+                  if (feed.eventId) {
+                    cb(null, {type: 'Event', _id: feed.eventId});
+                  } else {
+                    cb(null, {type: 'User', _id: feed.userId});
+                  }
                 }).catch(cb);
               } else if (data.objectName==='Photo') {
                 kernel.model.Feed.findOne({photosId: data.objectId}).then(feed => {
-                  cb(null, feed.eventId);
+                  if (!feed) {
+                    return cb(null, {type: 'User', _id: data.ownerId});
+                  }
+                  if (feed.eventId) {
+                    cb(null, {type: 'Event', _id: feed.eventId});
+                  } else {
+                    cb(null, {type: 'User', _id: feed.userId});
+                  }
                 }).catch(cb);
               } else {
                 cb({error: 'Not found'});
@@ -344,11 +453,19 @@ module.exports = function(kernel) {
         if (err) {
           return res.status(500).json({type: 'SERVER_ERROR'});
         }
-        // Now we got the eventId and we can get the event owner
-        kernel.model.Event.findById(result[0]).then(event => {
-          if (req.user._id.toString()=== event.ownerId.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin'){
+        kernel.model[result[0].type].findById(result[0]._id).then(data => {
+          if (!data) {
+            return res.status(404).end();
+          }
+          let allow = false;
+          if (result[0].type==='Event' && (req.user._id.toString()=== data.ownerId.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin')) {
+            allow = true;
+          } else if (result[0].type==='User' && (req.user._id.toString()=== data._id.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin')) {
+            allow = true;
+          }
+          if (allow) {
             comment.blocked = !comment.blocked;
-            comment.blockedByUserId = (comment.blocked) ? req.user._id : null;
+            comment.blockedByUserId = (comment.deleted) ? req.user._id : null;
             comment.save().then(() => {
               return res.status(200).end();
             }).catch(err => {
@@ -359,7 +476,7 @@ module.exports = function(kernel) {
           }
         }).catch(err => {
           return res.status(500).json({type: 'SERVER_ERROR'});
-        })
+        });
       });
     });
   });

@@ -34,8 +34,11 @@ class ProfileDetailCtrl {
 			this.feeds.items = (this.feeds.items) ? this.feeds.concat(resp.data.items) : resp.data.items;
 			this.feeds.totalItem = resp.data.totalItem;
 			this.page += 1;
-			console.log(this.feeds);
 		});
+	}
+
+	loadMoreFeeds() {
+		this.getFeeds({page: this.page});
 	}
 
 	viewPhoto(photo) {
@@ -90,8 +93,7 @@ class ProfileDetailCtrl {
 		        this.submitted = false;
 		        this.feed = {};
 		        this.files = [];
-		        this.feeds.push(resp.data);
-		        this.event.totalComment = (this.event.totalComment) ? this.event.totalComment+1 : 1;
+		        this.feeds.items.push(resp.data);
 		    }, (err) => {
 		    	console.log(err);
 		    	// TODO show error
@@ -99,6 +101,15 @@ class ProfileDetailCtrl {
 		} else {
 			this.errors.content = true;
 		}
+	}
+
+	blockPhoto(photo) {
+		this.PhotoViewer.blockPhoto(photo._id, {type: 'user-profile', userId: this.user._id}).then(resp => {
+			photo.blocked = resp.data.blocked;
+		}).catch(err => {
+			console.log(err);
+			// TODO show error
+		});
 	}
 }
 

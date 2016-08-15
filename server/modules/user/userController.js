@@ -266,9 +266,13 @@ class UserController {
       if (!user) {
         return res.status(401).end();
       }
-      res.json(user);
-    })
-    .catch(err => next(err));
+      user.lastAccess = new Date();
+      user.save().then(() => {
+        res.json(user);
+      }).catch(err => {
+        next(err);
+      });
+    }).catch(err => next(err));
   }
 
   /*
@@ -386,6 +390,8 @@ class UserController {
       return res.status(400).json({type: 'BAD_REQUEST'});
     }
     this.kernel.model.User.findById(req.params.id, '-password -salt')
+    .populate('avatar')
+    .populate('coverPhoto')
     .then(user => {
       if(!user) {
         return res.status(400).json({type: 'NOT_FOUND'});

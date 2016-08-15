@@ -134,8 +134,8 @@ class EventDetailCtrl {
 		}
 	}
 
-	blockPhoto(photo, feed) {
-		this.viewer.blockPhoto(photo._id, this.$stateParams.id).then(resp => {
+	blockPhoto(photo) {
+		this.viewer.blockPhoto(photo._id, {type: 'event', eventId: this.$stateParams.id}).then(resp => {
 			photo.blocked = resp.data.blocked;
 		}).catch(err => {
 			console.log(err);

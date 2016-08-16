@@ -150,7 +150,7 @@
                 </div>
 
                 <div class="box-blue p15">
-                    <div class="title-blue">{{vm.user.name}} {{'EVENTS' | translate}} <a href="#" class="show-all-box">{{'SHOW_ALL' | translate}}</a></div>
+                    <div class="title-blue">{{vm.user.name}} {{'EVENTS' | translate}} <a ng-click="vm.showAllEvents()" href="#" class="show-all-box">{{'SHOW_ALL' | translate}}</a></div>
                     <ul class="list-my-event">
                         <li ng-repeat="event in vm.events.items">
                             <p><a ui-sref="event.detail({id: event._id})">{{event.name}}</a></p>

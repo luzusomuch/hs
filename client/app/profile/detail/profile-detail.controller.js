@@ -1,9 +1,10 @@
 'use strict';
 
 class ProfileDetailCtrl {
-	constructor($scope, $state, $localStorage, APP_CONFIG, PhotoViewer, user, $cookies, Upload, FeedService, EventService, RelationService) {
+	constructor($scope, $uibModal, $localStorage, APP_CONFIG, PhotoViewer, user, $cookies, Upload, FeedService, EventService, RelationService) {
 		this.errors = {};
 		this.page = 1;
+		this.$uibModal = $uibModal;
 		this.Upload = Upload;
 		this.FeedService = FeedService;
 		this.EventService = EventService;
@@ -12,7 +13,6 @@ class ProfileDetailCtrl {
 		this.authUser = $localStorage.authUser;
 		this.user = user;
 		this.user.link = APP_CONFIG.baseUrl + 'profile/' + this.user._id;
-		this.$state = $state;
 		this.PhotoViewer = PhotoViewer;
 
 		this.photos = {};
@@ -156,6 +156,19 @@ class ProfileDetailCtrl {
 			console.log(err);
 			// TODO show error
 		});
+	}
+
+	showAllEvents() {
+		let modalInstance = this.$uibModal.open({
+	    	animation: true,
+	    	templateUrl: 'app/profile/user-events/view.html',
+	    	controller: 'UserEventsCtrl',
+	    	resolve: {
+	    		user: () => {
+	    			return this.user;
+	    		}
+	    	}
+	    });
 	}
 }
 

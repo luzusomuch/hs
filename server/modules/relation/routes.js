@@ -27,7 +27,7 @@ module.exports = function(kernel) {
         $or: [{fromUserId: req.params.id}, {toUserId: req.params.id}]
       }).then(count => {
         if (req.params.type==='friend') {
-          kernel.model.findById(req.params.id).then(user => {
+          kernel.model.User.findById(req.params.id).then(user => {
             if (!user) {
               return res.status(404).end();
             }

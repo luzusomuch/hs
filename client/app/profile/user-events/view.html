@@ -1,0 +1,19 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{user.name}} {{'EVENTS' | translate}}</h3>
+</div>
+
+<div class="modal-body">
+    <ul class="list-my-event">
+        <li ng-repeat="event in events.items">
+            <p><a ui-sref="event.detail({id: event._id})">{{event.name}}</a></p>
+            {{event.endDateTime | date: 'MMMM dd,yyyy'}} / {{'Comments' | translate}} {{event.totalComment || 0}}
+        </li>
+        <li ng-show="events.items.length < events.totalItem">
+        	<a ng-click="getUserEvents()" href="#">{{'LOAD_MORE_EVENTS' | translate}}</a>
+        </li>
+    </ul>
+</div>
+
+<div class="modal-footer">
+	<button ng-click="close()" class="btn btn-default btn-radius-20">{{'CLOSE' | translate}}</button>
+</div>

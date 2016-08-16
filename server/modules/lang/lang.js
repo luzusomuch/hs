@@ -231,7 +231,8 @@ let Language = {
 		MISSING_USER_ID: 'Missing user id',
 		USER_NOT_FOUND: 'User not found',
 		PENDING_FRIEND_REQUEST: 'Pending friend request',
-		FRIEND: 'Friend'
+		FRIEND: 'Friend',
+		CLOSE: 'Close'
 	},
 	de: {
 

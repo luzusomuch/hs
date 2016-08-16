@@ -1,7 +1,9 @@
 'use strict';
 
 class MyHomeCtrl {
-	constructor($scope, $state, $localStorage, APP_CONFIG, PhotoViewer, User) {
+	constructor($scope, $state, $localStorage, APP_CONFIG, PhotoViewer, User, RelationService, Invite) {
+		this.RelationService = RelationService;
+		this.Invite = Invite;
 		this.User = User;
 		this.dashboardItems = {
 			page: 1
@@ -27,13 +29,50 @@ class MyHomeCtrl {
 			this.dashboardItems.items = (this.dashboardItems.items) ? this.dashboardItems.items.concat(resp.data.items) : resp.data.items;
 			this.dashboardItems.totalItem = resp.data.totalItem;
 			this.dashboardItems.page +=1;
-			console.log(this.dashboardItems);
 		});
 	}
 
 	viewPhoto(photo) {
 		this.PhotoViewer.setPhoto(photo, {});
 		this.PhotoViewer.toggle(true);
+	}
+
+	friendAccept(item) {
+		if (item.itemType==='relation') {
+			this.RelationService.update(item._id, {status: 'completed'}).then(() => {
+				let index = _.findIndex(this.dashboardItems.items, (data) => {
+					return item._id===data._id;
+				});
+				if (index !== -1) {
+					this.dashboardItems.items.splice(index, 1);
+					this.dashboardItems.totalItem -= 1;
+				}
+			}).catch(err => {
+				console.log(err);
+				// TODO show error
+			});
+		} else {
+			// TODO show error
+		}
+	}
+
+	friendReject(item) {
+		if (item.itemType==='relation') {
+			this.RelationService.delete(item._id).then(() => {
+				let index = _.findIndex(this.dashboardItems.items, (data) => {
+					return item._id===data._id;
+				});
+				if (index !== -1) {
+					this.dashboardItems.items.splice(index, 1);
+					this.dashboardItems.totalItem -= 1;
+				}
+			}).catch(err => {
+				console.log(err);
+				// TODO show error
+			});
+		} else {
+			// TODO show error
+		}
 	}
 }
 

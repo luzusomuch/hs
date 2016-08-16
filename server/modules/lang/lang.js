@@ -238,7 +238,10 @@ let Language = {
 		DECLINE: 'Decline',
 		ACCEPT: 'Accept',
 		UPCOMING_EVENT: 'Upcoming event',
-		YOU_ARE_INTERESTED_EVENT: 'You are interested in the event'
+		YOU_ARE_INTERESTED_EVENT: 'You are interested in the event',
+		EVENT_INVITES: 'Event invites',
+		INVITE_TO_EVENT: 'invited you to join event',
+		LOAD_MORE_FEEDS: 'Load more feeds'
 	},
 	de: {
 

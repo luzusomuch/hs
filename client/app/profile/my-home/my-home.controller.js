@@ -29,6 +29,7 @@ class MyHomeCtrl {
 			this.dashboardItems.items = (this.dashboardItems.items) ? this.dashboardItems.items.concat(resp.data.items) : resp.data.items;
 			this.dashboardItems.totalItem = resp.data.totalItem;
 			this.dashboardItems.page +=1;
+			console.log(this.dashboardItems);
 		});
 	}
 
@@ -59,6 +60,44 @@ class MyHomeCtrl {
 	friendReject(item) {
 		if (item.itemType==='relation') {
 			this.RelationService.delete(item._id).then(() => {
+				let index = _.findIndex(this.dashboardItems.items, (data) => {
+					return item._id===data._id;
+				});
+				if (index !== -1) {
+					this.dashboardItems.items.splice(index, 1);
+					this.dashboardItems.totalItem -= 1;
+				}
+			}).catch(err => {
+				console.log(err);
+				// TODO show error
+			});
+		} else {
+			// TODO show error
+		}
+	}
+
+	eventAccept(item) {
+		if (item.itemType==='event-invited' || item.inviteId) {
+			this.Invite.acceptEventInvite(item.inviteId).then(() => {
+				let index = _.findIndex(this.dashboardItems.items, (data) => {
+					return item._id===data._id;
+				});
+				if (index !== -1) {
+					this.dashboardItems.items.splice(index, 1);
+					this.dashboardItems.totalItem -= 1;
+				}
+			}).catch(err => {
+				console.log(err);
+				// TODO show error
+			});
+		} else {
+			// TODO show error
+		}
+	}
+
+	eventReject(item) {
+		if (item.itemType==='event-invited' || item.inviteId) {
+			this.Invite.rejectEventInvite(item.inviteId).then(() => {
 				let index = _.findIndex(this.dashboardItems.items, (data) => {
 					return item._id===data._id;
 				});

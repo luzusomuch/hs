@@ -673,6 +673,7 @@ class UserController {
                   if (!event) {
                     callback(null);
                   } else {
+                    event = event.toJSON();
                     event.itemType = 'upcoming-event';
                     results.push(event);
                     callback(null);
@@ -706,6 +707,7 @@ class UserController {
                   event = event.toJSON();
                   event.itemType = 'event-invited';
                   event.createdAt = item.createdAt;
+                  event.inviteId = item._id;
                   results.push(event);
                   callback(null);
                 }

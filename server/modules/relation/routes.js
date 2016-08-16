@@ -34,6 +34,7 @@ module.exports = function(kernel) {
             if (user.notificationSetting && user.notificationSetting.isVisibleFriendsList) {
               return res.status(200).json({items: [], totalItem: 0});
             }
+            return res.status(200).json({items: result, totalItem: count});  
           }).catch(err => {
             return res.status(500).json({type: 'SERVER_ERROR'});      
           });

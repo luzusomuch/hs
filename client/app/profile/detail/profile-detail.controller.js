@@ -1,7 +1,11 @@
 'use strict';
 
 class ProfileDetailCtrl {
-	constructor($scope, $uibModal, $localStorage, APP_CONFIG, PhotoViewer, user, $cookies, Upload, FeedService, EventService, RelationService) {
+	constructor($scope, $state, $uibModal, $localStorage, APP_CONFIG, PhotoViewer, user, $cookies, Upload, FeedService, EventService, RelationService) {
+		if ((user.deleted && user.deleted.status) || (user.blocked && user.blocked.status)) {
+			alert('This user was deleted');
+			$state.go('home');
+		}
 		this.errors = {};
 		this.page = 1;
 		this.$uibModal = $uibModal;
@@ -136,7 +140,6 @@ class ProfileDetailCtrl {
 			this.friends.items = (this.friends.items) ? this.friends.items.concat(resp.data.items) : resp.data.items;
 			this.friends.totalItem = resp.data.totalItem;
 			this.friends.page +=1;
-			console.log(this.friends);
 		});
 	}
 

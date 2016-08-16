@@ -1,8 +1,11 @@
 'use strict';
 
 class MyHomeCtrl {
-	constructor($scope, $state, $localStorage, APP_CONFIG, PhotoViewer) {
-		this.errors = {};
+	constructor($scope, $state, $localStorage, APP_CONFIG, PhotoViewer, User) {
+		this.User = User;
+		this.dashboardItems = {
+			page: 1
+		};
 		this.authUser = $localStorage.authUser;
 		this.authUser.link = APP_CONFIG.baseUrl + 'profile/' + this.authUser._id +'/detail';
 		this.$state = $state;
@@ -14,6 +17,17 @@ class MyHomeCtrl {
 		}).catch(err => {
 			// TODO show error
 			console.log(err);
+		});
+
+		this.loadItems();
+	}
+
+	loadItems() {
+		this.User.myDashboard({page: this.dashboardItems.page}).then(resp => {
+			this.dashboardItems.items = (this.dashboardItems.items) ? this.dashboardItems.items.concat(resp.data.items) : resp.data.items;
+			this.dashboardItems.totalItem = resp.data.totalItem;
+			this.dashboardItems.page +=1;
+			console.log(this.dashboardItems);
 		});
 	}
 

@@ -232,7 +232,13 @@ let Language = {
 		USER_NOT_FOUND: 'User not found',
 		PENDING_FRIEND_REQUEST: 'Pending friend request',
 		FRIEND: 'Friend',
-		CLOSE: 'Close'
+		CLOSE: 'Close',
+		FRIEND_SHIP_REQUEST: 'Friendship request',
+		INVITE_BECOME_FRIEND: 'invited you to become friend',
+		DECLINE: 'Decline',
+		ACCEPT: 'Accept',
+		UPCOMING_EVENT: 'Upcoming event',
+		YOU_ARE_INTERESTED_EVENT: 'You are interested in the event'
 	},
 	de: {
 

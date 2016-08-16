@@ -29,6 +29,10 @@
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/friends/${page}`);
       },
 
+      myDashboard: (params) => {
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/my-dashboard`, {parmas: params});
+      },
+
       updateProfile: (data) => {
         return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/profile`, data);
       },
@@ -43,10 +47,6 @@
 
       deleteAccount: (id) => {
         return $http.delete(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/${id}`);
-      },
-
-      getCurrentTwitterUser: () => {
-        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/get-current-twitter-user`);
       }
     };
   }

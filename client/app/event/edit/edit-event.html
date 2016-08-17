@@ -16,7 +16,7 @@
               <div class="choose-category">
                 <div class="radio-l" ng-repeat="category in vm.categories">
                   <input id="{{category._id}}" type="radio" name="category" value="{{category._id}}" ng-model="vm.event.categoryId">
-                  <label for="{{category._id}}"> <img src="{{category | categoryImagePath}}" ></label>
+                  <label for="{{category._id}}"> <img src="{{category | categoryImagePath}}" > {{category.name}}</label>
                 </div>
               </div>
               <p ng-show="vm.errors.category && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>

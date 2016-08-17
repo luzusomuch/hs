@@ -169,6 +169,33 @@ angular.module('healthStarsApp')
     return moment(date).format(format);
   };
 })
+.filter('categoryName', () => {
+  return (category) => {
+    let name = category.name;
+    if (category) {
+      switch(category.name) {
+        case 'Cat A':
+          name = 'Food'
+          break;
+        case 'Cat B':
+          name = 'Action'
+          break;
+        case 'Cat C':
+          name = 'Eco'
+          break;
+        case 'Cat D':
+          name = 'Social'
+          break;
+        case 'Cat E':
+          name = 'Sport'
+          break;
+        default:
+          break;
+      }
+    }
+    return name;
+  }
+})
 .filter('categoryImagePath', function() {
   return function(category) {
     var imagePath;

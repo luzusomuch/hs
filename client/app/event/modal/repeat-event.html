@@ -14,9 +14,9 @@
     </div>
     <div class="form-group">
       <label>{{'START' | translate}}:</label>
-      <div class="input-group date" ng-click="isOpenStartDate=!isOpenStartDate">
-        <input type="text" class="form-control" placeholder="Date" ng-model="vm.repeat.startDate" required name="startDate" uib-datepicker-popup="{{'dd-MMMM-yyyy'}}" is-open="isOpenStartDate" datepicker-options="vm.options" required>
-        <span class="input-group-addon">
+      <div class="input-group date">
+        <input type="text" class="form-control" placeholder="Date" ng-model="vm.repeat.startDate" required name="startDate" uib-datepicker-popup="{{'dd-MMMM-yyyy'}}" is-open="vm.isOpenStartDate" datepicker-options="vm.options" required>
+        <span class="input-group-addon" ng-click="vm.isOpenStartDate=!vm.isOpenStartDate">
             <span class="glyphicon glyphicon-calendar"></span>
         </span>
       </div>
@@ -25,9 +25,9 @@
     </div>
     <div class="form-group">
       <label>{{'END' | translate}}:</label>
-      <div class="input-group date" ng-click="isOpenEndDate=!isOpenEndDate">
-        <input type="text" class="form-control" placeholder="Date" ng-model="vm.repeat.endDate" required name="endDate" uib-datepicker-popup="{{'dd-MMMM-yyyy'}}" is-open="isOpenEndDate" datepicker-options="vm.options" required>
-        <span class="input-group-addon">
+      <div class="input-group date">
+        <input type="text" class="form-control" placeholder="Date" ng-model="vm.repeat.endDate" required name="endDate" uib-datepicker-popup="{{'dd-MMMM-yyyy'}}" is-open="vm.isOpenEndDate" datepicker-options="vm.options" required>
+        <span class="input-group-addon" ng-click="vm.isOpenEndDate=!vm.isOpenEndDate">
             <span class="glyphicon glyphicon-calendar"></span>
         </span>
       </div>

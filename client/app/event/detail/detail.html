@@ -113,7 +113,7 @@
         </div>
         <div class="col-sm-3">
             <hs-event-attending e-id="vm.event._id" e-owner="vm.event.ownerId" e-award="vm.event.awardId"></hs-event-attending>
-            <div class="box-blue"><a href="#" class="btn btn-primary btn-block" e-id="vm.event._id" hs-event-invite><i class="user-i-1 i-new"></i> {{'INVITE_FRIEND' | translate}} </a></div>
+            <div class="box-blue"><a href="#" class="btn btn-primary btn-block" u-id="vm.authUser._id" e-id="vm.event._id" hs-event-invite><i class="user-i-1 i-new"></i> {{'INVITE_FRIEND' | translate}} </a></div>
 
             <hs-related-events e-id="vm.event._id"></hs-related-events>
             <div class="box-blue"><a hs-report id="vm.event._id" type="Event" href="#" class="btn btn-primary btn-block"><i class="fa fa-file-text-o"></i> {{'REPORT_EVENT' | translate}}</a></div>

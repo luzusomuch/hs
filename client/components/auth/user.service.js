@@ -25,8 +25,8 @@
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/${id}/info`);
       },
 
-      getFriends: (page) => {
-        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/friends/${page}`);
+      getFriends: (id, page) => {
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/${id}/friends/${page}`);
       },
 
       myDashboard: (params) => {

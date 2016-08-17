@@ -1,10 +1,11 @@
 'use strict';
 
 class EventInviteCtrl {
-	constructor($uibModalInstance,  User, Invite, eventId) {
+	constructor($uibModalInstance,  User, Invite, eventId, userId) {
 		this.User = User;
 		this.Invite = Invite;
 		this.eventId = eventId;
+		this.userId = userId;
 		this.users = [];
 		this.loading = true;
 		this.$uibModalInstance = $uibModalInstance;
@@ -17,10 +18,10 @@ class EventInviteCtrl {
 	}
 
 	getFriends(page) {
-		this.User.getFriends(page).then(
+		this.User.getFriends(this.userId, page).then(
 			res => {
 				this.loading = false;
-				this.users = this.users.concat(res.data);
+				this.users = this.users.concat(res.data.items);
 			},
 			() => this.loading = false
 		);
@@ -41,7 +42,8 @@ angular.module('healthStarsApp').directive('hsEventInvite', ($uibModal) => {
 	return {
 		restrict: 'A',
 		scope: {
-			eId : '='
+			eId : '=',
+			uId: '='
 		},
 		link: function(scope, elm) {
 			var func =  function(e){
@@ -52,7 +54,8 @@ angular.module('healthStarsApp').directive('hsEventInvite', ($uibModal) => {
 					controllerAs: 'vm',
 					backdrop : 'static',
 					resolve: {
-						eventId: () => scope.eId
+						eventId: () => scope.eId,
+						userId: () => scope.uId
 					}
 				});
 			};

@@ -11,7 +11,7 @@
                             <div class="last-online">{{'LAST_ONLINE' | translate}} <i class="fa fa-clock-o"></i>  {{vm.user.lastAccess | fromNow}}</div>
                         </div>
                         <div class="col-sm-8 col-lg-5">
-                            <div class="row row-small action-user-detail">
+                            <div class="row row-small action-user-detail" ng-show="vm.authUser._id!==vm.user._id">
                                 <div class="col-xs-6"><a ng-click="vm.addFriend()" href="#" class="btn btn-default btn-block">
                                     <span ng-show="vm.user.isFriend==='none'"><i class="user-i i-new"></i> {{'ADD_TO_FRIENDS' | translate}}</span>
                                     <span ng-show="vm.user.isFriend==='pending'"><i class="fa fa-spinner"></i> {{'PENDING_FRIEND_REQUEST' | translate}}</span>
@@ -109,44 +109,7 @@
             <div class="col-sm-3">
 
                 <div class="box-blue p15">
-                    <div class="title-blue">Friends  (652) <a href="#" class="show-all-box">Show all</a></div>
-                    <ul class="list-media list-friend list-friend-1">
-                        <li>
-                            <div class="img-media">
-                                <a href="#"></a><a href="#"><img src="images/48.jpg"></a>
-                            </div>
-                            <h4><a href="#">Caroline Sanders @Barbara</a></h4>
-                            <span class="text-mo">Your Friend</span>
-                        </li>
-                        <li>
-                            <div class="img-media">
-                                <a href="#"></a><a href="#"><img src="images/48.jpg"></a>
-                            </div>
-                            <h4><a href="#">Caroline Sanders @Barbara</a></h4>
-                            <a href="#" class="btn-follow"><i class="i-new user-i-1"></i> Follow</a>
-                        </li>
-                        <li>
-                            <div class="img-media">
-                                <a href="#"></a><a href="#"><img src="images/48.jpg"></a>
-                            </div>
-                            <h4><a href="#">Caroline Sanders @Barbara</a></h4>
-                            <a href="#" class="btn-follow"><i class="i-new user-i-1"></i> Follow</a>
-                        </li>
-                        <li>
-                            <div class="img-media">
-                                <a href="#"></a><a href="#"><img src="images/48.jpg"></a>
-                            </div>
-                            <h4><a href="#">Caroline Sanders @Barbara</a></h4>
-                            <a href="#" class="btn-follow"><i class="i-new user-i-1"></i> Follow</a>
-                        </li>
-                        <li>
-                            <div class="img-media">
-                                <a href="#"></a><a href="#"><img src="images/48.jpg"></a>
-                            </div>
-                            <h4><a href="#">Caroline Sanders @Barbara</a></h4>
-                            <a href="#" class="btn-follow"><i class="i-new user-i-1"></i> Follow</a>
-                        </li>
-                    </ul>
+                    <hs-user-friends u-id="vm.user._id"></hs-user-friends>
                 </div>
 
                 <div class="box-blue p15">

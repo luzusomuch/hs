@@ -486,13 +486,13 @@ class UserController {
 
   getFriends(req, res) {
     let page = req.params.page || 1;
-    let limit = 5;
+    let limit = 10;
     async.waterfall([
       (cb) => {
         this.kernel.model.Relation.find({
           $or: [
-            { fromUserId: req.user._id },
-            { toUserId: req.user._id }
+            { fromUserId: req.params.id },
+            { toUserId: req.params.id }
           ],
           status: 'completed'
         }, (err, result) => {
@@ -510,7 +510,15 @@ class UserController {
         }
         this.kernel.model.User.find({
           _id: { $in: friendIds}
-        }, '-hash -password').limit(limit).skip((page-1)*limit).exec(cb);
+        }, '-salt -password')
+        .populate('avatar')
+        .limit(limit)
+        .skip((page-1)*limit)
+        .exec().then(friends => {
+          this.kernel.model.User.count({_id: {$in: friendIds}}).then(count => {
+            cb(null, {items: friends, totalItem: count});
+          }).catch(cb);
+        }).catch(cb);
       }
 
     ], (err, friends) => {

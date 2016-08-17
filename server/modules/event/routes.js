@@ -404,7 +404,6 @@ module.exports = function(kernel) {
       return res.status(200).json([]);
     }
     var regexp = '(.*)*'+req.query.keyword+'(.*)*';
-    console.log(regexp);
     let query = {
       query: {
         regexp: {

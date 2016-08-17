@@ -37,18 +37,22 @@
 	                                </div>
 	                                <div class="col-sm-8">
 	                                    <div class="form-account" >
-	                                        <form ng-submit="vm.updateAccount(form)" name="form">
+	                                        <form ng-submit="vm.updateAccount(form)" name="form" novalidate>
 	                                            <div class="row">
 	                                                <div class="col-md-6">
 	                                                    <div class="form-group">
 	                                                        <label>{{'FIRST_NAME' | translate}}</label>
-	                                                        <input type="text" class="form-control" ng-model="vm.authUser.firstName">
+	                                                        <input type="text" class="form-control" ng-model="vm.authUser.firstName" name="firstName" required>
+
+	                                                        <p ng-show="form.firstName.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
 	                                                    </div>
 	                                                </div>
 	                                                <div class="col-md-6">
 	                                                    <div class="form-group">
 	                                                        <label>{{'LAST_NAME' | translate}}</label>
-	                                                        <input type="text" class="form-control" ng-model="vm.authUser.lastName">
+	                                                        <input name="lastName" type="text" class="form-control" ng-model="vm.authUser.lastName" required>
+
+	                                                        <p ng-show="form.lastName.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
 	                                                    </div>
 	                                                </div>
 	                                                <div class="col-md-6">
@@ -60,12 +64,17 @@
 								                                	<div ng-bind-html="address.formatted_address"></div>
 								                              	</ui-select-choices>
 								                            </ui-select>
+
+								                            <p ng-show="!vm.address.selected.formatted_address && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
 	                                                    </div>
 	                                                </div>
 	                                                <div class="col-md-6">
 	                                                    <div class="form-group">
 	                                                        <label>{{'EMAIL' | translate}}</label>
-	                                                        <input type="text" class="form-control" ng-model="vm.authUser.email">
+	                                                        <input type="text" name="email" class="form-control" ng-model="vm.authUser.email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$">
+
+	                                                        <p ng-show="form.email.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+	                                                        <p ng-show="(form.email.$error.pattern || form.email.$error.email) && vm.submitted" class="error-text">{{'EMAIL_TYPE_ERROR' | translate}}</p>
 	                                                    </div>
 	                                                </div>
 	                                                <div class="col-md-6">
@@ -123,29 +132,29 @@
                 		</uib-tab>
                 		<uib-tab index="2" heading="{{'CHANGE_PASSWORD' | translate}}">
                 			<div role="tabpanel" class="tab-pane" id="change-pass">
-	                            <form ng-submit="vm.changePassword(form)" name="form" novalidate>
+	                            <form ng-submit="vm.changePassword(changePassForm)" name="changePassForm" novalidate>
 	                                <div class="row">
 	                                    <div class="col-md-4">
 	                                    	<div class="form-group">
 	                                            <label>{{'OLD_PASSWORD' | translate}}</label>
 	                                            <input type="Password" class="form-control" name="oldpassword" ng-model="vm.oldpassword" required>
 
-	                                            <p ng-show="form.oldpassword.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+	                                            <p ng-show="changePassForm.oldpassword.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
 	                                        </div>
 	                                        <div class="form-group">
 	                                            <label>{{'NEW_PASSWORD' | translate}}</label>
 	                                            <input type="Password" class="form-control" name="password" ng-model="vm.password" required ng-minlength="6" pattern="^\w*(?=\w*\d)(?=\w*[A-Za-z])\w*$">
 
-	                                            <p ng-show="form.password.$error.pattern && !form.password.$error.minlength && vm.submitted" class="error-text">{{'PASSWORD_PATTERN_ERROR' | translate}}</p>
-                            					<p ng-show="form.password.$error.minlength && vm.submitted" class="error-text">{{'PASSWORD_MIN_LENGTH_ERROR' | translate}}</p>
-                            					<p ng-show="form.password.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+	                                            <p ng-show="changePassForm.password.$error.pattern && !changePassForm.password.$error.minlength && vm.submitted" class="error-text">{{'PASSWORD_PATTERN_ERROR' | translate}}</p>
+                            					<p ng-show="changePassForm.password.$error.minlength && vm.submitted" class="error-text">{{'PASSWORD_MIN_LENGTH_ERROR' | translate}}</p>
+                            					<p ng-show="changePassForm.password.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
 	                                        </div>
 	                                        <div class="form-group">
 	                                            <label>{{'CONFIRM_PASSWORD' | translate}}</label>
-	                                            <input type="Password" class="form-control" name="repassword" ng-model="vm.repassword" required compare-to="form.password.$$rawModelValue">
+	                                            <input type="Password" class="form-control" name="repassword" ng-model="vm.repassword" required compare-to="changePassForm.password.$$rawModelValue">
 
-	                                            <p ng-show="form.repassword.$error.compareTo && vm.submitted" class="error-text">{{'CONFIRM_PASSWORD_NOT_MATCH' | translate}}</p>
-                            					<p ng-show="(!form.repassword.$error.compareTo && form.password.$error.required) && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+	                                            <p ng-show="changePassForm.repassword.$error.compareTo && vm.submitted" class="error-text">{{'CONFIRM_PASSWORD_NOT_MATCH' | translate}}</p>
+                            					<p ng-show="(!changePassForm.repassword.$error.compareTo && changePassForm.password.$error.required) && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
 	                                        </div>
 	                                        <div class="form-group">
 	                                            <button class="btn btn-block btn-success">{{'SUBMIT' | translate}}</button>

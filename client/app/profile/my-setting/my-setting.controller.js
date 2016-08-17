@@ -20,6 +20,7 @@ class MySettingCtrl {
 					this.address.selected = res.data.results[0];
 	      		});
 			}
+			this.authUser.location = (this.authUser.location) ? this.authUser.location : {};
 		}
 		this.$state = $state;
 		this.$http = $http;
@@ -45,19 +46,24 @@ class MySettingCtrl {
 		this.submitted = true;
 		if (form.$valid) {
 			var selectedAddress = this.address.selected;
-	      	this.authUser.location.coordinates = [selectedAddress.geometry.location.lng, selectedAddress.geometry.location.lat];
-	      	this.authUser.location.country = selectedAddress.address_components[selectedAddress.address_components.length -1].long_name;
-	      	this.authUser.location.countryCode = selectedAddress.address_components[selectedAddress.address_components.length -1].short_name;
-	      	this.authUser.location.fullAddress = selectedAddress.formatted_address;
-	      	this.authUser.name = this.authUser.firstName +' '+ this.authUser.lastName;
+			if (selectedAddress) {
+		      	this.authUser.location.coordinates = [selectedAddress.geometry.location.lng, selectedAddress.geometry.location.lat];
+		      	this.authUser.location.country = selectedAddress.address_components[selectedAddress.address_components.length -1].long_name;
+		      	this.authUser.location.countryCode = selectedAddress.address_components[selectedAddress.address_components.length -1].short_name;
+		      	this.authUser.location.fullAddress = selectedAddress.formatted_address;
+		      	this.authUser.name = this.authUser.firstName +' '+ this.authUser.lastName;
 
-	      	this.User.updateProfile(this.authUser).then(() => {
-	      		this.Auth.setAuthUser(this.authUser);
-	      		this.submitted = false;
-	      	}).catch(err => {
-	      		console.log(err);
-	      		// TODO show error
-	      	});
+		      	this.User.updateProfile(this.authUser).then(() => {
+		      		this.Auth.setAuthUser(this.authUser);
+		      		this.submitted = false;
+		      	}).catch(err => {
+		      		console.log(err);
+		      		// TODO show error
+		      	});
+			} else {
+				// TODO show error
+				
+			}
 		} else {
 			// TODO show error
 		}

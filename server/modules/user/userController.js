@@ -494,12 +494,24 @@ class UserController {
             { fromUserId: req.params.id },
             { toUserId: req.params.id }
           ],
+          type: 'friend',
           status: 'completed'
         }, (err, result) => {
           if(err) return cb(err);
-          let friendIds = _.map(result, friend => {
-            return friend.toUserId.toString() === req.user._id.toString() ? friend.fromUserId : friend.toUserId;
+          let friendIds = _.union(_.map(result, 'fromUserId'), _.map(result, 'toUserId'));
+          // get uniq friends id
+          friendIds = _.map(_.groupBy(friendIds,function(doc){
+            return doc;
+          }),function(grouped){
+            return grouped[0];
           });
+          // remove req user from friend list
+          let idx = _.findIndex(friendIds, (id) => {
+            return id.toString()===req.params.id.toString();
+          });
+          if (idx !== -1) {
+            friendIds.splice(idx, 1);
+          }
           return cb(null, friendIds);
         });
       },
@@ -515,12 +527,36 @@ class UserController {
         .limit(limit)
         .skip((page-1)*limit)
         .exec().then(friends => {
-          this.kernel.model.User.count({_id: {$in: friendIds}}).then(count => {
-            cb(null, {items: friends, totalItem: count});
-          }).catch(cb);
+          let results = [];
+          async.each(friends, (friend, callback) => {
+            friend = friend.toJSON();
+            this.kernel.model.Relation.findOne({
+              type: 'friend',
+              $or: [{
+                fromUserId: req.user._id, toUserId: friend._id
+              }, {
+                fromUserId: friend._id, toUserId: req.user._id
+              }]
+            }).then(relation => {
+              if (!relation) {
+                friend.currentFriendStatus = 'none';
+                results.push(friend);
+                return callback(null);
+              }
+              friend.currentFriendStatus = relation.status;
+              results.push(friend);
+              callback(null);
+            }).catch(callback);
+          }, (err) => {
+            if (err) {
+              return res.status(500).json({type: 'SERVER_ERROR'});
+            }
+            this.kernel.model.User.count({_id: {$in: friendIds}}).then(count => {
+              cb(null, {items: results, totalItem: count});
+            }).catch(cb);
+          });
         }).catch(cb);
       }
-
     ], (err, friends) => {
       if(err) return res.status(500).json({type: 'SERVER_ERROR', message: JSON.stringify(err)});
       return res.status(200).json(friends);

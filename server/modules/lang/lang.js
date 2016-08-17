@@ -242,7 +242,8 @@ let Language = {
 		EVENT_INVITES: 'Event invites',
 		INVITE_TO_EVENT: 'invited you to join event',
 		LOAD_MORE_FEEDS: 'Load more feeds',
-		FRIENDS: 'Friends'
+		FRIENDS: 'Friends',
+		YOU: 'You'
 	},
 	de: {
 

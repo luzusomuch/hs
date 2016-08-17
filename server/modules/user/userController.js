@@ -559,7 +559,19 @@ class UserController {
       }
     ], (err, friends) => {
       if(err) return res.status(500).json({type: 'SERVER_ERROR', message: JSON.stringify(err)});
-      return res.status(200).json(friends);
+      this.kernel.model.User.findById(req.params.id).then(user => {
+        if (!user) {
+          return res.status(404).end();
+        }
+        if (user.notificationSetting && user.notificationSetting.isVisibleFriendsList) {
+          return res.status(200).json({items: [], totalItem: 0});
+        }
+        return res.status(200).json(friends);
+      }).catch(err => {
+        if (err) {
+          return res.status(500).json({type: 'SERVER_ERROR', message: err});
+        }
+      });
     });
   }
 

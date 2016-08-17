@@ -403,22 +403,12 @@ module.exports = function(kernel) {
     if(!req.query.keyword) {
       return res.status(200).json([]);
     }
-
+    var regexp = '(.*)*'+req.query.keyword+'(.*)*';
+    console.log(regexp);
     let query = {
       query: {
-        bool: {
-          should: [
-            {
-              match: {
-                name: req.query.keyword
-              }
-            },
-            {
-              term: {
-                tags: req.query.keyword
-              }
-            }
-          ]
+        regexp: {
+          name: regexp
         }
       },
       from: 0,
@@ -429,6 +419,7 @@ module.exports = function(kernel) {
 
     kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {
       if(err) {
+        console.log(err);
         return res.status(500).json({type: 'SERVER_ERROR'});
       }
       let suggests = _.map(result.items, 'name');

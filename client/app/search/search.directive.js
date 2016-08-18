@@ -195,7 +195,9 @@ angular.module('healthStarsApp')
 			scope.dt = [];
 			scope.$watch('dt', function(nv) {
 				var dates = angular.element(element).find('.calendar-home > div').datepicker('getDates');
-				SearchParams.params.dates = dates.map(function(date) { return new Date(date).getTime(); });
+				SearchParams.params.dates = dates.map(function(date) { 
+					return new Date(moment.utc(date)).getTime(); 
+				});
 			}, true);
 			
 			scope.filter = function() {

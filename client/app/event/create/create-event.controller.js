@@ -258,6 +258,7 @@ class CreateEventCtrl {
         this.event.allowShow = true;
 	    }, (err) => {
 	    	console.log(err);
+        // TODO show error
 	    });
   	}
   }

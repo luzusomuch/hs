@@ -364,7 +364,7 @@ angular.module('healthStarsApp')
       if (selectedImage && selectedImage._id) {
         imageUrl = (selectedImage.metadata.small) ? selectedImage.metadata.small : '/assets/photos/'+selectedImage.metadata.tmp;
       }
-    } else if (category.type && category.imagePath) {
+    } else if (category && category.type && category.imagePath) {
       switch (category.type) {
         case 'food':
           imageUrl = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : '/assets/images/star1.png';

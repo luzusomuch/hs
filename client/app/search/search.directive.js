@@ -119,12 +119,22 @@ angular.module('healthStarsApp')
 					$http.get('http://maps.googleapis.com/maps/api/geocode/json?latlng='+nv.location.lat+','+nv.location.lng)
 					.then( res => {
 						scope.address = res.data.results[0];
+						if (scope.address.formatted_address && scope.address.formatted_address.length > 20) {
+							scope.address.shorted_address = scope.address.formatted_address.substr(0, 20) + ' ...';
+						} else {
+							scope.address.shorted_address = scope.address.formatted_address;
+						}
 		      		});
 				}
 			});
 
 			scope.select = function(address) {
 				scope.address = angular.copy(address);
+				if (scope.address.formatted_address && scope.address.formatted_address.length > 20) {
+					scope.address.shorted_address = scope.address.formatted_address.substr(0, 20) + ' ...';
+				} else {
+					scope.address.shorted_address = scope.address.formatted_address;
+				}
 				scope.addresses = [];
 			};
 

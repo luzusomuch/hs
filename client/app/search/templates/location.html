@@ -1,5 +1,7 @@
 <div class="venue-box" uib-dropdown auto-close="outsideClick">
-    <a ng-click="focusInput=true" ng-style="style" href="#" uib-dropdown-toggle class="btn btn-default btn-block">Location</a>
+    <a ng-click="focusInput=true" ng-style="style" href="#" uib-dropdown-toggle class="btn btn-default btn-block">
+        {{(address.shorted_address) ? address.shorted_address : 'Location'}}
+    </a>
     <div class="venue-dropdow" uib-dropdown-menu>
         <div class="form-group location-dropdown">
             <input id="search-location" auto-focus="focusInput" type="text" ng-model="address.formatted_address" class="form-control location" placeholder="City">

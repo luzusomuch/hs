@@ -190,13 +190,15 @@ angular.module('healthStarsApp')
 				var dates = angular.element(element).find('.calendar-home > div').datepicker('getDates');
 				scope.dt = dates.map(function(date) { return moment(date).format('DD.MM.YYYY'); });
 				scope.$$phase || scope.$apply();
-    	});
+    		});
 			scope.style = {};
 			scope.dt = [];
 			scope.$watch('dt', function(nv) {
 				var dates = angular.element(element).find('.calendar-home > div').datepicker('getDates');
 				SearchParams.params.dates = dates.map(function(date) { 
-					return new Date(moment.utc(date)).getTime(); 
+					console.log(new Date(date).getTime());
+					console.log(new Date(moment(date).tz('Etc/UTC')).getTime());
+					return new Date(moment(date).tz('Etc/UTC')).getTime(); 
 				});
 			}, true);
 			

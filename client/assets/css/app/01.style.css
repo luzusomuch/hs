@@ -1537,7 +1537,7 @@ label {
     margin: 0px;
 }
 .exhibit-award {
-    width: 400px;
+    width: 500px;
     margin: auto;
     margin-top: -15px;
     position: relative;
@@ -1547,19 +1547,19 @@ label {
 }
 .award-step1, .award-step2, .award-step3 {
     position: absolute;
-    top: 108px;
-    left: 177px;
-    width: 55px;
-    height: 74px;
-    line-height: 74px;
+    top: 134px;
+    left: 221px;
+    width: 70px;
+    height: 92px;
+    line-height: 92px;
 }
 .award-step2 {
-    top: 128px;
-    left: 80px;
+    top: 161px;
+    left: 99px;
 }
 .award-step3 {
-    top: 143px;
-    left: 275px;
+    top: 179px;
+    left: 343px;
 }
 .img-award {
     height: 200px;

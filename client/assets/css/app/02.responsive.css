@@ -260,12 +260,13 @@
         width: 34px;
         height: 45px;
         line-height: 45px;
-        top: 81px;
-        left: 50px;
-    }
-    .award-step2 {
         top: 67px;
         left: 111px;
+    }
+    .award-step2 {
+        
+        top: 81px;
+        left: 50px;
     }
     .award-step3 {
         top: 90px;

@@ -3,17 +3,15 @@ module.exports = {
     let Schema = kernel.mongoose.Schema;
     let threadSchema = new Schema({
     	name: String,
-    	fromUserId: kernel.mongoose.Schema.Types.ObjectId,
-    	toUserId: kernel.mongoose.Schema.Types.ObjectId,
+    	fromUserId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
+    	toUserId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
     	tags: [String],
     	messages: [{
-    		sentUserId: kernel.mongoose.Schema.Types.ObjectId,
+    		sentUserId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
     		message: String,
     		createdAt: Date,
-    		deleted: {
-    			status: {type: Boolean, default: false},
-    			by: kernel.mongoose.Schema.Types.ObjectId
-    		}
+            deleted: {type: Boolean, default: false},
+            deletedByUserId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}
     	}]
     });
 

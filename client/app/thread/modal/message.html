@@ -1,0 +1,18 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{'SEND_MESSAGE_TO' | translate}} {{user.name}}</h3>
+</div>
+
+<div class="modal-body">
+    <form ng-submit="sendMessage(form)" name="form" novalidate>
+        <div class="form-group">
+            <label>{{'MESSAGE' | translate}}</label>
+            <textarea name="message" style="width:100%; color: black" ng-model="message.message" required rows="5"></textarea>
+            <p ng-show="form.message.$error.required && submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" ng-click="close()" class="btn btn-default btn-radius-20">{{'CLOSE' | translate}}</button>
+        	<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>
+        </div>
+    </form>
+</div>

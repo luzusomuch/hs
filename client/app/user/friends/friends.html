@@ -4,11 +4,14 @@
         <div class="img-media">
             <a href="#"><img src="{{friend | avatarUrl}}"></a>
         </div>
-        <h4><a href="#">{{friend.name}}</a></h4>
-        <span class="text-mo" ng-show="authUser._id===friend._id">
+        <h4><a href="#" ui-sref="profile.detail({id: friend._id})">{{friend.name}}</a></h4>
+        <span class="text-mo" ng-show="hideDescription">
+            &nbsp;
+        </span>
+        <span class="text-mo" ng-show="authUser._id===friend._id && !hideDescription">
         	{{'YOU' | translate}}
         </span>
-        <span class="text-mo" ng-show="authUser._id!==friend._id">
+        <span class="text-mo" ng-show="authUser._id!==friend._id && !hideDescription">
         	<span style="cursor: pointer" ng-click="addFriend(friend)" ng-show="friend.currentFriendStatus==='none'">{{'ADD_FRIEND' | translate}}</span>
         	<span ng-show="friend.currentFriendStatus==='pending'">{{'PENDING_FRIEND_REQUEST' | translate}}</span>
         	<span ng-show="friend.currentFriendStatus==='completed'">{{'YOUR_FRIEND' | translate}}</span>

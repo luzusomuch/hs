@@ -34,39 +34,7 @@
             <hs-weather location="vm.searchParams.address.geometry.location"></hs-weather> 
             <hs-event-map locations="vm.locations" title="{{'CITY_EVENT_MAP' | translate}}"></hs-event-map>
             <div class="box-1 m20">
-                <div class="title-box-1">Friends</div>
-                <div class="body-box-1">
-                    <ul class="list-media list-friend">
-                        <li>
-                            <div class="img-media">
-                                <a href="#"><a href="#"><img src="/assets/images/48.jpg"></a></a>
-                            </div>
-                            <h4><a href="#">Caroline Sanders</a></h4>
-                            <span class="text-mo">Sales Lead</span>
-                        </li>
-                        <li>
-                            <div class="img-media">
-                                <a href="#"><a href="#"><img src="/assets/images/48.jpg"></a></a>
-                            </div>
-                            <h4><a href="#">Caroline Sanders</a></h4>
-                            <span class="text-mo">Sales Lead</span>
-                        </li>
-                        <li>
-                            <div class="img-media">
-                                <a href="#"><a href="#"><img src="/assets/images/48.jpg"></a></a>
-                            </div>
-                            <h4><a href="#">Caroline Sanders</a></h4>
-                            <span class="text-mo">Sales Lead</span>
-                        </li>
-                        <li>
-                            <div class="img-media">
-                                <a href="#"><a href="#"><img src="/assets/images/48.jpg"></a></a>
-                            </div>
-                            <h4><a href="#">Caroline Sanders</a></h4>
-                            <span class="text-mo">Sales Lead</span>
-                        </li>
-                    </ul>
-                </div>
+                <hs-user-friends u-id="vm.authUser._id" hide-description="true"></hs-user-friends>
             </div>
         </div>
 

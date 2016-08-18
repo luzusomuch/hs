@@ -11,7 +11,6 @@ class UserFriendCtrl {
 				$scope.friends.items = ($scope.friends.items) ? $scope.friends.items.concat(res.data.items) : res.data.items;
 				$scope.friends.totalItem = res.data.totalItem;
 				$scope.page += 1;
-				console.log($scope.friends.items);
 			});
 		};
 			
@@ -52,6 +51,7 @@ angular.module('healthStarsApp').directive('hsUserFriends', () => {
 		restrict: 'E',
 		scope: {
 			uId : '=',
+			hideDescription: '@'
 		},
 		templateUrl: 'app/user/friends/friends.html',
 		controller: 'UserFriendCtrl'

@@ -36,6 +36,13 @@ angular.module('healthStarsApp').config(function($stateProvider) {
             }
           }
         );
+      },
+      categories: (CategoryService, $location) => {
+        return CategoryService.getAll().then(resp => {
+          return resp.data.items;
+        }).catch(() => {
+          return $location.path('404');
+        }); 
       }
     }
   }).state('event.detail', {

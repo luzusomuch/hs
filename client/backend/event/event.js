@@ -38,6 +38,11 @@ angular.module('healthStarsApp')
           return EventService.get($stateParams.id).then(
             res => res.data
           );
+        },
+        categories: (CategoryService) => {
+          return CategoryService.getAll().then(resp => {
+            return resp.data.items;
+          }); 
         }
       } 
     });

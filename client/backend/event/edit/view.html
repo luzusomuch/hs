@@ -26,7 +26,8 @@
                     <label class="radio-inline" ng-repeat="category in vm.categories">
                       <div class="radio">
                         <span><input id="{{category._id}}" type="radio" name="category" value="{{category._id}}" ng-model="vm.event.categoryId"></span>
-                        <img width="30" src="{{category | categoryImagePath}}" > {{category.name}}
+                        <img width="30" src="{{category | categoryImagePath}}" >
+                        <span ng-show="vm.selectedCategory._id===category._id">{{category.name}}</span>
                       </div>
                     </label>
                   </div>

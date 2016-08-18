@@ -1,11 +1,12 @@
 'use strict';
 
 class EditEventCtrl {
-	constructor(event, APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies) {
+	constructor(event, categories, APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies) {
 		this.user = $localStorage.authUser;
 		if (event.ownerId._id!==this.user._id) {
 			$state.go('home');
 		}
+    this.categories = categories;
 		// Init event
 		this.event = event;
 		this.event.categoryId = event.categoryId._id;
@@ -84,14 +85,21 @@ class EditEventCtrl {
       }
     });
 
+    this.selectedCategory = {};
+    $scope.$watch('vm.event.categoryId', (nv) => {
+      if (nv) {
+        let idx = _.findIndex(this.categories, (cat) => {
+          return cat._id===nv;
+        });
+        if (idx !== -1) {
+          this.selectedCategory = this.categories[idx];
+        }
+      }
+    });
+
     this.friends = [];
     this.RelationService.getAll({id: this.user._id, type: 'friend'}).then(resp => {
     	this.friends = resp.data.items;
-    });
-
-    this.categories = [];
-    CategoryService.getAll().then(resp => {
-    	this.categories = resp.data.items;
     });
 
     this.options = {

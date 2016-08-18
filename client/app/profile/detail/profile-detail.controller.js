@@ -173,6 +173,19 @@ class ProfileDetailCtrl {
 	    	}
 	    });
 	}
+
+	sendMessage() {
+		let modalInstance = this.$uibModal.open({
+	    	animation: true,
+	    	templateUrl: 'app/thread/modal/message.html',
+	    	controller: 'MessageModalCtrl',
+	    	resolve: {
+	    		user: () => {
+	    			return this.user;
+	    		}
+	    	}
+	    });
+	}
 }
 
 angular.module('healthStarsApp').controller('ProfileDetailCtrl', ProfileDetailCtrl);

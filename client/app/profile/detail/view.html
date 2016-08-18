@@ -21,7 +21,7 @@
                                     <span ng-show="vm.user.isFollow==='none'"><i class="fa fa-rss"></i> {{'FOLLOW' | translate}}</span>
                                     <span ng-show="vm.user.isFollow==='completed'"><i class="fa fa-rss"></i> {{'UNFOLLOW' | translate}}</span>
                                 </a></div>
-                                <div class="col-xs-3"><a href="#" class="btn btn-default btn-block"><i class="fa fa-envelope-o"></i> {{'MESSAGE' | translate}}</a></div>
+                                <div class="col-xs-3"><a ng-click="vm.sendMessage()" href="#" class="btn btn-default btn-block"><i class="fa fa-envelope-o"></i> {{'MESSAGE' | translate}}</a></div>
                             </div>
                         </div>
                     </div>

@@ -26,6 +26,7 @@
 					<td><strong>{{'PHOTO_OWNER_NAME' | translate}}</strong></td>
 					<td><strong>{{'REPORT_TYPE' | translate}}</strong></td>
 					<td><strong>{{'EVENT_NAME' | translate}}</strong></td>
+					<td><strong>{{'DESCRIPTION' | translate}}</strong></td>
 					<td>
 						<strong>
 							<a href="#" ng-click="vm.sortType='createdAt'; vm.sortReverse=!vm.sortReverse">
@@ -44,6 +45,7 @@
 					<td>{{report.reporterId.name}}</td>
 					<td>{{report.type}}</td>
 					<td>{{report.event.name}}</td>
+					<td>{{report.description}}</td>
 					<td>{{report.createdAt | date: 'HH:mm'}} {{report.createdAt | date: 'dd-MMMM-yyyy'}}</td>
 					<td>{{(report.checked) ? 'TRUE' : 'FALSE' | translate}}</td>
 					<td>

@@ -180,4 +180,33 @@ module.exports = function(kernel) {
       return res.status(500).json({type: 'SERVER_ERROR'});
     });
   });
+
+  /*Unfriend by user id and current user id*/
+  kernel.app.delete('/api/v1/relations/:id/user', kernel.middleware.isAuthenticated(), (req, res) => {
+    kernel.model.Relation.findOne({
+      type: 'friend', 
+      $or: [{
+        fromUserId: req.user._id, toUserId: req.params.id
+      }, {
+        fromUserId: req.params.id, toUserId: req.user._id
+      }],
+      status: 'completed'
+    }).then(relation => {
+      if (!relation) {
+        return res.status(404).end();
+      }
+      let availableUser = [relation.fromUserId.toString(), relation.toUserId.toString()];
+      if (availableUser.indexOf(req.user._id.toString()) !== -1) {
+        relation.remove().then(() => {
+          return res.status(200).end();
+        }).catch(err => {
+          return res.status(500).json({type: 'SERVER_ERROR'});    
+        });
+      } else {
+        return res.status(403).end();
+      }
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+  });
 };

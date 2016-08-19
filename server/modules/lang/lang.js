@@ -244,7 +244,9 @@ let Language = {
 		LOAD_MORE_FEEDS: 'Load more feeds',
 		FRIENDS: 'Friends',
 		YOU: 'You',
-		SEND_MESSAGE_TO: 'Send message to'
+		SEND_MESSAGE_TO: 'Send message to',
+		SEARCH_FRIEND: 'Search friend',
+		UNFRIEND: 'Unfriend'
 	},
 	de: {
 

@@ -1,7 +1,7 @@
 'use strict';
 
 class MyHomeCtrl {
-	constructor($scope, $state, $localStorage, APP_CONFIG, PhotoViewer, User, RelationService, Invite) {
+	constructor($scope, $localStorage, APP_CONFIG, PhotoViewer, User, RelationService, Invite) {
 		this.RelationService = RelationService;
 		this.Invite = Invite;
 		this.User = User;
@@ -10,7 +10,6 @@ class MyHomeCtrl {
 		};
 		this.authUser = $localStorage.authUser;
 		this.authUser.link = APP_CONFIG.baseUrl + 'profile/' + this.authUser._id +'/detail';
-		this.$state = $state;
 		this.PhotoViewer = PhotoViewer;
 
 		this.photos = {};

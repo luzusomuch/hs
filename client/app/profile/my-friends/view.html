@@ -1,0 +1,58 @@
+<div class="container">
+	<div class="row">
+        <div class="col-sm-4 col-lg-3  pc-show">
+            <div class="box-blue p15">
+                <div class="img-user-main">
+                    <img src="{{vm.user | avatarUrl}}" width="100%;">
+                    <div class="code-qc">
+                        <qrcode version="20" error-correction-level="H" data="{{vm.user.link}}" href="{{vm.user.link}}" size="50"></qrcode>
+                    </div>
+                </div>
+                <div class="bottom-user-main">
+                    <h3 style="margin-top: 0px">{{vm.user.name}}</h3>
+                    <div class="clear"></div>
+                </div>
+            </div>
+
+            <div class="box-blue p15">
+                <div class="title-blue">Photos <a href="#" class="show-all-box">Show all</a></div>
+                <ul class="row row-small list-photo">
+                    <li class="col-xs-6" ng-repeat="photo in vm.photos.items">
+                    	<a href="#" ng-click="vm.viewPhoto(photo)"><div class="bg-cover" style="background-image: url('{{photo | imageUrl:'small'}}')"></div></a>
+                	</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-8 col-lg-9">
+            <div class="box-blue p15">
+                <div class="title-blue">{{'FRIENDS' | translate}}</div>
+                <div class="search-main m20 pull-right">
+                    <input type="text" class="form-control" placeholder="{{'SEARCH_FRIEND' | translate}}">
+                    <button><i class="fa fa-search"></i></button>
+                </div>
+                <div class="clear"></div>
+                <ul class="row friends">
+                    <li class="col-sm-6" ng-repeat="friend in vm.friends.items">
+                        <div class="box-frends">
+                            <a ui-sref="profile.detail({id: friend._id})"><img src="{{friend | avatarUrl}}"></a>
+                            <div class="text-box-friend">
+                                <h4><a ui-sref="profile.detail({id: friend._id})">{{friend.name}}</a></h4>
+
+                                <span class="text-mo" ng-show="vm.authUser._id===friend._id">
+						        	{{'YOU' | translate}}
+						        </span>
+						        <span class="text-mo" ng-show="vm.authUser._id!==friend._id">
+						        	<span ng-show="friend.currentFriendStatus==='pending'">{{'PENDING_FRIEND_REQUEST' | translate}}</span>
+						        	<span ng-show="friend.currentFriendStatus==='completed'">{{'YOUR_FRIEND' | translate}}</span>
+						        </span>
+
+                                <a ng-show="friend.currentFriendStatus==='completed' && vm.authUser._id!==friend._id" href="#" ng-click="vm.friendAction(friend)" class="btn btn-create unfriend">{{'UNFRIEND' | translate}}</a>
+                                <a class="btn btn-create unfriend" href="#" ng-show="friend.currentFriendStatus==='none' && vm.authUser._id!==friend._id" ng-click="vm.friendAction(friend)">{{'ADD_FRIEND' | translate}}</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

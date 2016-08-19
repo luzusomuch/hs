@@ -20,8 +20,13 @@
         return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/relations/${id}`, relation);
       },
 
+
       delete: (id) => {
-      	return $http.delete(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/relations/${id}`);
+        return $http.delete(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/relations/${id}`);
+      },
+
+      deleteByUserId: (id) => {
+        return $http.delete(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/relations/${id}/user`);
       }
     };
   }

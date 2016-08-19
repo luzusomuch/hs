@@ -90,5 +90,32 @@ angular.module('healthStarsApp').config(function($stateProvider) {
         );
       }
     }
+  }).state('profile.friends', {
+    url: '/:id/friends',
+    templateUrl: 'app/profile/my-friends/view.html',
+    controller: 'MyFriendsCtrl',
+    controllerAs: 'vm',
+    authenticate: true,
+    settings: {
+      pageTitle: 'HealthStars | Friends List'
+    },
+    resolve: {
+      user: (User, $stateParams, $location) => {
+        return User.getInfo($stateParams.id).then(
+          res => {
+            if ((res.data.blocked && res.data.blocked.status) || (res.data.deleted && res.data.deleted.status)) {
+              return $location.path('404');
+            } else {
+              return res.data;
+            }
+          },
+          err => {
+            if (err.status !== 401) {
+              return $location.path('404');
+            }
+          }
+        );
+      }
+    }
   });
 });

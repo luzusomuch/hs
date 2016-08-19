@@ -1,0 +1,36 @@
+<div class="container">
+	<div class="row">
+		<div class="col-sm-4 col-lg-3  pc-show">
+            <div class="box-blue p15">
+                <div class="img-user-main">
+                    <img src="{{vm.user | avatarUrl}}" width="100%;">
+                    <div class="code-qc">
+                        <qrcode version="20" error-correction-level="H" data="{{vm.user.link}}" href="{{vm.user.link}}" size="50"></qrcode>
+                    </div>
+                </div>
+                <div class="bottom-user-main">
+                    <h3 style="margin-top: 0px">{{vm.user.name}}</h3>
+                    <div class="clear"></div>
+                </div>
+            </div>
+
+            <div class="box-blue p15">
+            	<hs-user-friends u-id="vm.user._id"></hs-user-friends>
+            </div>
+        </div>
+        <div class="col-sm-8 col-lg-9">
+            <div class="box-blue p15">
+                <div class="title-blue">
+                    {{'PHOTOS' | translate}}
+                </div>
+                <ul class="row photos-show">
+                    <li ng-repeat="photo in vm.photos.items">
+                        <div class="bg-cover img-photo" style="background-image: url('{{photo | imageUrl: 'small'}}')">
+                            <a ng-show="photo.ownerId===vm.authUser._id" ng-click="vm.delete(photo)" href="#" class="delete-photo"><i class="fa fa-trash-o"></i></a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+	</div>
+</div>

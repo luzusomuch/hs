@@ -15,7 +15,7 @@
             </div>
 
             <div class="box-blue p15">
-                <div class="title-blue">Photos <a href="#" class="show-all-box">Show all</a></div>
+                <div class="title-blue">{{'PHOTOS' | translate}} <a ui-sref="profile.photos({id: vm.user._id})" class="show-all-box">{{'SHOW_ALL' | translate}}</a></div>
                 <ul class="row row-small list-photo">
                     <li class="col-xs-6" ng-repeat="photo in vm.photos.items">
                     	<a href="#" ng-click="vm.viewPhoto(photo)"><div class="bg-cover" style="background-image: url('{{photo | imageUrl:'small'}}')"></div></a>

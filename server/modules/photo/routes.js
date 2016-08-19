@@ -230,4 +230,24 @@ module.exports = function(kernel) {
 			});
 		});
 	});
+
+	/*Delete photo only allow created user*/
+	kernel.app.delete('/api/v1/photos/:id', kernel.middleware.isAuthenticated(), (req, res) => {
+		kernel.model.Photo.findById(req.params.id).then(photo => {
+			if (!photo) {
+				return res.status(404).end();
+			}
+			if (photo.ownerId.toString()===req.user._id.toString()) {
+				photo.remove().then(() => {
+					return res.status(200).end();
+				}).catch(err => {
+					return res.status(500).json({type: 'SERVER_ERROR'});
+				});
+			} else {
+				return res.status(403).end();
+			}
+		}).catch(err => {
+			return res.status(500).json({type: 'SERVER_ERROR'});
+		});
+	});
 };

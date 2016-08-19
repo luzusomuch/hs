@@ -486,7 +486,7 @@ class UserController {
 
   getFriends(req, res) {
     let page = req.params.page || 1;
-    let limit = 3;
+    let limit = 20;
     async.waterfall([
       (cb) => {
         this.kernel.model.Relation.find({

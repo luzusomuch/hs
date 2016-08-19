@@ -10,7 +10,7 @@
         </div>
     </form> -->
      <ul class="list-media list-friend list-friend-1" style="padding: 0 0 20px 0">
-        <li ng-repeat="user in vm.users">
+        <li ng-repeat="user in vm.users" ng-class="{'no-online': !user.online}">
             <div class="img-media">
                 <a href="#"></a><a href="#"><img ng-src="{{user | avatarUrl}}"></a>
             </div>
@@ -19,7 +19,7 @@
             <a href="#" ng-click="vm.invite(user)" class="btn-follow">{{!user.invited ? ('INVITE' | translate) : ('RESEND' | translate)}}</a>
 
         </li>
-        <li ng-if="!users.length" style="padding-left: 0">No friend was found</li>
+        <li ng-if="!vm.users.length" style="padding-left: 0">No friend was found</li>
     </ul>
     <hs-loading size="32" ng-show="vm.loading"></hs-loading>
     </div>

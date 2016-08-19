@@ -1,7 +1,9 @@
 'use strict';
 
 class EventAttendingCtrl {
-	constructor($scope, EventService, $state, $localStorage) {
+	constructor($scope, EventService, $state, $localStorage, socket, $uibModal, RelationService) {
+		this.$uibModal = $uibModal;
+		this.RelationService = RelationService;
 		this.EventService = EventService;
 		this.authUser = $localStorage.authUser;
 		this.$state = $state;
@@ -9,15 +11,33 @@ class EventAttendingCtrl {
 			pageSize: 10
 		};
 		this.eAward = $scope.eAward;
+		this.onlineUsers = [];
 
 		$scope.$watch('eId', (nv) => {
 			if(nv) {
 				EventService.getParticipants(nv, {pageSize: this.participants.pageSize}).then(res => {
 					this.participants = res.data;
-					console.log(this.participants);
 				});
 			}
 		});
+
+		// Tracking online/offline user
+	    socket.socket.on('tracking:user', (data) => {
+	    	this.onlineUsers = data;
+	    	$scope.$watch('vm.participants.items', (nv) => {
+	    		if (nv && nv.length > 0 && data) {
+	    			_.each(this.participants.items, (friend) => {
+		     			friend.online = false;
+		     			let index = _.findIndex(data, (item) => {
+		     				return item===friend._id;
+		     			});
+		     			if (index !== -1) {
+		     				friend.online = true;
+		     			}
+		     		});
+	    		}
+	    	});
+	    });
 
 		this.isEventOwner = ($scope.eOwner && this.authUser._id===$scope.eOwner._id) ? true : false;
 	}
@@ -52,6 +72,28 @@ class EventAttendingCtrl {
 		} else {
 			// TODO show error
 		}
+	}
+
+	showAllAttending() {
+		let modalInstance = this.$uibModal.open({
+	    	animation: true,
+	    	templateUrl: 'app/event/modal/event-participants.html',
+	    	controller: 'EventParticipantsCtrl',
+	    	resolve: {
+	    		onlineUsers: () => {
+	    			return this.onlineUsers;
+	    		}
+	    	}
+	    });
+	}
+
+	addFriend(friend) {
+		this.RelationService.create({userId: friend._id, type: 'friend'}).then(resp => {
+    		friend.friendStatus = resp.data.type;
+		}).catch(err => {
+			console.log(err);
+			// TODO show error
+		});
 	}
 }
 

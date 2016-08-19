@@ -1,0 +1,29 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{'WHO_ARE_ATTENDING' | translate}}  ({{participants.totalItem || 0}})</h3>
+</div>
+<div class="modal-body">
+	<ul class="list-media list-friend list-friend-1">
+        <li ng-repeat="user in participants.items" ng-class="{'no-online': !user.online}">
+            <div class="img-media">
+                <a ui-sref="profile.detail({id: user._id})"><img ng-src="{{user | avatarUrl}}"></a>
+            </div>
+            <h4><a ui-sref="profile.detail({id: user._id})">{{user.name}}</a></h4>
+
+            <span class="text-mo" ng-if="user._id===authUser._id">
+                {{'YOU' | translate}}
+            </span>
+            <span class="text-mo" ng-if="user._id!==authUser._id">
+                <span ng-show="user.friendStatus==='completed'">{{'YOUR_FRIEND' | translate}}</span>
+                <span ng-show="user.friendStatus==='pending'">{{'PENDING_FRIEND_REQUEST' | translate}}</span>
+            </span>
+
+            <a ng-click="addFriend(user)" href="#" class="btn-follow" ng-if="user._id!==authUser._id && user.friendStatus==='none'"><i class="i-new user-i-1"></i> {{'ADD_FRIEND' | translate}}</a>
+        </li>
+        <li ng-show="participants.items.length < participants.totalItem">
+        	<a ng-click="getParticipants()" href="#">{{'LOAD_MORE_FRIENDS' | translate}}</a>
+        </li>
+    </ul>
+</div>
+<div class="modal-footer">
+	<button ng-click="close()" class="btn btn-default">{{'CLOSE' | translate}}</button>
+</div>

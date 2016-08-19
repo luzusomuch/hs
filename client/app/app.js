@@ -86,11 +86,11 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
       $rootScope.pageWidth = $window.innerWidth;
       var div1 = $('#div-1');
       var parent = div1.parent();
-                    if (($rootScope.pageWidth <= 768) && ($rootScope.pageWidth >= 320)) {
-                        parent.append(div1);
-                    }
-                    else {
-                        parent.prepend(div1);
-                    }
+      if (($rootScope.pageWidth <= 768) && ($rootScope.pageWidth >= 320)) {
+        parent.append(div1);
+      }
+      else {
+        parent.prepend(div1);
+      }
     });
   });

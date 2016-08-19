@@ -1,13 +1,21 @@
    <div class="box-blue p15">
-    <div class="title-blue">{{'WHO_ARE_ATTENDING' | translate}}  ({{vm.participants.total || 0}}) <a href="#" class="show-all-box">Show all</a></div>
+    <div class="title-blue">{{'WHO_ARE_ATTENDING' | translate}}  ({{vm.participants.totalItem || 0}}) <a href="#" class="show-all-box">Show all</a></div>
     <ul class="list-media list-friend list-friend-1">
         <li ng-repeat="user in vm.participants.items">
             <div class="img-media">
-                <a href="#"></a><a href="#"><img ng-src="{{user | avatarUrl}}"></a>
+                <a ui-sref="profile.detail({id: user._id})"><img ng-src="{{user | avatarUrl}}"></a>
             </div>
-            <h4><a href="#">{{user.name}}</a></h4>
-            <span class="text-mo" ng-if="user.isFriend">{{'YOUR_FRIEND' | translate}}</span>
-            <a href="#" class="btn-follow" ng-if="!user.isFriend"><i class="i-new user-i-1"></i> {{'ADD_FRIEND' | translate}}</a>
+            <h4><a ui-sref="profile.detail({id: user._id})">{{user.name}}</a></h4>
+
+            <span class="text-mo" ng-if="user._id===vm.authUser._id">
+                {{'YOU' | translate}}
+            </span>
+            <span class="text-mo" ng-if="user._id!==vm.authUser._id">
+                <span ng-show="user.friendStatus==='completed'">{{'YOUR_FRIEND' | translate}}</span>
+                <span ng-show="user.friendStatus==='pending'">{{'PENDING_FRIEND_REQUEST' | translate}}</span>
+            </span>
+
+            <a href="#" class="btn-follow" ng-if="user._id!==vm.authUser._id && user.friendStatus==='none'"><i class="i-new user-i-1"></i> {{'ADD_FRIEND' | translate}}</a>
             <a ng-show="vm.isEventOwner" href="#" class="btn-follow" ng-click="vm.banUser(user)"><i class="fa fa-trash"></i></a>
             <a ng-show="vm.isEventOwner && !user.isGrantedAward && vm.eAward.type=='organizer'" href="#" class="btn-follow" ng-click="vm.grantAward(user)"><i class="fa fa-gift" aria-hidden="true"></i></a>
         </li>

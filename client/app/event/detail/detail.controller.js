@@ -61,7 +61,16 @@ class EventDetailCtrl {
 		if(!this.event.participantsId) {
 			return true;
 		}
-		return this.event.participantsId.indexOf(this.authUser._id) === -1;
+		let participantsId = angular.copy(this.event.participantsId) || [];
+		participantsId.push(this.event.ownerId);
+		let idx = _.findIndex(participantsId, (participant) => {
+			return participant._id===this.authUser._id;
+		});
+		if (idx !== -1) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	like() {

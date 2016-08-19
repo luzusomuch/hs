@@ -791,106 +791,153 @@ module.exports = function(kernel) {
     if(!kernel.mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({type: 'BAD_REQUEST'});
     }
+    let pageSize = req.query.pageSize || 6;
 
-    const LIMIT = 6;
-
-    kernel.model.Event.findById(req.params.id).then(
-      event => {
-        if(!event) {
-          return res.status(404);
-        }
-        let response = {
-          total: event.participantsId.length,
-          items: []
-        };
-        async.waterfall([
-          (cb) => {
-            kernel.model.Relation.find({
-              $or: [
-                { fromUserId: req.user._id },
-                { toUserId: req.user._id },
-              ],
-              type: 'friend',
-              status: 'completed'
-            }, (err, friends) => {
-              if(err) return cb(err);
-              let friendIds = _.map(friends, f => {
-                return f.fromUserId.toString() === req.user._id.toString() ? f.toUserId : f.fromUserId;
-              });
-              return cb(null, friendIds);
-            });
-          },
-          (friendIds, cb) => {
-            if(!friendIds.length) return cb(null, []);
-            kernel.model.User.find({
-              $and: [
-                {
-                  _id: { $in: event.participantsId }
-                },
-                {
-                  _id: { $in: friendIds}
-                }
-              ]
-            }, '-salt -password').limit(LIMIT).exec((err, friends) => {
-              if(err) return cb(err);
-              return cb(null, _.map(friends, friend => {
-                let user = friend.toJSON();
-                user.isFriend = true;
-                return user;
-              }));
-            });
-          },
-          (friends, cb) => {
-            let remainingLimit = LIMIT - friends.length;
-            let remainingLength = event.participantsId.length - friends.length;
-            if(event.participantsId.indexOf(req.user._id) !== -1 ) remainingLength--;
-            if(!remainingLimit || !remainingLength) return cb(null, friends);
-            let skip = 0;
-            // remainingLimit = 1
-            // remainingLength = 7
-            if(remainingLimit < remainingLength) {
-              let start = 1;
-              let end = remainingLength - remainingLimit + 1;
-              skip = Math.floor((Math.random() * end) + start) - 1;
-            }
-            kernel.model.User.find({
-              $and: [
-                {
-                  _id: { $ne: req.user._id }
-                },
-                {
-                  _id: { $in: event.participantsId }
-                },
-                {
-                  _id: { $nin: _.map(friends, '_id') }
-                }
-              ]
-            }, '-salt -password').limit(remainingLimit).skip(skip).exec((err, participants) => {
-              if(err) return cb(err);
-              return cb(null, friends.concat(participants));
-            });
-          }
-        ], (err, items) => {
-          if(err) return res.status(500).json({type: 'SERVER_ERROR'});
-          let results = [];
-          async.each(items, (item, callback) => {
-            kernel.model.GrantAward.findOne({ownerId: item._id, eventId: event._id, awardId: event.awardId}).then(award => {
-              let data = item;
-              data.isGrantedAward = (award) ? true : false;
-              results.push(data);
-              callback();
-            }).catch(err => {
-              console.log(err);
-              callback(err);
-            });
-          }, () => {
-            response.items = results;
-            return res.status(200).json(response);
-          });
-        });
+    kernel.model.Event.findById(req.params.id).then(event => {
+      if (!event) {
+        return res.status(404).end();
       }
-    )
-    .catch(err => res.status(500).json({type: 'SERVER_ERROR', message: JSON.stringify(err)}));
+      let response = {
+        totalItem: event.participantsId.length,
+        items: []
+      };
+      let ids = [];
+      _.each(event.participantsId, (id, index) => {
+        if (index < pageSize) {
+          ids.push(id);
+        }
+      });
+      kernel.model.User.find({_id: {$in: ids}}, '-password -salt').populate('avatar').exec().then(users => {
+        async.each(users, (user, callback) => {
+          user = user.toJSON();
+          kernel.model.Relation.findOne({
+            type: 'friend',
+            $or: [{
+              fromUserId: req.user._id, toUserId: user._id
+            }, {
+              fromUserId: user._id, toUserId: req.user._id
+            }]
+          }).then(relation => {
+            if (!relation) {
+              user.friendStatus = 'none';
+              response.items.push(user);
+              return callback(null);
+            }
+            user.friendStatus = relation.status;
+            response.items.push(user);
+            callback(null);
+          }).catch(callback);
+        }, (err) => {
+          if (err) {
+            return res.status(500).json({type: 'SERVER_ERROR'});    
+          }
+          return res.status(200).json(response);
+        });
+      }).catch(err => {
+        return res.status(500).json({type: 'SERVER_ERROR'});
+      });
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+
+
+    // kernel.model.Event.findById(req.params.id).then(event => {
+    //     if(!event) {
+    //       return res.status(404);
+    //     }
+    //     let response = {
+    //       total: event.participantsId.length,
+    //       items: []
+    //     };
+    //     async.waterfall([
+    //       (cb) => {
+    //         kernel.model.Relation.find({
+    //           $or: [{
+    //             fromUserId: req.user._id 
+    //           },{ 
+    //             toUserId: req.user._id 
+    //           }],
+    //           type: 'friend',
+    //           status: 'completed'
+    //         }, (err, friends) => {
+    //           if(err) return cb(err);
+    //           let friendIds = _.map(friends, f => {
+    //             return f.fromUserId.toString() === req.user._id.toString() ? f.toUserId : f.fromUserId;
+    //           });
+    //           return cb(null, friendIds);
+    //         });
+    //       },
+    //       (friendIds, cb) => {
+    //         if(!friendIds.length) return cb(null, []);
+    //         kernel.model.User.find({
+    //           $and: [
+    //             {
+    //               _id: { $in: event.participantsId }
+    //             },
+    //             {
+    //               _id: { $in: friendIds}
+    //             }
+    //           ]
+    //         }, '-salt -password').limit(LIMIT).exec((err, friends) => {
+    //           if(err) return cb(err);
+    //           return cb(null, _.map(friends, friend => {
+    //             let user = friend.toJSON();
+    //             user.isFriend = true;
+    //             return user;
+    //           }));
+    //         });
+    //       },
+    //       (friends, cb) => {
+    //         let remainingLimit = LIMIT - friends.length;
+    //         let remainingLength = event.participantsId.length - friends.length;
+    //         if(event.participantsId.indexOf(req.user._id) !== -1 ) remainingLength--;
+    //         if(!remainingLimit || !remainingLength) return cb(null, friends);
+    //         let skip = 0;
+    //         // remainingLimit = 1
+    //         // remainingLength = 7
+    //         if(remainingLimit < remainingLength) {
+    //           let start = 1;
+    //           let end = remainingLength - remainingLimit + 1;
+    //           skip = Math.floor((Math.random() * end) + start) - 1;
+    //         }
+    //         kernel.model.User.find({
+    //           $and: [
+    //             {
+    //               _id: { $ne: req.user._id }
+    //             },
+    //             {
+    //               _id: { $in: event.participantsId }
+    //             },
+    //             {
+    //               _id: { $nin: _.map(friends, '_id') }
+    //             }
+    //           ]
+    //         }, '-salt -password').limit(remainingLimit).skip(skip).exec((err, participants) => {
+    //           if(err) return cb(err);
+    //           return cb(null, friends.concat(participants));
+    //         });
+    //       }
+    //     ], (err, items) => {
+    //       if(err) return res.status(500).json({type: 'SERVER_ERROR'});
+    //       let results = [];
+    //       async.each(items, (item, callback) => {
+    //         kernel.model.GrantAward.findOne({ownerId: item._id, eventId: event._id, awardId: event.awardId}).then(award => {
+    //           let data = item;
+    //           data.isGrantedAward = (award) ? true : false;
+    //           results.push(data);
+    //           callback();
+    //         }).catch(err => {
+    //           console.log(err);
+    //           callback(err);
+    //         });
+    //       }, () => {
+    //         response.items = results;
+    //         return res.status(200).json(response);
+    //       });
+    //     });
+    //   }
+    // )
+    // .catch(err => res.status(500).json({type: 'SERVER_ERROR', message: JSON.stringify(err)}));
   });
 
   /* Get event */

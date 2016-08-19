@@ -5,13 +5,16 @@ class EventAttendingCtrl {
 		this.EventService = EventService;
 		this.authUser = $localStorage.authUser;
 		this.$state = $state;
-		this.participants = {};
+		this.participants = {
+			pageSize: 10
+		};
 		this.eAward = $scope.eAward;
 
 		$scope.$watch('eId', (nv) => {
 			if(nv) {
-				EventService.getParticipants(nv).then(res => {
+				EventService.getParticipants(nv, {pageSize: this.participants.pageSize}).then(res => {
 					this.participants = res.data;
+					console.log(this.participants);
 				});
 			}
 		});

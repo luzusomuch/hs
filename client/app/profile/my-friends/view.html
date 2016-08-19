@@ -27,7 +27,7 @@
             <div class="box-blue p15">
                 <div class="title-blue">{{'FRIENDS' | translate}}</div>
                 <div class="search-main m20 pull-right">
-                    <input type="text" class="form-control" placeholder="{{'SEARCH_FRIEND' | translate}}">
+                    <input ng-model="vm.searchText" type="text" class="form-control" placeholder="{{'SEARCH_FRIEND' | translate}}" ng-blur="vm.search(vm.searchText)">
                     <button><i class="fa fa-search"></i></button>
                 </div>
                 <div class="clear"></div>
@@ -50,6 +50,11 @@
                                 <a class="btn btn-create unfriend" href="#" ng-show="friend.currentFriendStatus==='none' && vm.authUser._id!==friend._id" ng-click="vm.friendAction(friend)">{{'ADD_FRIEND' | translate}}</a>
                             </div>
                         </div>
+                    </li>
+                </ul>
+                <ul class="row friends">
+                    <li ng-show="vm.friends.items.length < vm.friends.totalItem">
+                    	<a href="#" ng-click="vm.loadFriends()">{{'LOAD_MORE_FRIENDS' | translate}}</a>
                     </li>
                 </ul>
             </div>

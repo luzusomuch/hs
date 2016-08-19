@@ -21,6 +21,7 @@ class MyFriendsCtrl {
 		});
 
 		this.loadFriends();
+		this.defaultFriends = {};
 	}
 
 	loadFriends() {
@@ -28,7 +29,6 @@ class MyFriendsCtrl {
 			this.friends.items = (this.friends.items) ? this.friends.items.concat(res.data.items) : res.data.items;
 			this.friends.totalItem = res.data.totalItem;
 			this.friends.page += 1;
-			console.log(this.friends);
 		});	
 	}
 
@@ -67,6 +67,21 @@ class MyFriendsCtrl {
 			})
 		} else {
 			// TODO show error
+		}
+	}
+
+	search(text) {
+		if (text && text.trim().length > 0) {
+			this.defaultFriends = angular.copy(this.friends);
+			this.RelationService.searchFriends({query: text, userId: this.user._id}).then(resp => {
+				this.friends.items = resp.data.items;
+				this.friends.totalItem = resp.data.totalItem;
+			}).catch(err => {	
+				// TODO show error
+				console.log(err);
+			})
+		} else {
+			this.friends = this.defaultFriends;
 		}
 	}
 }

@@ -50,7 +50,6 @@ module.exports = function(kernel) {
         }).catch(callback);
       }, (err) => {
         if (err) {
-          console.log(err);
           return res.status(500).json({type: 'SERVER_ERROR'});
         }
         kernel.model.Relation.count({
@@ -78,12 +77,10 @@ module.exports = function(kernel) {
             return res.status(200).json({items: results, totalItem: count});
           }
         }).catch(err => {
-          console.log(err);
           return res.status(500).json({type: 'SERVER_ERROR'});  
         });
       });
     }).catch(err => {
-      console.log(err);
       return res.status(500).json({type: 'SERVER_ERROR'});
     });
   });
@@ -137,6 +134,73 @@ module.exports = function(kernel) {
       }
     }).catch(err => {
       return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+  });
+
+  /*Search friends*/
+  kernel.app.post('/api/v1/relations/search', kernel.middleware.isAuthenticated(), (req, res) => {
+    console.log(req.body);
+    kernel.model.Relation.find({
+      type: 'friend', 
+      $or: [{
+        fromUserId: req.body.userId
+      }, {
+        toUserId: req.body.userId
+      }],
+      status: 'completed'
+    }).then(relations => {
+      let fromUserId = _.map(relations, 'fromUserId');
+      let toUserId = _.map(relations, 'toUserId');
+      let ids = _.union(fromUserId, toUserId);
+      ids = _.map(_.groupBy(ids,function(doc){
+        return doc;
+      }),function(grouped){
+        return grouped[0];
+      });
+      let index = _.findIndex(ids, (id) => {
+        return id.toString()===req.body.userId.toString();
+      });
+      if (index !== -1) {
+        ids.splice(index, 1);
+      }
+      kernel.model.User.find({_id: {$in: ids}}, '-password -salt').then(users => {
+        let results = [];
+        async.each(users, (user, callback) => {
+          user = user.toJSON();
+          kernel.model.Relation.findOne({
+            type: 'friend',
+            $or: [{
+              fromUserId: user._id, toUserId: req.user._id
+            }, {
+              fromUserId: req.user._id, toUserId: user._id
+            }]
+          }).then(relation => {
+            if (!relation) {
+              user.currentFriendStatus = 'none';
+              results.push(user);
+              return callback(null);
+            }
+            user.currentFriendStatus = relation.status;
+            results.push(user);
+            callback(null);
+          }).catch(callback);
+        }, (err) => {
+          if (err) {
+            return res.status(500).json({type: 'SERVER_ERROR'});
+          }
+          let users = [];
+          _.each(results, (user) => {
+            if (user.name.toLowerCase().indexOf(req.body.query) !== -1 || user.name.indexOf(req.body.query) !== -1) {
+              users.push(user);
+            }
+          });
+          return res.status(200).json({items: users, totalItem: users.length});
+        });        
+      }).catch(err => {
+        return res.status(500).json({type: 'SERVER_ERROR'});
+      });
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});  
     });
   });
 

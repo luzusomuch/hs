@@ -27,6 +27,10 @@
 
       deleteByUserId: (id) => {
         return $http.delete(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/relations/${id}/user`);
+      },
+
+      searchFriends: (data) => {
+        return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/relations/search`, data);
       }
     };
   }

@@ -247,7 +247,8 @@ let Language = {
 		SEND_MESSAGE_TO: 'Send message to',
 		SEARCH_FRIEND: 'Search friend',
 		UNFRIEND: 'Unfriend', 
-		LOAD_MORE_FRIENDS: 'Load more friends'
+		LOAD_MORE_FRIENDS: 'Load more friends',
+		COMPOSE: 'Compose'
 	},
 	de: {
 

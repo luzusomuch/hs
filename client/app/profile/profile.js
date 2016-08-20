@@ -63,6 +63,15 @@ angular.module('healthStarsApp').config(function($stateProvider) {
     settings: {
       pageTitle: 'HealthStars | My Setting'
     }
+  }).state('profile.myMessages', {
+    url: '/my-messages',
+    templateUrl: 'app/profile/my-message/view.html',
+    controller: 'MyMessagesCtrl',
+    controllerAs: 'vm',
+    authenticate: true,
+    settings: {
+      pageTitle: 'HealthStars | My Messages'
+    }
   }).state('profile.detail', {
     url: '/:id/detail',
     templateUrl: 'app/profile/detail/view.html',

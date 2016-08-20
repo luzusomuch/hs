@@ -10,7 +10,11 @@
 	      	},
 
 	      	update: (id, feed) => {
-	        	return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/feeds/${id}`, feed);
+	        	return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/threads/${id}`, feed);
+	      	},
+
+	      	getMyMessages: (params) => {
+	      		return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/threads/my-messages`, {params: params});	
 	      	}
 	    };
   	}

@@ -6,7 +6,6 @@ class MyMessageDetailCtrl {
 		this.$state = $state;
 		this.ThreadService = ThreadService;
 		this.thread = thread;
-		console.log(thread);
 	}
 
 	textAreaAdjust() {
@@ -21,7 +20,7 @@ class MyMessageDetailCtrl {
 				resp.data.sentUserId = this.authUser;
 				this.thread.messages.push(resp.data);
 				this.message = null;
-				angular.element('textarea#reply-textarea')[0].style.height = 31+"px";
+				angular.element('textarea#reply-textarea')[0].style.height = 35+"px";
 			}).catch(err => {
 				// TODO show error
 				console.log(err);

@@ -25,16 +25,16 @@
 	                <div class="img-box-message"><img src="{{message.sentUserId | avatarUrl}}"></div>
 	                <div class="text-box-message">
 	                    <h4><a ui-sref="profile.detail({id: message.sentUserId._id})">{{message.sentUserId.name}}</a></h4>
-	                    <p ng-bind-html="message.message | smilies"></p>
+	                    <p ng-bind-html="message.message | nl2br | smilies"></p>
 	                </div>
 	            </div>
-	            <div class="box-message box-message-1">
+	            <div class="box-message box-message-1 message-detail">
 	                <div class="img-box-message"><img src="{{vm.authUser | avatarUrl}}"></div>
 	                <div class="input-group">
 	                	<span class="input-group-addon" smilies-selector="vm.message" smilies-placement="right" smilies-title="Smilies"></span>
 		                <div class="replies-form">
 		                    <textarea id="reply-textarea" name="message" ng-model="vm.message" focus-on-change="vm.message" class="form-control" placeholder="{{'NEW_MESSAGE' | translate}}" ng-keyup="vm.textAreaAdjust()"></textarea>
-		                    <a style="z-index: 9999" ng-click="vm.sendMessage(vm.message)" href="#" class="replies-img-a"><i class="fa fa-reply"></i></a>
+		                    <a ng-click="vm.sendMessage(vm.message)" href="#" class="replies-img-a"><i class="fa fa-reply"></i></a>
 		                </div>
 	                </div>
 	            </div>

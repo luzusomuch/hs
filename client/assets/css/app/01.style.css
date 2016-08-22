@@ -2304,3 +2304,10 @@ div.menu-tab > ul>li>a {
     border: none !important;
     background-color: transparent !important;
 }
+.message-detail > .input-group > .replies-form > a {
+    z-index: 9999;
+}
+.message-detail > .input-group > .replies-form > textarea {
+    height:35px; 
+    border-radius:0px
+}

@@ -101,6 +101,60 @@ module.exports = function(kernel) {
         });
     });
 
+    /*Search messages with base on user name or message content*/
+    kernel.app.get('/api/v1/threads/search', kernel.middleware.isAuthenticated(), (req, res) => {
+        kernel.model.Thread.find({
+            $or: [{
+                fromUserId: req.user._id
+            }, {
+                toUserId: req.user._id
+            }]
+        }).populate({
+            path: 'messages.sentUserId',
+            select: '-password -salt',
+            populate: {path: 'avatar', model: 'Photo'}
+        }).then(threads => {
+            let results = [];
+            async.each(threads, (thread, callback) => {
+                let id = (thread.fromUserId.toString()===req.user._id.toString()) ? thread.toUserId : thread.fromUserId;
+                kernel.model.User.findById(id, '-password -salt').populate('avatar').exec().then(user => {
+                    if (!user) {
+                        return callback(null);
+                    }
+                    user = user.toJSON();
+                    if (user.name && user.name.toLowerCase().indexOf(req.query.query.toLowerCase()) !== -1) {
+                        user.threadId = thread._id;
+                        user.messages = thread.messages;
+                        user.threadUpdatedAt = thread.updatedAt;
+                        user.lastMessage = _.last(thread.messages);
+                        results.push(user);
+                        callback(null);
+                    } else {
+                        let index = _.findIndex(thread.messages, (message) => {
+                            return message.message && message.message.toLowerCase().indexOf(req.query.query.toLowerCase()) !== -1;
+                        });
+                        if (index !== -1) {
+                            user.threadId = thread._id;
+                            user.messages = thread.messages;
+                            user.threadUpdatedAt = thread.updatedAt;
+                            user.lastMessage = thread.messages[index];
+                            results.push(user);
+                        }
+                        callback(null);
+                    }
+                }).catch(callback);
+            }, (err) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).json({type: 'SERVER_ERROR', message: JSON.stringify(err)});
+                }
+                return res.status(200).json({items: results});
+            });
+        }).catch(err => {
+            return res.status(500).json({type: 'SERVER_ERROR', message: JSON.stringify(err)});
+        });
+    });
+
     /*Get my messages*/
     kernel.app.get('/api/v1/threads/my-messages', kernel.middleware.isAuthenticated(), (req, res) => {
         let page = req.query.page || 1;
@@ -121,7 +175,6 @@ module.exports = function(kernel) {
         .skip(skip)
         .sort({updatedAt: -1})
         .exec().then(threads => {
-            console.log(threads.length)
             kernel.model.Thread.count({
                 $or: [{
                     fromUserId: req.user._id
@@ -163,7 +216,13 @@ module.exports = function(kernel) {
     /*Get thread detail*/
     kernel.app.get('/api/v1/threads/:id', kernel.middleware.isAuthenticated(), (req, res) => {
         kernel.model.Thread.findById(req.params.id)
-        .populate('messages.sentUserId', '-password -salt')
+        .populate({
+            path: 'messages.sentUserId', select: '-password -salt',
+            populate: {
+                path: 'avatar', 
+                model: 'Photo'
+            }
+        })
         .exec().then(thread => {
             if (!thread) {
                 return res.status(404).end();

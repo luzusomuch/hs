@@ -21,17 +21,27 @@
                 </div>
 
                 <ul class="list-message">
-                    <li class="new-message" ng-repeat="owner in vm.threads.items">
+                    <li ng-show="!vm.searchQuery.search" class="new-message" ng-repeat="owner in vm.threads.items">
                         <a ui-sref="profile.myMessagesDetail({messageId: owner.threadId})">
                             <img src="{{owner | avatarUrl}}">
                             <h4>{{owner.name}}</h4>
-                            <p>{{owner.lastMessage.message}}</p>
+                            <p ng-bind-html="owner.lastMessage.message | smilies"></p>
+                            <span class="date-mesage">{{owner.threadUpdatedAt | fromNow}}</span>
+                        </a>
+                    </li>
+
+                    <!-- Search results -->
+                    <li ng-show="vm.searchQuery.search" class="new-message" ng-repeat="owner in vm.searchQuery.items">
+                        <a ui-sref="profile.myMessagesDetail({messageId: owner.threadId})">
+                            <img src="{{owner | avatarUrl}}">
+                            <h4>{{owner.name}}</h4>
+                            <p ng-bind-html="owner.lastMessage.message | smilies"></p>
                             <span class="date-mesage">{{owner.threadUpdatedAt | fromNow}}</span>
                         </a>
                     </li>
                 </ul>
 
-                <uib-pagination class="pagination-sm" items-per-page="vm.threads.pageSize" total-items="vm.threads.totalItem" ng-model="vm.threads.page" ng-change="vm.getItems()"></uib-pagination>
+                <uib-pagination ng-show="!vm.searchQuery.search" class="pagination-sm" items-per-page="vm.threads.pageSize" total-items="vm.threads.totalItem" ng-model="vm.threads.page" ng-change="vm.getItems()"></uib-pagination>
             </div>
 		</div>
 	</div>

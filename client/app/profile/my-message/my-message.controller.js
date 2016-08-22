@@ -1,7 +1,7 @@
 'use strict';
 
 class MyMessagesCtrl {
-	constructor($localStorage, $state, ThreadService) {
+	constructor($scope, $localStorage, $state, ThreadService) {
 		this.authUser = $localStorage.authUser;
 		this.$state = $state;
 		this.ThreadService = ThreadService;
@@ -10,7 +10,14 @@ class MyMessagesCtrl {
 			pageSize: 5
 		};
 		this.currentPage = 1;
+		this.searchQuery = {};
 		this.getItems();
+
+		$scope.$watch('vm.searchTerm', (nv) => {
+			if (!nv || (nv && nv.length===0)) {
+				this.searchQuery.search = false;
+			}
+		});
 	}
 
 	getItems() {
@@ -21,7 +28,15 @@ class MyMessagesCtrl {
 	}
 
 	search(searchTerm) {
-		console.log(searchTerm);
+		if (searchTerm && searchTerm.trim().length > 0) {
+			this.searchQuery.search = true;
+			this.ThreadService.search({query: searchTerm}).then(resp => {
+				this.searchQuery.items = resp.data.items;
+			}).catch(err => {
+				// TODO show error
+				console.log(err);
+			});
+		}
 	}
 }
 

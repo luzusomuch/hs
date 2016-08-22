@@ -17,6 +17,10 @@
 	      		return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/threads/my-messages`, {params: params});	
 	      	},
 
+	      	search: (params) => {
+	      		return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/threads/search`, {params: params});	
+	      	},
+
 	      	messageDetail: (id) => {
 	      		return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/threads/${id}`);		
 	      	}

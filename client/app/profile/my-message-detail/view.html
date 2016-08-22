@@ -1,0 +1,45 @@
+<div class="container">
+	<hs-profile-menu-header></hs-profile-menu-header>
+	<div class="row">
+		<div class="col-sm-4 col-lg-3">
+			<div class="box-blue p15">
+				<hs-user-friends u-id="vm.authUser._id"></hs-user-friends>
+			</div>
+		</div>
+
+		<div class="col-sm-8 col-lg-9">
+			<div class="box-blue p15">
+	            <div class="title-blue"> {{'MENU_MY_MESSENGER' | translate}}</div>
+
+	            <div class="top-message m20">
+	                <div class="pull-left">
+	                    <a href="#" class="btn-create" data-toggle="modal" data-target="#myModal"><i class="fa fa-envelope-o"></i> {{'COMPOSE' | translate}}</a>
+	                </div>
+	                <div class="search-main pull-right">
+	                    <input type="text" class="form-control" placeholder="Search">
+	                    <button><i class="fa fa-search"></i></button>
+	                </div>
+	            </div>
+
+	            <div ng-class="{'box-message-1': message.sentUserId._id===vm.authUser._id}" class="box-message" ng-repeat="message in vm.thread.messages">
+	                <div class="img-box-message"><img src="{{message.sentUserId | avatarUrl}}"></div>
+	                <div class="text-box-message">
+	                    <h4><a ui-sref="profile.detail({id: message.sentUserId._id})">{{message.sentUserId.name}}</a></h4>
+	                    <p ng-bind-html="message.message | smilies"></p>
+	                </div>
+	            </div>
+	            <div class="box-message box-message-1">
+	                <div class="img-box-message"><img src="{{vm.authUser | avatarUrl}}"></div>
+	                <div class="input-group">
+	                	<span class="input-group-addon" smilies-selector="vm.message" smilies-placement="right" smilies-title="Smilies"></span>
+		                <div class="replies-form">
+		                    <textarea id="reply-textarea" name="message" ng-model="vm.message" focus-on-change="vm.message" class="form-control" placeholder="{{'NEW_MESSAGE' | translate}}" ng-keyup="vm.textAreaAdjust()"></textarea>
+		                    <a style="z-index: 9999" ng-click="vm.sendMessage(vm.message)" href="#" class="replies-img-a"><i class="fa fa-reply"></i></a>
+		                </div>
+	                </div>
+	            </div>
+
+	        </div>
+		</div>
+	</div>
+</div>

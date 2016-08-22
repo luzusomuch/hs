@@ -9,12 +9,16 @@
 	        	return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/threads`, data);
 	      	},
 
-	      	update: (id, feed) => {
-	        	return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/threads/${id}`, feed);
+	      	sendMessage: (id, data) => {
+	        	return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/threads/${id}`, data);
 	      	},
 
 	      	getMyMessages: (params) => {
 	      		return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/threads/my-messages`, {params: params});	
+	      	},
+
+	      	messageDetail: (id) => {
+	      		return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/threads/${id}`);		
 	      	}
 	    };
   	}

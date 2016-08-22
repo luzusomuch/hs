@@ -73,9 +73,36 @@ module.exports = function(kernel) {
       	});
 	});
 
+    /*Send new message*/
+    kernel.app.post('/api/v1/threads/:id', kernel.middleware.isAuthenticated(), (req, res) => {
+        if (!req.body.message || (req.body.message && req.body.message.trim().length===0)) {
+            return res.status(422).end();
+        }
+        kernel.model.Thread.findById(req.params.id).then(thread => {
+            if (!thread) {
+                return res.status(404).end();
+            }
+            if (thread.fromUserId.toString()===req.user._id.toString() || thread.toUserId.toString()===req.user._id.toString()) {
+                thread.messages.push({
+                    sentUserId: req.user._id,
+                    createdAt: new Date(),
+                    message: req.body.message
+                });
+                thread.save().then(() => {
+                    return res.status(200).json({message: req.body.message, createdAt: new Date()});
+                }).catch(err => {
+                    return res.status(500).json({type: 'SERVER_ERROR', message: err}); 
+                });
+            } else {
+                return res.status(403).end();
+            }
+        }).catch(err => {
+            return res.status(500).json({type: 'SERVER_ERROR', message: err}); 
+        });
+    });
+
     /*Get my messages*/
     kernel.app.get('/api/v1/threads/my-messages', kernel.middleware.isAuthenticated(), (req, res) => {
-        console.log(req.query);
         let page = req.query.page || 1;
         let pageSize = req.query.pageSize || 10;
         let skip = pageSize * (page -1);
@@ -129,6 +156,25 @@ module.exports = function(kernel) {
             });
         }).catch(err => {
             console.log(err);
+            return res.status(500).json({type: 'SERVER_ERROR', message: err});
+        });
+    });
+
+    /*Get thread detail*/
+    kernel.app.get('/api/v1/threads/:id', kernel.middleware.isAuthenticated(), (req, res) => {
+        kernel.model.Thread.findById(req.params.id)
+        .populate('messages.sentUserId', '-password -salt')
+        .exec().then(thread => {
+            if (!thread) {
+                return res.status(404).end();
+            }
+            if (thread.fromUserId.toString()===req.user._id.toString() || thread.toUserId.toString()===req.user._id.toString()) {
+                return res.status(200).json(thread);
+            } else {
+                return res.status(403).end();
+            }
+
+        }).catch(err => {
             return res.status(500).json({type: 'SERVER_ERROR', message: err});
         });
     });

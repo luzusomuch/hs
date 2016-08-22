@@ -72,6 +72,26 @@ angular.module('healthStarsApp').config(function($stateProvider) {
     settings: {
       pageTitle: 'HealthStars | My Messages'
     }
+  }).state('profile.myMessagesDetail', {
+    url: '/my-messages/:messageId',
+    templateUrl: 'app/profile/my-message-detail/view.html',
+    controller: 'MyMessageDetailCtrl',
+    controllerAs: 'vm',
+    authenticate: true,
+    settings: {
+      pageTitle: 'HealthStars | My Message Detail'
+    },
+    resolve: {
+      thread: (ThreadService, $stateParams, $location) => {
+        return ThreadService.messageDetail($stateParams.messageId).then(resp => {
+          return resp.data;
+        }).catch(err => {
+          if (err) {
+            return $location.path('404');
+          }
+        });
+      }
+    }
   }).state('profile.detail', {
     url: '/:id/detail',
     templateUrl: 'app/profile/detail/view.html',

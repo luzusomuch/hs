@@ -1,0 +1,38 @@
+<div class="container">
+	<hs-profile-menu-header></hs-profile-menu-header>
+	<div class="row">
+		<div class="col-sm-4 col-lg-3">
+			<div class="box-blue p15">
+				<hs-user-friends u-id="vm.authUser._id"></hs-user-friends>
+			</div>
+		</div>
+		<div class="col-sm-8 col-lg-9">
+			<div class="box-blue p15">
+                <div class="title-blue"> {{'MENU_MY_MESSENGER'| translate}}</div>
+
+                <div class="top-message m20">
+                    <div class="pull-left">
+                        <a href="#" class="btn-create" data-toggle="modal" data-target="#myModal"><i class="fa fa-envelope-o"></i> {{'COMPOSE' | translate}}</a>
+                    </div>
+                    <div class="search-main pull-right">
+                        <input ng-model="vm.searchTerm" type="text" class="form-control" placeholder="Search">
+                        <button ng-click="vm.search(vm.searchTerm)"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+
+                <ul class="list-message">
+                    <li class="new-message" ng-repeat="owner in vm.threads.items">
+                        <a ui-sref="profile.myMessagesDetail({messageId: owner.threadId})">
+                            <img src="{{owner | avatarUrl}}">
+                            <h4>{{owner.name}}</h4>
+                            <p>{{owner.lastMessage.message}}</p>
+                            <span class="date-mesage">{{owner.threadUpdatedAt | fromNow}}</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <uib-pagination class="pagination-sm" items-per-page="vm.threads.pageSize" total-items="vm.threads.totalItem" ng-model="vm.threads.page" ng-change="vm.getItems()"></uib-pagination>
+            </div>
+		</div>
+	</div>
+</div>

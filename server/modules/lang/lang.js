@@ -248,7 +248,8 @@ let Language = {
 		SEARCH_FRIEND: 'Search friend',
 		UNFRIEND: 'Unfriend', 
 		LOAD_MORE_FRIENDS: 'Load more friends',
-		COMPOSE: 'Compose'
+		COMPOSE: 'Compose',
+		NEW_MESSAGE: 'New message'
 	},
 	de: {
 

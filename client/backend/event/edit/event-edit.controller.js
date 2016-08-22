@@ -11,8 +11,9 @@ class BackendEventEditCtrl {
 		this.event.startTime = new Date(moment().hours(moment(event.startDateTime).hours()).minutes(moment(event.startDateTime).minutes()));
 		this.event.endTime = new Date(moment().hours(moment(event.endDateTime).hours()).minutes(moment(event.endDateTime).minutes()));
 		this.event.isRepeat = (event.repeat && event.repeat.type) ? true : false;
-		this.address = {
-			selected: {
+    this.address = {};
+    if (this.event.location.fullAddress) {
+  		this.address.selected = {
 				formatted_address: event.location.fullAddress,
 				formatted_short_address: event.location.fullAddress.substr(0, 35) + ' ...',
 				geometry: {
@@ -25,8 +26,8 @@ class BackendEventEditCtrl {
 					long_name: event.location.country,
 					short_name: event.location.countryCode
 				}]
-			}
-		};
+			};
+    }
 		this.event.award = event.awardId;
 		this.event.participants = event.participantsId;
 		// End init event
@@ -224,19 +225,23 @@ class BackendEventEditCtrl {
     if (!this.event.endDate || !this.event.endTime) {
       this.errors.endDateTime = true;
     }
-    if (!this.address.selected) {
+    if (!this.address.selected && this.selectedCategory.type!=='action') {
       this.errors.location = true;
     }
     if (!this.event.award) {
       this.errors.award = true;
     }
 
-  	if (form.$valid && this.address.selected) {
-  		var selectedAddress = this.address.selected;
+		var selectedAddress = this.address.selected;
+    if (selectedAddress) {
       this.event.location.coordinates = [selectedAddress.geometry.location.lng, selectedAddress.geometry.location.lat];
       this.event.location.country = selectedAddress.address_components[selectedAddress.address_components.length -1].long_name;
       this.event.location.countryCode = selectedAddress.address_components[selectedAddress.address_components.length -1].short_name;
       this.event.location.fullAddress = selectedAddress.formatted_address;
+    } else {
+      this.event.location.coordinates = [0, 0];
+    }
+    if (form.$valid && Object.keys(this.errors).length === 0) {
 
   		this.event.startDateTime = new Date(moment(this.event.startDate).hours(moment(this.event.startTime).hours()).minutes(moment(this.event.startTime).minutes()));
   		this.event.endDateTime = new Date(moment(this.event.endDate).hours(moment(this.event.endTime).hours()).minutes(moment(this.event.endTime).minutes()));

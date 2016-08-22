@@ -238,15 +238,16 @@
 		</div>
     <div class="col-sm-4 col-lg-3 pc-show">
       <div class="box-blue p15">
-        <div class="title-blue">{{'FRIENDS_LIST' | translate}} ({{vm.friends.length}}) <a href="#" class="show-all-box">Show all</a></div>
-        <ul class="list-media list-friend list-friend-1">
+        <hs-user-friends u-id="vm.user._id"></hs-user-friends>
+        <!-- <div class="title-blue">{{'FRIENDS_LIST' | translate}} ({{vm.friends.length}}) <a href="#" class="show-all-box">Show all</a></div> -->
+        <!-- <ul class="list-media list-friend list-friend-1">
           <li ng-repeat="friend in vm.friends">
             <div class="img-media">
               <a href="#"></a><a href="#"><img src="friend.avatar.metadata.small"></a>
             </div>
             <h4><a href="#">{{friend.name}}</a></h4>
           </li>
-        </ul>
+        </ul> -->
     </div>
     <div class="box-blue p15">
       <div class="title-blue">RELATED EVENTS <a href="#" class="show-all-box">Show all</a></div>

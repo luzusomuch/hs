@@ -36,187 +36,198 @@ module.exports = function(kernel) {
       if (!req.body.event.award) {
         return res.status(422).json({type: 'EVENT_AWARD_REQUIRED', path: 'award', message: 'Award is required'});
       }
-      if (!req.body.event.location.fullAddress) {
-        return res.status(422).json({type: 'EVENT_LOCATION_REQUIRED', path: 'location', message: 'Location is required'}); 
-      }
 
-      var data = {
-        name: req.body.event.name,
-        description: req.body.event.description,
-        categoryId: req.body.event.categoryId,
-        startDateTime: req.body.event.startDateTime,
-        endDateTime: req.body.event.endDateTime,
-        awardId: req.body.event.award._id
-      };
-      data.ownerId = req.user._id;
-      data.organizerId = req.user._id;
-      data.public = (req.body.event.public==='true') ? true : false;
-      data.private = !data.public;
-      data.location = req.body.event.location;
-      if (req.body.event.participants) {
-        if (req.body.event.participants._id instanceof Array) {
-          data.participantsId = req.body.event.participants._id;
-        } else {
-          data.participantsId = [req.body.event.participants._id];
+      kernel.model.Category.findById(req.body.event.categoryId).then(category => {
+        if (!category) {
+          return res.status(404).end();
         }
-      } else {
-        data.participantsId = [];
-      }
-      if (req.body.event.isRepeat === 'true') {
-        var repeatTypes = ['daily', 'weekly', 'monthly'];
-        if (!req.body.event.repeat.startDate || !req.body.event.repeat.endDate || !req.body.event.repeat.type) {
-          return res.status(422).json({type: 'EVENT_REPEATING_MISSING_ENTITIES', path: 'repeat', message: 'Event repeat is missing some entities'}); 
+        if (category.type!=='action' && !req.body.event.location.fullAddress) {
+          return res.status(422).json({type: 'EVENT_LOCATION_REQUIRED', path: 'location', message: 'Location is required'}); 
+        } else if (category.type==='action') {
+          req.body.event.location = {
+            coordinates: [0, 0]
+          };
         }
-        if (repeatTypes.indexOf(req.body.event.repeat.type) === -1) {
-          return res.status(422).json({type: 'EVENT_REPEATING_ENTITY_NOT_VALID', path: 'repeat', message: 'Event repeat entity is not valid'});
-        }
-        data.repeat = req.body.event.repeat;
-      }
-
-      var schema = Joi.object().keys({
-        name: Joi.string().required().options({
-          language: {
-            key: 'name'
-          }
-        }),
-        description: Joi.string().required().options({
-          language: {
-            key: 'description'
-          }
-        }),
-        categoryId: Joi.string().required().options({
-          language: {
-            key: 'categoryId'
-          }
-        }),
-        startDateTime: Joi.date().required().options({
-          language: {
-            key: 'startDateTime'
-          }
-        }),
-        endDateTime: Joi.date().required().options({
-          language: {
-            key: 'endDateTime'
-          }
-        }),
-        awardId: Joi.string().required().options({
-          language: {
-            key: 'award'
-          }
-        }),
-        participantsId: Joi.array(Joi.string()).default([])
-      });
-      var result = Joi.validate(data, schema, {
-        stripUnknown: true,
-        abortEarly: false,
-        allowUnknown: true
-      });
-
-      if (result.error) {
-        var errors = [];
-        result.error.details.forEach(error => {
-          var type;
-          switch (error.type) {
-            case 'string.name': 
-              type = 'EVENT_NAME_REQUIRED';
-              break;
-            case 'string.description':
-              type = 'EVENT_DESCRIPTION_REQUIRED';
-              break;
-            case 'string.categoryId': 
-              type = 'EVENT_CATEGORY_REQUIRED';
-              break;
-            case 'string.startDateTime':
-              type = 'EVENT_START_DATE_TIME_REQUIRED';
-              break;
-            case 'string.endDateTime': 
-              type = 'EVENT_END_DATE_TIME_REQUIRED';
-              break;
-            case 'string.award':
-              type = 'EVENT_AWARD_REQUIRED';
-              break;
-            case 'string.public':
-              type = 'EVENT_STATUS';
-              break;
-            default:
-              break;
-          }
-          errors.push({type: type, path: error.path, message: error.message});
-        });
-        // return kernel.errorsHandler.parseError(errors);
-        return res.status(422).json(errors);
-      }
-
-      if (moment(moment(data.startDateTime).format('YYYY-MM-DD HH:mm')).isSameOrAfter(moment(data.endDateTime).format('YYYY-MM-DD HH:mm'))) {
-        return res.status(422).json({type: 'CHECK_DATE_TIME_AGAIN', path: 'datetime', message: 'Check your date time again'})
-      }
-
-      async.each(req.files, (file, callback) => {
-        var photo = {
-          ownerId: req.user._id,
-          metadata: {
-            tmp: file.filename
-          }
+        var data = {
+          name: req.body.event.name,
+          description: req.body.event.description,
+          categoryId: req.body.event.categoryId,
+          startDateTime: req.body.event.startDateTime,
+          endDateTime: req.body.event.endDateTime,
+          awardId: req.body.event.award._id
         };
-        let model = new kernel.model.Photo(photo);
-        model.save().then(saved => {
-          if (req.body.event.bannerName && req.body.event.bannerName===file.filename) {
-            newBannerId = saved._id;
+        data.ownerId = req.user._id;
+        data.organizerId = req.user._id;
+        data.public = (req.body.event.public==='true') ? true : false;
+        data.private = !data.public;
+        data.location = req.body.event.location;
+        if (req.body.event.participants) {
+          if (req.body.event.participants._id instanceof Array) {
+            data.participantsId = req.body.event.participants._id;
           } else {
-            uploadedPhotoIds.push(saved._id);
+            data.participantsId = [req.body.event.participants._id];
           }
-          kernel.queue.create('PROCESS_AWS', saved).save();
-          callback(null, uploadedPhotoIds);
-        }).catch(err => {
-          callback(err);
-        });
-      }, () => {
-        data.photosId = uploadedPhotoIds;
-        if (req.body.event.bannerName && req.body.event.bannerName !== 'null') {
-          data.banner = newBannerId;
+        } else {
+          data.participantsId = [];
         }
-        data.stats = {
-          totalParticipants: data.participantsId.length
-        };
-        let model = new kernel.model.Event(data);
-        model.save().then(event => {
-          var url = kernel.config.baseUrl + 'event/'+event._id;
-          async.each(event.participantsId, (id, cb) => {
-            kernel.model.User.findById(id, (err, user) => {
-              if (err || ! user) {return cb();}
-              kernel.emit('SEND_MAIL', {
-                template: 'event-created.html',
-                subject: 'New Event Created Named ' + event.name,
-                data: {
-                  user: user, 
-                  url: url,
-                  event: event
-                },
-                to: user.email
-              });
-              cb();
-            });
-          }, () => {
-            kernel.queue.create(kernel.config.ES.events.CREATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
-            kernel.queue.create('GRANT_AWARD', event).save();
-            kernel.queue.create('TOTAL_EVENT_CREATED', {userId: req.user._id}).save();
-            // get all user then update real-time count update in home page
-            kernel.model.User.find({}).then(users => {
-              users.forEach(user => {
-                EventBus.emit('socket:emit', {
-                  event: 'tracking:count-new-event',
-                  room: user._id.toString(),
-                  data: event
-                });
-              });
-              return res.status(200).json(event);
-            }).catch(err => {
-              return res.status(500).json({type: 'SERVER_ERROR'});
-            });
-          });
-        }).catch(err => {
-          return res.status(500).json({type: 'SERVER_ERROR'});
+        if (req.body.event.isRepeat === 'true') {
+          var repeatTypes = ['daily', 'weekly', 'monthly'];
+          if (!req.body.event.repeat.startDate || !req.body.event.repeat.endDate || !req.body.event.repeat.type) {
+            return res.status(422).json({type: 'EVENT_REPEATING_MISSING_ENTITIES', path: 'repeat', message: 'Event repeat is missing some entities'}); 
+          }
+          if (repeatTypes.indexOf(req.body.event.repeat.type) === -1) {
+            return res.status(422).json({type: 'EVENT_REPEATING_ENTITY_NOT_VALID', path: 'repeat', message: 'Event repeat entity is not valid'});
+          }
+          data.repeat = req.body.event.repeat;
+        }
+
+        var schema = Joi.object().keys({
+          name: Joi.string().required().options({
+            language: {
+              key: 'name'
+            }
+          }),
+          description: Joi.string().required().options({
+            language: {
+              key: 'description'
+            }
+          }),
+          categoryId: Joi.string().required().options({
+            language: {
+              key: 'categoryId'
+            }
+          }),
+          startDateTime: Joi.date().required().options({
+            language: {
+              key: 'startDateTime'
+            }
+          }),
+          endDateTime: Joi.date().required().options({
+            language: {
+              key: 'endDateTime'
+            }
+          }),
+          awardId: Joi.string().required().options({
+            language: {
+              key: 'award'
+            }
+          }),
+          participantsId: Joi.array(Joi.string()).default([])
         });
+        var result = Joi.validate(data, schema, {
+          stripUnknown: true,
+          abortEarly: false,
+          allowUnknown: true
+        });
+
+        if (result.error) {
+          var errors = [];
+          result.error.details.forEach(error => {
+            var type;
+            switch (error.type) {
+              case 'string.name': 
+                type = 'EVENT_NAME_REQUIRED';
+                break;
+              case 'string.description':
+                type = 'EVENT_DESCRIPTION_REQUIRED';
+                break;
+              case 'string.categoryId': 
+                type = 'EVENT_CATEGORY_REQUIRED';
+                break;
+              case 'string.startDateTime':
+                type = 'EVENT_START_DATE_TIME_REQUIRED';
+                break;
+              case 'string.endDateTime': 
+                type = 'EVENT_END_DATE_TIME_REQUIRED';
+                break;
+              case 'string.award':
+                type = 'EVENT_AWARD_REQUIRED';
+                break;
+              case 'string.public':
+                type = 'EVENT_STATUS';
+                break;
+              default:
+                break;
+            }
+            errors.push({type: type, path: error.path, message: error.message});
+          });
+          // return kernel.errorsHandler.parseError(errors);
+          return res.status(422).json(errors);
+        }
+
+        if (moment(moment(data.startDateTime).format('YYYY-MM-DD HH:mm')).isSameOrAfter(moment(data.endDateTime).format('YYYY-MM-DD HH:mm'))) {
+          return res.status(422).json({type: 'CHECK_DATE_TIME_AGAIN', path: 'datetime', message: 'Check your date time again'})
+        }
+
+        async.each(req.files, (file, callback) => {
+          var photo = {
+            ownerId: req.user._id,
+            metadata: {
+              tmp: file.filename
+            }
+          };
+          let model = new kernel.model.Photo(photo);
+          model.save().then(saved => {
+            if (req.body.event.bannerName && req.body.event.bannerName===file.filename) {
+              newBannerId = saved._id;
+            } else {
+              uploadedPhotoIds.push(saved._id);
+            }
+            kernel.queue.create('PROCESS_AWS', saved).save();
+            callback(null, uploadedPhotoIds);
+          }).catch(err => {
+            callback(err);
+          });
+        }, () => {
+          data.photosId = uploadedPhotoIds;
+          if (req.body.event.bannerName && req.body.event.bannerName !== 'null') {
+            data.banner = newBannerId;
+          }
+          data.stats = {
+            totalParticipants: data.participantsId.length
+          };
+          let model = new kernel.model.Event(data);
+          model.save().then(event => {
+            var url = kernel.config.baseUrl + 'event/'+event._id;
+            async.each(event.participantsId, (id, cb) => {
+              kernel.model.User.findById(id, (err, user) => {
+                if (err || ! user) {return cb();}
+                kernel.emit('SEND_MAIL', {
+                  template: 'event-created.html',
+                  subject: 'New Event Created Named ' + event.name,
+                  data: {
+                    user: user, 
+                    url: url,
+                    event: event
+                  },
+                  to: user.email
+                });
+                cb();
+              });
+            }, () => {
+              kernel.queue.create(kernel.config.ES.events.CREATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
+              kernel.queue.create('GRANT_AWARD', event).save();
+              kernel.queue.create('TOTAL_EVENT_CREATED', {userId: req.user._id}).save();
+              // get all user then update real-time count update in home page
+              kernel.model.User.find({}).then(users => {
+                users.forEach(user => {
+                  EventBus.emit('socket:emit', {
+                    event: 'tracking:count-new-event',
+                    room: user._id.toString(),
+                    data: event
+                  });
+                });
+                return res.status(200).json(event);
+              }).catch(err => {
+                return res.status(500).json({type: 'SERVER_ERROR'});
+              });
+            });
+          }).catch(err => {
+            return res.status(500).json({type: 'SERVER_ERROR'});
+          });
+        });
+      }).catch(err => {
+        return res.status(500).json({type: 'SERVER_ERROR'}); 
       });
     });
   });
@@ -418,7 +429,6 @@ module.exports = function(kernel) {
 
     kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {
       if(err) {
-        console.log(err);
         return res.status(500).json({type: 'SERVER_ERROR'});
       }
       let suggests = _.map(result.items, 'name');
@@ -500,182 +510,193 @@ module.exports = function(kernel) {
           if (!req.body.event.award) {
             return res.status(422).json({type: 'EVENT_AWARD_REQUIRED', path: 'award', message: 'Award is required'});
           }
-          if (!req.body.event.location.fullAddress) {
-            return res.status(422).json({type: 'EVENT_LOCATION_REQUIRED', path: 'location', message: 'Location is required'}); 
-          }
-
-          var data = {
-            name: req.body.event.name,
-            description: req.body.event.description,
-            categoryId: req.body.event.categoryId,
-            startDateTime: req.body.event.startDateTime,
-            endDateTime: req.body.event.endDateTime,
-            awardId: req.body.event.award._id
-          };
-
-          var schema = Joi.object().keys({
-            name: Joi.string().required().options({
-              language: {
-                key: 'name'
-              }
-            }),
-            description: Joi.string().required().options({
-              language: {
-                key: 'description'
-              }
-            }),
-            categoryId: Joi.string().required().options({
-              language: {
-                key: 'categoryId'
-              }
-            }),
-            startDateTime: Joi.date().required().options({
-              language: {
-                key: 'startDateTime'
-              }
-            }),
-            endDateTime: Joi.date().required().options({
-              language: {
-                key: 'endDateTime'
-              }
-            }),
-            awardId: Joi.string().required().options({
-              language: {
-                key: 'award'
-              }
-            })
-          });
-          var result = Joi.validate(data, schema, {
-            stripUnknown: true,
-            abortEarly: false,
-            allowUnknown: true
-          });
-
-          if (result.error) {
-            var errors = [];
-            result.error.details.forEach(error => {
-              var type;
-              switch (error.type) {
-                case 'string.name': 
-                  type = 'EVENT_NAME_REQUIRED';
-                  break;
-                case 'string.description':
-                  type = 'EVENT_DESCRIPTION_REQUIRED';
-                  break;
-                case 'string.categoryId': 
-                  type = 'EVENT_CATEGORY_REQUIRED';
-                  break;
-                case 'string.startDateTime':
-                  type = 'EVENT_START_DATE_TIME_REQUIRED';
-                  break;
-                case 'string.endDateTime': 
-                  type = 'EVENT_END_DATE_TIME_REQUIRED';
-                  break;
-                case 'string.award':
-                  type = 'EVENT_AWARD_REQUIRED';
-                  break;
-                case 'string.public':
-                  type = 'EVENT_STATUS';
-                  break;
-                default:
-                  break;
-              }
-              errors.push({type: type, path: error.path, message: error.message});
-            });
-            return res.status(422).json(errors);
-          }
-
-          if (moment(moment(data.startDateTime).format('YYYY-MM-DD HH:mm')).isSameOrAfter(moment(data.endDateTime).format('YYYY-MM-DD HH:mm'))) {
-            return res.status(422).json({type: 'CHECK_DATE_TIME_AGAIN', path: 'datetime', message: 'Check your date time again'})
-          }
-
-          // add or remove event photos
-          if (req.body.event.photos) {
-            if (req.body.event.photos instanceof Array) {
-              event.photosId = req.body.event.photos;
-            } else {
-              event.photosId = [req.body.event.photos];
+          kernel.model.Category.findById(req.body.event.categoryId).then(category => {
+            if (!category) {
+              return res.status(404).end();
             }
-          }
-          // get unique photo id
-          event.photosId = _.map(_.groupBy(event.photosId, (doc) => {
-            return doc;
-          }), (grouped) => {
-            return grouped[0];
-          });
-          // update event photos to empty when client site has removed all
-          if (Number(req.body.event.photosLength) === 0) {
-            event.photosId = [];
-          }
-          // upload event photos
-          let newBannerId;
-          async.each(req.files, (file, callback) => {
-            var photo = {
-              ownerId: req.user._id,
-              metadata: {
-                tmp: file.filename
-              }
+            if (category.type!=='action' && !req.body.event.location.fullAddress) {
+              return res.status(422).json({type: 'EVENT_LOCATION_REQUIRED', path: 'location', message: 'Location is required'}); 
+            } else if (category.type==='action') {
+              req.body.event.location = {
+                coordinates: [0, 0],
+                type: 'Point'
+              };
+            }
+            var data = {
+              name: req.body.event.name,
+              description: req.body.event.description,
+              categoryId: req.body.event.categoryId,
+              startDateTime: req.body.event.startDateTime,
+              endDateTime: req.body.event.endDateTime,
+              awardId: req.body.event.award._id
             };
-            let model = new kernel.model.Photo(photo);
-            model.save().then(saved => {
-              if (req.body.event.bannerName && req.body.event.bannerName===file.filename) {
-                newBannerId = saved._id;
-              } else {
-                event.photosId.push(saved._id);
-              }
-              kernel.queue.create('PROCESS_AWS', saved).save();
-              callback(null);
-            }).catch(err => {
-              callback(err);
-            });
-          }, () => {
-            // Update data
-            event.name = req.body.event.name;
-            event.description = req.body.event.description;
-            event.categoryId = req.body.event.categoryId;
-            event.startDateTime = req.body.event.startDateTime;
-            event.endDateTime = req.body.event.endDateTime;
-            event.awardId = req.body.event.award._id;
-            event.public = (req.body.event.public==='true') ? true : false;
-            event.private = !event.public;
-            event.location = req.body.event.location;
 
-            if (req.body.event.bannerName && req.body.event.bannerName !== 'null') {
-              event.banner = newBannerId;
+            var schema = Joi.object().keys({
+              name: Joi.string().required().options({
+                language: {
+                  key: 'name'
+                }
+              }),
+              description: Joi.string().required().options({
+                language: {
+                  key: 'description'
+                }
+              }),
+              categoryId: Joi.string().required().options({
+                language: {
+                  key: 'categoryId'
+                }
+              }),
+              startDateTime: Joi.date().required().options({
+                language: {
+                  key: 'startDateTime'
+                }
+              }),
+              endDateTime: Joi.date().required().options({
+                language: {
+                  key: 'endDateTime'
+                }
+              }),
+              awardId: Joi.string().required().options({
+                language: {
+                  key: 'award'
+                }
+              })
+            });
+            var result = Joi.validate(data, schema, {
+              stripUnknown: true,
+              abortEarly: false,
+              allowUnknown: true
+            });
+
+            if (result.error) {
+              var errors = [];
+              result.error.details.forEach(error => {
+                var type;
+                switch (error.type) {
+                  case 'string.name': 
+                    type = 'EVENT_NAME_REQUIRED';
+                    break;
+                  case 'string.description':
+                    type = 'EVENT_DESCRIPTION_REQUIRED';
+                    break;
+                  case 'string.categoryId': 
+                    type = 'EVENT_CATEGORY_REQUIRED';
+                    break;
+                  case 'string.startDateTime':
+                    type = 'EVENT_START_DATE_TIME_REQUIRED';
+                    break;
+                  case 'string.endDateTime': 
+                    type = 'EVENT_END_DATE_TIME_REQUIRED';
+                    break;
+                  case 'string.award':
+                    type = 'EVENT_AWARD_REQUIRED';
+                    break;
+                  case 'string.public':
+                    type = 'EVENT_STATUS';
+                    break;
+                  default:
+                    break;
+                }
+                errors.push({type: type, path: error.path, message: error.message});
+              });
+              return res.status(422).json(errors);
             }
-            if (req.body.event.participants) {
-              if (req.body.event.participants._id instanceof Array) {
-                event.participantsId = _.union(event.participantsId, req.body.event.participants._id);
+
+            if (moment(moment(data.startDateTime).format('YYYY-MM-DD HH:mm')).isSameOrAfter(moment(data.endDateTime).format('YYYY-MM-DD HH:mm'))) {
+              return res.status(422).json({type: 'CHECK_DATE_TIME_AGAIN', path: 'datetime', message: 'Check your date time again'})
+            }
+
+            // add or remove event photos
+            if (req.body.event.photos) {
+              if (req.body.event.photos instanceof Array) {
+                event.photosId = req.body.event.photos;
               } else {
-                event.participantsId.push(req.body.event.participants._id);
+                event.photosId = [req.body.event.photos];
               }
-            } else {
-              event.participantsId = [];
             }
-            // get unique participants
-            event.participantsId = _.map(_.groupBy(event.participantsId, (doc) => {
+            // get unique photo id
+            event.photosId = _.map(_.groupBy(event.photosId, (doc) => {
               return doc;
             }), (grouped) => {
               return grouped[0];
             });
-
-            if (req.body.event.isRepeat === 'true') {
-              var repeatTypes = ['daily', 'weekly', 'monthly'];
-              if (!req.body.event.repeat.startDate || !req.body.event.repeat.endDate || !req.body.event.repeat.type) {
-                return res.status(422).json({type: 'EVENT_REPEATING_MISSING_ENTITIES', path: 'repeat', message: 'Event repeat is missing some entities'}); 
-              }
-              if (repeatTypes.indexOf(req.body.event.repeat.type) === -1) {
-                return res.status(422).json({type: 'EVENT_REPEATING_ENTITY_NOT_VALID', path: 'repeat', message: 'Event repeat entity is not valid'});
-              }
-              event.repeat = req.body.event.repeat;
+            // update event photos to empty when client site has removed all
+            if (Number(req.body.event.photosLength) === 0) {
+              event.photosId = [];
             }
-            event.stats.totalParticipants = event.participantsId.length;
-            event.save().then(() => {
-              kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
-              return res.status(200).json({type: 'EVENT_UPDATE_SUCCESS', message: 'Event updated'});
-            }).catch(err => {
-              return res.status(500).json({type: 'SERVER_ERROR'});
+            // upload event photos
+            let newBannerId;
+            async.each(req.files, (file, callback) => {
+              var photo = {
+                ownerId: req.user._id,
+                metadata: {
+                  tmp: file.filename
+                }
+              };
+              let model = new kernel.model.Photo(photo);
+              model.save().then(saved => {
+                if (req.body.event.bannerName && req.body.event.bannerName===file.filename) {
+                  newBannerId = saved._id;
+                } else {
+                  event.photosId.push(saved._id);
+                }
+                kernel.queue.create('PROCESS_AWS', saved).save();
+                callback(null);
+              }).catch(err => {
+                callback(err);
+              });
+            }, () => {
+              // Update data
+              event.name = req.body.event.name;
+              event.description = req.body.event.description;
+              event.categoryId = req.body.event.categoryId;
+              event.startDateTime = req.body.event.startDateTime;
+              event.endDateTime = req.body.event.endDateTime;
+              event.awardId = req.body.event.award._id;
+              event.public = (req.body.event.public==='true') ? true : false;
+              event.private = !event.public;
+              event.location = req.body.event.location;
+
+              if (req.body.event.bannerName && req.body.event.bannerName !== 'null') {
+                event.banner = newBannerId;
+              }
+              if (req.body.event.participants) {
+                if (req.body.event.participants._id instanceof Array) {
+                  event.participantsId = _.union(event.participantsId, req.body.event.participants._id);
+                } else {
+                  event.participantsId.push(req.body.event.participants._id);
+                }
+              } else {
+                event.participantsId = [];
+              }
+              // get unique participants
+              event.participantsId = _.map(_.groupBy(event.participantsId, (doc) => {
+                return doc;
+              }), (grouped) => {
+                return grouped[0];
+              });
+
+              if (req.body.event.isRepeat === 'true') {
+                var repeatTypes = ['daily', 'weekly', 'monthly'];
+                if (!req.body.event.repeat.startDate || !req.body.event.repeat.endDate || !req.body.event.repeat.type) {
+                  return res.status(422).json({type: 'EVENT_REPEATING_MISSING_ENTITIES', path: 'repeat', message: 'Event repeat is missing some entities'}); 
+                }
+                if (repeatTypes.indexOf(req.body.event.repeat.type) === -1) {
+                  return res.status(422).json({type: 'EVENT_REPEATING_ENTITY_NOT_VALID', path: 'repeat', message: 'Event repeat entity is not valid'});
+                }
+                event.repeat = req.body.event.repeat;
+              }
+              event.stats.totalParticipants = event.participantsId.length;
+              event.save().then(() => {
+                kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
+                return res.status(200).json({type: 'EVENT_UPDATE_SUCCESS', message: 'Event updated'});
+              }).catch(err => {
+                return res.status(500).json({type: 'SERVER_ERROR'});
+              });
             });
+          }).catch(err => {
+            return res.status(500).json({type: 'SERVER_ERROR'});
           });
         });
       } else {
@@ -749,7 +770,6 @@ module.exports = function(kernel) {
           }
         ], (err, result) => {
           if(err) {
-            console.log(err);
             return  res.status(500).json({type: 'SERVER_ERROR'});
           }
           return res.status(200).json(result);
@@ -1177,12 +1197,10 @@ module.exports = function(kernel) {
 
     async.waterfall(funcs, (err, query) => {
       if(err) {
-        console.log(err);
         return res.status(500).json({type: 'SERVER_ERROR'}); 
       }
       let cb = (err, data) => {
         if(err) {
-          console.log(err);
           return res.status(500).json({type: 'SERVER_ERROR'});
         } 
         if(!locationCheck || radius > 100 || data.items.length >= limit) {

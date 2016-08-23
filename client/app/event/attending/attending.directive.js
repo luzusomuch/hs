@@ -1,7 +1,7 @@
 'use strict';
 
 class EventAttendingCtrl {
-	constructor($scope, EventService, $state, $localStorage, socket, $uibModal, RelationService) {
+	constructor($scope, $rootScope, EventService, $state, $localStorage, socket, $uibModal, RelationService) {
 		this.$uibModal = $uibModal;
 		this.RelationService = RelationService;
 		this.EventService = EventService;
@@ -19,6 +19,12 @@ class EventAttendingCtrl {
 					this.participants = res.data;
 				});
 			}
+		});
+
+		$rootScope.$on('event-update-participants', () => {
+			EventService.getParticipants($scope.eId, {pageSize: this.participants.pageSize}).then(res => {
+				this.participants = res.data;
+			});
 		});
 
 		// Tracking online/offline user

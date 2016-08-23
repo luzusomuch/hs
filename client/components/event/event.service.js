@@ -56,6 +56,10 @@
 
       getUserEvent(params) {
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/user-events`, {params: params});
+      },
+
+      attendEvent(id) {
+        return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/attend`)
       }
     };
   }

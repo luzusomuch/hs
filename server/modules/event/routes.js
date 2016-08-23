@@ -1360,4 +1360,32 @@ module.exports = function(kernel) {
       return res.status(500).json({type: 'SERVER_ERROR'});
     })
   });
+
+  /*Attend an event*/
+  kernel.app.put('/api/v1/events/:id/attend', kernel.middleware.isAuthenticated(), (req, res) => {
+    kernel.model.Event.findById(req.params.id).then(event => {
+      if (!event) {
+        return res.status(404).end();
+      }
+      if (event.private) {
+        return res.status(500).json({type: 'SERVER_ERROR', message: 'This event is not public'});
+      }
+      let availableUser = event.participantsId;
+      availableUser.push(event.ownerId);
+      // Check if user is already joined or not
+      if (availableUser.indexOf(req.user._id) === -1) {
+        event.participantsId.push(req.user._id);
+        event.stats.totalParticipants = event.participantsId.length;
+        event.save().then(() => {
+          return res.status(200).end();
+        }).catch(err => {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        });
+      } else {
+        return res.status(409).end();
+      }
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    })
+  });
 };

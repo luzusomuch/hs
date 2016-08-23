@@ -65,6 +65,18 @@
             <div class="box-blue p15">
                 <hs-user-friends u-id="vm.authUser._id"></hs-user-friends>
             </div>
+
+            <div class="box-blue p15">
+                <div class="title-blue">{{'INVITE_SOCIAL_FRIENDS' | translate}}</div>
+                <ul class="media-list">
+                    <li>
+                        <a ng-click="vm.inviteFriend('outlook')" href="#" class="facebook-sign"> Outlook </a>
+                    </li>
+                    <li>
+                        <a ng-click="vm.inviteFriend('google')" href="#" class="google-sign"><i class="fa fa-google-plus"></i> Google </a>
+                    </li>
+                </ul>
+            </div>
         </div>
 	</div>
 </div>

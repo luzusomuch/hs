@@ -249,7 +249,8 @@ let Language = {
 		UNFRIEND: 'Unfriend', 
 		LOAD_MORE_FRIENDS: 'Load more friends',
 		COMPOSE: 'Compose',
-		NEW_MESSAGE: 'New message'
+		NEW_MESSAGE: 'New message',
+		INVITE_SOCIAL_FRIENDS: 'Invite social friends'
 	},
 	de: {
 

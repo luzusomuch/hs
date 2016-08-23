@@ -1,12 +1,13 @@
 'use strict';
 
 class EventDetailCtrl {
-	constructor($scope, $state, event, $localStorage, liked, LikeService, Upload, $cookies, $stateParams, FeedService, PhotoViewer, APP_CONFIG) {
+	constructor($scope, $state, event, $localStorage, liked, LikeService, Upload, $cookies, $stateParams, FeedService, PhotoViewer, APP_CONFIG, EventService) {
 		if (event.blocked) {
 			// TODO show alert event has delete
 			alert('This event has deleted');
 			$state.go('home');
 		}
+		this.$scope = $scope;
 		this.event = event;
 		this.event.url = APP_CONFIG.baseUrl + 'event/detail/'+event._id;
 		this.event.location.lat = this.event.location.coordinates[1];
@@ -26,6 +27,7 @@ class EventDetailCtrl {
 		this.$cookies = $cookies;
 		this.$stateParams = $stateParams;
 		this.FeedService = FeedService;
+		this.EventService = EventService;
 
 		this.page = 1;
 		this.getFeeds({page: this.page});
@@ -149,6 +151,16 @@ class EventDetailCtrl {
 		}).catch(err => {
 			console.log(err);
 			// TODO show error
+		});
+	}
+
+	attendEvent() {
+		this.EventService.attendEvent(this.event._id).then(() => {
+			this.event.participantsId.push(this.authUser);
+			this.$scope.$emit('event-update-participants');
+		}).catch(err => {
+			// TODO show error
+			console.log(err);
 		});
 	}
 

@@ -1,8 +1,10 @@
 'use strict';
 
 class MyHomeCtrl {
-	constructor($scope, $localStorage, APP_CONFIG, PhotoViewer, User, RelationService, Invite) {
+	constructor($scope, $localStorage, APP_CONFIG, PhotoViewer, User, RelationService, Invite, $http, $timeout) {
+		this.$http = $http;
 		this.RelationService = RelationService;
+		this.APP_CONFIG = APP_CONFIG;
 		this.Invite = Invite;
 		this.User = User;
 		this.dashboardItems = {
@@ -21,6 +23,16 @@ class MyHomeCtrl {
 		});
 
 		this.loadItems();
+
+		$timeout(() => {
+			gapi.load('auth2', () => {
+				this.auth2 = gapi.auth2.init({
+					client_id: APP_CONFIG.apiKey.ggAppId,
+					fetch_basic_profile: false,
+					scope: 'profile'
+				});
+			});
+		}, 1000);
 	}
 
 	loadItems() {
@@ -109,6 +121,18 @@ class MyHomeCtrl {
 			});
 		} else {
 			// TODO show error
+		}
+	}
+
+	inviteFriend(type) {
+		if (type==='google') {
+			
+		} else if (type==='outlook') {
+			this.$http.get('https://outlook.office.com/contacts.read').then(resp => {
+				console.log(resp);
+			}).catch(err => {
+				console.log(err);
+			});
 		}
 	}
 }

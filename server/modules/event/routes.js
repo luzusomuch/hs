@@ -1377,6 +1377,7 @@ module.exports = function(kernel) {
         event.participantsId.push(req.user._id);
         event.stats.totalParticipants = event.participantsId.length;
         event.save().then(saved => {
+          kernel.queue.create('GRANT_AWARD_FOR_USER', {event: event, user: req.user}).save();
           kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: saved}).save();
           return res.status(200).end();
         }).catch(err => {

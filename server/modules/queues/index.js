@@ -130,6 +130,55 @@ exports.core = (kernel) => {
     });
 	});
 
+  /*Grant award to specific user*/
+  kernel.queue.process('GRANT_AWARD_FOR_USER', (job, done) => {
+    // receive event and user detail
+    kernel.model.Award.findById(job.data.event.awardId).then(award => {
+      if (!award) {
+        return done({error: 'Award not found'});
+      }
+      let autoGrantAwardType = ['accepted', 'gps'];
+      if (autoGrantAwardType.indexOf(award.type) !== -1) {
+        kernel.model.User.findById(job.data.user._id).then(user => {
+          if (!user) {
+            return done({error: 'User not found'});
+          }
+          if (award.type==='gps' && user.accessViaApp) {
+            kernel.model.GrantAward({
+              ownerId: user._id,
+              awardId: award._id,
+              eventId: job.data.event._id
+            }).save().then(data => {
+              kernel.queue.create('EMAIL_GRANTED_AWARD', data).save();
+              return done();
+            }).catch(err => {
+              return done(err);
+            });
+          } else if (award.type==="accepted") {
+            kernel.model.GrantAward({
+              ownerId: user._id,
+              awardId: award._id,
+              eventId: job.data.event._id
+            }).save().then(data => {
+              kernel.queue.create('EMAIL_GRANTED_AWARD', data).save();
+              return done();
+            }).catch(err => {
+              return done(err);
+            });
+          } else {
+            return done();
+          }
+        }).catch(err => {
+          return done(err);
+        });
+      } else {
+        return done();
+      }
+    }).catch(err => {
+      return done(err);
+    });
+  });
+
   // grant award to participants
   kernel.queue.process('GRANT_AWARD', (job, done) => {
     kernel.model.Award.findById(job.data.awardId).then(award => {

@@ -237,7 +237,7 @@
                 <div class="col-md-9">
                   <ul>
                     <li ng-repeat="participant in vm.event.participants">
-                      <img src="images/user.jpg">
+                      <img width="70" src="{{participant | avatarUrl}}">
                       <a href="#">{{participant.name}}</a>
                       <a href="#" class="delete-list" ng-click="vm.removeParticipant($index)"><i class="fa fa-trash-o"></i></a>
                     </li>

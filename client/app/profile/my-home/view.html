@@ -46,7 +46,9 @@
 
                             <p ng-switch-when="upcoming-event">{{'YOU_ARE_INTERESTED_EVENT' | translate}}: <a ui-sref="event.detail({id: item._id})">{{item.name}}</a></p>
 
-                            <p ng-switch-when="event-invited">{{item.ownerId.name}} {{'INVITE_TO_EVENT' | translate}}</p>
+                            <p ng-switch-when="event-invited">{{item.ownerId.name}} {{'INVITE_TO_EVENT' | translate}}: 
+                                <a ui-sref="event.detail({id: item._id})">{{item.name}}</a>
+                            </p>
                         </div>
                         <div class="img-content-post" ng-if="item.itemType!=='relation'">
                             <img src="{{item | eventThumbnail}}" width="100%">

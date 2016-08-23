@@ -1,15 +1,17 @@
 'use strict';
 
 class MyHomeCtrl {
-	constructor($scope, $localStorage, APP_CONFIG, PhotoViewer, User, RelationService, Invite, $http, $timeout) {
+	constructor($scope, $localStorage, APP_CONFIG, PhotoViewer, User, RelationService, Invite, $http, $timeout, SocialService, adalAuthenticationService) {
 		this.$http = $http;
 		this.RelationService = RelationService;
 		this.APP_CONFIG = APP_CONFIG;
 		this.Invite = Invite;
 		this.User = User;
+		this.SocialService = SocialService;
 		this.dashboardItems = {
 			page: 1
 		};
+		this.adalAuthenticationService = adalAuthenticationService;
 		this.authUser = $localStorage.authUser;
 		this.authUser.link = APP_CONFIG.baseUrl + 'profile/' + this.authUser._id +'/detail';
 		this.PhotoViewer = PhotoViewer;
@@ -32,7 +34,12 @@ class MyHomeCtrl {
 					scope: 'profile'
 				});
 			});
+			gapi.load('client', () => {
+				gapi.client.setApiKey(this.APP_CONFIG.apiKey.google);
+				gapi.client.load('plus', 'v1');
+			});
 		}, 1000);
+		console.log(adalAuthenticationService);
 	}
 
 	loadItems() {
@@ -126,12 +133,39 @@ class MyHomeCtrl {
 
 	inviteFriend(type) {
 		if (type==='google') {
-			
+			this.auth2.signIn().then(resp => {
+				console.log(gapi.client.plus.people);
+				var request = gapi.client.plus.people.list({
+				  'userId' : 'me',
+				  'collection' : 'connected'
+				});
+
+				request.execute(function(resp) {
+					console.log(resp);
+					if (resp.error) {
+						// TODO show error
+					}
+				  	var numItems = resp.items.length;
+				  	for (var i = 0; i < numItems; i++) {
+				    	console.log(resp.items[i].displayName);
+				  	}
+				});
+				// console.log(resp);
+				// let userId = this.auth2.currentUser.get().getId();
+				// this.SocialService.getGoogleContacts(userId, 'visible', this.APP_CONFIG.apiKey.google).then(resp => {
+				// 	console.log(resp);
+				// }).catch(err => {
+				// 	console.log(err);
+				// });
+			});
 		} else if (type==='outlook') {
-			this.$http.get('https://outlook.office.com/contacts.read').then(resp => {
+			this.SocialService.getContacts().then(resp => {
 				console.log(resp);
 			}).catch(err => {
 				console.log(err);
+				if (err==='User login is required') {
+					this.adalAuthenticationService.login();
+				}
 			});
 		}
 	}

@@ -1376,7 +1376,8 @@ module.exports = function(kernel) {
       if (availableUser.indexOf(req.user._id) === -1) {
         event.participantsId.push(req.user._id);
         event.stats.totalParticipants = event.participantsId.length;
-        event.save().then(() => {
+        event.save().then(saved => {
+          kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: saved}).save();
           return res.status(200).end();
         }).catch(err => {
           return res.status(500).json({type: 'SERVER_ERROR'});

@@ -42,6 +42,7 @@ const paths = {
     bower: `${clientPath}/bower_components/`
   },
   server: {
+    assets: `${serverPath}/assets/**/*`,
     scripts: [
       `${serverPath}/**/!(*.spec|*.integration).js`,
       `!${serverPath}/config/local.env.sample.js`
@@ -588,6 +589,7 @@ gulp.task('build', cb => {
       'copy:extras',
       'copy:fonts',
       'copy:assets',
+      'copy:assetsServer',
       'copy:server',
       'transpile:server',
       'build:client'
@@ -742,6 +744,12 @@ gulp.task('copy:fonts', () => { //bootstrap-sass-official\vendor\assets\fonts
 gulp.task('copy:assets', () => {
   return gulp.src([paths.client.assets, '!' + paths.client.images])
     .pipe(gulp.dest(`${paths.dist}/${clientPath}/assets`));
+});
+
+gulp.task('copy:assetsServer', () => {
+  return gulp.src([paths.server.assets])
+    .pipe(gulp.dest(`${paths.dist}/${serverPath}/assets`))
+    .pipe(gulp.dest(`${paths.dist}/${serverPath}/assets/.tmp`))
 });
 
 gulp.task('copy:server', () => {

@@ -7,27 +7,10 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
     'internationalPhoneNumber', 'masonry', 'slick', 'ngDraggable', 'monospaced.qrcode', 'ngScrollbars', 
     'angular-smilies', 'AdalAngular'
   ])
-  .config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider, adalAuthenticationServiceProvider, $httpProvider) {
+  .config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
     $urlRouterProvider.otherwise('/');
     cfpLoadingBarProvider.includeSpinner = false;
     $locationProvider.html5Mode(true);
-    adalAuthenticationServiceProvider.init({
-      clientId: '44ac74e5-562d-48b7-8d69-181ffded1176',
-      extraQueryParameter: 'nux=1',
-      endpoints: {
-        "https://outlook.office365.com/api/v1.0": "https://outlook.office365.com/"
-      }
-    }, $httpProvider);
-  })
-  .factory('SocialService', ($http) => {
-    let factory = {};
-    factory.getContacts = () => {
-      return $http.get('https://outlook.office365.com/api/v1.0/me/contacts');
-    };
-    factory.getGoogleContacts = (id, collection, ggAPIKey) => {
-      return $http.get(`https://www.googleapis.com/plus/v1/people/${id}/people/visible?key=${ggAPIKey}`);
-    }
-    return factory;
   })
   .factory('AppSettings', (APP_CONFIG) => {
     let _default = _.merge({

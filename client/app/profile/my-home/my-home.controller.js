@@ -1,17 +1,15 @@
 'use strict';
 
 class MyHomeCtrl {
-	constructor($scope, $localStorage, APP_CONFIG, PhotoViewer, User, RelationService, Invite, $http, $timeout, SocialService, adalAuthenticationService) {
+	constructor($scope, $localStorage, APP_CONFIG, PhotoViewer, User, RelationService, Invite, $http, $timeout) {
 		this.$http = $http;
 		this.RelationService = RelationService;
 		this.APP_CONFIG = APP_CONFIG;
 		this.Invite = Invite;
 		this.User = User;
-		this.SocialService = SocialService;
 		this.dashboardItems = {
 			page: 1
 		};
-		this.adalAuthenticationService = adalAuthenticationService;
 		this.authUser = $localStorage.authUser;
 		this.authUser.link = APP_CONFIG.baseUrl + 'profile/' + this.authUser._id +'/detail';
 		this.PhotoViewer = PhotoViewer;
@@ -37,7 +35,13 @@ class MyHomeCtrl {
 			gapi.load('client', () => {
 				gapi.client.load('plus', 'v1');
 			});
-			console.log(gapi);
+
+			WL.init({
+			    client_id: 'f6f1fb5a-0120-4336-9a00-a0f210e5b125',
+			    redirect_uri: APP_CONFIG.baseUrl+'api/v1/users/hotmail-contacts',
+			    scope: ["wl.basic", "wl.contacts_emails"],
+			    response_type: "token"
+			});
 		}, 1000);
 	}
 
@@ -151,13 +155,21 @@ class MyHomeCtrl {
 				});
 			});
 		} else if (type==='outlook') {
-			this.SocialService.getContacts().then(resp => {
+			WL.login().then(resp => {
 				console.log(resp);
-			}).catch(err => {
-				console.log(err);
-				if (err==='User login is required') {
-					this.adalAuthenticationService.login();
-				}
+				WL.api({
+		            path: "me/contacts",
+		            method: "GET"
+		        }).then(
+		            function (response) {
+		            	console.log(response.data);
+		            },
+		            function (responseFailed) {
+		            	//console.log(responseFailed);
+		            }
+		        );
+			}, responseFailed => {
+				console.log(responseFailed);
 			});
 		}
 	}

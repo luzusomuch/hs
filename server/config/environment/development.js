@@ -69,5 +69,10 @@ module.exports = {
     clientID:     process.env.GOOGLE_ID || '415481653468-jnu548h7uhjeditfm1bqb1hb23fqosoc.apps.googleusercontent.com',
     clientSecret: process.env.GOOGLE_SECRET || '4PloEPjhy6jQt3toY0cDzQ4A',
     callbackURL:  baseUrl + 'auth/google/callback'
+  },
+
+  HOTMAIL: {
+    clientSecret: process.env.HOTMAIL_SECRET || 'ux5VvaC9qGqZiV1f44oSDcw',
+    clientID: process.env.HOTMAIL_ID || 'f6f1fb5a-0120-4336-9a00-a0f210e5b125'
   }
 };

@@ -44,6 +44,12 @@ class UserController {
     this.changeNotificationsSetting = this.changeNotificationsSetting.bind(this);
     this.addSocialAccount = this.addSocialAccount.bind(this);
     this.myDashboard = this.myDashboard.bind(this);
+    this.hotmailContacts = this.hotmailContacts.bind(this);
+  }
+
+  hotmailContacts(req, res) {
+    // res.redirect(config.baseUrl+'/profile/');
+    return res.status(200).end();
   }
 
   /**

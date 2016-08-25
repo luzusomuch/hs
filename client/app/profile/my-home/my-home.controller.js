@@ -37,8 +37,8 @@ class MyHomeCtrl {
 			});
 
 			WL.init({
-			    client_id: 'f6f1fb5a-0120-4336-9a00-a0f210e5b125',
-			    redirect_uri: APP_CONFIG.baseUrl+'api/v1/users/hotmail-contacts',
+			    client_id: APP_CONFIG.apiKey.hotmailId,
+			    redirect_uri: APP_CONFIG.apiKey.hotmailCallbackUrl,
 			    scope: ["wl.basic", "wl.contacts_emails"],
 			    response_type: "token"
 			});

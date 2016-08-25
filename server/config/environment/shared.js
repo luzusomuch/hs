@@ -14,6 +14,8 @@ exports = module.exports = {
   	weather: 'd6ce4efe26d8a70511337db70401d39c',
   	fbAppId: config.FACEBOOK.clientID,
     twAppId: config.TWITTER.clientID,
-    ggAppId: config.GOOGLE.clientID
+    ggAppId: config.GOOGLE.clientID,
+    hotmailId: config.HOTMAIL.clientID,
+    hotmailCallbackUrl: config.HOTMAIL.callbackURL
   }
 };

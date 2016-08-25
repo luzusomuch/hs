@@ -192,9 +192,9 @@ module.exports = function(kernel) {
   kernel.app.get('/api/v1/awards/:id/grantedAwards', kernel.middleware.isAuthenticated(), (req, res) => {
     let condition = {};
     if (req.params.id==='me') {
-      condition = {ownerId: req.user._id};
+      condition = {ownerId: req.user._id, deleted: false};
     } else {
-      condition = {ownerId: req.params.id};
+      condition = {ownerId: req.params.id, deleted: false};
     }
     // if current user id admin then load all records
     if (req.user.role!=='admin') {
@@ -217,7 +217,7 @@ module.exports = function(kernel) {
         .then(u => {
           if (u) {
             let user = u.toJSON();
-            kernel.model.GrantAward.count({ownerId: user._id}).then(count => {
+            kernel.model.GrantAward.count({ownerId: user._id, deleted: false}).then(count => {
               user.totalAwards = count;
               aw.eventId.ownerId = user;
               result.push(aw);

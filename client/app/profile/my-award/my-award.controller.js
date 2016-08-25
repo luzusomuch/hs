@@ -15,7 +15,7 @@ class MyAwardCtrl {
 		this.APP_CONFIG = APP_CONFIG;
 		this.User = User;
 		this.$localStorage = $localStorage;
-		this.authUser = this.$localStorage.authUser;
+		this.authUser = $localStorage.authUser;
 
 		// check current user exhibit rank
 		if (!this.authUser.awardsExhibits || this.authUser.awardsExhibits.length === 0) {

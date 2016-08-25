@@ -1127,7 +1127,7 @@ module.exports = function(kernel) {
               .populate('avatar').exec().then(u => {
                 if (u) {
                   let user = u.toJSON();
-                  kernel.model.GrantAward.count({ownerId: user._id}).then(count => {
+                  kernel.model.GrantAward.count({ownerId: user._id, deleted: false}).then(count => {
                     user.totalAwards = count;
                     item.ownerId = user;
                     cb();

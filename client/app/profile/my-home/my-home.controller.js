@@ -50,6 +50,7 @@ class MyHomeCtrl {
 			this.dashboardItems.items = (this.dashboardItems.items) ? this.dashboardItems.items.concat(resp.data.items) : resp.data.items;
 			this.dashboardItems.totalItem = resp.data.totalItem;
 			this.dashboardItems.page +=1;
+			console.log(this.dashboardItems);
 		});
 	}
 

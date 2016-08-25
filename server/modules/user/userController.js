@@ -628,6 +628,7 @@ class UserController {
     async.parallel([
       (cb) => {
         // Display feeds from friends
+        // this.kernel.model.
         cb(null);
       },
       (cb) => {

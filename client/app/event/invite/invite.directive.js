@@ -33,6 +33,8 @@ class EventInviteCtrl {
 						this.users.splice(index ,1);
 					}
 				});
+				// remove event owner from users list
+				_.remove(this.users, {_id: this.event.ownerId._id});
 
 				// Tracking online/offline user
 			    this.socket.socket.on('tracking:user', (data) => {

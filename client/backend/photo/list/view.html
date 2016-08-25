@@ -42,7 +42,9 @@
 			<tbody>
 				<tr ng-repeat="photo in vm.photos.items | filter: vm.searchText[vm.selectedFilterType] | showBlocked: vm.showBlockedPhotos | orderBy: vm.sortType: vm.sortReverse">
 					<td>{{photo.ownerId.name}}</td>
-					<td>{{photo.event.name}}</td>
+					<td>
+						<a target="_blank" href="/event/detail/{{photo.event._id}}">{{photo.event.name}}</a>
+					</td>
 					<td><img width="150" src="{{photo | imageUrl: 'small'}}"></td>
 					<td>{{photo.createdAt | date: 'HH:mm'}} {{photo.createdAt | date: 'dd-MMMM-yyyy'}}</td>
 					<td>{{(photo.blocked) ? 'TRUE' : 'FALSE' | translate}}</td>

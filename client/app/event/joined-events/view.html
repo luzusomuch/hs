@@ -4,8 +4,8 @@
   	<ul class="event-list">
   		<li class="{{event.categoryId | categoryClass}}" ng-repeat="event in friendsEvents.items">
   			<div class="top-li-event">
-          <a href="#"><img src="{{event.ownerId | avatarUrl}}"></a>
-          <h4><a href="#">{{event.ownerId.name}} &nbsp;</a></h4>
+          <a ui-sref="profile.detail({id: event.ownerId._id})"><img src="{{event.ownerId | avatarUrl}}"></a>
+          <h4><a ui-sref="profile.detail({id: event.ownerId._id})">{{event.ownerId.name}} &nbsp;</a></h4>
           <i class="fa fa-clock-o"></i> {{event.createdAt | fromNow}}
           <div class="arward-li-top">
             <span>{{event.ownerId.totalAwards || 0}}</span>
@@ -13,12 +13,12 @@
           </div>
         </div>
         <div class="text-li-event">
-          <h3>{{event.name}}</h3>
+          <h3 style="cursor:pointer" ui-sref="event.detail({id: event._id})">{{event.name}}</h3>
           <i class="fa fa-calendar"></i> {{event.startDateTime | date : 'dd.MM.yyyy'}}  <i class="fa fa-clock-o"></i> {{event.startDateTime | date: 'HH:mm'}}<br>
           <div class="li-friend-event">
             <i class="fa fa-user-plus"></i>
             <ul>
-                <li ng-repeat="participant in event.participantsId | limitTo: 5"><a href="#"><img src="{{participant | avatarUrl}}"></a></li>
+                <li ng-repeat="participant in event.participantsId | limitTo: 5"><a ui-sref="profile.detail({id: participant._id})"><img src="{{participant | avatarUrl}}"></a></li>
                 <li ng-show="event.participantsId.length - 5 > 0"><a href="#" class="number-friend-event">+{{event.participantsId.length -5}}</a></li>
             </ul>
           </div>

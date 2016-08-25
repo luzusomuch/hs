@@ -30,16 +30,15 @@ class MyHomeCtrl {
 			gapi.load('auth2', () => {
 				this.auth2 = gapi.auth2.init({
 					client_id: APP_CONFIG.apiKey.ggAppId,
-					fetch_basic_profile: false,
-					scope: 'profile'
+					fetch_basic_profile: true,
+					scope: 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/user.emails.read https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/contacts https://www.googleapis.com/auth/contacts.readonly'
 				});
 			});
 			gapi.load('client', () => {
-				gapi.client.setApiKey(this.APP_CONFIG.apiKey.google);
 				gapi.client.load('plus', 'v1');
 			});
+			console.log(gapi);
 		}, 1000);
-		console.log(adalAuthenticationService);
 	}
 
 	loadItems() {
@@ -134,29 +133,22 @@ class MyHomeCtrl {
 	inviteFriend(type) {
 		if (type==='google') {
 			this.auth2.signIn().then(resp => {
-				console.log(gapi.client.plus.people);
-				var request = gapi.client.plus.people.list({
-				  'userId' : 'me',
-				  'collection' : 'connected'
-				});
-
-				request.execute(function(resp) {
-					console.log(resp);
+				gapi.client.plus.people.list({
+				  	'userId' : 'me',
+				  	'collection' : 'visible'
+				}).execute(resp => {
 					if (resp.error) {
 						// TODO show error
+					} else {
+						_.each(resp.items, (item) => {
+							if (item.objectType==='person') {
+								gapi.client.plus.people.get({userId: item.id}).execute(profile => {
+									console.log(profile)
+								});
+							}
+						});
 					}
-				  	var numItems = resp.items.length;
-				  	for (var i = 0; i < numItems; i++) {
-				    	console.log(resp.items[i].displayName);
-				  	}
 				});
-				// console.log(resp);
-				// let userId = this.auth2.currentUser.get().getId();
-				// this.SocialService.getGoogleContacts(userId, 'visible', this.APP_CONFIG.apiKey.google).then(resp => {
-				// 	console.log(resp);
-				// }).catch(err => {
-				// 	console.log(err);
-				// });
 			});
 		} else if (type==='outlook') {
 			this.SocialService.getContacts().then(resp => {

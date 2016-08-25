@@ -15,6 +15,7 @@ class UserFriendCtrl {
 		};
 			
 		$scope.$watch('uId', nv => {
+			console.log(nv);
 			if(nv) {
 				$scope.getFriends();
 			}

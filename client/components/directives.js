@@ -49,7 +49,10 @@ angular.module('healthStarsApp')
       data: '=',
       type: '@',
       shared: '=',
-      allowShow: '='
+      allowShow: '=',
+      startDate: '=',
+      endDate: '=',
+      location: '='
     },
     template : 
       `<div>
@@ -105,6 +108,16 @@ angular.module('healthStarsApp')
             } else if ($scope.photo.metadata.tmp) {
               photo = APP_CONFIG.baseUrl + 'assets/photos/' + $scope.photo.metadata.tmp;
             }
+          }
+          let description = angular.copy($scope.description);
+          if ($scope.location) {
+            description += '. Location: '+ $scope.location;
+          }
+          if ($scope.startDate) {
+            description += '. Start date time: '+ moment($scope.startDate).format('MMM-DD-YYYY');
+          }
+          if ($scope.endDate) {
+            description += '. End date time: '+ moment($scope.endDate).format('MMM-DD-YYYY');
           }
           FB.ui({
             method: 'feed',

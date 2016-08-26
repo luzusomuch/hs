@@ -9,20 +9,24 @@
 
 		<div class="col-sm-8 col-lg-9">
 			<div class="box-blue p15">
-	            <div class="title-blue"> {{'MENU_MY_MESSENGER' | translate}}</div>
+	            <div class="title-blue"> 
+	            	{{'MENU_MY_MESSENGER' | translate}}
 
-	            <!-- <div class="top-message m20">
-	                <div class="pull-left">
-	                    <a href="#" class="btn-create" data-toggle="modal" data-target="#myModal"><i class="fa fa-envelope-o"></i> {{'COMPOSE' | translate}}</a>
-	                </div>
-	                <div class="search-main pull-right">
-	                    <input type="text" class="form-control" placeholder="Search">
-	                    <button><i class="fa fa-search"></i></button>
-	                </div>
-	            </div> -->
+	            	<div class="show-all-box">
+		            	<button class="btn btn-default" ng-click="vm.addTags()">{{'ADD_TAGS' | translate}}</button>
+		            	<button class="btn btn-default" ng-click="vm.block()">{{(vm.thread.blocked) ? 'UNBLOCK_THIS_CONVERSATION' : 'BLOCK_THIS_CONVERSATION' | translate}}</button>
+		            	<label>
+		            		<input ng-click="vm.receiveEmail()" type="checkbox" name="" ng-checked="vm.thread.nonReceiveEmailUsers.indexOf(vm.authUser._id) !== -1">{{'RECEIVE_EMAIL_WHEN_HAVE_NEW_MESSAGE' | translate}}
+		            	</label>
+	            	</div>
+            	</div>
 
 	            <div ng-class="{'box-message-1': message.sentUserId._id===vm.authUser._id}" class="box-message" ng-repeat="message in vm.thread.messages">
-	                <div class="img-box-message"><img src="{{message.sentUserId | avatarUrl}}"></div>
+	                <div class="img-box-message">
+	                	<a ui-sref="profile.detail({id: message.sentUserId._id})">
+	                		<img src="{{message.sentUserId | avatarUrl}}">
+	                	</a>
+	                </div>
 	                <div class="text-box-message">
 	                    <h4><a ui-sref="profile.detail({id: message.sentUserId._id})">{{message.sentUserId.name}}</a></h4>
 	                    <p ng-bind-html="message.message | nl2br | smilies"></p>

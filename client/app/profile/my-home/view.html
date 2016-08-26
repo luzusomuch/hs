@@ -28,8 +28,13 @@
             <div class="box-blue">
                 <div class="post-li" ng-repeat="item in vm.dashboardItems.items">
                     <div class="img-post-li">
-                        <img ng-if="item.itemType==='relation'" src="{{item.fromUserId | avatarUrl}}">
-                        <img ng-if="item.itemType!=='relation'" src="{{item.ownerId | avatarUrl}}">
+                        <a ng-if="item.itemType==='relation'" ui-sref="profile.detail({id: item.fromUserId._id})">
+                            <img src="{{item.fromUserId | avatarUrl}}">
+                        </a>
+
+                        <a ng-if="item.itemType!=='relation'" ui-sref="profile.detail({id: item.ownerId._id})">
+                            <img src="{{item.ownerId | avatarUrl}}">
+                        </a>
                     </div>
                     <div class="content-post-li">
                         <div class="title-post-li" ng-switch="item.itemType">

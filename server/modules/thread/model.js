@@ -12,7 +12,10 @@ module.exports = {
     		createdAt: Date,
             deleted: {type: Boolean, default: false},
             deletedByUserId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}
-    	}]
+    	}],
+        blocked: {type: Boolean, default: false},
+        blockedByUserId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
+        nonReceiveEmailUsers: [{type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}]
     });
 
     //import timestamp for auto create updatedAt, createdAt field manually

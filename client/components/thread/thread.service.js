@@ -23,6 +23,10 @@
 
 	      	messageDetail: (id) => {
 	      		return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/threads/${id}`);		
+	      	},
+
+	      	block: (id) => {
+	      		return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/threads/${id}/block`);		
 	      	}
 	    };
   	}

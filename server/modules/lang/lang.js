@@ -254,7 +254,11 @@ let Language = {
 		LIKED_EVENT: 'Liked event',
 		HAS_LIKED_EVENT: 'has liked event',
 		ATTEND_EVENT: 'Attend event',
-		HAS_ATTEND_EVENT: 'has attend event'
+		HAS_ATTEND_EVENT: 'has attend event',
+		ADD_TAGS: 'Add tags',
+		BLOCK_THIS_CONVERSATION: 'Block this conversation',
+		UNBLOCK_THIS_CONVERSATION: 'Unblock this conversation',
+		RECEIVE_EMAIL_WHEN_HAVE_NEW_MESSAGE: 'Receive email when have new message'
 	},
 	de: {
 

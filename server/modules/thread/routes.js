@@ -237,4 +237,28 @@ module.exports = function(kernel) {
             return res.status(500).json({type: 'SERVER_ERROR', message: err});
         });
     });
+
+    /*Block conversation*/
+    kernel.app.put('/api/v1/threads/:id/block', kernel.middleware.isAuthenticated(), (req, res) => {
+        kernel.model.Thread.findById(req.params.id).then(thread => {
+            if (!thread) {
+                return res.status(404).end();
+            }
+            let availableUser = [thread.fromUserId.toString(), thread.toUserId.toString()];
+            if (availableUser.indexOf(req.user._id.toString()) !== -1) {
+                console.log('asdasdasasd');
+                thread.blocked = !thread.blocked;
+                thread.blockedByUserId = (thread.blocked) ? req.user._id : null;
+                thread.save().then(saved => {
+                    return res.status(200).json({blocked: saved.blocked});
+                }).catch(err => {
+                    return res.status(500).json({type: 'SERVER_ERROR'});        
+                });
+            } else {
+                return res.status(403).end();
+            }
+        }).catch(err => {
+            return res.status(500).json({type: 'SERVER_ERROR'});
+        });
+    });
 };

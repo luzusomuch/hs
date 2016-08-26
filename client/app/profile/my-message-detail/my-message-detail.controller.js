@@ -6,6 +6,7 @@ class MyMessageDetailCtrl {
 		this.$state = $state;
 		this.ThreadService = ThreadService;
 		this.thread = thread;
+		this.thread.nonReceiveEmailUsers = (this.thread.nonReceiveEmailUsers) ? this.thread.nonReceiveEmailUsers : []
 	}
 
 	textAreaAdjust() {
@@ -15,6 +16,10 @@ class MyMessageDetailCtrl {
 	}
 
 	sendMessage(message) {
+		if (this.thread.blocked) {
+			// TODO show error
+			return false;
+		}
 		if (message && message.trim().length > 0) {
 			this.ThreadService.sendMessage(this.thread._id, {message: message}).then(resp => {
 				resp.data.sentUserId = this.authUser;
@@ -28,6 +33,24 @@ class MyMessageDetailCtrl {
 		} else {
 			// TODO show error
 		}
+	}
+
+	receiveEmail() {
+		let index = this.thread.nonReceiveEmailUsers.indexOf(this.authUser._id);
+		if (index !== -1) {
+			this.thread.nonReceiveEmailUsers.splice(index ,1);
+		} else {
+			this.thread.nonReceiveEmailUsers.push(this.authUser._id);
+		}
+	}
+
+	block() {
+		this.ThreadService.block(this.thread._id).then(resp => {
+			this.thread.blocked = resp.data.blocked;
+		}).catch(err => {
+			// TODO show error
+			console.log(err);
+		})
 	}
 }
 

@@ -17,16 +17,39 @@ class BackendAwardListCtrl {
 		this.selectedFilterType = this.filterTypes[0].value;
 		this.sortType = 'createdAt';
 		this.sortReverse = false;
-		this.searchText = {};
+		this.searchItems = [];
+		this.searching = false;
+
+		$scope.$watchGroup(['vm.showBlockedAwards', 'vm.selectedFilterType', 'vm.searchText'], (nv) => {
+			if (nv[0] && nv[2] && nv[2].trim().length > 0) {
+				this.searching = true;
+				this.search({blocked: true, type: nv[1], searchQuery: nv[2]});
+			} else if (nv[0]) {
+				this.searching = true;
+				this.search({blocked: true});
+			} else if (nv[2] && nv[2].trim().length > 0) {
+				this.searching = true;
+				this.search({type: nv[1], searchQuery: nv[2]});
+			} else {
+				this.searching = false;
+			}
+		});
+	}
+
+	search(params) {
+		this.AwardService.search(params).then(resp => {
+			this.searchItems = resp.data.items;
+		}).catch(err => {
+			// TODO shwo error
+			console.log(err);
+		});
 	}
 
 	loadMore() {
-		console.log(this.page);
 		this.AwardService.getAll('null', {page: this.page}).then(resp => {
 	  		this.page += 1;
 	  		this.awards.items = (this.awards.items) ? this.awards.items.concat(resp.data.items) : resp.data.items;
 	  		this.awards.totalItem = resp.data.totalItem;
-	  		console.log(this.awards);
 		}).catch(err => {
 			console.log(err);
 			// TODO show error

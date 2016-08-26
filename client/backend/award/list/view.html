@@ -5,11 +5,11 @@
 
 	<div class="row">
 		<div class="col-sm-8 col-xs-12">
-			<select class="col-sm-3" ng-change="vm.changeFilter(vm.selectedFilterType)" ng-model="vm.selectedFilterType">
+			<select class="col-sm-3" ng-model="vm.selectedFilterType">
 				<option ng-value="type.value" ng-repeat="type in vm.filterTypes">{{type.text | translate}}</option>
 			</select>
 			<div class="col-sm-1"></div>
-			<input class="col-sm-8" type="text" ng-model="vm.searchText[vm.selectedFilterType]">
+			<input class="col-sm-8" type="text" ng-model="vm.searchText">
 		</div>
 		<div class="col-sm-4 col-xs-12">
 			<label>
@@ -42,7 +42,22 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="award in vm.awards.items | filter: vm.searchText[vm.selectedFilterType] | showDeleted: vm.showBlockedAwards | orderBy: vm.sortType: vm.sortReverse">
+				<tr ng-show="!vm.searching" ng-repeat="award in vm.awards.items | orderBy: vm.sortType: vm.sortReverse">
+					<td>{{award.objectName}}</td>
+					<td>{{award.type}}</td>
+					<td>{{award.ownerId.name}}</td>
+					<td>{{award.event.name}}</td>
+					<td><img width="150" src="{{award | eventAwardImageUrl: 'small'}}"></td>
+					<td>{{award.createdAt | date: 'HH:mm'}} {{award.createdAt | date: 'dd-MMMM-yyyy'}}</td>
+					<td>{{(award.deleted) ? 'TRUE' : 'FALSE' | translate}}</td>
+					<td>
+						<a ng-show="!award.deleted" uib-tooltip="{{(!award.deleted) ? 'BLOCK_AWARD' : 'UNBLOCK_AWARD' | translate}}" href="#" ng-click="vm.block(award)"><i class="fa" ng-class="{'fa-trash-o': !award.deleted, 'fa-eye-slash': award.deleted}"></i></a>
+						<a ng-show="!award.deleted" href="#" ng-click="vm.edit(award)"><i class="fa fa-edit"></i></a>
+					</td>
+				</tr>
+
+				<!-- Search -->
+				<tr ng-show="vm.searching" ng-repeat="award in vm.searchItems | orderBy: vm.sortType: vm.sortReverse">
 					<td>{{award.objectName}}</td>
 					<td>{{award.type}}</td>
 					<td>{{award.ownerId.name}}</td>
@@ -58,7 +73,7 @@
 			</tbody>
 		</table>
 	</div>
-	<div ng-show="vm.awards.items.length < vm.awards.totalItem">
+	<div ng-show="vm.awards.items.length < vm.awards.totalItem && !vm.searching">
 		<a ng-click="vm.loadMore()" href="#">{{'LOAD_MORE_AWARDS' | translate}}</a>
 	</div>
 </div>

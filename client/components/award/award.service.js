@@ -28,6 +28,10 @@
 
       delete: (id) => {
       	return $http.delete(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/awards/${id}`);
+      },
+
+      search: (params) => {
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/awards/search`, {params: params});
       }
     };
   }

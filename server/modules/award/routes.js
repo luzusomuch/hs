@@ -110,6 +110,52 @@ module.exports = function(kernel) {
       });
     });
   });
+
+  /*Search award*/
+  kernel.app.get('/api/v1/awards/search', kernel.middleware.hasRole('admin'), (req, res) => {
+    kernel.model.Award.find({
+      deleted: (req.query.blocked) ? true : false
+    })
+    .populate('ownerId', '-password -salt')
+    .populate('objectPhotoId').exec().then(awards => {
+      let results = [];
+      async.each(awards, (award, callback) => {
+        award = award.toJSON();
+        kernel.model.Event.findOne({awardId: award._id}).then(event => {
+          award.event = (event) ? event : null;
+          results.push(award);
+          return callback(null);
+        }).catch(callback);
+      }, (err) => {
+        if (err) {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        }
+        let items = [];
+        if (req.query.type && req.query.searchQuery) {
+          _.each(results, (item) => {
+            if (req.query.type==='ownerId.name') {
+              if (item.ownerId.name.toLowerCase().indexOf(req.query.searchQuery.toLowerCase()) !== -1) {
+                items.push(item);
+              }
+            } else if (req.query.type==='event.name') {
+              if (item.event && item.event.name.toLowerCase().indexOf(req.query.searchQuery.toLowerCase()) !== -1) {
+                items.push(item);
+              }
+            } else if (req.query.type==='objectName') {
+              if (item.objectName.toLowerCase().indexOf(req.query.searchQuery.toLowerCase()) !== -1) {
+                items.push(item);
+              }
+            }
+          });
+        } else {
+          items = results;
+        }
+        return res.status(200).json({items: items});
+      });
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+  });
   
   /**
    * Get list of awards created by current user
@@ -235,7 +281,6 @@ module.exports = function(kernel) {
         return res.status(200).json({items: result, totalItem: result.length});
       });
     }).catch(err => {
-      console.log(err);
       return res.status(500).json({type: 'SERVER_ERROR'});
     });
   });
@@ -343,7 +388,6 @@ module.exports = function(kernel) {
                    tmp: req.file.filename 
                   };
                   photo.save().then(saved => {
-                    console.log(saved);
                     kernel.queue.create('PROCESS_AWS', saved).save();
                     cb(null);
                   }).catch(cb);

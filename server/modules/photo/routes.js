@@ -59,7 +59,7 @@ module.exports = function(kernel) {
 	    		if (err) {
 	    			return res.status(500).json({type: 'SERVER_ERROR'});
 	    		}
-		      	kernel.model.Photo.count({}).then(count => {
+		      	kernel.model.Photo.count({blocked: false}).then(count => {
 		      		return res.status(200).json({items: results, totalItem: count});
 		      	}).catch(err => {
 		      		return res.status(500).json({type: 'SERVER_ERROR'});	

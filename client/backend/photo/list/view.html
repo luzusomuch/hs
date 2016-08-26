@@ -40,7 +40,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-show="!vm.searching" ng-repeat="photo in vm.photos.items | filter: vm.searchText[vm.selectedFilterType] | showBlocked: vm.showBlockedPhotos | orderBy: vm.sortType: vm.sortReverse">
+				<tr ng-show="!vm.searching" ng-repeat="photo in vm.photos.items | orderBy: vm.sortType: vm.sortReverse">
 					<td>{{photo.ownerId.name}}</td>
 					<td>
 						<a target="_blank" href="/event/detail/{{photo.event._id}}">{{photo.event.name}}</a>

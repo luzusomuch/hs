@@ -33,9 +33,7 @@ class BackendPhotoListCtrl {
 
 	searchFn(params) {
 		this.PhotoService.search(params).then(resp => {
-			this.search.page += 1;
 	  		this.search.items = resp.data.items;
-	  		console.log(this.search);
 		}).catch(err => {
 
 		});
@@ -43,6 +41,7 @@ class BackendPhotoListCtrl {
 
 	loadMore() {
 		this.PhotoService.getPhotos({page: this.page}).then(resp => {
+			this.page += 1;
 	  		this.photos.items = (this.photos.items) ? this.photos.items.concat(resp.data.items) : resp.data.items;
 	  		this.photos.totalItem = resp.data.totalItem;
 		}).catch(err => {

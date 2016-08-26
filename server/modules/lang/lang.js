@@ -238,7 +238,7 @@ let Language = {
 		DECLINE: 'Decline',
 		ACCEPT: 'Accept',
 		UPCOMING_EVENT: 'Upcoming event',
-		YOU_ARE_INTERESTED_EVENT: 'You are interested in the event',
+		INTERESTED_EVENT: 'interested in the event',
 		EVENT_INVITES: 'Event invites',
 		INVITE_TO_EVENT: 'invited you to join event',
 		LOAD_MORE_FEEDS: 'Load more feeds',
@@ -250,7 +250,9 @@ let Language = {
 		LOAD_MORE_FRIENDS: 'Load more friends',
 		COMPOSE: 'Compose',
 		NEW_MESSAGE: 'New message',
-		INVITE_SOCIAL_FRIENDS: 'Invite social friends'
+		INVITE_SOCIAL_FRIENDS: 'Invite social friends',
+		LIKED_EVENT: 'Liked event',
+		HAS_LIKED_EVENT: 'has liked event'
 	},
 	de: {
 

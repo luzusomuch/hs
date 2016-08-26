@@ -26,7 +26,7 @@
         </div>
         <div class="col-sm-6">
             <div class="box-blue">
-                <div class="post-li" ng-repeat="item in vm.dashboardItems.items">
+                <div class="post-li" ng-repeat="item in vm.dashboardItems.items | orderBy: createdAt">
                     <div class="img-post-li">
                         <img ng-if="item.itemType==='relation'" src="{{item.fromUserId | avatarUrl}}">
                         <img ng-if="item.itemType!=='relation'" src="{{item.ownerId | avatarUrl}}">
@@ -38,20 +38,26 @@
                             <h4 class="title-generated-home" ng-switch-when="upcoming-event">{{'UPCOMING_EVENT' | translate}}: <span class="date-post">{{item.createdAt | fromNow}}</span></h4>
 
                             <h4 class="title-generated-home" ng-switch-when="event-invited">{{'EVENT_INVITES' | translate}}: <span class="date-post">{{item.createdAt | fromNow}}</span></h4>
+
+                            <h4 class="title-generated-home" ng-switch-when="liked">{{'LIKED_EVENT' | translate}}: <span class="date-post">{{item.createdAt | fromNow}}</span></h4>
                         </div>
                         <div class="content-post-li" ng-switch="item.itemType">
                             <p ng-switch-when="relation">{{item.fromUserId.name}} {{'INVITE_BECOME_FRIEND' | translate}}</p>
                             <a ng-click="vm.friendAccept(item)" ng-switch-when="relation" href="#" class="btn btn-success btn-radius-20">{{'ACCEPT' | translate}}</a>
                             <a ng-click="vm.friendReject(item)" ng-switch-when="relation" href="#" class="btn btn-danger btn-radius-20">{{'DECLINE' | translate}}</a>
 
-                            <p ng-switch-when="upcoming-event">{{'YOU_ARE_INTERESTED_EVENT' | translate}}: <a ui-sref="event.detail({id: item._id})">{{item.name}}</a></p>
+                            <p ng-switch-when="upcoming-event">{{item.ownerId.name}} {{'INTERESTED_EVENT' | translate}}: <a ui-sref="event.detail({id: item._id})">{{item.name}}</a></p>
 
                             <p ng-switch-when="event-invited">{{item.ownerId.name}} {{'INVITE_TO_EVENT' | translate}}: 
                                 <a ui-sref="event.detail({id: item._id})">{{item.name}}</a>
                             </p>
+
+                            <p ng-switch-when="liked">{{item.ownerId.name}} {{'HAS_LIKED_EVENT' | translate}}: 
+                                <a href="event.detail({id: item.likedItem._id})">{{item.likedItem.name}}</a>
+                            </p>
                         </div>
                         <div class="img-content-post" ng-if="item.itemType!=='relation'">
-                            <div class="bg-cover" style="background-image: url('{{item | eventThumbnail}}'); height: 200px"></div>
+                            <div class="bg-cover" style="background-image: url('{{(item.likedItem) ? item.likedItem : item | eventThumbnail}}'); height: 200px"></div>
 
                             <a ng-click="vm.eventAccept(item)" ng-if="item.itemType==='event-invited'" href="#" class="btn btn-success btn-radius-20">{{'ACCEPT' | translate}}</a>
                             <a ng-click="vm.eventReject(item)" ng-if="item.itemType==='event-invited'" href="#" class="btn btn-danger btn-radius-20">{{'DECLINE' | translate}}</a>

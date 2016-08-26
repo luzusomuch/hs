@@ -125,7 +125,7 @@ angular.module('healthStarsApp')
             link: $scope.url,
             picture: photo,
             caption: $scope.title,
-            description: $scope.description
+            description: description
           }, function(response) {
             if (response && response.post_id) {
               ShareService.share($scope.data._id, $scope.type).then(() => {

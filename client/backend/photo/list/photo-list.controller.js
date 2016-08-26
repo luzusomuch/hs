@@ -12,11 +12,37 @@ class BackendPhotoListCtrl {
 		this.sortType = 'createdAt';
 		this.sortReverse = false;
 		this.loadMore();
+		this.search = {};
+		this.searching = false;
+
+		$scope.$watchGroup(['vm.showBlockedPhotos', 'vm.selectedFilterType', 'vm.searchText'], (nv) => {
+			if (nv[0] && nv[2] && nv[2].trim().length > 0) {
+				this.searching = true;
+				this.searchFn({blocked: true, type: nv[1], searchQuery: nv[2]});
+			} else if (nv[0]) {
+				this.searching = true;
+				this.searchFn({blocked: true});
+			} else if (nv[2] && nv[2].trim().length > 0) {
+				this.searching = true;
+				this.searchFn({type: nv[1], searchQuery: nv[2]});
+			} else {
+				this.searching = false;
+			}
+		});
+	}
+
+	searchFn(params) {
+		this.PhotoService.search(params).then(resp => {
+			this.search.page += 1;
+	  		this.search.items = resp.data.items;
+	  		console.log(this.search);
+		}).catch(err => {
+
+		});
 	}
 
 	loadMore() {
 		this.PhotoService.getPhotos({page: this.page}).then(resp => {
-	  		this.page += 1;
 	  		this.photos.items = (this.photos.items) ? this.photos.items.concat(resp.data.items) : resp.data.items;
 	  		this.photos.totalItem = resp.data.totalItem;
 		}).catch(err => {
@@ -37,12 +63,15 @@ class BackendPhotoListCtrl {
 
 function PhotoService($http, APP_CONFIG) {
   	return {
-      block(id) {
-        return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/photos/${id}/block`);
-      },
+      	block(id) {
+        	return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/photos/${id}/block`);
+      	},
   		getPhotos: (params) => {
   			return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/photos`, {params: params});
-  		}
+  		},
+		search(params) {
+			return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/photos/search`, {params: params});	
+		}
   	};
   }
 

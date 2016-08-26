@@ -9,7 +9,7 @@
 				<option ng-value="type.value" ng-repeat="type in vm.filterTypes">{{type.text | translate}}</option>
 			</select>
 			<div class="col-sm-1"></div>
-			<input class="col-sm-8" type="text" ng-model="vm.searchText[vm.selectedFilterType]">
+			<input class="col-sm-8" type="text" ng-model="vm.searchText">
 		</div>
 		<div class="col-sm-4 col-xs-12">
 			<label>
@@ -40,7 +40,21 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="photo in vm.photos.items | filter: vm.searchText[vm.selectedFilterType] | showBlocked: vm.showBlockedPhotos | orderBy: vm.sortType: vm.sortReverse">
+				<tr ng-show="!vm.searching" ng-repeat="photo in vm.photos.items | filter: vm.searchText[vm.selectedFilterType] | showBlocked: vm.showBlockedPhotos | orderBy: vm.sortType: vm.sortReverse">
+					<td>{{photo.ownerId.name}}</td>
+					<td>
+						<a target="_blank" href="/event/detail/{{photo.event._id}}">{{photo.event.name}}</a>
+					</td>
+					<td><img width="150" src="{{photo | imageUrl: 'small'}}"></td>
+					<td>{{photo.createdAt | date: 'HH:mm'}} {{photo.createdAt | date: 'dd-MMMM-yyyy'}}</td>
+					<td>{{(photo.blocked) ? 'TRUE' : 'FALSE' | translate}}</td>
+					<td>
+						<a uib-tooltip="{{(!photo.blocked) ? 'BLOCK_PHOTO' : 'UNBLOCK_PHOTO' | translate}}" href="#" ng-click="vm.block(photo)"><i class="fa" ng-class="{'fa-eye': !photo.blocked, 'fa-eye-slash': photo.blocked}"></i></a>
+					</td>
+				</tr>
+
+				<!-- Search -->
+				<tr ng-show="vm.searching" ng-repeat="photo in vm.search.items | orderBy: vm.sortType: vm.sortReverse">
 					<td>{{photo.ownerId.name}}</td>
 					<td>
 						<a target="_blank" href="/event/detail/{{photo.event._id}}">{{photo.event.name}}</a>
@@ -55,7 +69,7 @@
 			</tbody>
 		</table>
 	</div>
-	<div ng-show="vm.photos.items.length < vm.photos.totalItem">
+	<div ng-show="vm.photos.items.length < vm.photos.totalItem && !vm.searching">
 		<a ng-click="vm.loadMore()" href="#">{{'LOAD_MORE_PHOTOS' | translate}}</a>
 	</div>
 </div>

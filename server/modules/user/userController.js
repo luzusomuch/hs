@@ -628,8 +628,20 @@ class UserController {
     async.parallel([
       (cb) => {
         // Display feeds from friends
-        // this.kernel.model.
-        cb(null);
+        this.kernel.model.Relation.find({
+          status: 'completed',
+          type: 'friend',
+          $or: [{toUserId: req.user._id}, {fromUserId: req.user._id}]
+        }).then(resp => {
+          async.each(resp, (relation, callback) => {
+            callback();
+          }, (err) => {
+            if (err) {
+              return cb(err);
+            }
+
+          });
+        }).catch(cb);
       },
       (cb) => {
         // Invited friends list

@@ -3,11 +3,12 @@ import async from 'async';
 import _ from 'lodash';
 
 module.exports = function(kernel) {
+
 	/*Get all photos restrict admin*/
 	kernel.app.get('/api/v1/photos', kernel.middleware.hasRole('admin'), (req, res) => {
 		let page = req.query.page || 1;
 		let pageSize = req.query.pageSize || 10;
-		kernel.model.Photo.find({})
+		kernel.model.Photo.find({blocked: false})
 	    .limit(Number(pageSize))
 	    .skip(pageSize * (page-1))
 	    .populate('ownerId', '-password -salt')
@@ -63,6 +64,80 @@ module.exports = function(kernel) {
 		      	}).catch(err => {
 		      		return res.status(500).json({type: 'SERVER_ERROR'});	
 		      	});
+	    	});
+	    }).catch(err => {
+	      	return res.status(500).json({type: 'SERVER_ERROR'});
+	    });
+	});
+
+	/*Search photos*/
+	kernel.app.get('/api/v1/photos/search', kernel.middleware.hasRole('admin'), (req, res) => {
+		kernel.model.Photo.find({
+			blocked: (req.query.blocked) ? true : false
+		})
+	    .populate('ownerId', '-password -salt')
+	    .exec().then(photos => {
+    		let results = [];
+	    	// get photo's project info
+	    	async.each(photos, (photo, callback) => {
+	    		async.waterfall([
+	    			(cb) => {
+	    				kernel.model.Feed.findOne({photosId: photo._id}).then(feed => {
+	    					if (!feed) {
+	    						cb(null, {eventId: null});
+	    					} else {
+	    						cb(null, {eventId: feed.eventId});
+	    					}
+	    				}).catch(cb);
+	    			},
+	    			(result, cb) => {
+	    				if (result.eventId) {
+	    					return cb(null, result);
+	    				} 
+	    				kernel.model.Event.findOne({photosId: photo._id}).then(event => {
+    						if (!event) {
+    							return cb({error: 'Event not found', code: 404});
+    						} else {
+    							return cb(null, {eventId: event._id});
+    						}
+    					}).catch(cb);
+	    			}
+	  			], (err, result) => {
+	  				photo = photo.toJSON();
+	  				if (err) {
+	  					photo.event = null;
+	  					results.push(photo);
+	  					return callback(null);
+	  				}
+	  				kernel.model.Event.findById(result.eventId).then(event => {
+	  					photo.event = event;
+	  					results.push(photo);
+	  					return callback(null);
+	  				}).catch(callback);
+	  			});
+	    	}, (err) => {
+	    		if (err) {
+	    			return res.status(500).json({type: 'SERVER_ERROR'});
+	    		}
+	    		let items = [];
+	    		// Filter to client request
+	    		if (req.query.type && req.query.searchQuery) {
+	    			_.each(results, (item) => {
+	    				if (req.query.type==='ownerId.name') {
+	    					if (item.ownerId.name.toLowerCase().indexOf(req.query.searchQuery.toLowerCase()) !== -1) {
+	    						items.push(item);
+	    					}
+	    				} else if (req.query.type==='event.name') {
+	    					if (item.event && item.event.name.toLowerCase().indexOf(req.query.searchQuery.toLowerCase()) !== -1) {
+	    						items.push(item);
+	    					}
+	    				}
+	    			});
+	    		} else {
+	    			items = results;
+	    		}
+
+	      		return res.status(200).json({items: items});
 	    	});
 	    }).catch(err => {
 	      	return res.status(500).json({type: 'SERVER_ERROR'});

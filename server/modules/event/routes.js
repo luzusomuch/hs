@@ -1379,7 +1379,14 @@ module.exports = function(kernel) {
         event.save().then(saved => {
           kernel.queue.create('GRANT_AWARD_FOR_USER', {event: event, user: req.user}).save();
           kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: saved}).save();
-          return res.status(200).end();
+          kernel.model.AttendEvent({
+            ownerId: req.user._id,
+            eventId: saved._id
+          }).save().then(() => {
+            return res.status(200).end();
+          }).catch(err => {
+            return res.status(500).json({type: 'SERVER_ERROR'});  
+          });
         }).catch(err => {
           return res.status(500).json({type: 'SERVER_ERROR'});
         });

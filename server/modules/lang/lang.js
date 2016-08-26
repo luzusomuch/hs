@@ -252,7 +252,9 @@ let Language = {
 		NEW_MESSAGE: 'New message',
 		INVITE_SOCIAL_FRIENDS: 'Invite social friends',
 		LIKED_EVENT: 'Liked event',
-		HAS_LIKED_EVENT: 'has liked event'
+		HAS_LIKED_EVENT: 'has liked event',
+		ATTEND_EVENT: 'Attend event',
+		HAS_ATTEND_EVENT: 'has attend event'
 	},
 	de: {
 

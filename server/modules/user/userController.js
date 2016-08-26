@@ -647,7 +647,7 @@ class UserController {
                   this.kernel.model[like.objectName].findById(like.objectId)
                   .populate('photosId')
                   .exec().then(data => {
-                    like.likedItem = data;
+                    like.event = data;
                     results.push(like);
                     _callback(null);
                   }).catch(_callback);
@@ -733,91 +733,6 @@ class UserController {
             });
           }, cb);
         }).catch(cb);
-            // Upcoming event meant event which user join or like
-            // async.parallel([
-              // liked event
-              // (_cb) => {
-              //   this.kernel.model.Like.find({objectName: 'Event', ownerId: id})
-              //   .sort({createdAt: -1})
-              //   .limit(pageSize)
-              //   .skip(skip).exec().then(likes => {
-              //     this.kernel.model.Like.count({objectName: 'Event', ownerId: id}).then(count => {
-              //       totalItem += count;
-              //       // populate event detail
-              //       async.each(likes, (like, callback) => {
-              //         this.kernel.model.Event.findById(like.objectId)
-              //         .populate({
-              //           path: 'ownerId', 
-              //           select: '-password -salt',
-              //           populate: {path: 'avatar', model: 'Photo'}
-              //         })
-              //         .populate('photosId').exec().then(event => {
-              //           if (!event) {
-              //             callback(null);
-              //           } else {
-              //             event = event.toJSON();
-              //             event.itemType = 'upcoming-event';
-              //             event.createdAt = like.createdAt;
-              //             results.push(event);
-              //             callback();
-              //           }
-              //         }).catch(callback);
-              //       }, _cb);
-              //     }).catch(_cb);
-              //   }).catch(_cb);
-              // }, 
-              // joined event
-            //   (_cb) => {
-            //     let query = {
-            //       query: {
-            //         filtered: {
-            //           query: {
-            //             bool: {
-            //               should: []
-            //             }
-            //           },
-            //           filter: {
-            //             bool: {
-            //               must: [
-            //                 { term: { blocked: false } },
-            //                 { term: { private: false } },
-            //               ],
-            //               should: [
-            //                 { term: { participantsId: id}}
-            //               ]
-            //             }
-            //           }
-            //         }
-            //       } 
-            //     };
-            //     this.kernel.ES.search(query, this.kernel.config.ES.mapping.eventType, (err, result) => {
-            //       if (err) {
-            //         return cb(err);
-            //       }
-            //       totalItem += result.totalItem;
-            //       async.each(result.items, (item, callback) => {
-            //         this.kernel.model.Event.findById(item._id)
-            //         .populate({
-            //           path: 'ownerId', 
-            //           select: '-password -salt',
-            //           populate: {path: 'avatar', model: 'Photo'}
-            //         })
-            //         .populate('photosId').exec().then(event => {
-            //           if (!event) {
-            //             callback(null);
-            //           } else {
-            //             event = event.toJSON();
-            //             event.itemType = 'upcoming-event';
-            //             results.push(event);
-            //             callback(null);
-            //           }
-            //         }).catch(callback);
-            //       }, _cb);
-            //     });
-            //   }
-            // ], _callback);
-        //   }, cb);
-        // }).catch(cb);
       },
       (cb) => {
         // Events invited list
@@ -847,12 +762,39 @@ class UserController {
             }).catch(callback);
           }, cb);
         }).catch(cb);
+      },
+      (cb) => {
+        //get user has attend event's current user that created
+        this.kernel.model.Event.find({ownerId: req.user._id}).populate('photosId').then(events => {
+          async.each(events, (event, callback) => {
+            this.kernel.model.AttendEvent.findOne({eventId: event._id})
+            .populate({
+              path: 'ownerId', 
+              select: '-password -salt',
+              populate: {
+                path: 'avatar', model: 'Photo'
+              }
+            }).exec().then(attend => {
+              if (!attend) {
+                return callback();
+              }
+              attend = attend.toJSON();
+              attend.itemType = 'attend-event';
+              attend.event = event;
+              results.push(attend);
+              callback();
+            }).catch(callback);
+          }, cb);
+        }).catch(cb);
       }
     ], (err) => {
       if (err) {
         return res.status(500).json({type: 'SERVER_ERROR'});
       }
-      return res.status(200).json({items: results, totalItem: results.length});
+      results = _.sortBy(results, (item) => {
+        return item.createdAt;
+      });
+      return res.status(200).json({items: results.reverse(), totalItem: results.length});
     });
   }
 

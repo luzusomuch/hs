@@ -30,6 +30,7 @@ kernel.loadModule(require('./modules/like'));
 kernel.loadModule(require('./modules/comment'));
 kernel.loadModule(require('./modules/share'));
 kernel.loadModule(require('./modules/about'));
+kernel.loadModule(require('./modules/attend-event'));
 //compose then start server
 kernel.compose();
 

@@ -2321,7 +2321,24 @@ div.menu-tab > ul>li>a {
 .calendar-home .btn-default {
     background: none;
     border:0px;
+    padding: 5px 0px;
+    box-shadow: none;
+}
+.calendar-home .btn-default span {
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    border-radius: 50%;
+    display: block;
+}
+.calendar-home .btn-info span {
+    background: #2fcc71;
+    
 }
 .calendar-home .showWeeks {
 
+}
+.calendar-home table {
+    width: 100%;
 }

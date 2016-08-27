@@ -272,7 +272,7 @@ module.exports = function(kernel) {
             if (index !== -1) {
                 thread.nonReceiveEmailUsers.splice(index ,1);
             } else {
-                thread.nonReceiveEmailUsers.push(authUser._id);
+                thread.nonReceiveEmailUsers.push(req.user._id);
             }
             thread.save().then(saved => {
                 return res.status(200).json({nonReceiveEmailUsers: saved.nonReceiveEmailUsers});

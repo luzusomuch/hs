@@ -233,11 +233,18 @@ module.exports = function(kernel) {
   });
 
   /*Get selected user's events list*/
+  /*req.query.getAll just show in current user's calendar*/
   kernel.app.get('/api/v1/events/user-events', kernel.middleware.isAuthenticated(), (req, res) => {
     let page = req.query.page || 1;
     let pageSize = req.query.pageSize || 10;
     let skip = (page -1) * pageSize;
     let date = moment(new Date());
+    let must = [{ term: { blocked: false } }];
+
+    if (!req.query.getAll) {
+      must.push({ term: { private: false } })
+    }
+
     let query = {
       query: {
         filtered: {
@@ -248,12 +255,10 @@ module.exports = function(kernel) {
           },
           filter: {
             bool: {
-              must: [
-                { term: { blocked: false } },
-                { term: { private: false } },
-              ],
+              must: must,
               should: [
-                { term: { ownerId: (req.query.userId) ? req.query.userId : req.user._id}}
+                { term: { ownerId: (req.query.userId) ? req.query.userId : req.user._id}},
+                { term: { participantsId: (req.query.userId) ? req.query.userId : req.user._id}}
               ]
             }
           }
@@ -265,6 +270,12 @@ module.exports = function(kernel) {
         { createdAt: 'desc' }
       ]
     };
+
+    if (req.query.getAll) {
+      query = _.omit(query, 'from');
+      query = _.omit(query, 'size');
+    }
+
     kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {
       if (err) {
         return res.status(500).json({type: 'SERVER_ERROR'});

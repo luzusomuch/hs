@@ -1,3 +1,18 @@
 <div class="container">
 	<hs-profile-menu-header></hs-profile-menu-header>
+
+	<div class="row">
+        <div class="col-sm-3 col-lg-2">
+            <div class="box-blue m20">
+                <img src="assets/images/calendar.jpg" width="100%">
+            </div>
+            <a href="#" class="btn btn-primary btn-block">Other Calendar Accounts</a>
+        </div>
+        <div class="col-sm-9 col-lg-10">
+            <div class="box-blue p15">
+                <div class="title-blue">{{'MENU_MY_CALENDAR' | translate}}</div>
+                <div ui-calendar="vm.calendarConfig" ng-model="vm.eventSources">
+            </div>
+        </div>
+    </div>
 </div>

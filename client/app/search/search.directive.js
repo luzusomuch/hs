@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('healthStarsApp')
-.directive('searchInput', (SearchParams, $timeout, EventService, $state) => {
+.directive('searchInput', (SearchParams, $timeout, EventService, $state, $rootScope) => {
 	return {
 		restrict: 'E',
 		scope: {},
@@ -53,12 +53,14 @@ angular.module('healthStarsApp')
 				scope.items = [];
 				$timeout(function(){
 					angular.element(document.getElementById('btn-clear-location-search')).trigger('click');
-					angular.element('.calendar-home > div').datepicker('clearDates');
+					// angular.element('.calendar-home > div').datepicker('clearDates');
 					SearchParams.params.category = '';
 					SearchParams.params.categories = [];
 					SearchParams.params.friendActivities = false;
+					SearchParams.params.dates = [];
 					angular.element(element).find('button').trigger('click');
-        });
+					$rootScope.$broadcast('clear-dates');
+        		});
 			};
 
 			angular.element(element).on('click', 'ul.dropdown-menu > li > a', function(e) {
@@ -183,7 +185,9 @@ angular.module('healthStarsApp')
 		replace: true,
 		link: function(scope, element) {
 		  	SearchParams.params.dates = scope.selectedDates = [];
-
+		  	scope.$on('clear-dates', () => {
+		  		scope.selectedDates = SearchParams.params.dates;
+		  	});
 			// angular.element(element).find('.calendar-home > div').datepicker({
 			// 	multidate: true,
 			// 	maxViewMode: 0,

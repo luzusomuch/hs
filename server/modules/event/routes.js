@@ -280,7 +280,20 @@ module.exports = function(kernel) {
       if (err) {
         return res.status(500).json({type: 'SERVER_ERROR'});
       }
-      return res.status(200).json(result);
+
+      let results = {items: [], totalItem: result.totalItem};
+
+      async.each(result.items, (item, callback) => {
+        kernel.model.Event.findById(item._id).populate('photosId').then(event => {
+          if (!event) {
+            return callback(null);
+          }
+          results.items.push(event);
+          callback(null);
+        }).catch(callback);
+      }, (err) => {
+        return res.status(200).json(results);
+      });
     });
   });
 

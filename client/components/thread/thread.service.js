@@ -27,6 +27,10 @@
 
 	      	block: (id) => {
 	      		return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/threads/${id}/block`);		
+	      	},
+
+	      	configReceiveEmail: (id, data) => {
+	      		return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/threads/${id}/config-receive-email`, data);			
 	      	}
 	    };
   	}

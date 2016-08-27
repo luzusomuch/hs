@@ -246,7 +246,6 @@ module.exports = function(kernel) {
             }
             let availableUser = [thread.fromUserId.toString(), thread.toUserId.toString()];
             if (availableUser.indexOf(req.user._id.toString()) !== -1) {
-                console.log('asdasdasasd');
                 thread.blocked = !thread.blocked;
                 thread.blockedByUserId = (thread.blocked) ? req.user._id : null;
                 thread.save().then(saved => {
@@ -257,6 +256,29 @@ module.exports = function(kernel) {
             } else {
                 return res.status(403).end();
             }
+        }).catch(err => {
+            return res.status(500).json({type: 'SERVER_ERROR'});
+        });
+    });
+
+    /*Receive email when have new post*/
+    kernel.app.put('/api/v1/threads/:id/config-receive-email', kernel.middleware.isAuthenticated(), (req, res) => {
+        kernel.model.Thread.findById(req.params.id).then(thread => {
+            if (!thread) {
+                return res.status(404).end();
+            }
+            thread.nonReceiveEmailUsers = (thread.nonReceiveEmailUsers) ? thread.nonReceiveEmailUsers : [];
+            let index = thread.nonReceiveEmailUsers.indexOf(req.user._id);
+            if (index !== -1) {
+                thread.nonReceiveEmailUsers.splice(index ,1);
+            } else {
+                thread.nonReceiveEmailUsers.push(authUser._id);
+            }
+            thread.save().then(saved => {
+                return res.status(200).json({nonReceiveEmailUsers: saved.nonReceiveEmailUsers});
+            }).catch(err => {
+                return res.status(500).json({type: 'SERVER_ERROR'});
+            });
         }).catch(err => {
             return res.status(500).json({type: 'SERVER_ERROR'});
         });

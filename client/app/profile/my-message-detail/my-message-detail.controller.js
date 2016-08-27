@@ -36,12 +36,13 @@ class MyMessageDetailCtrl {
 	}
 
 	receiveEmail() {
-		let index = this.thread.nonReceiveEmailUsers.indexOf(this.authUser._id);
-		if (index !== -1) {
-			this.thread.nonReceiveEmailUsers.splice(index ,1);
-		} else {
-			this.thread.nonReceiveEmailUsers.push(this.authUser._id);
-		}
+		this.ThreadService.configReceiveEmail(this.thread._id).then(resp => {
+			//TODO Show success message
+			this.thread.nonReceiveEmailUsers = resp.data.nonReceiveEmailUsers;
+		}).catch(err => {
+			// TODO show error
+			console.log(err);
+		});
 	}
 
 	block() {

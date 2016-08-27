@@ -5,7 +5,7 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
     'validation.match', 'angular-growl', 'angular-loading-bar', 'ngAnimate', 'ngStorage', 
     'healthStarsApp.language', 'ui.select', 'ngFileUpload', 'healthStarsApp.photoViewer', 
     'internationalPhoneNumber', 'masonry', 'slick', 'ngDraggable', 'monospaced.qrcode', 'ngScrollbars', 
-    'angular-smilies'
+    'angular-smilies', 'gm.datepickerMultiSelect'
   ])
   .config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
     $urlRouterProvider.otherwise('/');

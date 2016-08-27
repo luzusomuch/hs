@@ -16,7 +16,7 @@
 		            	<button class="btn btn-default" ng-click="vm.addTags()">{{'ADD_TAGS' | translate}}</button>
 		            	<button class="btn btn-default" ng-click="vm.block()">{{(vm.thread.blocked) ? 'UNBLOCK_THIS_CONVERSATION' : 'BLOCK_THIS_CONVERSATION' | translate}}</button>
 		            	<label>
-		            		<input ng-click="vm.receiveEmail()" type="checkbox" name="" ng-checked="vm.thread.nonReceiveEmailUsers.indexOf(vm.authUser._id) !== -1">{{'RECEIVE_EMAIL_WHEN_HAVE_NEW_MESSAGE' | translate}}
+		            		<input ng-click="vm.receiveEmail()" type="checkbox" name="" ng-checked="vm.thread.nonReceiveEmailUsers.indexOf(vm.authUser._id) !== -1">{{'NON_RECEIVE_EMAIL_WHEN_HAVE_NEW_MESSAGE' | translate}}
 		            	</label>
 	            	</div>
             	</div>

@@ -182,33 +182,36 @@ angular.module('healthStarsApp')
 		templateUrl: 'app/search/templates/datepicker.html',
 		replace: true,
 		link: function(scope, element) {
-			angular.element(element).find('.calendar-home > div').datepicker({
-				multidate: true,
-				maxViewMode: 0,
-				todayHighlight: true,
-			}).on('changeDate', function(e) {
-				var dates = angular.element(element).find('.calendar-home > div').datepicker('getDates');
-				scope.dt = dates.map(function(date) { return moment(date).format('DD.MM.YYYY'); });
-				scope.$$phase || scope.$apply();
-    	});
-			scope.style = {};
-			scope.dt = [];
-			scope.$watch('dt', function(nv) {
-				var dates = angular.element(element).find('.calendar-home > div').datepicker('getDates');
-				SearchParams.params.dates = dates.map(function(date) { return new Date(date).getTime(); });
-			}, true);
-			
-			scope.filter = function() {
-				var dates = angular.element(element).find('.calendar-home > div').datepicker('getDates');
-				SearchParams.params.dates = dates.map(function(date) { return new Date(date).getTime(); });
-				scope.style = {'background-color': '#3071a9', border: '#3071a9'};
-			}
+		  	SearchParams.params.dates = scope.selectedDates = [];
 
-			scope.clear = function() {
-				SearchParams.params.dates = [];
-				angular.element(element).find('.calendar-home > div').datepicker('clearDates');
-				scope.style =  {};
-			}
+			// angular.element(element).find('.calendar-home > div').datepicker({
+			// 	multidate: true,
+			// 	maxViewMode: 0,
+			// 	todayHighlight: true,
+			// }).on('changeDate', function(e) {
+			// 	var dates = angular.element(element).find('.calendar-home > div').datepicker('getDates');
+			// 	scope.dt = dates.map(function(date) { return moment(date).format('DD.MM.YYYY'); });
+			// 	scope.$$phase || scope.$apply();
+   //  		});
+			// scope.style = {};
+			// scope.dt = [];
+			// scope.$watch('dt', function(nv) {
+			// 	var dates = angular.element(element).find('.calendar-home > div').datepicker('getDates');
+			// 	SearchParams.params.dates = dates.map(function(date) { return new Date(date).getTime(); });
+			// 	console.log(SearchParams.params.dates);
+			// }, true);
+			
+			// scope.filter = function() {
+			// 	var dates = angular.element(element).find('.calendar-home > div').datepicker('getDates');
+			// 	SearchParams.params.dates = dates.map(function(date) { return new Date(date).getTime(); });
+			// 	scope.style = {'background-color': '#3071a9', border: '#3071a9'};
+			// }
+
+			// scope.clear = function() {
+			// 	SearchParams.params.dates = [];
+			// 	angular.element(element).find('.calendar-home > div').datepicker('clearDates');
+			// 	scope.style =  {};
+			// }
 		}
 	}
 });

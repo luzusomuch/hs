@@ -31,6 +31,10 @@
 
 	      	configReceiveEmail: (id, data) => {
 	      		return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/threads/${id}/config-receive-email`, data);			
+	      	},
+
+	      	changeTags: (id, data) => {
+	      		return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/threads/${id}/change-tags`, data);				
 	      	}
 	    };
   	}

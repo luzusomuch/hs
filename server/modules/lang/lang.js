@@ -258,7 +258,10 @@ let Language = {
 		ADD_TAGS: 'Add tags',
 		BLOCK_THIS_CONVERSATION: 'Block this conversation',
 		UNBLOCK_THIS_CONVERSATION: 'Unblock this conversation',
-		RECEIVE_EMAIL_WHEN_HAVE_NEW_MESSAGE: 'Receive email when have new message'
+		RECEIVE_EMAIL_WHEN_HAVE_NEW_MESSAGE: 'Receive email when have new message',
+		ADD_NEW_TAG: 'Add new tag',
+		ENTER_NEW_TAG: 'Enter new tag',
+		CURRENT_TAGS_LIST: 'Current tags list'
 	},
 	de: {
 

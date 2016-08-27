@@ -1,7 +1,8 @@
 'use strict';
 
 class MyMessageDetailCtrl {
-	constructor($localStorage, $state, ThreadService, thread) {
+	constructor($localStorage, $state, ThreadService, thread, $uibModal) {
+		this.$uibModal = $uibModal;
 		this.authUser = $localStorage.authUser;
 		this.$state = $state;
 		this.ThreadService = ThreadService;
@@ -51,7 +52,29 @@ class MyMessageDetailCtrl {
 		}).catch(err => {
 			// TODO show error
 			console.log(err);
-		})
+		});
+	}
+
+	addTags() {
+		let modalInstance = this.$uibModal.open({
+	    	animation: true,
+	    	templateUrl: 'app/profile/modal/add-tags-to-thread/view.html',
+	    	controller: 'AddTagsToThreadCtrl',
+	    	controllerAs: 'AddTagsToThread',
+	    	resolve: {
+	    		tags: () => {
+	    			return this.thread.tags;
+	    		}
+	    	}
+	    });
+		modalInstance.result.then(data => {
+			this.ThreadService.changeTags(this.thread._id, {tags: data}).then(resp => {
+				this.thread.tags = resp.data.tags;
+			}).catch(err => {
+				console.log(err);
+				// TODO shw error
+			});
+		});
 	}
 }
 

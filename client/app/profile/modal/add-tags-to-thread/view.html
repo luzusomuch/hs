@@ -1,0 +1,24 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{'ADD_TAGS' | translate}}</h3>
+</div>
+<div class="modal-body">
+	<form ng-submit="AddTagsToThread.submit()" name="form">
+	    <div class="form-group">
+	    	<h4>{{'CURRENT_TAGS_LIST' | translate}}</h4>
+	    	<span class="badge" ng-repeat="tag in AddTagsToThread.tags track by $index">
+	    		{{tag}} 
+	    		<a class="liked" href="#" ng-click="AddTagsToThread.remove(index)">
+	    			<i class="fa fa-times"></i>
+	    		</a>
+			</span>
+	    </div>
+	    <div class="row">
+	    	<input class="thread-tag-input" type="text" ng-model="AddTagsToThread.newTag" placeholder="{{'ENTER_NEW_TAG' | translate}}">
+	    	<a ng-click="AddTagsToThread.addNewTags(AddTagsToThread.newTag)" href="#"><i class="fa fa-plus"></i> {{'ADD_NEW_TAG' | translate}}</a>
+	    </div>
+		<div class="modal-footer">
+      		<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>
+			<button ng-click="AddTagsToThread.close()" type="button" class="btn btn-warning btn-radius-20">{{'CLOSE' | translate}}</button>
+		</div>    
+  	</form>
+</div>

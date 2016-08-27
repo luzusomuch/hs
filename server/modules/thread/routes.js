@@ -283,4 +283,29 @@ module.exports = function(kernel) {
             return res.status(500).json({type: 'SERVER_ERROR'});
         });
     });
+
+    /*Change tags*/
+    kernel.app.put('/api/v1/threads/:id/change-tags', kernel.middleware.isAuthenticated(), (req, res) => {
+        if (!req.body.tags) {
+            return res.status(422).end();
+        }
+        kernel.model.Thread.findById(req.params.id).then(thread => {
+            if (!thread) {
+                return res.status(404).end();
+            }
+            let availableUser = [thread.fromUserId.toString(), thread.toUserId.toString()];
+            if (availableUser.indexOf(req.user._id.toString()) !== -1) {
+                thread.tags = req.body.tags;
+                thread.save().then(saved => {
+                    return res.status(200).json({tags: saved.tags});
+                }).catch(err => {
+                    return res.status(500).json({type: 'SERVER_ERROR'});
+                });
+            } else {
+                return res.status(403).end();
+            }
+        }).catch(err => {
+            return res.status(500).json({type: 'SERVER_ERROR'});
+        });
+    });
 };

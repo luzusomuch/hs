@@ -2318,3 +2318,10 @@ div.menu-tab > ul>li>a {
     padding: 3px;
     width: 70%;
 }
+.calendar-home .btn-default {
+    background: none;
+    border:0px;
+}
+.calendar-home .showWeeks {
+
+}

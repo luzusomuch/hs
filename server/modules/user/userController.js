@@ -373,6 +373,14 @@ class UserController {
       } else {
         user.awardsExhibits.push({number: Number(req.body.rank), awardId: req.body.awardId});
       }
+      if (req.body.swapAwardId && req.body.swapRank) {
+        let idx = _.findIndex(user.awardsExhibits, (award) => {
+          return award.number === req.body.swapRank;
+        });
+        if (idx !== -1) {
+          user.awardsExhibits[idx].awardId = req.body.swapAwardId;
+        }
+      }
       user.save().then(data => {
         this.kernel.model.User.populate(data, [{
           path: 'awardsExhibits.awardId',

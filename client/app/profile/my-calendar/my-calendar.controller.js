@@ -1,12 +1,11 @@
 'use strict';
 
 class MyCalendarCtrl {
-	constructor($scope, $state, $localStorage, EventService, $timeout, APP_CONFIG, uiCalendarConfig) {
+	constructor($scope, $state, $localStorage, EventService, $timeout, APP_CONFIG) {
 		this.errors = {};
 		this.authUser = $localStorage.authUser;
 		this.$state = $state;
 		this.EventService = EventService;
-		this.uiCalendarConfig = uiCalendarConfig;
 		this.localEvents = {};
 
       	this.eventSources = [];

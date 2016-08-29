@@ -534,13 +534,23 @@ class UserController {
         if(!friendIds.length) {
           return cb(null, []);
         }
-        this.kernel.model.User.find({
-          _id: { $in: friendIds}
-        }, '-salt -password')
-        .populate('avatar')
-        .limit(limit)
-        .skip((page-1)*limit)
-        .exec().then(friends => {
+        let query;
+        // We use get all query when create new thread message on my messages page
+        if (req.query.getAll) {
+          query = this.kernel.model.User.find({
+            _id: { $in: friendIds}
+          }, '-salt -password')
+          .populate('avatar')
+        } else {
+          query = this.kernel.model.User.find({
+            _id: { $in: friendIds}
+          }, '-salt -password')
+          .populate('avatar')
+          .limit(limit)
+          .skip((page-1)*limit)
+        }
+        
+        query.exec().then(friends => {
           let results = [];
           async.each(friends, (friend, callback) => {
             friend = friend.toJSON();

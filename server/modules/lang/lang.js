@@ -264,6 +264,8 @@ let Language = {
 		CURRENT_TAGS_LIST: 'Current tags list',
 		GOOGLE_CALENDAR: 'Google calendar',
 		FACEBOOK_CALENDAR: 'Facebook calendar',
+		SEND: 'Send',
+		PLEASE_SELECT_TO_PEOPLE: 'Please select to people',
 	},
 	de: {
 

@@ -2026,7 +2026,6 @@ span.country-name {
 .new-feed-preview-images {
     padding: 15px;
     border-bottom: 1px solid rgba(255,255,255,0.3);
-    margin: 0px;
 }
 .new-feed-preview-images > img {
     margin-right: 5px;
@@ -2034,11 +2033,7 @@ span.country-name {
 .nude-image {
     border: 1px solid red;
 }
-.remove-icon {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-}
+
 .remove-icon i {
     font-size: 2em;
     color: red;
@@ -2341,4 +2336,14 @@ div.menu-tab > ul>li>a {
 }
 .calendar-home table {
     width: 100%;
+}
+.new-feed-preview-images img {
+    width: 100%;
+    object-fit: cover;
+    margin-bottom: 5px;
+}
+.remove-icon {
+    position: absolute;
+    top: 0px;
+    right: 20px;
 }

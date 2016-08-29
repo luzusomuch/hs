@@ -311,6 +311,31 @@
     .popup-photo {
         overflow: auto;
     }
+    .new-feed-preview-images img {
+        height: 70px;
+    }
+    .content-popup, .content-popup .row-photos {
+        position: relative;
+        height: auto;
+        z-index: 1000;
+        -ms-transform: translate(0%,0%);
+        -webkit-transform: translate(0%,0%);
+        transform: translate(0%,0%);
+        left: 0;
+        top: 0;
+    }
+    .content-popup, .content-popup {
+        left: 2.5%;
+    }
+    .comment-popup .replies-post {
+        height:380px;
+    }
+    .bg-popup {
+        position: fixed;
+    }
+    .close-popup {
+        z-index: 100000;
+    }
 }
 
 @media all and (min-width: 768px) and (max-width: 1024px) {
@@ -371,10 +396,76 @@
     }
     .menu-home li a img {
         width: 50px;
+        height: auto;
     }
-
+    .line-menu-home .create-event {
+        margin-top: 42px;
+    }
+    .line-menu-home .checkbox-l {
+        margin-top: 54px;
+    }
+    
+    .list-photo li .bg-cover {
+        height: 70px;
+    }
+    
+    .img-timline {
+        height: 300px;
+    }
+    .show-all-box {
+        top:-3px;
+        font-size: 13px;
+    }
+    .box-blue .title-blue {
+        padding-top: 18px;
+        font-size: 13px;
+    }
+    .social-account a {
+        padding: 10px;
+    }
+    .sign-social a {
+        margin-right: 0px;
+    }
+    .signup-page {
+        padding: 60px 20px;
+    }
+    .logo-login {
+        text-align: center;
+        margin-bottom: 30px;
+        float: none;
+    }
+    .logo-login img {
+        width: 250px;
+    }
+    .box-login {
+        width: 400px;
+        float: none;
+        margin:auto;
+    }
+    .top-li-event {
+        line-height: 15px;
+    }
+    .content-popup {
+        width: 700px;
+    }
+    .bottom-user-main {
+        overflow: inherit;
+    }
+    .box-action-user label {
+        font-size: 12px;
+    }
+    .new-feed-preview-images img {
+        height:90px;
+    }
 }
 @media all and (min-width: 320px) and (max-width: 1100px) {
+    .action-event span {
+        line-height: 15px;
+        font-size: 13px;
+    }
+    .last-online {
+        line-height: 15px;
+    }
     .signup-page .container-fluid {
         width: auto;
     }

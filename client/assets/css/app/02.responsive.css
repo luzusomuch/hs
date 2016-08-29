@@ -457,6 +457,14 @@
     .new-feed-preview-images img {
         height:90px;
     }
+    .calendar-home .btn-default span {
+        width: 21px;
+        height: 21px;
+        line-height: 21px;
+    }
+    .calendar-home th, .calendar-home td button {
+        font-size: 12px;
+    }
 }
 @media all and (min-width: 320px) and (max-width: 1100px) {
     .action-event span {
@@ -471,6 +479,15 @@
     }
     .bottom-user-main .pull-left div {
         margin-right: 10px;
+    }
+    .bottom-li-event {
+        padding: 10px;
+    }
+    .bottom-li-event .col-xs-6 {
+        padding: 0px 5px;
+    }
+    .bottom-li-event .row {
+        margin: 0px -5px;
     }
 }
 @media all and (min-width: 1024px) and (max-width: 1380px) {

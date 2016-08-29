@@ -77,12 +77,20 @@ class MyCalendarCtrl {
 					type: 'google',
 					url: event.htmlLink
 				});
+			} else if (type==='facebook') {
+				this.eventSources[0].push({
+					title: event.name,
+					start: new Date(event.start_time),
+					end: new Date(event.end_time),
+					id: event.id,
+					type: 'facebook',
+					url: 'https://www.facebook.com/events/'+event.id+'/'
+				});
 			}
 		});
 		if (type==='local') {
 			this.eventSources.push(items);
-		} else if (type==='google') {
-			console.log(this.uiCalendarConfig.calendars);
+		} else if (type==='google' || type==='facebook') {
 			this.uiCalendarConfig.calendars['myCalendar'].fullCalendar('removeEvents');
 	        this.uiCalendarConfig.calendars['myCalendar'].fullCalendar('addEventSource', this.eventSources);
 		}
@@ -105,13 +113,13 @@ class MyCalendarCtrl {
 
 	syncFacebookCalendar() {
 		FB.getLoginStatus(resp => {
-			console.log(resp);
 			if (resp.authResponse) {
 				FB.api('/me/events', (data) => {
-					console.log(data);
-				})
+					if (data.data && data.data.length > 0) {
+						this.renderEvents(data.data, 'facebook');
+					}
+				});
 			} else {
-				// TODO show error
 				FB.login();
 			}
 		});

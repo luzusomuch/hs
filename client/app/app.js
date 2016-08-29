@@ -49,7 +49,7 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
         xfbml      : true,
         status    : true,
         cookie    : true,
-        version    : 'v2.1'
+        version    : 'v2.6'
       });
     };
 

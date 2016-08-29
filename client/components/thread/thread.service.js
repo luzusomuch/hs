@@ -9,6 +9,10 @@
 	        	return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/threads`, data);
 	      	},
 
+	      	newThreadsInMyMessage(data) {
+	        	return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/threads/new-threads`, data);
+	      	},
+
 	      	sendMessage: (id, data) => {
 	        	return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/threads/${id}`, data);
 	      	},

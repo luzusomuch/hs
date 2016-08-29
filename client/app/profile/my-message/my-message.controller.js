@@ -55,6 +55,12 @@ class MyMessagesCtrl {
 			}
 		}).result.then(resp => {
 			console.log(resp);
+			this.ThreadService.newThreadsInMyMessage(resp).then(data => {
+				console.log(data);
+			}).catch(err => {
+				// TODO show error
+				console.log(err);
+			});
 		}).catch(err => {
 			console.log(err);
 			// TODO show error

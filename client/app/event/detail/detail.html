@@ -12,7 +12,7 @@
                 <div class="col-sm-9">
                     <h2 class="title-detail"><img ng-src="{{vm.event.categoryId | categoryImagePath}}" width="60"> {{vm.event.name}}</h2>
                     <div class="row ">
-                        <div class="col-sm-4 col-lg-7">
+                        <div class="col-sm-8 col-lg-7">
                             <div class="action-event">
                                 <span><i class="fa fa-user"></i> {{'BY' | translate}} {{vm.event.ownerId.name}}</span>
                                 <span><i class="fa fa-clock-o"></i> {{'FROM' | translate }} {{vm.event.startDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}} {{'TO' | translate}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}}</span>
@@ -22,11 +22,11 @@
                                 <span ng-if="vm.event.private"><i class="fa fa-lock"></i> {{'PRIVATE_EVENT' | translate}}</span>
                             </div>
                         </div>
-                        <div class="col-sm-8 col-lg-5">
+                        <div class="col-sm-4 col-lg-5">
                             <div class="row row-small">
-                                <div class="col-xs-4"><a ng-click="vm.attendEvent()" href="#" class="btn btn-default btn-block" ng-if="vm.isNotParticipant() && vm.event.public"><i class="fa fa-user"></i> {{'ATTEND' | translate}}</a></div>
+                                <div class="col-xs-6"><a ng-click="vm.attendEvent()" href="#" class="btn btn-default btn-block" ng-if="vm.isNotParticipant() && vm.event.public"><i class="fa fa-user"></i> {{'ATTEND' | translate}}</a></div>
                                 <!-- <div class="col-xs-4"><a href="#" class="btn btn-default btn-block" ng-if="vm.isNotParticipant()"><i class="fa fa-plus"></i> {{'ATTEND' | translate}}</a></div> -->
-                                <div class="col-xs-4"><a href="#" class="btn btn-default btn-block" ng-click="vm.like()"><i ng-class="{liked: vm.liked}" class="fa fa-heart"></i> {{(vm.liked) ? 'UNLIKE' : 'LIKE' | translate}}</a></div>
+                                <div class="col-xs-6"><a href="#" class="btn btn-default btn-block" ng-click="vm.like()"><i ng-class="{liked: vm.liked}" class="fa fa-heart"></i> {{(vm.liked) ? 'UNLIKE' : 'LIKE' | translate}}</a></div>
                             </div>
                         </div>
                     </div>

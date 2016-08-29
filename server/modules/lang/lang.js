@@ -261,7 +261,9 @@ let Language = {
 		NON_RECEIVE_EMAIL_WHEN_HAVE_NEW_MESSAGE: 'Non-receive email when have new message',
 		ADD_NEW_TAG: 'Add new tag',
 		ENTER_NEW_TAG: 'Enter new tag',
-		CURRENT_TAGS_LIST: 'Current tags list'
+		CURRENT_TAGS_LIST: 'Current tags list',
+		GOOGLE_CALENDAR: 'Google calendar',
+		FACEBOOK_CALENDAR: 'Facebook calendar',
 	},
 	de: {
 

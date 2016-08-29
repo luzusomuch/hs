@@ -146,6 +146,8 @@ class MyAwardCtrl {
 				});
 				if (replaceIdx !== -1) {
 					this.authUser.awardsExhibits[replaceIdx].awardId = tmpAward;
+					data.swapAwardId = this.authUser.awardsExhibits[replaceIdx].awardId._id;
+					data.swapRank = this.authUser.awardsExhibits[replaceIdx].number;
 				}
 			}
 		}

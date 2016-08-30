@@ -336,6 +336,19 @@
     .close-popup {
         z-index: 100000;
     }
+    .fc-ltr .fc-event-hori  {
+        padding: 2px 0px 2px 30px;
+        font-size: 13px;
+    }
+    .fc-ltr .fc-event-hori img {
+        width: 30px;
+        height: 30px;
+        top: -5px;
+    }
+    .fc-header-title h2 {
+        font-size: 13px;
+        margin-top: 5px;
+    }
 }
 
 @media all and (min-width: 768px) and (max-width: 1024px) {

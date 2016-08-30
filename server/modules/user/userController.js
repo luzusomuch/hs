@@ -57,12 +57,36 @@ class UserController {
    * restriction: 'admin'
    */
   index(req, res) {
-    //TODO - handle search params
-    return this.kernel.model.User.find()
-      .then(users => {
-        res.status(200).json(users);
-      })
-      .catch(handleError(res));
+    let condition = {};
+
+    if (req.query.blocked) {
+      condition = {'blocked.status': true};
+    } else if (!req.query.blocked) {
+      condition = {$or: [{'blocked.status': false}, {'blocked.status': null}]};
+    }
+
+    let page = req.query.page || 1;
+    let pageSize = req.query.pageSize || 10;
+    let skip = (page -1) * pageSize;
+    this.kernel.model.User.find(condition, '-password -salt')
+    .populate('avatar')
+    .skip(skip)
+    .limit(pageSize)
+    .exec().then(users => {
+      this.kernel.model.User.count(condition).then(count => {
+        if (req.query.searchText) {
+          let results = [];
+          _.each(users, (user) => {
+            if (user.name && (user.name.indexOf(req.query.searchText) !== -1 || user.name.toLowerCase().indexOf(req.query.searchText) !== -1)) {
+              results.push(user);
+            }
+          });
+          return res.status(200).json({items: results});
+        } else {
+          return res.status(200).json({items: users, totalItem: count});
+        }
+      }).catch(handleError(res));
+    }).catch(handleError(res));
   }
 
   /**

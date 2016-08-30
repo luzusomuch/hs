@@ -268,7 +268,13 @@ let Language = {
 		SEND: 'Send',
 		PLEASE_SELECT_TO_PEOPLE: 'Please select to people',
 		ONE_TIME_EVENT: 'One time event',
-		REPEATING_SCHEDULE: 'Repeating schedule'
+		REPEATING_SCHEDULE: 'Repeating schedule',
+		USERS: 'Users',
+		USERS_LIST: 'Users list',
+		USER_NAME: 'User name',
+		USER_AVATAR: 'Avatar',
+		USER_BLOCKED_STATUS: 'Blocked status',
+		ENTER_TEXT_HERE_TO_SEARCH: 'Enter text here to search'
 	},
 	de: {
 

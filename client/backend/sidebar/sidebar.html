@@ -48,6 +48,13 @@
 						<span class="selected"></span>
 					</a>
 				</li>
+				<li class="" ng-class="{active: vm.$state.includes('backend.user')}">
+					<a ui-sref="backend.user.list">
+						<i class="icon-home"></i> 
+						<span class="title">{{'USERS' | translate}}</span>
+						<span class="selected"></span>
+					</a>
+				</li>
 				<li class="heading">
 					<h3 class="uppercase">{{'CONTENT_MANAGER' | translate}}</h3>
 				</li>

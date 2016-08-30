@@ -1,0 +1,80 @@
+<div class="page-content">
+	<div>
+		<h4>{{'USERS_LIST' | translate}}</h4>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-8 col-xs-12">
+			<input class="col-sm-12" type="text" ng-model="vm.searchText" placeholder="{{'ENTER_TEXT_HERE_TO_SEARCH' | translate}}">
+		</div>
+		<div class="col-sm-4 col-xs-12">
+			<label>
+	      		<input type="checkbox" ng-model="vm.showBlockedUsers">{{'SHOW_CHECKED_REPORTS' | translate}}
+	    	</label>
+		</div>
+	</div>
+
+	<div>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<td>
+						<strong>
+							<a href="#" ng-click="vm.sortType='name'; vm.sortReverse=!vm.sortReverse">
+								{{'USER_NAME' | translate}}
+								<span ng-show="vm.sortType == 'name' && !vm.sortReverse" class="fa fa-caret-down"></span>
+	          					<span ng-show="vm.sortType == 'name' && vm.sortReverse" class="fa fa-caret-up"></span>
+							</a>
+						</strong>
+					</td>
+					<td><strong>{{'EMAIL' | translate}}</strong></td>
+					<td><strong>{{'USER_AVATAR' | translate}}</strong></td>
+					<td>
+						<strong>
+							<a href="#" ng-click="vm.sortType='createdAt'; vm.sortReverse=!vm.sortReverse">
+								{{'CREATED_AT' | translate}}
+								<span ng-show="vm.sortType == 'createdAt' && !vm.sortReverse" class="fa fa-caret-down"></span>
+	          					<span ng-show="vm.sortType == 'createdAt' && vm.sortReverse" class="fa fa-caret-up"></span>
+							</a>
+						</strong>
+					</td>
+					<td><strong>{{'USER_BLOCKED_STATUS' | translate}}</strong></td>
+					<td><strong>{{'ACTION' | translate}}</strong></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-show="!vm.search.search" ng-repeat="user in vm.users.items | orderBy: vm.sortType: vm.sortReverse">
+					<td>{{user.name}}</td>
+					<td>{{user.email}}</td>
+					<td>
+						<img src="{{user | avatarUrl}}" width="100">
+					</td>
+					<td>{{user.createdAt | date: 'HH:mm'}} {{user.createdAt | date: 'dd-MMMM-yyyy'}}</td>
+					<td>{{(user.blocked.status) ? 'TRUE' : 'FALSE' | translate}}</td>
+					<td>
+						<a ng-show="!report.checked" uib-tooltip="{{'MARK_AS_CHECKED' | translate}}" href="#" ng-click="vm.markAsChecked(report)"><i class="fa fa-check"></i></a>
+						<a uib-tooltip="{{'VIEW_REPORT' | translate}}" href="#" ng-click="vm.view(report)"><i class="fa fa-eye"></i></a>
+					</td>
+				</tr>
+
+				<!-- search -->
+				<tr ng-show="vm.search.search" ng-repeat="user in vm.search.items | orderBy: vm.sortType: vm.sortReverse">
+					<td>{{user.name}}</td>
+					<td>{{user.email}}</td>
+					<td>
+						<img src="{{user | avatarUrl}}" width="100">
+					</td>
+					<td>{{user.createdAt | date: 'HH:mm'}} {{user.createdAt | date: 'dd-MMMM-yyyy'}}</td>
+					<td>{{(user.blocked.status) ? 'TRUE' : 'FALSE' | translate}}</td>
+					<td>
+						<a ng-show="!report.checked" uib-tooltip="{{'MARK_AS_CHECKED' | translate}}" href="#" ng-click="vm.markAsChecked(report)"><i class="fa fa-check"></i></a>
+						<a uib-tooltip="{{'VIEW_REPORT' | translate}}" href="#" ng-click="vm.view(report)"><i class="fa fa-eye"></i></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div ng-show="vm.reports.items.length < vm.reports.totalItem && !vm.search.search">
+		<a ng-click="vm.loadMore()" href="#">{{'LOAD_MORE_REPORTS' | translate}}</a>
+	</div>
+</div>

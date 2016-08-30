@@ -284,7 +284,10 @@ module.exports = function(kernel) {
       let results = {items: [], totalItem: result.totalItem};
 
       async.each(result.items, (item, callback) => {
-        kernel.model.Event.findById(item._id).populate('photosId').then(event => {
+        kernel.model.Event.findById(item._id)
+        .populate('photosId')
+        .populate('categoryId')
+        .exec().then(event => {
           if (!event) {
             return callback(null);
           }

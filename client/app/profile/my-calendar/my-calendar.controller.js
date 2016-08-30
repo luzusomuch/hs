@@ -1,36 +1,37 @@
 'use strict';
 
 class MyCalendarCtrl {
-	constructor($scope, $state, $localStorage, EventService, $timeout, APP_CONFIG, uiCalendarConfig) {
+	constructor($scope, $state, $localStorage, EventService, $timeout, APP_CONFIG) {
 		this.errors = {};
 		this.authUser = $localStorage.authUser;
 		this.$state = $state;
 		this.EventService = EventService;
-		this.uiCalendarConfig = uiCalendarConfig;
 		this.localEvents = {};
 
       	this.eventSources = [];
 
-		this.calendarConfig = {
-	        height: 450,
-	        header:{
-          		left: 'prev,next',
-          		center: 'title',
-          		right: 'agendaWeek month'
-	        },
-	        eventRender: (event, element) => {
-	        	let photoUrl = 'assets/images/img.jpg';
-	        	if (event.photo) {
-        			photoUrl = (event.photo.metadata.small) ? event.photo.metadata.small : 'assets/photos/'+event.photo.metadata.tmp;
-	        	}
-        		$(element).find('span:first').prepend('<img width="30" src='+photoUrl+'>');
-	        },
-	        eventClick: (event) => {
-	        	if (event.type==='local') {
-	        		$state.go('event.detail', {id: event.id});
-	        	}
-	        }
-      	};
+		this.uiConfig = {
+			calendarConfig: {
+		        height: 450,
+		        header:{
+	          		left: 'prev,next',
+	          		center: 'title',
+	          		right: 'agendaWeek month'
+		        },
+		        eventRender: (event, element) => {
+		        	let photoUrl = 'assets/images/img.jpg';
+		        	if (event.photo) {
+	        			photoUrl = (event.photo.metadata.small) ? event.photo.metadata.small : 'assets/photos/'+event.photo.metadata.tmp;
+		        	}
+	        		$(element).find('span:first').prepend('<img width="30" src='+photoUrl+'>');
+		        },
+		        eventClick: (event) => {
+		        	if (event.type==='local') {
+		        		$state.go('event.detail', {id: event.id});
+		        	}
+		        }
+	      	}
+		};
 
       	$timeout(() => {
       		gapi.load('auth2', () => {
@@ -43,7 +44,6 @@ class MyCalendarCtrl {
       	}, 1000);
 
       	this.loadEvents();
-
 	}
 
 	loadEvents() {
@@ -60,16 +60,38 @@ class MyCalendarCtrl {
 		let items = [];
 		_.each(events, (event) => {
 			if (type==='local') {
+				let backgroundColor;
+				if (event.categoryId && event.categoryId.type) {}
+				switch (event.categoryId.type) {
+					case 'action':
+						backgroundColor = '#9c59b8';
+						break;
+					case 'food':
+						backgroundColor = '#e84c3d';
+						break;
+					case 'eco':
+						backgroundColor = '#2fcc71';
+						break;
+					case 'social':
+						backgroundColor = '#f1c40f';
+						break;
+					case 'internation':
+						backgroundColor = '#3598dc';
+						break;
+					default:
+						break;
+				}
 				items.push({
 					title: event.name,
 					start: new Date(event.startDateTime),
 					end: new Date(event.endDateTime),
 					id: event._id,
 					type: 'local',
-					photo: (event.photosId && event.photosId.length > 0) ? event.photosId[0] : null
+					photo: (event.photosId && event.photosId.length > 0) ? event.photosId[0] : null,
+					backgroundColor: backgroundColor
 				});
 			} else if (type==='google') {
-				this.eventSources[0].push({
+				items.push({
 					title: event.summary,
 					start: new Date(event.start.date),
 					end: new Date(event.end.date),
@@ -78,7 +100,7 @@ class MyCalendarCtrl {
 					url: event.htmlLink
 				});
 			} else if (type==='facebook') {
-				this.eventSources[0].push({
+				items.push({
 					title: event.name,
 					start: new Date(event.start_time),
 					end: new Date(event.end_time),
@@ -91,8 +113,9 @@ class MyCalendarCtrl {
 		if (type==='local') {
 			this.eventSources.push(items);
 		} else if (type==='google' || type==='facebook') {
-			this.uiCalendarConfig.calendars['myCalendar'].fullCalendar('removeEvents');
-	        this.uiCalendarConfig.calendars['myCalendar'].fullCalendar('addEventSource', this.eventSources);
+			let calendar = angular.element('#calendar');
+			// calendar.fullCalendar('removeEvents');
+			calendar.fullCalendar('addEventSource', items);
 		}
 	}
 

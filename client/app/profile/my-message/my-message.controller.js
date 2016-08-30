@@ -1,10 +1,11 @@
 'use strict';
 
 class MyMessagesCtrl {
-	constructor($scope, $localStorage, $state, ThreadService) {
+	constructor($scope, $localStorage, $state, ThreadService, $uibModal) {
 		this.authUser = $localStorage.authUser;
 		this.$state = $state;
 		this.ThreadService = ThreadService;
+		this.$uibModal = $uibModal;
 		this.threads = {
 			page: 1,
 			pageSize: 5
@@ -37,6 +38,43 @@ class MyMessagesCtrl {
 				console.log(err);
 			});
 		}
+	}
+
+	compose() {
+		this.$uibModal.open({
+			animation: true,
+			templateUrl: 'app/profile/modal/new-thread/view.html',
+			controller: 'NewThreadCtrl',
+			controllerAs: 'NewThread',
+			resolve: {
+				friends: (User) => {
+					return User.getFriends(this.authUser._id, {getAll: true}).then(resp => {
+						return resp.data.items;
+					});
+				}
+			}
+		}).result.then(resp => {
+			this.ThreadService.newThreadsInMyMessage(resp).then(data => {
+				_.each(data.data.items, (item) => {
+					let index = _.findIndex(this.threads.items, (owner) => {
+						return owner._id.toString()===item._id.toString();
+					});
+					if (index !== -1) {
+						this.threads.items[index].lastMessage = item.lastMessage;
+						this.threads.items[index].threadUpdatedAt = item.threadUpdatedAt;
+					} else {
+						this.threads.items.push(item);
+						this.threads.totalItem +=1;
+					}
+				});
+			}).catch(err => {
+				// TODO show error
+				console.log(err);
+			});
+		}).catch(err => {
+			console.log(err);
+			// TODO show error
+		});
 	}
 }
 

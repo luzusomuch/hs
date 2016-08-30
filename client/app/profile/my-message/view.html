@@ -12,7 +12,7 @@
 
                 <div class="top-message m20">
                     <div class="pull-left">
-                        <a href="#" class="btn-create" data-toggle="modal" data-target="#myModal"><i class="fa fa-envelope-o"></i> {{'COMPOSE' | translate}}</a>
+                        <a ng-click="vm.compose()" href="#" class="btn-create" data-toggle="modal" data-target="#myModal"><i class="fa fa-envelope-o"></i> {{'COMPOSE' | translate}}</a>
                     </div>
                     <div class="search-main pull-right">
                         <input ng-model="vm.searchTerm" type="text" class="form-control" placeholder="Search">

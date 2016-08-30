@@ -73,6 +73,79 @@ module.exports = function(kernel) {
       	});
 	});
 
+    /*Send message in my message page*/
+    kernel.app.post('/api/v1/threads/new-threads', kernel.middleware.isAuthenticated(), (req, res) => {
+        console.log(req.body);
+        if (!req.body.toUsers || !req.body.message || req.body.toUsers instanceof Array === false) {
+            return res.status(422).end();
+        }
+        let results = [];
+        async.each(req.body.toUsers, (userId, callback) => {
+            kernel.model.User.findById(userId, '-password -salt')
+            .populate('avatar')
+            .exec().then(user => {
+                if (!user) {
+                    return callback(null);
+                }
+                if (user.blocked.status || user.deleted.status) {
+                    return callback(null);
+                }
+                user = user.toJSON();
+                kernel.model.Thread.findOne({
+                    $or: [{
+                        fromUserId: user._id, toUserId: req.user._id
+                    }, {
+                        fromUserId: req.user._id, toUserId: user._id
+                    }]
+                }).then(thread => {
+                    if (!thread) {
+                        kernel.model.Thread({
+                            fromUserId: req.user._id,
+                            toUserId: user._id,
+                            messages: [{
+                                sentUserId: req.user._id,
+                                message: req.body.message,
+                                createdAt: new Date()
+                            }]
+                        }).save().then(saved => {
+                            user.threadId = saved._id;
+                            user.threadUpdatedAt = saved.updatedAt;
+                            user.lastMessage = {
+                                sentUserId: req.user,
+                                message: req.body.message,
+                                createdAt: new Date()
+                            };
+                            results.push(user);
+                            return callback(null);
+                        }).catch(callback);
+                    } else {
+                        thread.messages.push({
+                            sentUserId: req.user._id, 
+                            message: req.body.message,
+                            createdAt: new Date()
+                        });
+                        thread.save().then(saved => {
+                            user.threadId = saved._id;
+                            user.threadUpdatedAt = saved.updatedAt;
+                            user.lastMessage = {
+                                sentUserId: req.user,
+                                message: req.body.message,
+                                createdAt: new Date()
+                            };
+                            results.push(user);
+                            return callback(null);
+                        }).catch(callback);
+                    }
+                }).catch(callback);
+            }).catch(callback);
+        }, (err) => {
+            if (err) {
+                return res.status(500).json({type: 'SERVER_ERROR'});
+            }
+            return res.status(200).json({items: results});
+        });
+    });
+
     /*Send new message*/
     kernel.app.post('/api/v1/threads/:id', kernel.middleware.isAuthenticated(), (req, res) => {
         if (!req.body.message || (req.body.message && req.body.message.trim().length===0)) {

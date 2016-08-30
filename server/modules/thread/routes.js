@@ -81,7 +81,9 @@ module.exports = function(kernel) {
         }
         let results = [];
         async.each(req.body.toUsers, (userId, callback) => {
-            kernel.model.User.findById(userId, '-password -salt').then(user => {
+            kernel.model.User.findById(userId, '-password -salt')
+            .populate('avatar')
+            .exec().then(user => {
                 if (!user) {
                     return callback(null);
                 }
@@ -107,9 +109,12 @@ module.exports = function(kernel) {
                             }]
                         }).save().then(saved => {
                             user.threadId = saved._id;
-                            user.messages = saved.messages;
                             user.threadUpdatedAt = saved.updatedAt;
-                            user.lastMessage = _.last(saved.messages);
+                            user.lastMessage = {
+                                sentUserId: req.user,
+                                message: req.body.message,
+                                createdAt: new Date()
+                            };
                             results.push(user);
                             return callback(null);
                         }).catch(callback);
@@ -121,9 +126,12 @@ module.exports = function(kernel) {
                         });
                         thread.save().then(saved => {
                             user.threadId = saved._id;
-                            user.messages = saved.messages;
                             user.threadUpdatedAt = saved.updatedAt;
-                            user.lastMessage = _.last(saved.messages);
+                            user.lastMessage = {
+                                sentUserId: req.user,
+                                message: req.body.message,
+                                createdAt: new Date()
+                            };
                             results.push(user);
                             return callback(null);
                         }).catch(callback);

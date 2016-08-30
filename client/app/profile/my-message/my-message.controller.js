@@ -54,9 +54,19 @@ class MyMessagesCtrl {
 				}
 			}
 		}).result.then(resp => {
-			console.log(resp);
 			this.ThreadService.newThreadsInMyMessage(resp).then(data => {
-				console.log(data);
+				_.each(data.data.items, (item) => {
+					let index = _.findIndex(this.threads.items, (owner) => {
+						return owner._id.toString()===item._id.toString();
+					});
+					if (index !== -1) {
+						this.threads.items[index].lastMessage = item.lastMessage;
+						this.threads.items[index].threadUpdatedAt = item.threadUpdatedAt;
+					} else {
+						this.threads.items.push(item);
+						this.threads.totalItem +=1;
+					}
+				});
 			}).catch(err => {
 				// TODO show error
 				console.log(err);

@@ -3,6 +3,7 @@ import {S3, GM} from './../../components';
 import fs from 'fs';
 import path from 'path';
 import async from 'async';
+import _ from 'lodash';
 
 exports.core = (kernel) => {
 	/**
@@ -429,5 +430,44 @@ exports.core = (kernel) => {
         }).catch(cb);
       }
     ], done);
+  });
+
+  /*Send email when thread's user have new post*/
+  kernel.queue.process('NEW_MESSAGE_IN_THREAD', (job, done) => {
+    kernel.model.Thread.findById(job.data._id)
+    .populate('mesasges.sentUserId')
+    .exec().then(thread => {
+      if (!thread) {
+        return done();
+      }
+      // get sent user info
+      let lastMessage = _.last(thread.messages);
+      // get receive email user id
+      let receiveEmailUserId = (lastMessage.sentUserId._id.toString()===thread.fromUserId.toString()) ? thread.toUserId : thread.fromUserId;
+
+      let index =_.findIndex(thread.nonReceiveEmailUsers, (id) => {
+        return receiveEmailUserId.toString()===id.toString();
+      });
+
+      if (index !== -1) {
+        // index !== -1 meant another user is not allow to receive email alert in this thread
+        return done();
+      }
+      kernel.model.User.findById(receiveEmailUserId).then(user => {
+        if (!user) {
+          return done();
+        }
+        kernel.emit('SEND_MAIL', {
+          template: 'granted-award.html',
+          subject: 'New message from user ' + lastMessage.sentUserId.name,
+          data: {
+            user: user, 
+            from: lastMessage.sentUserId
+          },
+          to: user.email
+        });
+        return done();
+      }).catch(done);
+    }).catch(done);
   });
 };

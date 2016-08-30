@@ -53,7 +53,7 @@ class MySettingCtrl {
 		      	this.authUser.location.fullAddress = selectedAddress.formatted_address;
 		      	this.authUser.name = this.authUser.firstName +' '+ this.authUser.lastName;
 
-		      	this.User.updateProfile(this.authUser).then(() => {
+		      	this.User.updateProfile(this.authUser._id, this.authUser).then(() => {
 		      		this.Auth.setAuthUser(this.authUser);
 		      		this.submitted = false;
 		      	}).catch(err => {

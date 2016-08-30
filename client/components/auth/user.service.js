@@ -37,8 +37,8 @@
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/my-dashboard`, {parmas: params});
       },
 
-      updateProfile: (data) => {
-        return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/profile`, data);
+      updateProfile: (id, data) => {
+        return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/${id}/profile`, data);
       },
 
       changeNotificationsSetting: (data) => {

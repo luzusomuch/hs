@@ -277,7 +277,7 @@ let Language = {
 		ENTER_TEXT_HERE_TO_SEARCH: 'Enter text here to search',
 		BLOCK_USER: 'Block user',
 		UNBLOCK_USER: 'Unblock user',
-		VIEW_USER_DETAIL: 'View user detail'
+		VIEW_USER_DETAIL: 'View user detail',
 	},
 	de: {
 

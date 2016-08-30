@@ -1,8 +1,9 @@
 'use strict';
 
 class BackendUsersListCtrl {
-	constructor($scope, User) {
+	constructor($scope, User, $uibModal) {
 		this.User = User;
+		this.$uibModal = $uibModal;
 		this.users = {
 			page: 1
 		};
@@ -53,6 +54,33 @@ class BackendUsersListCtrl {
 			user.blocked = resp.data.blocked;
 		}).catch(err => {
 			// TODO show error
+			console.log(err);
+		});
+	}
+
+	editUserInfo(user) {
+		this.$uibModal.open({
+			animation: true,
+			templateUrl: 'backend/user/edit/view.html',
+			controller: 'BackendEditUserCtrl',
+			controllerAs: 'EditUser',
+			resolve: {
+				user: () => {
+					return user;
+				}
+			}
+		}).result.then(data => {
+			if (!data.location.fullAddress) {
+				data.location.coordinates = [0, 0];
+			}
+			this.User.updateProfile(data._id, data).then(() => {
+				// TODO show message
+	      	}).catch(err => {
+	      		console.log(err);
+	      		// TODO show error
+	      	});
+		}, err => {
+			// TODO show erro
 			console.log(err);
 		});
 	}

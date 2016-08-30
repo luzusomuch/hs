@@ -59,7 +59,6 @@ class UserController {
       if (!user) {
         return res.status(404).end();
       }
-      console.log(user.blocked);
       if (user.blocked) {
         user.blocked.status = !user.blocked.status;
         user.blocked.byUserId = (user.blocked.status) ? req.user._id : null;
@@ -390,17 +389,23 @@ class UserController {
       });
       return res.status(422).json(err);
     }
-    let user = req.user;
-    user.name = req.body.name;
-    user.phoneNumber = req.body.phoneNumber;
-    user.location = req.body.location;
-    user.location.type = 'Point';
-    user.email = req.body.email;
-    user.isCompanyAccount = req.body.isCompanyAccount;
+    this.kernel.model.User.findById(req.params.id).then(user => {
+      if (!user) {
+        return res.status(404).end();
+      }
+      user.name = req.body.name;
+      user.phoneNumber = req.body.phoneNumber;
+      user.location = req.body.location;
+      user.location.type = 'Point';
+      user.email = req.body.email;
+      user.isCompanyAccount = req.body.isCompanyAccount;
 
-    user.save().then(() => {
-      return res.status(200).end();
-    }).catch(() => {
+      user.save().then(() => {
+        return res.status(200).end();
+      }).catch(() => {
+        return res.status(500).json({type: 'SERVER_ERROR'});
+      });
+    }).catch(err => {
       return res.status(500).json({type: 'SERVER_ERROR'});
     });
   }

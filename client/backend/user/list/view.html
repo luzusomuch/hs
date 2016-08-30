@@ -52,6 +52,7 @@
 					<td>
 						<a uib-tooltip="{{(!user.blocked.status) ? 'BLOCK_USER' : 'UNBLOCK_USER' | translate}}" href="#" ng-click="vm.blockUser(user)"><i class="fa" ng-class="{'fa-lock': !user.blocked.status, 'fa-unlock': user.blocked.status}"></i></a>
 						<a uib-tooltip="{{'VIEW_USER_DETAIL' | translate}}" href="/profile/{{user._id}}/detail" target="_blank"><i class="fa fa-eye"></i></a>
+						<a href="#" ng-click="vm.editUserInfo(user)"><i class="fa fa-pencil"></i></a>
 					</td>
 				</tr>
 
@@ -66,6 +67,7 @@
 					<td>
 						<a uib-tooltip="{{(!user.blocked.status) ? 'BLOCK_USER' : 'UNBLOCK_USER' | translate}}" href="#" ng-click="vm.blockUser(user)"><i class="fa" ng-class="{'fa-lock': !user.blocked.status, 'fa-unlock': user.blocked.status}"></i></a>
 						<a uib-tooltip="{{'VIEW_USER_DETAIL' | translate}}" href="/profile/{{user._id}}/detail" target="_blank"><i class="fa fa-eye"></i></a>
+						<a href="#" ng-click="vm.editUserInfo(user)"><i class="fa fa-pencil"></i></a>
 					</td>
 				</tr>
 			</tbody>

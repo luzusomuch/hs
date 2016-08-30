@@ -9,6 +9,10 @@
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/friendsEvents`, {params: params});
       },
 
+      getJoinedEvents(params) {
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/joined`, {params: params});
+      },
+
       search: (body) => {
         body = body || {};
         return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/search`, body);

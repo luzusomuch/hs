@@ -8,6 +8,7 @@ let Language = {
 		MENU_MY_CALENDAR: 'My calendar',
 		MENU_MY_AWARDS: 'My awards',
 		MENU_MY_MESSENGER: 'My messenger',
+		MENU_HEALTH_BOOK: 'Health book',
 		MENU_SETTINGS: 'My settings',
 		MENU_LOGOUT: 'Logout',
 		SIGN_IN: 'Sign in',
@@ -266,6 +267,8 @@ let Language = {
 		FACEBOOK_CALENDAR: 'Facebook calendar',
 		SEND: 'Send',
 		PLEASE_SELECT_TO_PEOPLE: 'Please select to people',
+		ONE_TIME_EVENT: 'One time event',
+		REPEATING_SCHEDULE: 'Repeating schedule'
 	},
 	de: {
 

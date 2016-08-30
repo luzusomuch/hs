@@ -461,7 +461,91 @@ module.exports = function(kernel) {
       let suggests = _.map(result.items, 'name');
       return res.status(200).json(suggests);
     });
+  });
 
+  /*Get joined event use for health-book*/
+  kernel.app.get('/api/v1/events/joined', kernel.middleware.isAuthenticated(), (req, res) => {
+    let page = req.query.page || 1;
+    let pageSize = req.query.pageSize || 10;
+    let skip = (page -1) * pageSize;
+
+    let query = {
+      query: {
+        filtered: {
+          filter: {
+            bool: {
+              must: [{term: {blocked: false}}],
+              should: [{
+                term: {participantsId: req.user._id}
+              }]
+            }
+          },
+          query: {
+            bool: {
+              should: []
+            }
+          }
+        }
+      },
+      from: skip,
+      size: pageSize,
+      sort: [
+        { createdAt: 'desc' }
+      ]
+    };
+
+    kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {
+      if (err) {
+        return res.status(500).json({type: 'SERVER_ERROR'});
+      }
+      let results = [];
+      async.each(result.items, (item, callback) => {
+        kernel.model.Event.findById(item._id)
+        .populate('photosId')
+        .populate('banner')
+        .populate('categoryId')
+        .exec().then(event => {
+          if (!event) {
+            return callback(null);
+          }
+          event = event.toJSON();
+          async.waterfall([
+            (cb) => {
+              // check if current user like this event or not
+              kernel.model.Like.findOne({objectName: 'Event', objectId: event._id, ownerId: req.user._id}).then(liked => {
+                event.liked = (liked) ? true : false;
+                cb();
+              }).catch(cb);
+            }, 
+            (cb) => {
+              kernel.model.User.findById(item.ownerId, '-password -salt')
+              .populate('avatar').exec().then(owner => {
+                if (!owner) {
+                  return cb(null);
+                }
+                owner = owner.toJSON();
+                kernel.model.GrantAward.count({ownerId: owner._id, deleted: false}).then(count => {
+                  owner.totalAwards = count;
+                  event.ownerId = owner;
+                  cb();
+                }).catch(cb);
+              }).catch(cb);
+            }
+          ], (err) => {
+            if (err) {
+              return callback(null);
+            }
+            results.push(event);
+            callback(null);
+          });
+        }).catch(callback);
+      }, (err) => {
+        if (err) {
+          return res.status(500).json({type: 'SERVER_ERROR'}); 
+        }
+        return res.status(200).json({items: results, totalItem: result.totalItem});
+      });
+    });
   });
 
   /*

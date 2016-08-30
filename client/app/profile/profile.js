@@ -54,6 +54,15 @@ angular.module('healthStarsApp').config(function($stateProvider) {
     		);
       }
     }
+  }).state('profile.healthBook', {
+    url: '/health-book',
+    templateUrl: 'app/profile/health-book/view.html',
+    controller: 'HealthBookCtrl',
+    controllerAs: 'vm',
+    authenticate: true,
+    settings: {
+      pageTitle: 'HealthStars | Health Book'
+    }
   }).state('profile.mySetting', {
     url: '/my-setting',
     templateUrl: 'app/profile/my-setting/my-setting.html',

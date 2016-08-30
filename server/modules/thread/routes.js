@@ -111,7 +111,7 @@ module.exports = function(kernel) {
                             user.threadId = saved._id;
                             user.threadUpdatedAt = saved.updatedAt;
                             user.lastMessage = {
-                                sentUserId: req.user,
+                                sentUserId: req.user._id,
                                 message: req.body.message,
                                 createdAt: new Date()
                             };
@@ -128,7 +128,7 @@ module.exports = function(kernel) {
                             user.threadId = saved._id;
                             user.threadUpdatedAt = saved.updatedAt;
                             user.lastMessage = {
-                                sentUserId: req.user,
+                                sentUserId: req.user._id,
                                 message: req.body.message,
                                 createdAt: new Date()
                             };

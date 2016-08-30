@@ -1,0 +1,40 @@
+<div class="container">
+	<hs-profile-menu-header></hs-profile-menu-header>
+
+	<section class="grid" masonry='{ "transitionDuration" : "0.4s" , "itemSelector" : ".tile"}'>
+        <div class="grid-item tile" masonry-tile ng-repeat="event in vm.events.items">
+            <div class="li-event {{event.categoryId | categoryClass}}">
+                <div class="top-li-event">
+                    <a ui-sref="profile.detail({id: event.ownerId._id})"><img src="{{event.ownerId | avatarUrl}}"></a>
+                    <h4><a ui-sref="profile.detail({id: event.ownerId._id})">{{event.ownerId.name}} &nbsp;</a></h4>
+                    <i class="fa fa-clock-o"></i> {{event.createdAt | fromNow}}
+                    <div class="arward-li-top">
+                        <span>{{event.ownerId.totalAwards || 0}}</span>
+                        <i class="fa fa-trophy"></i>
+                    </div>
+                </div>
+                <div class="box-event-li">
+                    <a ui-sref="event.detail({id: event._id})" class="img-eventbox"><img src="{{event | eventThumbnail}}" width="100%"></a>
+                    <div class="text-li-event">
+                        <h3>{{event.name}}</h3>
+                        <i class="fa fa-calendar"></i> {{event.startDateTime | date : 'dd.MM.yyyy'}} <i class="fa fa-clock-o"></i> {{event.startDateTime | date: 'HH:mm'}}<br>
+                        <i class="fa fa-map-marker"></i> Location : {{event.location.fullAddress}}
+                    </div>
+                </div>
+                <div class="bottom-li-event">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="text-bottom-big" ng-click="vm.like(event)"><i class="fa fa-heart" ng-class="{liked: event.liked}"></i> {{event.totalLike || 0}}</div>
+                            Interested
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="text-bottom-big"><i class="fa fa-user-plus"></i> {{event.stats.totalParticipants || 0}}</div>
+                            Participating
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>

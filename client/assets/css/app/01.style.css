@@ -2347,3 +2347,9 @@ div.menu-tab > ul>li>a {
     top: 0px;
     right: 20px;
 }
+.white-color {
+    color: #fff !important;
+}
+.grey-color {
+    color: rgba(255,255,255,0.6) !important;
+}

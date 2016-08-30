@@ -7,9 +7,10 @@
         <li ng-class="{'active': $state.includes('profile.myAward')}"><a ui-sref="profile.myAward"><i class="fa fa-trophy"></i> <span>{{'MENU_MY_AWARDS' | translate}}</span></a></li>
         <li ng-class="{'active': $state.includes('profile.myMessages') || $state.includes('profile.myMessagesDetail')}"><a ui-sref="profile.myMessages"><i class="fa fa-envelope-o"></i> <span>{{'MENU_MY_MESSENGER' | translate}}</span></a></li>
         <li ng-class="{'active': $state.includes('profile.mySetting')}"><a ui-sref="profile.mySetting"><i class="fa fa-cog"></i> <span>{{'MENU_SETTINGS' | translate}}</span></a></li>
+        <li ng-class="{'active': $state.includes('profile.healthBook')}"><a ui-sref="profile.healthBook"><i class="fa fa-heartbeat"></i> <span>{{'MENU_HEALTH_BOOK' | translate}}</span></a></li>
     </ul>
   </div>
-  <div class="pull-right">
+  <!-- <div class="pull-right">
     <a ui-sref="event.create" class="create-event"><i class="fa fa-calendar-plus-o"></i> {{'CREATE_EVENT' | translate}}</a>
-  </div>
+  </div> -->
 </div>

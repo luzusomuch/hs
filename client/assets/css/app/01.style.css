@@ -2395,3 +2395,6 @@ div.menu-tab > ul>li>a {
 .fc-header-right .fc-button:last-child {
     border-radius: 0px 3px 3px 0px;
 }
+.fc-widget-header, .fc-widget-content {
+    border: 1px solid rgba(255,255,255,0.2);
+}

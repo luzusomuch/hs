@@ -38,7 +38,6 @@
 							</a>
 						</strong>
 					</td>
-					<td><strong>{{'USER_BLOCKED_STATUS' | translate}}</strong></td>
 					<td><strong>{{'ACTION' | translate}}</strong></td>
 				</tr>
 			</thead>
@@ -50,10 +49,9 @@
 						<img src="{{user | avatarUrl}}" width="100">
 					</td>
 					<td>{{user.createdAt | date: 'HH:mm'}} {{user.createdAt | date: 'dd-MMMM-yyyy'}}</td>
-					<td>{{(user.blocked.status) ? 'TRUE' : 'FALSE' | translate}}</td>
 					<td>
-						<a ng-show="!report.checked" uib-tooltip="{{'MARK_AS_CHECKED' | translate}}" href="#" ng-click="vm.markAsChecked(report)"><i class="fa fa-check"></i></a>
-						<a uib-tooltip="{{'VIEW_REPORT' | translate}}" href="#" ng-click="vm.view(report)"><i class="fa fa-eye"></i></a>
+						<a uib-tooltip="{{(!user.blocked.status) ? 'BLOCK_USER' : 'UNBLOCK_USER' | translate}}" href="#" ng-click="vm.blockUser(user)"><i class="fa" ng-class="{'fa-lock': !user.blocked.status, 'fa-unlock': user.blocked.status}"></i></a>
+						<a uib-tooltip="{{'VIEW_USER_DETAIL' | translate}}" href="/profile/{{user._id}}/detail" target="_blank"><i class="fa fa-eye"></i></a>
 					</td>
 				</tr>
 
@@ -65,10 +63,9 @@
 						<img src="{{user | avatarUrl}}" width="100">
 					</td>
 					<td>{{user.createdAt | date: 'HH:mm'}} {{user.createdAt | date: 'dd-MMMM-yyyy'}}</td>
-					<td>{{(user.blocked.status) ? 'TRUE' : 'FALSE' | translate}}</td>
 					<td>
-						<a ng-show="!report.checked" uib-tooltip="{{'MARK_AS_CHECKED' | translate}}" href="#" ng-click="vm.markAsChecked(report)"><i class="fa fa-check"></i></a>
-						<a uib-tooltip="{{'VIEW_REPORT' | translate}}" href="#" ng-click="vm.view(report)"><i class="fa fa-eye"></i></a>
+						<a uib-tooltip="{{(!user.blocked.status) ? 'BLOCK_USER' : 'UNBLOCK_USER' | translate}}" href="#" ng-click="vm.blockUser(user)"><i class="fa" ng-class="{'fa-lock': !user.blocked.status, 'fa-unlock': user.blocked.status}"></i></a>
+						<a uib-tooltip="{{'VIEW_USER_DETAIL' | translate}}" href="/profile/{{user._id}}/detail" target="_blank"><i class="fa fa-eye"></i></a>
 					</td>
 				</tr>
 			</tbody>

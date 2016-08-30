@@ -49,6 +49,10 @@
         return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/add-social-account`, data);
       },
 
+      blockUser: (id) => {
+        return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/${id}/block`);
+      },
+
       deleteAccount: (id) => {
         return $http.delete(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/${id}`);
       }

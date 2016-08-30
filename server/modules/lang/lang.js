@@ -274,7 +274,10 @@ let Language = {
 		USER_NAME: 'User name',
 		USER_AVATAR: 'Avatar',
 		USER_BLOCKED_STATUS: 'Blocked status',
-		ENTER_TEXT_HERE_TO_SEARCH: 'Enter text here to search'
+		ENTER_TEXT_HERE_TO_SEARCH: 'Enter text here to search',
+		BLOCK_USER: 'Block user',
+		UNBLOCK_USER: 'Unblock user',
+		VIEW_USER_DETAIL: 'View user detail'
 	},
 	de: {
 

@@ -47,6 +47,15 @@ class BackendUsersListCtrl {
 			this.search.items = resp.data.items;
 		});
 	}
+
+	blockUser(user) {
+		this.User.blockUser(user._id).then(resp => {
+			user.blocked = resp.data.blocked;
+		}).catch(err => {
+			// TODO show error
+			console.log(err);
+		});
+	}
 }
 
 angular.module('healthStarsApp')

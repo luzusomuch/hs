@@ -34,6 +34,7 @@ class UserController {
     this.me = this.me.bind(this);
     this.destroy = this.destroy.bind(this);
     this.changePassword = this.changePassword.bind(this);
+    this.blockUser = this.blockUser.bind(this);
     this.verifyAccount = this.verifyAccount.bind(this);
     this.changeExhibit = this.changeExhibit.bind(this);
     this.authCallback = this.authCallback.bind(this);
@@ -50,6 +51,32 @@ class UserController {
   hotmailContacts(req, res) {
     // res.redirect(config.baseUrl+'/profile/');
     return res.status(200).end();
+  }
+
+  /*Block and un-block user*/
+  blockUser(req, res) {
+    this.kernel.model.User.findById(req.params.id).then(user => {
+      if (!user) {
+        return res.status(404).end();
+      }
+      console.log(user.blocked);
+      if (user.blocked) {
+        user.blocked.status = !user.blocked.status;
+        user.blocked.byUserId = (user.blocked.status) ? req.user._id : null;
+      } else {
+        user.blocked = {
+          status: true,
+          byUserId: req.user._id
+        };
+      }
+      user.save().then(saved => {
+        return res.status(200).json({blocked: saved.blocked});
+      }).catch(err => {
+        return res.status(500).json({type: 'SERVER_ERROR'});  
+      });
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
   }
 
   /**

@@ -2353,3 +2353,54 @@ div.menu-tab > ul>li>a {
 .grey-color {
     color: rgba(255,255,255,0.6) !important;
 }
+.fc-state-highlight {
+    background: rgba(255,255,255,0.2);
+}
+.fc-ltr .fc-event-hori {
+    position: relative;
+    padding: 3px 0px;
+    padding-left: 55px;
+    border:0px !important;
+    border-radius: 0px !important;
+    cursor: pointer;
+    font-size: 15px;
+}
+.fc-ltr .fc-event-hori img {
+    position: absolute;
+    top: -16px;
+    left: -3px;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.fc-ltr .fc-event-hori .fc-event-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 17px;
+    display: block;
+}
+.fc-header .fc-button {
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    text-shadow: none;
+}
+.fc-header .fc-button.fc-state-active {
+    background: #0081c8;
+}
+.fc .fc-header-space {
+    display: none;
+}
+.fc-header-right .fc-button {
+    border-radius: 0px;
+}
+.fc-header-right .fc-button:first-child {
+    border-radius: 3px 0px 0px 3px;
+}
+.fc-header-right .fc-button:last-child {
+    border-radius: 0px 3px 3px 0px;
+}
+.fc-widget-header, .fc-widget-content {
+    border: 1px solid rgba(255,255,255,0.2);
+}

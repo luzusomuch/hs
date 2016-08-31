@@ -74,6 +74,6 @@
 		</table>
 	</div>
 	<div ng-show="vm.users.items.length < vm.users.totalItem && !vm.search.search">
-		<a ng-click="vm.loadMore()" href="#">{{'LOAD_MORE_USERS' | translate}}</a>
+		<a ng-click="vm.getUsers()" href="#">{{'LOAD_MORE_USERS' | translate}}</a>
 	</div>
 </div>

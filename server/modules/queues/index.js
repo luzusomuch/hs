@@ -527,6 +527,7 @@ exports.core = (kernel) => {
         },
         to: photo.ownerId.email
       });
+      return done();
     }).catch(done);
   });
 
@@ -548,6 +549,7 @@ exports.core = (kernel) => {
         },
         to: user.email
       });
+      return done();
     }).catch(done);
   });
 };

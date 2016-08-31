@@ -1,7 +1,8 @@
 'use strict';
 
 class MyMessageDetailCtrl {
-	constructor($localStorage, $state, ThreadService, thread, $uibModal) {
+	constructor($localStorage, $state, ThreadService, thread, $uibModal, growl) {
+		this.growl = growl;
 		this.$uibModal = $uibModal;
 		this.authUser = $localStorage.authUser;
 		this.$state = $state;
@@ -18,7 +19,7 @@ class MyMessageDetailCtrl {
 
 	sendMessage(message) {
 		if (this.thread.blocked) {
-			// TODO show error
+			this.growl.error("<p>{{'THIS_THREAD_HAS_BLOCKED' | translate}}</p>");
 			return false;
 		}
 		if (message && message.trim().length > 0) {
@@ -27,31 +28,27 @@ class MyMessageDetailCtrl {
 				this.thread.messages.push(resp.data);
 				this.message = null;
 				angular.element('textarea#reply-textarea')[0].style.height = 35+"px";
-			}).catch(err => {
-				// TODO show error
-				console.log(err);
+			}).catch(() => {
+				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 			});
 		} else {
-			// TODO show error
+			this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
 		}
 	}
 
 	receiveEmail() {
 		this.ThreadService.configReceiveEmail(this.thread._id).then(resp => {
-			//TODO Show success message
 			this.thread.nonReceiveEmailUsers = resp.data.nonReceiveEmailUsers;
-		}).catch(err => {
-			// TODO show error
-			console.log(err);
+		}).catch(() => {
+			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 		});
 	}
 
 	block() {
 		this.ThreadService.block(this.thread._id).then(resp => {
 			this.thread.blocked = resp.data.blocked;
-		}).catch(err => {
-			// TODO show error
-			console.log(err);
+		}).catch(() => {
+			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 		});
 	}
 
@@ -70,9 +67,8 @@ class MyMessageDetailCtrl {
 		modalInstance.result.then(data => {
 			this.ThreadService.changeTags(this.thread._id, {tags: data}).then(resp => {
 				this.thread.tags = resp.data.tags;
-			}).catch(err => {
-				console.log(err);
-				// TODO shw error
+			}).catch(() => {
+				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 			});
 		});
 	}

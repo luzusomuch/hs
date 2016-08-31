@@ -1,7 +1,8 @@
 'use strict';
 
 class HomeCtrl {
-	constructor($rootScope, $scope, EventService, LikeService, $localStorage, CategoryService, SearchParams, socket, $state, $timeout, categories) {
+	constructor($rootScope, $scope, EventService, LikeService, $localStorage, CategoryService, SearchParams, socket, $state, $timeout, categories, growl) {
+    this.growl = growl;
     this.$scope = $scope;
     this.categories = [];
     // re-order category
@@ -188,9 +189,8 @@ class HomeCtrl {
       } else {
         event.totalLike = event.totalLike -1;
       }
-    }).catch(err => {
-      // TODO - show error message
-      console.log(err);
+    }).catch(() => {
+      this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
     });
   }
 

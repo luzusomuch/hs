@@ -1,7 +1,8 @@
 'use strict';
 
 class MyHomeCtrl {
-	constructor($scope, $localStorage, APP_CONFIG, PhotoViewer, User, RelationService, Invite, $http, $timeout) {
+	constructor($scope, $localStorage, APP_CONFIG, PhotoViewer, User, RelationService, Invite, $http, $timeout, growl) {
+		this.growl = growl;
 		this.$http = $http;
 		this.RelationService = RelationService;
 		this.APP_CONFIG = APP_CONFIG;
@@ -17,9 +18,6 @@ class MyHomeCtrl {
 		this.photos = {};
 		this.PhotoViewer.myPhotos({pageSize: 4}).then(resp => {
 			this.photos = resp.data;
-		}).catch(err => {
-			// TODO show error
-			console.log(err);
 		});
 
 		this.loadItems();
@@ -50,7 +48,6 @@ class MyHomeCtrl {
 			this.dashboardItems.items = (this.dashboardItems.items) ? this.dashboardItems.items.concat(resp.data.items) : resp.data.items;
 			this.dashboardItems.totalItem = resp.data.totalItem;
 			this.dashboardItems.page +=1;
-			console.log(this.dashboardItems);
 		});
 	}
 
@@ -69,12 +66,11 @@ class MyHomeCtrl {
 					this.dashboardItems.items.splice(index, 1);
 					this.dashboardItems.totalItem -= 1;
 				}
-			}).catch(err => {
-				console.log(err);
-				// TODO show error
+			}).catch(() => {
+				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 			});
 		} else {
-			// TODO show error
+			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 		}
 	}
 
@@ -88,12 +84,11 @@ class MyHomeCtrl {
 					this.dashboardItems.items.splice(index, 1);
 					this.dashboardItems.totalItem -= 1;
 				}
-			}).catch(err => {
-				console.log(err);
-				// TODO show error
+			}).catch(() => {
+				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 			});
 		} else {
-			// TODO show error
+			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 		}
 	}
 
@@ -107,12 +102,11 @@ class MyHomeCtrl {
 					this.dashboardItems.items.splice(index, 1);
 					this.dashboardItems.totalItem -= 1;
 				}
-			}).catch(err => {
-				console.log(err);
-				// TODO show error
+			}).catch(() => {
+				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 			});
 		} else {
-			// TODO show error
+			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 		}
 	}
 
@@ -126,12 +120,11 @@ class MyHomeCtrl {
 					this.dashboardItems.items.splice(index, 1);
 					this.dashboardItems.totalItem -= 1;
 				}
-			}).catch(err => {
-				console.log(err);
-				// TODO show error
+			}).catch(() => {
+				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 			});
 		} else {
-			// TODO show error
+			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 		}
 	}
 
@@ -143,7 +136,7 @@ class MyHomeCtrl {
 				  	'collection' : 'visible'
 				}).execute(resp => {
 					if (resp.error) {
-						// TODO show error
+						this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 					} else {
 						_.each(resp.items, (item) => {
 							if (item.objectType==='person') {
@@ -166,11 +159,11 @@ class MyHomeCtrl {
 		            	console.log(response.data);
 		            },
 		            function (responseFailed) {
-		            	//console.log(responseFailed);
+		            	this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 		            }
 		        );
 			}, responseFailed => {
-				console.log(responseFailed);
+				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 			});
 		}
 	}

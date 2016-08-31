@@ -1,7 +1,8 @@
 'use strict';
 
 class MyAwardCtrl {
-	constructor(User, $http, $scope, $state, $localStorage, $timeout, APP_CONFIG, grantedAwards, ownAwards, $uibModal, AwardService) {
+	constructor(growl, User, $http, $scope, $state, $localStorage, $timeout, APP_CONFIG, grantedAwards, ownAwards, $uibModal, AwardService) {
+		this.growl = growl;
 		this.errors = {};
 		this.$state = $state;
 		this.$uibModal = $uibModal;
@@ -66,9 +67,6 @@ class MyAwardCtrl {
 			this.$timeout(() => {
 				this.ownAwardLoaded = true;
 			});
-		}, err => {
-			console.log(err);
-			// TODO show error
 		});
 	}
 
@@ -85,9 +83,8 @@ class MyAwardCtrl {
 						this.ownAwardLoaded = true;
 					});
 				}
-			}).catch(err => {
-				console.log(err);
-				// TODO show error
+			}).catch(() => {
+				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 			});
 		} else {
 			this.$http.delete(this.APP_CONFIG.baseUrl+'api/'+this.APP_CONFIG.apiVer+'/grantAwards/'+award._id).then(() => {
@@ -101,8 +98,8 @@ class MyAwardCtrl {
 						this.grantedAwardLoaded = true;
 					});
 				}
-			}).catch(err => {
-				console.log(err);
+			}).catch(() => {
+				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 			});
 		}
 	}
@@ -154,9 +151,8 @@ class MyAwardCtrl {
 
 		this.User.changeExhibit(data).then(resp => {
 			this.$localStorage.authUser = resp.data;
-		}).catch(err => {
-			console.log(err);
-			// TODO show error
+		}).catch(() => {
+			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 		});
 	}
 
@@ -182,9 +178,6 @@ class MyAwardCtrl {
 					this.ownAwardLoaded = true;
 				});
 			}
-		}, err => {
-			console.log(err);
-			// TODO show error
 		});
 	}
 }

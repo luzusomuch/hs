@@ -1,5 +1,5 @@
 class EventParticipantsCtrl {
-	constructor($scope, $uibModalInstance, $state, EventService, $localStorage, onlineUsers, RelationService) {
+	constructor($scope, $uibModalInstance, $state, EventService, $localStorage, onlineUsers, RelationService, growl) {
 		$scope.authUser = $localStorage.authUser;
 		$scope.participants = {
 			pageSize: 20
@@ -33,9 +33,8 @@ class EventParticipantsCtrl {
 		$scope.addFriend = (friend) => {
 			RelationService.create({userId: friend._id, type: 'friend'}).then(resp => {
 	    		friend.friendStatus = resp.data.type;
-			}).catch(err => {
-				console.log(err);
-				// TODO show error
+			}).catch(() => {
+				growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 			});
 		};
 	}

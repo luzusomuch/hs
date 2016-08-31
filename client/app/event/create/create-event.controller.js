@@ -1,8 +1,9 @@
 'use strict';
 
 class CreateEventCtrl {
-	constructor(APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies) {
+	constructor(APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies, growl) {
 		this.APP_CONFIG = APP_CONFIG;
+    this.growl = growl;
     this.Upload = Upload;
 		this.$cookies = $cookies;
 		this.files = [];
@@ -260,11 +261,12 @@ class CreateEventCtrl {
 	    	this.$state.go('event.detail', {id: resp.data._id});
         this.submitted = false;
         this.event.allowShow = true;
-	    }, (err) => {
-	    	console.log(err);
-        // TODO show error
+	    }, () => {
+	    	this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 	    });
-  	}
+  	} else {
+      this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
+    }
   }
 }
 
@@ -294,10 +296,10 @@ class RepeatEventCtrl {
 				this.$uibModalInstance.close(this.repeat);
 			} else {
         this.errors.date = true;
-				this.growl.error('Check your repeating start date and end date');
+				this.growl.error("<p>{{'CHECK_YOUR_STARTDATE_ENDDATE' | translate}}</p>");
 			}
 		} else {
-			this.growl.error('Check your input');
+			this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
 		}
 	}
 }

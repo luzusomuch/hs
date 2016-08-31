@@ -50,9 +50,6 @@ class MyCalendarCtrl {
 		this.EventService.getUserEvent({getAll: true}).then(resp => {
 			this.localEvents = resp.data;
 			this.renderEvents(this.localEvents.items, 'local');
-		}).catch(err => {
-			// TODO show error
-			console.log(err);
 		});
 	}
 

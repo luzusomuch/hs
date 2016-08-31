@@ -278,7 +278,15 @@ let Language = {
 		BLOCK_USER: 'Block user',
 		UNBLOCK_USER: 'Unblock user',
 		VIEW_USER_DETAIL: 'View user detail',
-		LOAD_MORE_USERS: 'Load more users'
+		LOAD_MORE_USERS: 'Load more users',
+		PLEASE_CHECK_YOUR_INPUT: 'Please check your input',
+		CHECK_YOUR_STARTDATE_ENDDATE: 'Check your start date & end date',
+		SOMETHING_WENT_WRONG: 'Something went wrong',
+		PLEASE_ACCEPT_OUR_TERMS_AND_CONDITIONS: 'Please accept our terms and conditions',
+		THIS_EVENT_HAS_BLOCKED: 'This event has blocked',
+		THIS_COMMENT_HAS_BLOCKED: 'This comment has blocked',
+		THIS_THREAD_HAS_BLOCKED: 'This thread has blocked',
+
 	},
 	de: {
 

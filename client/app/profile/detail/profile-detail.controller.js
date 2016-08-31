@@ -1,9 +1,10 @@
 'use strict';
 
 class ProfileDetailCtrl {
-	constructor($scope, $state, $uibModal, $localStorage, APP_CONFIG, PhotoViewer, user, $cookies, Upload, FeedService, EventService, RelationService) {
+	constructor(growl, $scope, $state, $uibModal, $localStorage, APP_CONFIG, PhotoViewer, user, $cookies, Upload, FeedService, EventService, RelationService) {
+		this.growl = growl;
 		if ((user.deleted && user.deleted.status) || (user.blocked && user.blocked.status)) {
-			alert('This user was deleted');
+			this.growl.error("<p>{{'EMAIL_DELETED' | translate}}</p>");
 			$state.go('home');
 		}
 		this.errors = {};
@@ -22,9 +23,6 @@ class ProfileDetailCtrl {
 		this.photos = {};
 		this.PhotoViewer.myPhotos({pageSize: 4, userId: user._id}).then(resp => {
 			this.photos = resp.data;
-		}).catch(err => {
-			// TODO show error
-			console.log(err);
 		});
 
 		this.feed = {};
@@ -94,6 +92,7 @@ class ProfileDetailCtrl {
 		this.submitted = true;
 		this.errors = {};
 		if (_.filter(this.files, {nude: true}).length > 0) {
+			this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
 			return this.errors.file = true;
 		}
 		if (feed.content && feed.content.trim().length > 0) {
@@ -109,21 +108,20 @@ class ProfileDetailCtrl {
 		        this.feed = {};
 		        this.files = [];
 		        this.feeds.items.push(resp.data);
-		    }, (err) => {
-		    	console.log(err);
-		    	// TODO show error
+		    }, () => {
+		    	this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 		    });
 		} else {
 			this.errors.content = true;
+			this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
 		}
 	}
 
 	blockPhoto(photo) {
 		this.PhotoViewer.blockPhoto(photo._id, {type: 'user-profile', userId: this.user._id}).then(resp => {
 			photo.blocked = resp.data.blocked;
-		}).catch(err => {
-			console.log(err);
-			// TODO show error
+		}).catch(() => {
+			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 		});
 	}
 
@@ -146,18 +144,16 @@ class ProfileDetailCtrl {
 	addFriend() {
 		this.RelationService.create({userId: this.user._id, type: 'friend'}).then(resp => {
 			this.user.isFriend = resp.data.type;
-		}).catch(err => {
-			console.log(err);
-			// TODO show error
+		}).catch(() => {
+			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 		});
 	}
 
 	follow() {
 		this.RelationService.create({userId: this.user._id, type: 'follow'}).then(resp => {
 			this.user.isFollow = resp.data.type;
-		}).catch(err => {
-			console.log(err);
-			// TODO show error
+		}).catch(() => {
+			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 		});
 	}
 

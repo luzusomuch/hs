@@ -16,24 +16,23 @@ class CreateAwardCtrl {
 	}
 
 	select($file) {
-  	this.file = $file;
-  }
+  		this.file = $file;
+  	}
 
 	submit(form) {
 		if (form.$valid && this.file.name && this.award.type) {
 			this.Upload.upload({
-	      url: '/api/v1/awards',
-	      arrayKey: '',
-	      data: {file: this.file, award: this.award},
-	      headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
-	    }).then(resp =>{
+	      	url: '/api/v1/awards',
+	      	arrayKey: '',
+	      	data: {file: this.file, award: this.award},
+	      	headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
+		    }).then(resp =>{
 				this.$uibModalInstance.close(resp.data);
-	    }, (err) => {
-	    	console.log(err);
-	    	// TODO show error
-	    });
+		    }, () => {
+		    	this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+		    });
 		} else {
-			this.growl.error('Check your data');
+			this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
 		}
 	}
 }

@@ -1,7 +1,8 @@
 'use strict';
 
 class MyMessagesCtrl {
-	constructor($scope, $localStorage, $state, ThreadService, $uibModal) {
+	constructor($scope, $localStorage, $state, ThreadService, $uibModal, growl) {
+		this.growl = growl;
 		this.authUser = $localStorage.authUser;
 		this.$state = $state;
 		this.ThreadService = ThreadService;
@@ -33,9 +34,6 @@ class MyMessagesCtrl {
 			this.searchQuery.search = true;
 			this.ThreadService.search({query: searchTerm}).then(resp => {
 				this.searchQuery.items = resp.data.items;
-			}).catch(err => {
-				// TODO show error
-				console.log(err);
 			});
 		}
 	}
@@ -67,13 +65,9 @@ class MyMessagesCtrl {
 						this.threads.totalItem +=1;
 					}
 				});
-			}).catch(err => {
-				// TODO show error
-				console.log(err);
+			}).catch(() => {
+				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 			});
-		}).catch(err => {
-			console.log(err);
-			// TODO show error
 		});
 	}
 }

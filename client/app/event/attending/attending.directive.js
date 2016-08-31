@@ -1,8 +1,9 @@
 'use strict';
 
 class EventAttendingCtrl {
-	constructor($scope, $rootScope, EventService, $state, $localStorage, socket, $uibModal, RelationService) {
+	constructor($scope, $rootScope, EventService, $state, $localStorage, socket, $uibModal, RelationService, growl) {
 		this.$uibModal = $uibModal;
+		this.growl = growl;
 		this.RelationService = RelationService;
 		this.EventService = EventService;
 		this.authUser = $localStorage.authUser;
@@ -58,12 +59,9 @@ class EventAttendingCtrl {
 					this.participants.items.splice(index ,1);
 					this.participants.total -=1;
 				}
-			}).catch(err => {
-				console.log(err);
-				// TODO show error
+			}).catch(() => {
+				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 			});
-		} else {
-			// TOTO show error
 		}
 	}
 
@@ -71,12 +69,9 @@ class EventAttendingCtrl {
 		if (this.isEventOwner && !user.isGrantedAward && this.eAward.type==='organizer') {
 			this.EventService.grantAward(this.$state.params.id, user._id).then(() => {
 				user.isGrantedAward = true;
-			}).catch(err => {
-				console.log(err);
-				// TODO show error
+			}).catch(() => {
+				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 			});
-		} else {
-			// TODO show error
 		}
 	}
 
@@ -96,9 +91,8 @@ class EventAttendingCtrl {
 	addFriend(friend) {
 		this.RelationService.create({userId: friend._id, type: 'friend'}).then(resp => {
     		friend.friendStatus = resp.data.type;
-		}).catch(err => {
-			console.log(err);
-			// TODO show error
+		}).catch(() => {
+			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 		});
 	}
 }

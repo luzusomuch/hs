@@ -1,7 +1,8 @@
 'use strict';
 
 class MyPhotosCtrl {
-	constructor($localStorage, APP_CONFIG, PhotoViewer, user) {
+	constructor($localStorage, APP_CONFIG, PhotoViewer, user, growl) {
+		this.growl = growl;
 		this.user = user;
 		this.authUser = $localStorage.authUser;
 		this.user.link = APP_CONFIG.baseUrl + 'profile/' + this.user._id +'/detail';
@@ -19,9 +20,8 @@ class MyPhotosCtrl {
 			this.photos.items = (this.photos.items) ? this.photos.items.concat(resp.data.items) : resp.data.items;
 			this.photos.totalItem = resp.data.totalItem;
 			this.photos.page += 1;
-		}).catch(err => {
-			// TODO show error
-			console.log(err);
+		}).catch(() => {
+			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 		});
 	}
 
@@ -34,12 +34,11 @@ class MyPhotosCtrl {
 				if (index) {
 					this.photos.items.splice(index, 1);
 				}
-			}).catch(err => {
-				// TODO show error
-				console.log(err);
+			}).catch(() => {
+				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 			});
 		} else {
-			// TODO show error
+			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 		}
 	}
 

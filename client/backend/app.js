@@ -5,7 +5,7 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
   'validation.match', 'angular-growl', 'angular-loading-bar', 'ngAnimate', 
   'healthStarsApp.language', 'ngFileUpload', 'ui.select'
 ])
-.config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider, $stateProvider) {
+.config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider, $stateProvider, growlProvider) {
   $urlRouterProvider.otherwise('/backend/login');
   cfpLoadingBarProvider.includeSpinner = false;
   $locationProvider.html5Mode(true);
@@ -14,6 +14,7 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
  		template: '<ui-view />',
  		abstract: true
  	});
+  growlProvider.globalTimeToLive(3000);
 })
 .factory('AppSettings', (APP_CONFIG) => {
   let _default = _.merge({

@@ -1,7 +1,8 @@
 'use strict';
 
 class NewThreadCtrl {
-	constructor($uibModalInstance, $localStorage, friends) {
+	constructor($uibModalInstance, $localStorage, friends, growl) {
+		this.growl = growl;
 		this.$uibModalInstance = $uibModalInstance;
 		this.authUser = $localStorage.authUser;
 		friends.unshift({name: ' '});
@@ -15,7 +16,7 @@ class NewThreadCtrl {
 		if (form.$valid) {
 			this.$uibModalInstance.close({toUsers: _.map(this.toUsers, '_id'), message: this.message});
 		} else {
-			// TODO show error
+			this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
 		}
 	}
 

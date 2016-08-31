@@ -3,7 +3,8 @@
 class RegisterCtrl {
   //end-non-standard
 
-  constructor(Auth, $state, $http, $scope, $uibModal) {
+  constructor(Auth, $state, $http, $scope, $uibModal, growl) {
+    this.growl = growl;
     this.Auth = Auth;
     this.$state = $state;
     this.$http = $http;
@@ -38,8 +39,7 @@ class RegisterCtrl {
     form['email'].$setValidity('mongoose', true);
     this.submitted = true;
     if (!this.user.term) {
-      // TODO show error
-      console.log('Please accept our terms and conditions');
+      this.growl.error("<p>{{'PLEASE_ACCEPT_OUR_TERMS_AND_CONDITIONS' | translate}}</p>")
       return;
     }
     if (form.$valid && this.address.selected) {
@@ -65,12 +65,12 @@ class RegisterCtrl {
           password: this.user.password,
           phoneNumber: this.user.phoneNumber,
           location: this.user.location
-        })
-        .then(() => {
+        }).then(() => {
           // Account created, redirect to home
           this.$state.go('home');
-        })
-        .catch(err => {
+        }).catch(err => {
+          this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+          
           this.errors = {};
 
           angular.forEach(err.data, (err) => {
@@ -87,10 +87,9 @@ class RegisterCtrl {
             this.errors[field] = error.message;
           });
         });
-      }, err => {
-        console.log(err);
-        // TODO show error
       });
+    } else {
+      this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
     }
   }
 }

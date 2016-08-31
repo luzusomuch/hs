@@ -1,10 +1,10 @@
 'use strict';
 
 class EventDetailCtrl {
-	constructor($scope, $state, event, $localStorage, liked, LikeService, Upload, $cookies, $stateParams, FeedService, PhotoViewer, APP_CONFIG, EventService) {
+	constructor($scope, $state, event, $localStorage, liked, LikeService, Upload, $cookies, $stateParams, FeedService, PhotoViewer, APP_CONFIG, EventService, growl) {
+		this.growl = growl;
 		if (event.blocked) {
-			// TODO show alert event has delete
-			alert('This event has deleted');
+			this.growl.error("<p>{{'THIS_EVENT_HAS_BLOCKED' | translate}}</p>");
 			$state.go('home');
 		}
 		this.$scope = $scope;
@@ -138,9 +138,8 @@ class EventDetailCtrl {
 		        this.files = [];
 		        this.feeds.push(resp.data);
 		        this.event.totalComment = (this.event.totalComment) ? this.event.totalComment+1 : 1;
-		    }, (err) => {
-		    	console.log(err);
-		    	// TODO show error
+		    }, () => {
+		    	this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 		    });
 		} else {
 			this.errors.content = true;
@@ -150,9 +149,8 @@ class EventDetailCtrl {
 	blockPhoto(photo) {
 		this.viewer.blockPhoto(photo._id, {type: 'event', eventId: this.$stateParams.id}).then(resp => {
 			photo.blocked = resp.data.blocked;
-		}).catch(err => {
-			console.log(err);
-			// TODO show error
+		}).catch(() => {
+			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 		});
 	}
 
@@ -160,9 +158,8 @@ class EventDetailCtrl {
 		this.EventService.attendEvent(this.event._id).then(() => {
 			this.event.participantsId.push(this.authUser);
 			this.$scope.$emit('event-update-participants');
-		}).catch(err => {
-			// TODO show error
-			console.log(err);
+		}).catch(() => {
+			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 		});
 	}
 

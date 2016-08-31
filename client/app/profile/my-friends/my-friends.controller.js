@@ -1,7 +1,8 @@
 'use strict';
 
 class MyFriendsCtrl {
-	constructor($localStorage, APP_CONFIG, PhotoViewer, RelationService, user, User) {
+	constructor($localStorage, APP_CONFIG, PhotoViewer, RelationService, user, User, growl) {
+		this.growl = growl;
 		this.RelationService = RelationService;
 		this.User = User;
 		this.user = user;
@@ -15,9 +16,6 @@ class MyFriendsCtrl {
 		this.photos = {};
 		this.PhotoViewer.myPhotos({pageSize: 4, userId: user._id}).then(resp => {
 			this.photos = resp.data;
-		}).catch(err => {
-			// TODO show error
-			console.log(err);
 		});
 
 		this.loadFriends();
@@ -53,20 +51,16 @@ class MyFriendsCtrl {
 						this.friends.items[index].currentFriendStatus = 'none';
 					}
 				}
-			}).catch(err => {	
-				// TODO show error
-				console.log(err);
+			}).catch(() => {	
+				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 			});
 		} else if (friend.currentFriendStatus==='none') {
 			// add friend
 			this.RelationService.create({userId: friend._id, type: 'friend'}).then(resp => {
 				friend.currentFriendStatus = resp.data.type;
-			}).catch(err => {
-				// TODO show error
-				console.log(err);
-			})
-		} else {
-			// TODO show error
+			}).catch(() => {
+				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+			});
 		}
 	}
 
@@ -76,9 +70,8 @@ class MyFriendsCtrl {
 			this.RelationService.searchFriends({query: text, userId: this.user._id}).then(resp => {
 				this.friends.items = resp.data.items;
 				this.friends.totalItem = resp.data.totalItem;
-			}).catch(err => {	
-				// TODO show error
-				console.log(err);
+			}).catch(() => {	
+				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 			})
 		} else {
 			this.friends = this.defaultFriends;

@@ -1,5 +1,5 @@
 class EditAwardCtrl {
-	constructor($scope, award, $uibModalInstance, $cookies, Upload) {
+	constructor($scope, award, $uibModalInstance, $cookies, Upload, growl) {
 		$scope.types = [
 			{value: 'accepted', text: 'Award will be granted to every users accepted an event'}, 
 			{value: 'gps', text: 'Award will be granted to every users have gps signal send from Healthstars App'}, 
@@ -29,12 +29,11 @@ class EditAwardCtrl {
 			      	headers: {'Authorization': `Bearer ${$cookies.get('token')}`}
 			    }).then(resp =>{
 					$uibModalInstance.close(resp.data);
-			    }, (err) => {
-			    	console.log(err);
-			    	// TODO show error
+			    }, () => {
+			    	growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 			    });
 			} else {
-				// TODO show error
+				growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
 			}
 		};
 	}

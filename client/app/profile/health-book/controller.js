@@ -1,7 +1,8 @@
 'use strict';
 
 class HealthBookCtrl {
-	constructor($scope, $localStorage, EventService, $timeout, LikeService) {
+	constructor($scope, $localStorage, EventService, $timeout, LikeService, growl) {
+		this.growl = growl;
 		this.authUser = $localStorage.authUser;
 		this.EventService = EventService;
 		this.LikeService = LikeService;
@@ -54,9 +55,8 @@ class HealthBookCtrl {
 	      	} else {
 	        	event.totalLike = event.totalLike -1;
 	      	}
-	    }).catch(err => {
-	      	// TODO - show error message
-	      	console.log(err);
+	    }).catch(() => {
+	      	this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 	    });
   	}
 }

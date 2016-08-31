@@ -15,7 +15,8 @@ angular.module('healthStarsApp').directive('likeCommentShare', ($compile) => ({
 }));
 
 class likeCommentShareCtrl {
-  constructor($scope, LikeService, CommentService, ShareService, $localStorage, $q, $timeout) {
+  constructor($scope, LikeService, CommentService, ShareService, $localStorage, $q, $timeout, growl) {
+    this.growl = growl;
   	this.LikeService = LikeService;
   	this.CommentService = CommentService;
     this.ShareService = ShareService;
@@ -109,8 +110,8 @@ class likeCommentShareCtrl {
 
   postComment(e, comment, parentComment) {
     if (parentComment && parentComment.blocked) {
-      return console.log('This comment has been blocked');
-      // TODO show error
+      this.growl.error("<p>{{'THIS_COMMENT_HAS_BLOCKED' | translate}}</p>");
+      return;
     }
   	if (comment && comment.content.trim().length > 0) {
   		comment.objectId = (parentComment) ? parentComment._id : this.data._id;
@@ -127,7 +128,7 @@ class likeCommentShareCtrl {
   			console.log(err);
   		});
   	} else {
-  		// TODO show error when enter empty content
+  		this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
   	}
   }
 
@@ -135,12 +136,11 @@ class likeCommentShareCtrl {
     if (comment.content.trim().length > 0 && !comment.deleted && (comment.ownerId._id===this.authUser._id || this.eventOwner._id===this.authUser._id || this.authUser.role==='admin')) {
       this.CommentService.update(comment._id, comment.content).then(() => {
         comment.isEdit = false;
-      }).catch(err => {
-        console.log(err);
-        // TODO show error
+      }).catch(() => {
+        this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
       });
     } else {
-      // TODO show error
+      this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
     }
   }
 
@@ -149,12 +149,11 @@ class likeCommentShareCtrl {
     if (this.authUser._id===comment.ownerId._id || this.authUser._id===this.eventOwner._id || this.authUser._id===this.eventOwner || this.authUser.role==='admin') {
       this.CommentService.delete(comment._id).then(() => {
         comment.deleted = true;
-      }).catch(err => {
-        console.log(err);
-        // TODO show error 
+      }).catch(() => {
+        this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
       });
     } else {
-      // TODO - show error
+      this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
     }
   }
 
@@ -162,12 +161,11 @@ class likeCommentShareCtrl {
     if (this.authUser._id===this.eventOwner._id || this.authUser.role==='admin') {
       this.CommentService.block(comment._id).then(() => {
         comment.blocked = !comment.blocked;
-      }).catch(err => {
-        console.log(err);
-        // TODO show error;
+      }).catch(() => {
+        this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
       });
     } else {
-      // TODO show error
+      this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
     }
   }
 

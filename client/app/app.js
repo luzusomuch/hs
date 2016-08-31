@@ -7,10 +7,12 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
     'internationalPhoneNumber', 'masonry', 'slick', 'ngDraggable', 'monospaced.qrcode', 'ngScrollbars', 
     'angular-smilies', 'gm.datepickerMultiSelect', 'ui.calendar'
   ])
-  .config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
+  .config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider, growlProvider) {
     $urlRouterProvider.otherwise('/');
     cfpLoadingBarProvider.includeSpinner = false;
     $locationProvider.html5Mode(true);
+    growlProvider.globalTimeToLive(3000);
+    growlProvider.globalDisableCountDown(true);
   })
   .factory('AppSettings', (APP_CONFIG) => {
     let _default = _.merge({

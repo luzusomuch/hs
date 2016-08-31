@@ -1,7 +1,8 @@
 'use strict';
 
 class EditEventCtrl {
-	constructor(event, categories, APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies) {
+	constructor(event, categories, APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies, growl) {
+    this.growl = growl;
 		this.user = $localStorage.authUser;
 		if (event.ownerId._id!==this.user._id) {
 			$state.go('home');
@@ -296,11 +297,12 @@ class EditEventCtrl {
 	    }).then(resp => {
         this.submitted = false;
 	    	this.$state.go('event.detail', {id: this.$state.params.id});
-	    }, (err) => {
-	    	console.log(err);
-	    	// TODO show error
+	    }, () => {
+	    	this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
 	    });
-  	}
+  	} else {
+      this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
+    }
   }
 }
 

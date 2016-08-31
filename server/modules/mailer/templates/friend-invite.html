@@ -1,0 +1,7 @@
+{% extends 'layouts/default.html' %}
+
+{% block content %}
+<p>Hello <%= user.name%></p>
+<p><%= fromUser.name %> has invited you to be a friend</p>
+<p>Please click <a href="<%= url %>">here</a> to view it</p>
+{% endblock %}

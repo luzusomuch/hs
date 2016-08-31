@@ -470,4 +470,36 @@ exports.core = (kernel) => {
       }).catch(done);
     }).catch(done);
   });
+
+  /*
+  send email when user have a friend request
+  @param relation id
+  */
+  kernel.queue.process('INVITE_FRIEND', (job, done) => {
+    kernel.model.Relation.findById(job.data)
+    .populate('fromUserId')
+    .exec().then(relation => {
+      // we just need relation type is friend
+      if (!relation || relation.type==='follow') {
+        return done();
+      }
+      kernel.model.User.findById(relation.toUserId).then(user => {
+        // don't send email to blocked or deleted user
+        if (!user || (user.blocked && user.blocked.status) || (user.deleted && user.deleted.status)) {
+          return done();
+        }
+        kernel.emit('SEND_MAIL', {
+          template: 'friend-invite.html',
+          subject: 'New friend request',
+          data: {
+            user: user, 
+            fromUser: relation.fromUserId,
+            url: kernel.config.baseUrl + 'profile/'
+          },
+          to: user.email
+        });
+        return done();
+      }).catch(done);
+    }).catch(done);
+  });
 };

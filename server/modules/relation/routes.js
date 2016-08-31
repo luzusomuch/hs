@@ -113,6 +113,8 @@ module.exports = function(kernel) {
               type: req.body.type,
               status: (req.body.type==='follow') ? 'completed' : 'pending'
             }).save().then(saved => {
+              // this queue use to send mail for friend request
+              kernel.queue.create('INVITE_FRIEND', saved._id).save();
               return res.status(200).json({type: saved.status});
             }).catch(err => {
               return res.status(500).json({type: 'SERVER_ERROR'});    
@@ -139,7 +141,6 @@ module.exports = function(kernel) {
 
   /*Search friends*/
   kernel.app.post('/api/v1/relations/search', kernel.middleware.isAuthenticated(), (req, res) => {
-    console.log(req.body);
     kernel.model.Relation.find({
       type: 'friend', 
       $or: [{

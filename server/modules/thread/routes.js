@@ -63,6 +63,7 @@ module.exports = function(kernel) {
 	      			new Date()
 	      		});
 	      		thread.save().then(saved => {
+                    kernel.queue.create('NEW_MESSAGE_IN_THREAD', saved._id).save();
 	      			return res.status(200).json(saved);
 	      		}).catch(err => {
 	      			return res.status(500).json({type: 'SERVER_ERROR', message: err});	
@@ -125,6 +126,7 @@ module.exports = function(kernel) {
                             createdAt: new Date()
                         });
                         thread.save().then(saved => {
+                            kernel.queue.create('NEW_MESSAGE_IN_THREAD', saved._id).save();
                             user.threadId = saved._id;
                             user.threadUpdatedAt = saved.updatedAt;
                             user.lastMessage = {
@@ -162,6 +164,7 @@ module.exports = function(kernel) {
                     message: req.body.message
                 });
                 thread.save().then(() => {
+                    kernel.queue.create('NEW_MESSAGE_IN_THREAD', thread._id).save();
                     return res.status(200).json({message: req.body.message, createdAt: new Date()});
                 }).catch(err => {
                     return res.status(500).json({type: 'SERVER_ERROR', message: err}); 

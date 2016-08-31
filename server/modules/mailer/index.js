@@ -9,6 +9,8 @@ var viewsPath = './templates/',
     cache : 'memory'
   });
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 function Mailer(options) {
   this.transport = nodemailer.createTransport(options);
 }

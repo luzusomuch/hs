@@ -1,0 +1,7 @@
+{% extends 'layouts/default.html' %}
+
+{% block content %}
+<p>Hello <%= user.name%></p>
+<p>Just a notice that your photo has been <%= type %></p>
+<p>Please click <a href="<%= url %>">here</a> to view it</p>
+{% endblock %}

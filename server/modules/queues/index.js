@@ -502,4 +502,52 @@ exports.core = (kernel) => {
       }).catch(done);
     }).catch(done);
   });
+
+  /*
+  Send email when photo block or unblock
+  params 
+  *photo id 
+  *block/unblock user detail
+  */
+  kernel.queue.process('EMAIL_BLOCK_UNBLOCKED_PHOTO', (job, done) => {
+    kernel.model.Photo.findById(job.data.photoId)
+    .populate('ownerId')
+    .exec().then(photo => {
+      if (!photo) {
+        return done();
+      }
+      let type = (photo.blocked) ? 'blocked' : 'unblock';
+      kernel.emit('SEND_MAIL', {
+        template: 'photo-blocked.html',
+        subject: 'Your photo has been ' + type,
+        data: {
+          user: photo.ownerId, 
+          type: type,
+          url: kernel.config.baseUrl + 'profile/'+photo.ownerId._id+'/photos'
+        },
+        to: photo.ownerId.email
+      });
+    }).catch(done);
+  });
+
+  /*
+  Email when user blocked by admin
+  params
+  **job.data meant userId
+  */
+  kernel.queue.process('EMAIL_BLOCK_USER', (job, done) => {
+    kernel.model.User.findById(job.data).then(user => {
+      if (!user) {
+        return done();
+      }
+      kernel.emit('SEND_MAIL', {
+        template: 'user-blocked.html',
+        subject: 'Your account has been blocked',
+        data: {
+          user: user
+        },
+        to: user.email
+      });
+    }).catch(done);
+  });
 };

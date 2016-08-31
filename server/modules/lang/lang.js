@@ -278,6 +278,7 @@ let Language = {
 		BLOCK_USER: 'Block user',
 		UNBLOCK_USER: 'Unblock user',
 		VIEW_USER_DETAIL: 'View user detail',
+		LOAD_MORE_USERS: 'Load more users'
 	},
 	de: {
 

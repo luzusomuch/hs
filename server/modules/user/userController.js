@@ -69,6 +69,7 @@ class UserController {
         };
       }
       user.save().then(saved => {
+        this.kernel.queue.create('EMAIL_BLOCK_USER', saved._id).save();
         return res.status(200).json({blocked: saved.blocked});
       }).catch(err => {
         return res.status(500).json({type: 'SERVER_ERROR'});  

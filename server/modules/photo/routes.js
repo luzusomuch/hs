@@ -296,6 +296,7 @@ module.exports = function(kernel) {
 				photo.blocked = !photo.blocked;
 				photo.blockedBy = (photo.blocked) ? req.user._id : null;
 				photo.save().then(photo => {
+					kernel.queue.create('EMAIL_BLOCK_UNBLOCKED_PHOTO', {photoId: photo._id}).save();
 					return res.status(200).json({blocked: photo.blocked});
 				}).catch(err => {
 					return res.status(500).json({type: 'SERVER_ERROR'});

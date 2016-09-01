@@ -39,7 +39,7 @@ class MyMessagesCtrl {
 	}
 
 	compose() {
-		this.$uibModal.open({
+		let modalInstance = this.$uibModal.open({
 			animation: true,
 			templateUrl: 'app/profile/modal/new-thread/view.html',
 			controller: 'NewThreadCtrl',
@@ -51,7 +51,8 @@ class MyMessagesCtrl {
 					});
 				}
 			}
-		}).result.then(resp => {
+		});
+		modalInstance.result.then(resp => {
 			this.ThreadService.newThreadsInMyMessage(resp).then(data => {
 				_.each(data.data.items, (item) => {
 					let index = _.findIndex(this.threads.items, (owner) => {

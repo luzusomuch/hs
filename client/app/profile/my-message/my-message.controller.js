@@ -66,7 +66,7 @@ class MyMessagesCtrl {
 					}
 				});
 			}).catch(() => {
-				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 		});
 	}

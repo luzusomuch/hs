@@ -122,7 +122,7 @@ class EditEventCtrl {
       } else {
         return {valid: false};
       }
-    }
+    };
   }
 
   refreshAddresses(address) {
@@ -280,7 +280,8 @@ class EditEventCtrl {
   		this.event.endDateTime = new Date(moment(this.event.endDate).hours(moment(this.event.endTime).hours()).minutes(moment(this.event.endTime).minutes()));
 
       if (moment(moment(this.event.startDateTime).format('YYYY-MM-DD HH:mm')).isSameOrAfter(moment(this.event.endDateTime).format('YYYY-MM-DD HH:mm'))) {
-        return this.errors.dateTime = true;
+        this.errors.dateTime = true;
+        return false;
       }
 
       this.event.photos = _.map(this.event.photosId, (photo) => {
@@ -294,17 +295,17 @@ class EditEventCtrl {
 	      arrayKey: '',
 	      data: {file: this.files, event: this.event},
 	      headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
-	    }).then(resp => {
+	    }).then(() => {
         this.submitted = false;
 	    	this.$state.go('event.detail', {id: this.$state.params.id});
 	    }, () => {
-	    	this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+	    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 	    });
   	} else {
-      this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
+      this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
     }
   }
 }
 
 angular.module('healthStarsApp')
-	.controller('EditEventCtrl', EditEventCtrl)
+	.controller('EditEventCtrl', EditEventCtrl);

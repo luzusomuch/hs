@@ -1,7 +1,8 @@
 'use strict';
 
 class ReportCtrl {
-  constructor($uibModalInstance, ReportService, $localStorage, id, type) {
+  constructor($uibModalInstance, ReportService, $localStorage, id, type, growl) {
+    this.growl = growl;
   	this.$uibModalInstance = $uibModalInstance;
   	this.ReportService = ReportService;
   	this.report = {};
@@ -33,15 +34,13 @@ class ReportCtrl {
   		this.report.reportedItemId = this.id;
   		this.report.type = this.type;
   		this.ReportService.create(this.report).then(() => {
-  			console.log('success');
-  			this.$uibModalInstance.close();
-  			// TODO show success message
-  		}).catch(err => {
-  			console.log(err);
-  			// TODO show error
+        this.$uibModalInstance.close();
+  			this.growl.success(`<p>{{'THANK_YOU_FOR_YOUR_REPORT' | translate}}</p>`);
+  		}).catch(() => {
+  			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
   		});
   	} else {
-  		// TODO show validate
+  		this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
   	}
   }
 }
@@ -62,7 +61,7 @@ angular.module('healthStarsApp').directive('hsReport', ($uibModal) => {
 					controllerAs: 'vm',
 					resolve: {
 						id: () => {
-							return scope.id
+							return scope.id;
 						},
 						type: () => {
 							return scope.type;
@@ -76,5 +75,5 @@ angular.module('healthStarsApp').directive('hsReport', ($uibModal) => {
 				elm.unbind('click', func);
 			});
 		}
-	}
+	};
 }).controller('ReportCtrl', ReportCtrl);

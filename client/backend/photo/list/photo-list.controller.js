@@ -1,7 +1,8 @@
 'use strict';
 
 class BackendPhotoListCtrl {
-	constructor($scope, $uibModal, $http, PhotoService) {
+	constructor($scope, $uibModal, $http, PhotoService, growl) {
+		this.growl = growl;
 		this.page = 1;
 		this.$http = $http;
 		this.photos = {};
@@ -34,8 +35,8 @@ class BackendPhotoListCtrl {
 	searchFn(params) {
 		this.PhotoService.search(params).then(resp => {
 	  		this.search.items = resp.data.items;
-		}).catch(err => {
-
+		}).catch(() => {
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 
@@ -44,18 +45,16 @@ class BackendPhotoListCtrl {
 			this.page += 1;
 	  		this.photos.items = (this.photos.items) ? this.photos.items.concat(resp.data.items) : resp.data.items;
 	  		this.photos.totalItem = resp.data.totalItem;
-		}).catch(err => {
-			console.log(err);
-			// TODO show error
+		}).catch(() => {
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 
 	block(photo) {
 		this.PhotoService.block(photo._id).then(resp => {
 			photo.blocked = resp.data.blocked;
-		}).catch(err => {
-			console.log(err);
-			// TODO show error
+		}).catch(() => {
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 }

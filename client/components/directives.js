@@ -21,7 +21,7 @@ angular.module('healthStarsApp')
 .directive('autoFocus', function($timeout) {
   return {
     scope: {trigger: '=autoFocus'},
-    link: function(scope, element, attrs) {
+    link: function(scope, element) {
       scope.$watch('trigger', function(value) {
         if(value === true) { 
           $timeout(function() {
@@ -71,7 +71,7 @@ angular.module('healthStarsApp')
 
           if (!url) {
             if ($state.current.name==='event.detail') {
-              url = APP_CONFIG.baseUrl + 'event/detail/'+$state.params.id
+              url = APP_CONFIG.baseUrl + 'event/detail/'+$state.params.id;
             }
           }
 
@@ -96,7 +96,7 @@ angular.module('healthStarsApp')
     controller: function($scope) {
       if (!$scope.url) {
         if ($state.current.name==='event.detail') {
-          $scope.url = APP_CONFIG.baseUrl + 'event/detail/'+$state.params.id
+          $scope.url = APP_CONFIG.baseUrl + 'event/detail/'+$state.params.id;
         }
       }
       $scope.share = function(type) {

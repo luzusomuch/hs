@@ -175,26 +175,26 @@ angular.module('healthStarsApp')
     if (category) {
       switch(category.name) {
         case 'Cat A':
-          name = 'Food'
+          name = 'Food';
           break;
         case 'Cat B':
-          name = 'Action'
+          name = 'Action';
           break;
         case 'Cat C':
-          name = 'Eco'
+          name = 'Eco';
           break;
         case 'Cat D':
-          name = 'Social'
+          name = 'Social';
           break;
         case 'Cat E':
-          name = 'Sport'
+          name = 'Sport';
           break;
         default:
           break;
       }
     }
     return name;
-  }
+  };
 })
 .filter('categoryImagePath', function() {
   return function(category) {
@@ -272,7 +272,7 @@ angular.module('healthStarsApp')
       }
       return url;
     }
-  }
+  };
 })
 .filter('imageUrl', () => {
   return (image, type) => {
@@ -341,10 +341,10 @@ angular.module('healthStarsApp')
       default:
         className = color ? 'li-blue color-blue' : 'li-blue';
         break;
-      };
+      }
       return className;
     }
-  }
+  };
 })
 .filter('eventThumbnail', () => {
   return (event) => {
@@ -387,7 +387,7 @@ angular.module('healthStarsApp')
       }
     }
     return imageUrl;
-  }
+  };
 })
 .filter('eventBanner', () => {
   return (event) => {
@@ -418,7 +418,7 @@ angular.module('healthStarsApp')
       }
     }
     return image;
-  }
+  };
 })
 .filter('showBlocked', () => {
   return (items, isShowActive) => {
@@ -430,7 +430,7 @@ angular.module('healthStarsApp')
     } else {
       return items;
     }
-  }
+  };
 })
 .filter('showDeleted', () => {
   return (items, isShowActive) => {
@@ -442,7 +442,7 @@ angular.module('healthStarsApp')
     } else {
       return items;
     }
-  }
+  };
 })
 .filter('showChecked', () => {
   return (items, isShowActive) => {
@@ -454,7 +454,7 @@ angular.module('healthStarsApp')
     } else {
       return items;
     }
-  }
+  };
 })
 .filter('userBannerUrl', () => {
   return (user) => {
@@ -463,10 +463,12 @@ angular.module('healthStarsApp')
       url = (user.coverPhoto.metadata.large) ? user.coverPhoto.metadata.large : '/assets/photos/'+user.coverPhoto.metadata.tmp;
     }
     return url;
-  }
-}).filter("nl2br", function($filter) {
-  return function(data) {
-    if (!data) return data;
+  };
+}).filter('nl2br', () => {
+  return (data) => {
+    if (!data) {
+      return data; 
+    }
     return data.replace(/\n\r?/g, '<br />');
   };
 });

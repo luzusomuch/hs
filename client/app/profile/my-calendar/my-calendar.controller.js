@@ -117,7 +117,7 @@ class MyCalendarCtrl {
 	}
 
 	syncGoogleCalendar() {
-		this.auth2.signIn().then(resp => {
+		this.auth2.signIn().then(() => {
 			gapi.load('client', () => {
 				gapi.client.load('calendar', 'v3', () => {
 					gapi.client.calendar.events.list({

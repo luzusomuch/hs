@@ -16,7 +16,7 @@ class NewThreadCtrl {
 		if (form.$valid) {
 			this.$uibModalInstance.close({toUsers: _.map(this.toUsers, '_id'), message: this.message});
 		} else {
-			this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
+			this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
 		}
 	}
 

@@ -21,7 +21,7 @@ class MyPhotosCtrl {
 			this.photos.totalItem = resp.data.totalItem;
 			this.photos.page += 1;
 		}).catch(() => {
-			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 
@@ -35,10 +35,10 @@ class MyPhotosCtrl {
 					this.photos.items.splice(index, 1);
 				}
 			}).catch(() => {
-				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 		} else {
-			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		}
 	}
 

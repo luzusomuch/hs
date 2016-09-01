@@ -1,5 +1,5 @@
 class MessageModalCtrl {
-	constructor($scope, $uibModalInstance, EventService, user, $localStorage, ThreadService) {
+	constructor($scope, $uibModalInstance, EventService, user, $localStorage, ThreadService, growl) {
 		$scope.submitted = false;
 		$scope.authUser = $localStorage.authUser;
 		$scope.user = user;
@@ -12,11 +12,11 @@ class MessageModalCtrl {
 				$scope.message.toUserId = $scope.user._id;
 				ThreadService.create($scope.message).then(() => {
 					$uibModalInstance.close();
-				}).catch(err => {
-					// TODO show error
+				}).catch(() => {
+					growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 				});
 			} else {
-				// TODO show error
+				growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
 			}
 		};
 

@@ -115,7 +115,7 @@ class CreateEventCtrl {
       } else {
         return {valid: false};
       }
-    }
+    };
   }
 
   refreshAddresses(address) {
@@ -246,7 +246,8 @@ class CreateEventCtrl {
   		this.event.endDateTime = new Date(moment(this.event.endDate).hours(moment(this.event.endTime).hours()).minutes(moment(this.event.endTime).minutes()));
 
       if (moment(moment(this.event.startDateTime).format('YYYY-MM-DD HH:mm')).isSameOrAfter(moment(this.event.endDateTime).format('YYYY-MM-DD HH:mm'))) {
-        return this.errors.dateTime = true;
+        this.errors.dateTime = true;
+        return false;
       }
 
       this.files = _.union(this.files, this.newBanner);
@@ -262,10 +263,10 @@ class CreateEventCtrl {
         this.submitted = false;
         this.event.allowShow = true;
 	    }, () => {
-	    	this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+	    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 	    });
   	} else {
-      this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
+      this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
     }
   }
 }
@@ -296,10 +297,10 @@ class RepeatEventCtrl {
 				this.$uibModalInstance.close(this.repeat);
 			} else {
         this.errors.date = true;
-				this.growl.error("<p>{{'CHECK_YOUR_STARTDATE_ENDDATE' | translate}}</p>");
+				this.growl.error(`<p>{{'CHECK_YOUR_STARTDATE_ENDDATE' | translate}}</p>`);
 			}
 		} else {
-			this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
+			this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
 		}
 	}
 }

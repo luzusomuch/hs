@@ -15,6 +15,7 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
  		abstract: true
  	});
   growlProvider.globalTimeToLive(3000);
+  growlProvider.globalDisableCountDown(true);
 })
 .factory('AppSettings', (APP_CONFIG) => {
   let _default = _.merge({

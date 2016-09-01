@@ -4,7 +4,7 @@ class AwardDetailCtrl {
 
 		$scope.closeModal = () => {
 			$uibModalInstance.close();
-		}
+		};
 	}
 
 	

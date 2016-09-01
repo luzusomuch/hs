@@ -1,7 +1,7 @@
 'use strict';
 
 class PhotoViewerCtrl {
-	constructor($scope, PhotoViewer, $timeout, CommentService) {
+	constructor($scope, PhotoViewer) {
 		this.photo = {
 			detail: null,
 			next: null,

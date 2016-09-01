@@ -11,7 +11,7 @@
     <div class="form-group">
     	<label>{{'AWARD_TYPE' | translate}}</label>
     	<select ng-model="vm.award.type" class="form-control dropdown-toggle">
-    		<option ng-repeat="type in vm.types" ng-value="type.value"><a href="#">{{type.text}}</a></option>
+    		<option ng-repeat="type in vm.types" ng-value="type.value"><a href="#">{{type.value.toUpperCase() | translate}}</a></option>
     	</select>
     </div>
     

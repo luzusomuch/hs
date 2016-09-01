@@ -1,13 +1,12 @@
 'use strict';
 
-angular.module('healthStarsApp').directive('likeCommentShare', ($compile) => ({
+angular.module('healthStarsApp').directive('likeCommentShare', () => ({
   restrict: 'E',
   scope: {
   	data: '=',
     type: '@',
     eventOwner: '='
   },
-  link: function(scope, element, attr, ctrls) {},
   controller: 'likeCommentShareCtrl',
   controllerAs: 'vm',
   bindToController: true,
@@ -34,7 +33,7 @@ class likeCommentShareCtrl {
       $timeout(() => {
         this.data.showComment = true;
         this.loadComment(this.data, 'Photo', {pageSize: 5});
-      }, 500)
+      }, 500);
     }
   }
 
@@ -81,9 +80,9 @@ class likeCommentShareCtrl {
               return -1;
             }
             if (a.createdAt > b.createdAt) {
-              return 1
+              return 1;
             }
-            return 0
+            return 0;
           });
           data.pageSize = resp.data.totalItem;
           data.page = (data.page) ? data.page+1 : 2;
@@ -110,7 +109,7 @@ class likeCommentShareCtrl {
 
   postComment(e, comment, parentComment) {
     if (parentComment && parentComment.blocked) {
-      this.growl.error("<p>{{'THIS_COMMENT_HAS_BLOCKED' | translate}}</p>");
+      this.growl.error(`<p>{{'THIS_COMMENT_HAS_BLOCKED' | translate}}</p>`);
       return;
     }
   	if (comment && comment.content.trim().length > 0) {
@@ -119,16 +118,16 @@ class likeCommentShareCtrl {
   		this.CommentService.create(comment).then(resp => {
         comment.content = null;
         let element = typeof e === 'object' ? e.target : document.getElementById(e);
-        element.style.height =  "31 px";   
+        element.style.height =  '31 px';   
         let data = (parentComment) ? parentComment : this.data;
   			data.comments.push(resp.data);
   			data.totalComment = (data.totalComment) ? data.totalComment+=1 : 1;
         data.pageSize +=1;
-  		}).catch(err => {
-  			console.log(err);
+  		}).catch(() => {
+  			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
   		});
   	} else {
-  		this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
+  		this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
   	}
   }
 
@@ -137,10 +136,10 @@ class likeCommentShareCtrl {
       this.CommentService.update(comment._id, comment.content).then(() => {
         comment.isEdit = false;
       }).catch(() => {
-        this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+        this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
       });
     } else {
-      this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
+      this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
     }
   }
 
@@ -150,10 +149,10 @@ class likeCommentShareCtrl {
       this.CommentService.delete(comment._id).then(() => {
         comment.deleted = true;
       }).catch(() => {
-        this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+        this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
       });
     } else {
-      this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
+      this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
     }
   }
 
@@ -162,17 +161,17 @@ class likeCommentShareCtrl {
       this.CommentService.block(comment._id).then(() => {
         comment.blocked = !comment.blocked;
       }).catch(() => {
-        this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+        this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
       });
     } else {
-      this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
+      this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
     }
   }
 
   autoExpand(e) {
     let element = typeof e === 'object' ? e.target : document.getElementById(e);
     let scrollHeight = element.scrollHeight; // replace 60 by the sum of padding-top and padding-bottom
-    element.style.height =  scrollHeight + "px";    
+    element.style.height =  scrollHeight + 'px';    
   }
 }
 

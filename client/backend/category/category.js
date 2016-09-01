@@ -20,7 +20,7 @@ angular.module('healthStarsApp')
 	    	categories: (CategoryService) => {
 		    	return CategoryService.getAll().then(resp => {
 		    		return resp.data.items;
-		    	}).catch(err => {
+		    	}).catch(() => {
 		    		return [];
 		    	});
 		    }

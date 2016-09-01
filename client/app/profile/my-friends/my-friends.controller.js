@@ -52,14 +52,14 @@ class MyFriendsCtrl {
 					}
 				}
 			}).catch(() => {	
-				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 		} else if (friend.currentFriendStatus==='none') {
 			// add friend
 			this.RelationService.create({userId: friend._id, type: 'friend'}).then(resp => {
 				friend.currentFriendStatus = resp.data.type;
 			}).catch(() => {
-				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 		}
 	}
@@ -71,8 +71,8 @@ class MyFriendsCtrl {
 				this.friends.items = resp.data.items;
 				this.friends.totalItem = resp.data.totalItem;
 			}).catch(() => {	
-				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
-			})
+				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+			});
 		} else {
 			this.friends = this.defaultFriends;
 		}

@@ -84,7 +84,7 @@ class MyAwardCtrl {
 					});
 				}
 			}).catch(() => {
-				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 		} else {
 			this.$http.delete(this.APP_CONFIG.baseUrl+'api/'+this.APP_CONFIG.apiVer+'/grantAwards/'+award._id).then(() => {
@@ -99,13 +99,13 @@ class MyAwardCtrl {
 					});
 				}
 			}).catch(() => {
-				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 		}
 	}
 
 	viewAward(award) {
-		let modalInstance = this.$uibModal.open({
+		this.$uibModal.open({
 	    	animation: true,
 	    	templateUrl: 'app/award/detail/detail.html',
 	    	controller: 'AwardDetailCtrl',
@@ -152,7 +152,7 @@ class MyAwardCtrl {
 		this.User.changeExhibit(data).then(resp => {
 			this.$localStorage.authUser = resp.data;
 		}).catch(() => {
-			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 

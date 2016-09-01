@@ -9,7 +9,6 @@ angular.module('healthStarsApp')
 		replace: true,
 		link: function(scope, element) {
 			let elm = angular.element(element).find('input');
-			let suggest = '';
 			scope.items = [];
 			scope.suggests = [];
 			var updateItem = (e) => {
@@ -30,14 +29,14 @@ angular.module('healthStarsApp')
 						scope.suggests = res.data;
 					}
 				);
-			}
+			};
 
 			elm.tagsinput({addOnBlur: false});
 
 			elm.on('itemAdded', updateItem).on('itemRemoved', removeItem);
 			var ttl;
 			$timeout(() => {
-				var input = angular.element(element).find('.bootstrap-tagsinput > input')
+				var input = angular.element(element).find('.bootstrap-tagsinput > input');
 				input.keyup((e) => {
 					if(ttl) {
 						$timeout.cancel(ttl);		
@@ -82,7 +81,7 @@ angular.module('healthStarsApp')
 				}
 			});
 
-			let first = true;
+			// let first = true;
 
 			// scope.$watch('items', (nv) => {
 			// 	console.log(nv);
@@ -99,7 +98,7 @@ angular.module('healthStarsApp')
 				$state.go('home');
 			};
 		}
-	}	
+	};
 })
 .directive('searchLocation', (SearchParams, $timeout, $http) => {
 	return {
@@ -146,7 +145,7 @@ angular.module('healthStarsApp')
 				SearchParams.params = _.assign(SearchParams.params, {address: address, radius: radius});
 				angular.element('body').trigger('click');
 				scope.style={'background-color': '#3598dc', color: '#fff'};
-			}
+			};
 
 			scope.clear = () => {
 				scope.address = {};
@@ -154,7 +153,7 @@ angular.module('healthStarsApp')
 				SearchParams.params = _.assign(SearchParams.params, {address: {}, radius: ''});
 				angular.element('body').trigger('click');
 				scope.style = {};
-			}
+			};
 
 			var autocomplete  = (value) => {
 				var params = {address: value, sensor: false};
@@ -175,7 +174,7 @@ angular.module('healthStarsApp')
 				}, 1000);
 			});
 		}
-	}	
+	};
 })
 .directive('searchDate', (SearchParams) => {
 	return {
@@ -183,7 +182,7 @@ angular.module('healthStarsApp')
 		scope: {},
 		templateUrl: 'app/search/templates/datepicker.html',
 		replace: true,
-		link: function(scope, element) {
+		link: function(scope) {
 		  	SearchParams.params.dates = scope.selectedDates = [];
 		  	scope.$on('clear-dates', () => {
 		  		scope.selectedDates = SearchParams.params.dates;
@@ -217,5 +216,5 @@ angular.module('healthStarsApp')
 			// 	scope.style =  {};
 			// }
 		}
-	}
+	};
 });

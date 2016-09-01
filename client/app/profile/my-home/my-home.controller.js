@@ -37,8 +37,8 @@ class MyHomeCtrl {
 			WL.init({
 			    client_id: APP_CONFIG.apiKey.hotmailId,
 			    redirect_uri: APP_CONFIG.apiKey.hotmailCallbackUrl,
-			    scope: ["wl.basic", "wl.contacts_emails"],
-			    response_type: "token"
+			    scope: ['wl.basic', 'wl.contacts_emails'],
+			    response_type: 'token'
 			});
 		}, 1000);
 	}
@@ -67,10 +67,10 @@ class MyHomeCtrl {
 					this.dashboardItems.totalItem -= 1;
 				}
 			}).catch(() => {
-				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 		} else {
-			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		}
 	}
 
@@ -85,10 +85,10 @@ class MyHomeCtrl {
 					this.dashboardItems.totalItem -= 1;
 				}
 			}).catch(() => {
-				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 		} else {
-			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		}
 	}
 
@@ -103,10 +103,10 @@ class MyHomeCtrl {
 					this.dashboardItems.totalItem -= 1;
 				}
 			}).catch(() => {
-				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 		} else {
-			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		}
 	}
 
@@ -121,27 +121,27 @@ class MyHomeCtrl {
 					this.dashboardItems.totalItem -= 1;
 				}
 			}).catch(() => {
-				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 		} else {
-			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		}
 	}
 
 	inviteFriend(type) {
 		if (type==='google') {
-			this.auth2.signIn().then(resp => {
+			this.auth2.signIn().then(() => {
 				gapi.client.plus.people.list({
 				  	'userId' : 'me',
 				  	'collection' : 'visible'
 				}).execute(resp => {
 					if (resp.error) {
-						this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+						this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 					} else {
 						_.each(resp.items, (item) => {
 							if (item.objectType==='person') {
 								gapi.client.plus.people.get({userId: item.id}).execute(profile => {
-									console.log(profile)
+									console.log(profile);
 								});
 							}
 						});
@@ -149,21 +149,18 @@ class MyHomeCtrl {
 				});
 			});
 		} else if (type==='outlook') {
-			WL.login().then(resp => {
-				console.log(resp);
+			WL.login().then(() => {
 				WL.api({
-		            path: "me/contacts",
-		            method: "GET"
-		        }).then(
-		            function (response) {
+		            path: 'me/contacts',
+		            method: 'GET'
+		        }).then(response => {
 		            	console.log(response.data);
-		            },
-		            function (responseFailed) {
-		            	this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+		            }, () => {
+		            	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		            }
 		        );
-			}, responseFailed => {
-				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+			}, () => {
+				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 		}
 	}

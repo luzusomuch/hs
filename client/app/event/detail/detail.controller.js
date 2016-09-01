@@ -4,7 +4,7 @@ class EventDetailCtrl {
 	constructor($scope, $state, event, $localStorage, liked, LikeService, Upload, $cookies, $stateParams, FeedService, PhotoViewer, APP_CONFIG, EventService, growl) {
 		this.growl = growl;
 		if (event.blocked) {
-			this.growl.error("<p>{{'THIS_EVENT_HAS_BLOCKED' | translate}}</p>");
+			this.growl.error(`<p>{{'THIS_EVENT_HAS_BLOCKED' | translate}}</p>`);
 			$state.go('home');
 		}
 		this.$scope = $scope;
@@ -123,7 +123,8 @@ class EventDetailCtrl {
 		this.submitted = true;
 		this.errors = {};
 		if (_.filter(this.files, {nude: true}).length > 0) {
-			return this.errors.file = true;
+			this.errors.file = true;
+			return false;
 		}
 		if (feed.content && feed.content.trim().length > 0) {
 			feed.eventId = this.$stateParams.id;
@@ -139,7 +140,7 @@ class EventDetailCtrl {
 		        this.feeds.push(resp.data);
 		        this.event.totalComment = (this.event.totalComment) ? this.event.totalComment+1 : 1;
 		    }, () => {
-		    	this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+		    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		    });
 		} else {
 			this.errors.content = true;
@@ -150,7 +151,7 @@ class EventDetailCtrl {
 		this.viewer.blockPhoto(photo._id, {type: 'event', eventId: this.$stateParams.id}).then(resp => {
 			photo.blocked = resp.data.blocked;
 		}).catch(() => {
-			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 
@@ -159,7 +160,7 @@ class EventDetailCtrl {
 			this.event.participantsId.push(this.authUser);
 			this.$scope.$emit('event-update-participants');
 		}).catch(() => {
-			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 

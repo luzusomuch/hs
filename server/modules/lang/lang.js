@@ -286,7 +286,8 @@ let Language = {
 		THIS_EVENT_HAS_BLOCKED: 'This event has blocked',
 		THIS_COMMENT_HAS_BLOCKED: 'This comment has blocked',
 		THIS_THREAD_HAS_BLOCKED: 'This thread has blocked',
-
+		THANK_YOU_FOR_YOUR_REPORT: 'Thank you for your report',
+		CANNOT_TRACKING_YOUR_LOCATION: 'Cannot tracking your location'
 	},
 	de: {
 

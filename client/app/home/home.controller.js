@@ -13,7 +13,7 @@ class HomeCtrl {
           cat.order = 2;
           break;
         case 'action':
-          cat.menuName = 'actionstar'
+          cat.menuName = 'actionstar';
           cat.order = 5;
           break;
         case 'eco':
@@ -60,7 +60,7 @@ class HomeCtrl {
 
     this.countNewEvent = 0;
      // tracking count new event in realtime
-    socket.socket.on('tracking:count-new-event', (data) => {
+    socket.socket.on('tracking:count-new-event', () => {
       this.countNewEvent +=1;
     });
 
@@ -68,7 +68,7 @@ class HomeCtrl {
     $scope.geoLocation = false;
     $scope.timeout = false;
     $timeout(() => {
-      $scope.timeout = true
+      $scope.timeout = true;
     }, 3000);
 
     $scope.$watch('[vm.searchParams, geoLocation, timeout]', (nv) => {
@@ -86,10 +86,10 @@ class HomeCtrl {
     let prevOffset = 0;
 
     let ttl2;
-    let loadMore = (event) => {
-      let content = angular.element('section[masonry]');
+    let loadMore = () => {
+      // let content = angular.element('section[masonry]');
       let windowHeight = angular.element(window).height();
-      let bottom = content.closest('.container')[0].offsetTop + content.height();
+      // let bottom = content.closest('.container')[0].offsetTop + content.height();
       let offset = windowHeight + angular.element(document).scrollTop();
       let documenHeight = angular.element(document).height();
       let dir = offset > prevOffset ? 'down' : 'up';
@@ -100,7 +100,7 @@ class HomeCtrl {
         }
         ttl2 = $timeout(this.pageChange.bind(this), 500);
       }
-    }
+    };
 
     angular.element(document).bind('scroll', loadMore.bind(this));
     $scope.$on('$destroy', () => {
@@ -122,9 +122,9 @@ class HomeCtrl {
         this.searchParams.radius = 100;
         $scope.geoLocation = true;
         $scope.$$phase || $scope.$apply();
-      }, (err) => {
-        console.log(err);
+      }, () => {
         $scope.geoLocation = true;
+        this.growl.error(`<p>{{'CANNOT_TRACKING_YOUR_LOCATION' | translate}}</p>`);
         $scope.$$phase || $scope.$apply();
       });
     } else {
@@ -190,7 +190,7 @@ class HomeCtrl {
         event.totalLike = event.totalLike -1;
       }
     }).catch(() => {
-      this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+      this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
     });
   }
 

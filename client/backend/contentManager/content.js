@@ -26,5 +26,5 @@ angular.module('healthStarsApp')
     	settings: {
 	      pageTitle: 'HealthStars Backend | Content Manager - About'
 	    }
-    })
-  });
+    });
+});

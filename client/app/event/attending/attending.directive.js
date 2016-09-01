@@ -60,7 +60,7 @@ class EventAttendingCtrl {
 					this.participants.total -=1;
 				}
 			}).catch(() => {
-				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 		}
 	}
@@ -70,13 +70,13 @@ class EventAttendingCtrl {
 			this.EventService.grantAward(this.$state.params.id, user._id).then(() => {
 				user.isGrantedAward = true;
 			}).catch(() => {
-				this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 		}
 	}
 
 	showAllAttending() {
-		let modalInstance = this.$uibModal.open({
+		this.$uibModal.open({
 	    	animation: true,
 	    	templateUrl: 'app/event/modal/event-participants.html',
 	    	controller: 'EventParticipantsCtrl',
@@ -92,7 +92,7 @@ class EventAttendingCtrl {
 		this.RelationService.create({userId: friend._id, type: 'friend'}).then(resp => {
     		friend.friendStatus = resp.data.type;
 		}).catch(() => {
-			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 }

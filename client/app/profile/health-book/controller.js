@@ -14,10 +14,10 @@ class HealthBookCtrl {
 
 		let prevOffset = 0;
 		let ttl2;
-		let loadMore = (event) => {
-	      	let content = angular.element('section[masonry]');
+		let loadMore = () => {
+	      	// let content = angular.element('section[masonry]');
 	      	let windowHeight = angular.element(window).height();
-	      	let bottom = content.closest('.container')[0].offsetTop + content.height();
+	      	// let bottom = content.closest('.container')[0].offsetTop + content.height();
 	      	let offset = windowHeight + angular.element(document).scrollTop();
 	      	let documenHeight = angular.element(document).height();
 	      	let dir = offset > prevOffset ? 'down' : 'up';
@@ -29,9 +29,9 @@ class HealthBookCtrl {
 		        }
 		        ttl2 = $timeout(this.getEvents.bind(this), 500);
 	      	}
-	    }
+	    };
 
-		angular.element(document).bind('scroll', loadMore.bind(this));
+		angular.element(document).bind('scroll', loadMore.bind());
 	    $scope.$on('$destroy', () => {
 	       angular.element(document).unbind('scroll');
 	    });
@@ -56,7 +56,7 @@ class HealthBookCtrl {
 	        	event.totalLike = event.totalLike -1;
 	      	}
 	    }).catch(() => {
-	      	this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+	      	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 	    });
   	}
 }

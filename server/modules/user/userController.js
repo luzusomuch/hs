@@ -49,8 +49,8 @@ class UserController {
   }
 
   hotmailContacts(req, res) {
-    // res.redirect(config.baseUrl+'/profile/');
-    return res.status(200).end();
+    return res.redirect(config.baseUrl+'/profile/');
+    // return res.status(200).end();
   }
 
   /*Block and un-block user*/

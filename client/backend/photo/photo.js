@@ -16,5 +16,5 @@ angular.module('healthStarsApp')
     	settings: {
 	      pageTitle: 'HealthStars Backend | Photos List'
 	    }
-    })
+    });
   });

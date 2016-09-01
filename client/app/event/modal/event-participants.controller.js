@@ -34,7 +34,7 @@ class EventParticipantsCtrl {
 			RelationService.create({userId: friend._id, type: 'friend'}).then(resp => {
 	    		friend.friendStatus = resp.data.type;
 			}).catch(() => {
-				growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+				growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 		};
 	}

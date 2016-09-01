@@ -63,7 +63,7 @@
       },
 
       attendEvent(id) {
-        return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/attend`)
+        return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/attend`);
       }
     };
   }

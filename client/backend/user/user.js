@@ -14,5 +14,5 @@ angular.module('healthStarsApp').config(function($stateProvider) {
     	settings: {
 	      pageTitle: 'HealthStars Backend | Users List'
 	    }
-    })
+    });
 });

@@ -5,7 +5,7 @@
   function AboutService($http, APP_CONFIG, $localStorage) {
   	let language = $localStorage.language || 'en';
     return {
-      get(language) {
+      get() {
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/abouts/${language}`);
       },
 

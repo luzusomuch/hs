@@ -1,10 +1,10 @@
 class CreateAwardCtrl {
 	constructor($uibModalInstance, $cookies, Upload, growl, AwardService) {
 		this.types = [
-			{value: 'accepted', text: 'Award will be granted to every users accepted an event'}, 
-			{value: 'gps', text: 'Award will be granted to every users have gps signal send from Healthstars App'}, 
-			{value: 'organizer', text: 'Award will be granted by organizer'}, 
-			{value: 'offline', text: 'Award will be granted by Healthstars offline (only for company accounts)'}
+			{value: 'accepted'}, 
+			{value: 'gps'}, 
+			{value: 'organizer'}, 
+			{value: 'offline'}
 		];
 		this.award = {};
 		this.file = {};
@@ -29,10 +29,10 @@ class CreateAwardCtrl {
 		    }).then(resp =>{
 				this.$uibModalInstance.close(resp.data);
 		    }, () => {
-		    	this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+		    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		    });
 		} else {
-			this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
+			this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
 		}
 	}
 }

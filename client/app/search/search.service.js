@@ -2,7 +2,7 @@
 
 (function() {
 
-  function SearchParams($http, APP_CONFIG) {
+  function SearchParams() {
     let _default =  {
       keywords: '',
       address: {},

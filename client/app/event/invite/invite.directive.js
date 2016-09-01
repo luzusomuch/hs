@@ -56,9 +56,9 @@ class EventInviteCtrl {
 	}
 
 	invite(user) {
-		this.Invite.intiveToEvent(user._id, this.event._id).then(
-			res => user.invited = true
-		)
+		this.Invite.intiveToEvent(user._id, this.event._id).then(() =>  {
+			user.invited = true;
+		});
 	}
 
 	close() {

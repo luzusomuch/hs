@@ -39,12 +39,12 @@ class RegisterCtrl {
     form['email'].$setValidity('mongoose', true);
     this.submitted = true;
     if (!this.user.term) {
-      this.growl.error("<p>{{'PLEASE_ACCEPT_OUR_TERMS_AND_CONDITIONS' | translate}}</p>")
+      this.growl.error(`<p>{{'PLEASE_ACCEPT_OUR_TERMS_AND_CONDITIONS' | translate}}</p>`);
       return;
     }
     if (form.$valid && this.address.selected) {
       if (this.user.phoneNumber) {
-        this.user.phoneNumber = $("#phone").intlTelInput('getNumber');
+        this.user.phoneNumber = $('#phone').intlTelInput('getNumber');
       }
       var selectedAddress = this.address.selected;
       this.user.location.coordinates = [selectedAddress.geometry.location.lng, selectedAddress.geometry.location.lat];
@@ -69,7 +69,7 @@ class RegisterCtrl {
           // Account created, redirect to home
           this.$state.go('home');
         }).catch(err => {
-          this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+          this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
           
           this.errors = {};
 
@@ -89,7 +89,7 @@ class RegisterCtrl {
         });
       });
     } else {
-      this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
+      this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
     }
   }
 }

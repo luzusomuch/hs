@@ -4,7 +4,7 @@ class ProfileDetailCtrl {
 	constructor(growl, $scope, $state, $uibModal, $localStorage, APP_CONFIG, PhotoViewer, user, $cookies, Upload, FeedService, EventService, RelationService) {
 		this.growl = growl;
 		if ((user.deleted && user.deleted.status) || (user.blocked && user.blocked.status)) {
-			this.growl.error("<p>{{'EMAIL_DELETED' | translate}}</p>");
+			this.growl.error(`<p>{{'EMAIL_DELETED' | translate}}</p>`);
 			$state.go('home');
 		}
 		this.errors = {};
@@ -92,8 +92,9 @@ class ProfileDetailCtrl {
 		this.submitted = true;
 		this.errors = {};
 		if (_.filter(this.files, {nude: true}).length > 0) {
-			this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
-			return this.errors.file = true;
+			this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
+			this.errors.file = true;
+			return false;
 		}
 		if (feed.content && feed.content.trim().length > 0) {
 			feed.userId = this.user._id;
@@ -109,11 +110,11 @@ class ProfileDetailCtrl {
 		        this.files = [];
 		        this.feeds.items.push(resp.data);
 		    }, () => {
-		    	this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+		    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		    });
 		} else {
 			this.errors.content = true;
-			this.growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
+			this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
 		}
 	}
 
@@ -121,7 +122,7 @@ class ProfileDetailCtrl {
 		this.PhotoViewer.blockPhoto(photo._id, {type: 'user-profile', userId: this.user._id}).then(resp => {
 			photo.blocked = resp.data.blocked;
 		}).catch(() => {
-			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 
@@ -145,7 +146,7 @@ class ProfileDetailCtrl {
 		this.RelationService.create({userId: this.user._id, type: 'friend'}).then(resp => {
 			this.user.isFriend = resp.data.type;
 		}).catch(() => {
-			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 
@@ -153,12 +154,12 @@ class ProfileDetailCtrl {
 		this.RelationService.create({userId: this.user._id, type: 'follow'}).then(resp => {
 			this.user.isFollow = resp.data.type;
 		}).catch(() => {
-			this.growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 
 	showAllEvents() {
-		let modalInstance = this.$uibModal.open({
+		this.$uibModal.open({
 	    	animation: true,
 	    	templateUrl: 'app/profile/user-events/view.html',
 	    	controller: 'UserEventsCtrl',
@@ -171,7 +172,7 @@ class ProfileDetailCtrl {
 	}
 
 	sendMessage() {
-		let modalInstance = this.$uibModal.open({
+		this.$uibModal.open({
 	    	animation: true,
 	    	templateUrl: 'app/thread/modal/message.html',
 	    	controller: 'MessageModalCtrl',

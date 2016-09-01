@@ -1,10 +1,10 @@
 class EditAwardCtrl {
 	constructor($scope, award, $uibModalInstance, $cookies, Upload, growl) {
 		$scope.types = [
-			{value: 'accepted', text: 'Award will be granted to every users accepted an event'}, 
-			{value: 'gps', text: 'Award will be granted to every users have gps signal send from Healthstars App'}, 
-			{value: 'organizer', text: 'Award will be granted by organizer'}, 
-			{value: 'offline', text: 'Award will be granted by Healthstars offline (only for company accounts)'}
+			{value: 'accepted'}, 
+			{value: 'gps'}, 
+			{value: 'organizer'}, 
+			{value: 'offline'}
 		];
 		$scope.submitted = false;
 		$scope.award = angular.copy(award);
@@ -30,10 +30,10 @@ class EditAwardCtrl {
 			    }).then(resp =>{
 					$uibModalInstance.close(resp.data);
 			    }, () => {
-			    	growl.error("<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>");
+			    	growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			    });
 			} else {
-				growl.error("<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>");
+				growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
 			}
 		};
 	}

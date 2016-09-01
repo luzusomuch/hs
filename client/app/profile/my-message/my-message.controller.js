@@ -45,11 +45,11 @@ class MyMessagesCtrl {
 			controller: 'NewThreadCtrl',
 			controllerAs: 'NewThread',
 			resolve: {
-				friends: (User) => {
+				friends: ['User', (User) => {
 					return User.getFriends(this.authUser._id, {getAll: true}).then(resp => {
 						return resp.data.items;
 					});
-				}
+				}]
 			}
 		});
 		modalInstance.result.then(resp => {

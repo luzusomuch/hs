@@ -1,7 +1,8 @@
 'use strict';
 
 class BackendEventListCtrl {
-	constructor($scope, $localStorage, events, $uibModal, EventService) {
+	constructor($scope, $localStorage, events, $uibModal, EventService, growl) {
+		this.growl = growl;
 		this.showActiveEvent = false;
 		this.sortType = 'startDateTime';
 		this.sortReverse = false;
@@ -64,18 +65,16 @@ class BackendEventListCtrl {
 		this.EventService.search({page: this.page}).then(resp => {
   		this.page += 1;
   		this.events.items = this.events.items.concat(resp.data.items);
-		}).catch(err => {
-			console.log(err);
-			// TODO show error
+		}).catch(() => {
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 
 	delete(event) {
 		this.EventService.delete(event._id).then(() => {
 			event.blocked = true;
-		}).catch(err => {
-			console.log(err);
-			// TODO show error
+		}).catch(() => {
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 }

@@ -1,7 +1,7 @@
 'use strict';
 
 class BackendCreateCategoryCtrl {
-	constructor($scope, $uibModalInstance, Upload, $cookies) {
+	constructor($scope, $uibModalInstance, Upload, $cookies, growl) {
 		$scope.category = {};
 		$scope.submitted = false;
 		
@@ -17,18 +17,17 @@ class BackendCreateCategoryCtrl {
 			$scope.submitted = true;
 			if (form.$valid) {
 				Upload.upload({
-		      url: '/api/v1/categories/',
-		      arrayKey: '',
-		      data: {file: $scope.file, category: $scope.category},
-		      headers: {'Authorization': `Bearer ${$cookies.get('token')}`}
-		    }).then(resp =>{
+		      		url: '/api/v1/categories/',
+		      		arrayKey: '',
+		      		data: {file: $scope.file, category: $scope.category},
+		      		headers: {'Authorization': `Bearer ${$cookies.get('token')}`}
+		    	}).then(resp =>{
 					$uibModalInstance.close(resp.data);
-		    }, (err) => {
-		    	console.log(err);
-		    	// TODO show error
-		    });
+			    }, (err) => {
+			    	growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+			    });
 			} else {
-				// TODO show error
+				growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
 			}
 		};
 	}

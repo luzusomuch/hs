@@ -1,7 +1,8 @@
 'use strict';
 
 class BackendContentManagerHomePageCtrl {
-	constructor(Upload, $cookies, $state) {
+	constructor(Upload, $cookies, $state, growl) {
+		this.growl = growl;
 		this.file = {};
 		this.Upload = Upload;
 		this.$cookies = $cookies;
@@ -11,15 +12,14 @@ class BackendContentManagerHomePageCtrl {
 	select(file) {
 		this.file = file;
 		this.Upload.upload({
-      url: '/api/v1/abouts/sound',
-      data: {file: this.file},
-      headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
-    }).then(() =>{
+      		url: '/api/v1/abouts/sound',
+      		data: {file: this.file},
+      		headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
+	    }).then(() =>{
 			this.$state.reload();
-    }, (err) => {
-    	console.log(err);
-    	// TODO show error
-    });
+	    }, () => {
+	    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+	    });
 	}
 }
 

@@ -287,7 +287,17 @@ let Language = {
 		THIS_COMMENT_HAS_BLOCKED: 'This comment has blocked',
 		THIS_THREAD_HAS_BLOCKED: 'This thread has blocked',
 		THANK_YOU_FOR_YOUR_REPORT: 'Thank you for your report',
-		CANNOT_TRACKING_YOUR_LOCATION: 'Cannot tracking your location'
+		CANNOT_TRACKING_YOUR_LOCATION: 'Cannot tracking your location',
+		CHANGE_PASSWORD_SUCCESSFULLY: 'Change passsword successfully',
+		OLD_PASSWORD_INCORRECT: 'Old password incorrect',
+		ADD_SOCIAL_ACCOUNT_SUCCESSFULLY: 'Add social account successfully',
+		UPDATE_ACCOUNT_SUCCESSFULLY: 'Update account successfully',
+		PLEASE_SELECT_YOUR_LOCATON: 'Please select your location',
+		UPDATE_AWARD_SUCCESSFULLY: 'Update award successfully',
+		UPDATED_ITEM_SUCCESSFULLY: 'Updated item successfully',
+		CREATED_NEW_ITEM_SUCCESSFULLY: 'Created new item successfully',
+		DELETED_ITEM_SUCCESSFULLY: 'Deleted item successfully',
+		BLOCKED_ITEM_SUCCESSFULLY: 'Blocked item successfully',
 	},
 	de: {
 

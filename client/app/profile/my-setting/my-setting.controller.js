@@ -1,7 +1,8 @@
 'use strict';
 
 class MySettingCtrl {
-	constructor($scope, $state, $localStorage, APP_CONFIG, $http, User, Auth, Upload, $cookies, $timeout, $window) {
+	constructor($scope, $state, $localStorage, APP_CONFIG, $http, User, Auth, Upload, $cookies, $timeout, $window, growl) {
+		this.growl = growl;
 		this.submitted =false;
 		this.errors = {};
 		this.authUser = $localStorage.authUser;
@@ -56,16 +57,15 @@ class MySettingCtrl {
 		      	this.User.updateProfile(this.authUser._id, this.authUser).then(() => {
 		      		this.Auth.setAuthUser(this.authUser);
 		      		this.submitted = false;
-		      	}).catch(err => {
-		      		console.log(err);
-		      		// TODO show error
+		      		this.growl.success(`<p>{{'UPDATE_ACCOUNT_SUCCESSFULLY' | translate}}</p>`);
+		      	}).catch(() => {
+		      		this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		      	});
 			} else {
-				// TODO show error
-				
+				this.growl.error(`<p>{{'PLEASE_SELECT_YOUR_LOCATON' | translate}}</p>`);
 			}
 		} else {
-			// TODO show error
+			this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
 		}
 	}
 
@@ -90,9 +90,8 @@ class MySettingCtrl {
 	    }).then(resp =>{
 	    	this.authUser[resp.data.type] = resp.data.photo;
 	    	this.Auth.setAuthUser(this.authUser);
-	    }, (err) => {
-	    	// TODO show error
-	    	console.log(err);
+	    }, () => {
+	    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 	    });
   	}
 
@@ -100,9 +99,8 @@ class MySettingCtrl {
   		this.User.changeNotificationsSetting({type: type}).then(resp => {
 			this.authUser.notificationSetting = resp.data.notificationSetting;
 			this.Auth.setAuthUser(resp.data.notificationSetting, 'notificationSetting');
-  		}).catch(err => {
-  			// TODO show err
-  			console.log(err);
+  		}).catch(() => {
+  			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
   		});
   	}
 
@@ -115,14 +113,12 @@ class MySettingCtrl {
 	  					type: 'facebook'
 	  				};
 	  				this.User.addSocialAccount(data).then(() => {
-	  					// TODO show success message
-	  				}).catch(err => {
-	  					// TODO show error
-	  					console.log(err);
+	  					this.growl.success(`<p>{{'ADD_SOCIAL_ACCOUNT_SUCCESSFULLY' | translate}}</p>`);
+	  				}).catch(() => {
+	  					this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 	  				});
   				} else {
-  					console.log(response.error);
-  					// TODO show error
+  					this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
   				}
 		    });
   		} else if (type === 'tw') {
@@ -134,10 +130,9 @@ class MySettingCtrl {
   					type: 'google'
   				};
 				this.User.addSocialAccount(data).then(() => {
-					// TODO show success message
-  				}).catch(err => {
-  					// TODO show error
-  					console.log(err);
+					this.growl.success(`<p>{{'ADD_SOCIAL_ACCOUNT_SUCCESSFULLY' | translate}}</p>`);
+  				}).catch(() => {
+  					this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
   				});
 			});
   		}
@@ -147,12 +142,16 @@ class MySettingCtrl {
   		this.submitted = true;
   		if (form.$valid) {
   			this.Auth.changePassword(this.oldpassword, this.password).then(() => {
-  				// TODO show success
-  			}).catch(() => {
-  				// TODO show error
+  				this.growl.success(`<p>{{'CHANGE_PASSWORD_SUCCESSFULLY' | translate}}</p>`);
+  			}).catch(err => {
+  				if (err.status===403) {
+  					this.growl.error(`<p>{{'OLD_PASSWORD_INCORRECT' | translate}}</p>`);
+  				} else {
+  					this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+  				}
   			});
   		} else {
-  			// TODO show error
+  			this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
   		}
   	}
 
@@ -160,9 +159,8 @@ class MySettingCtrl {
   		this.User.deleteAccount(this.authUser._id).then(() => {
   			this.Auth.logout();
   			this.$state.go('home');
-  		}).catch(err => {
-  			console.log(err);
-  			// TODO show eror
+  		}).catch(() => {
+  			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
   		});
   	}
 }

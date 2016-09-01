@@ -1,10 +1,10 @@
 class BackendEditAwardCtrl {
-	constructor($scope, award, $uibModalInstance, $cookies, Upload) {
+	constructor($scope, award, $uibModalInstance, $cookies, Upload, growl) {
 		$scope.types = [
-			{value: 'accepted', text: 'Award will be granted to every users accepted an event'}, 
-			{value: 'gps', text: 'Award will be granted to every users have gps signal send from Healthstars App'}, 
-			{value: 'organizer', text: 'Award will be granted by organizer'}, 
-			{value: 'offline', text: 'Award will be granted by Healthstars offline (only for company accounts)'}
+			{value: 'accepted'}, 
+			{value: 'gps'}, 
+			{value: 'organizer'}, 
+			{value: 'offline'}
 		];
 		$scope.submitted = false;
 		$scope.award = award;
@@ -22,19 +22,18 @@ class BackendEditAwardCtrl {
 			$scope.submitted = true;
 			if (form.$valid) {
 				Upload.upload({
-		      url: '/api/v1/awards/'+$scope.award._id,
-		      arrayKey: '',
-		      method: 'PUT',
-		      data: {file: $scope.file, award: $scope.award},
-		      headers: {'Authorization': `Bearer ${$cookies.get('token')}`}
-		    }).then(resp =>{
+			      	url: '/api/v1/awards/'+$scope.award._id,
+			      	arrayKey: '',
+			      	method: 'PUT',
+			      	data: {file: $scope.file, award: $scope.award},
+			      	headers: {'Authorization': `Bearer ${$cookies.get('token')}`}
+			    }).then(resp =>{
 					$uibModalInstance.close(resp.data);
-		    }, (err) => {
-		    	console.log(err);
-		    	// TODO show error
-		    });
+			    }, (err) => {
+			    	growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+			    });
 			} else {
-				// TODO show error
+				growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
 			}
 		};
 	}

@@ -1,7 +1,7 @@
 'use strict';
 
 class UserFriendCtrl {
-	constructor($scope, User, APP_CONFIG, socket, $localStorage, RelationService) {
+	constructor($scope, User, APP_CONFIG, socket, $localStorage, RelationService, growl) {
 		$scope.friends = {};
 		$scope.authUser = $localStorage.authUser;
 		$scope.page = 1;
@@ -15,7 +15,6 @@ class UserFriendCtrl {
 		};
 			
 		$scope.$watch('uId', nv => {
-			console.log(nv);
 			if(nv) {
 				$scope.getFriends();
 			}
@@ -39,9 +38,8 @@ class UserFriendCtrl {
 	    $scope.addFriend = (friend) => {
 	    	RelationService.create({userId: friend._id, type: 'friend'}).then(resp => {
 	    		friend.currentFriendStatus = resp.data.type;
-			}).catch(err => {
-				console.log(err);
-				// TODO show error
+			}).catch(() => {
+				growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 	    };
 	}

@@ -1,7 +1,8 @@
 'use strict';
 
 class BackendReportListCtrl {
-	constructor($scope, $uibModal, ReportService) {
+	constructor($scope, $uibModal, ReportService, growl) {
+		this.growl = growl;
 		this.page = 1;
 		this.reports = {};
 		this.$uibModal = $uibModal;
@@ -28,38 +29,30 @@ class BackendReportListCtrl {
 	  		this.page += 1;
 	  		this.reports.items = (this.reports.items) ? this.reports.items.concat(resp.data.items) : resp.data.items;
 	  		this.reports.totalItem = resp.data.totalItem;
-		}).catch(err => {
-			console.log(err);
-			// TODO show error
+		}).catch(() => {
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 
 	markAsChecked(report) {
 		this.ReportService.markAsChecked(report._id).then(() => {
 			report.checked = true;
-		}).catch(err => {
-			console.log(err);
-			// TODO show error
+		}).catch(() => {
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 
 	view(report) {
-		let modalInstance = this.$uibModal.open({
-    	animation: true,
-    	templateUrl: 'backend/report/detail/view.html',
-    	controller: 'BackendReportDetailCtrl',
-    	resolve: {
-    		report: () => {
-    			return report;
-    		}
-    	}
-    });
-		modalInstance.result.then(() => {
-			
-		}, err => {
-			console.log(err);
-			// TODO show error
-		});
+		this.$uibModal.open({
+	    	animation: true,
+	    	templateUrl: 'backend/report/detail/view.html',
+	    	controller: 'BackendReportDetailCtrl',
+	    	resolve: {
+	    		report: () => {
+	    			return report;
+	    		}
+	    	}
+	    });
 	}
 }
 

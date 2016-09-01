@@ -1,8 +1,9 @@
 'use strict';
 
 class BackendEventEditCtrl {
-	constructor(event, categories, APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $cookies) {
-		this.categories = categories;
+	constructor(growl, event, categories, APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $cookies) {
+		this.growl = growl;
+    this.categories = categories;
     // Init event
 		this.event = event;
 		this.event.categoryId = event.categoryId._id;
@@ -137,8 +138,6 @@ class BackendEventEditCtrl {
     });
 		modalInstance.result.then(data => {
 			this.event.participants = data;
-		}, err => {
-			console.log(err);
 		});
   }
 
@@ -163,8 +162,6 @@ class BackendEventEditCtrl {
     });
 		modalInstance.result.then(data => {
 			this.event.award = data;
-		}, err => {
-			console.log(err);
 		});
   }
 
@@ -265,9 +262,9 @@ class BackendEventEditCtrl {
 	    }).then( () => {
         this.submitted = false;
 	    	this.$state.go('backend.event.list');
-	    }, (err) => {
-	    	console.log(err);
-	    	// TODO show error
+        this.growl.success(`<p>{{'UPDATED_ITEM_SUCCESSFULLY' | translate}}</p>`);
+	    }, () => {
+	    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 	    });
   	}
   }
@@ -299,16 +296,16 @@ class RepeatEventCtrl {
 				this.$uibModalInstance.close(this.repeat);
 			} else {
         this.errors.date = true;
-				this.growl.error('Check your repeating start date and end date');
+				this.growl.error(`<p>{{'CHECK_YOUR_STARTDATE_ENDDATE' | translate}}</p>`);
 			}
 		} else {
-			this.growl.error('Check your input');
+      this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
 		}
 	}
 }
 
 class AddParticipantsCtrl {
-	constructor($uibModalInstance, growl, friends, participants) {
+	constructor($uibModalInstance, friends, participants) {
 		this.friends = friends;
 		this.participants = participants;
 		_.each(this.participants, (participant) => {
@@ -320,7 +317,6 @@ class AddParticipantsCtrl {
 			}
 		});
 		this.$uibModalInstance = $uibModalInstance;
-		this.growl = growl;
 	}
 
 	submit() {
@@ -354,8 +350,6 @@ class AddAwardCtrl {
     });
 		modalInstance.result.then(data => {
 			this.awards.push(data);
-		}, err => {
-			console.log(err);
 		});
 	}
 
@@ -371,13 +365,13 @@ class AddAwardCtrl {
 		if (selectedAward.length > 0) {
 			this.$uibModalInstance.close(selectedAward[0]);
 		} else {
-			this.growl.error('Please select an award');
+			this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
 		}
 	}
 }
 
 class CreateAwardCtrl {
-  constructor($uibModalInstance, $cookies, Upload, growl, AwardService) {
+  constructor($uibModalInstance, $cookies, Upload, growl) {
     this.types = [
       {value: 'accepted', text: 'Award will be granted to every users accepted an event'}, 
       {value: 'gps', text: 'Award will be granted to every users have gps signal send from Healthstars App'}, 
@@ -390,7 +384,6 @@ class CreateAwardCtrl {
     this.$cookies = $cookies;
     this.Upload = Upload;
     this.growl = growl;
-    this.AwardService = AwardService;
   }
 
   select($file) {
@@ -406,12 +399,11 @@ class CreateAwardCtrl {
         headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
       }).then(resp =>{
         this.$uibModalInstance.close(resp.data);
-      }, (err) => {
-        console.log(err);
-        // TODO show error
+      }, () => {
+        this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
       });
     } else {
-      this.growl.error('Check your data');
+      this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
     }
   }
 }

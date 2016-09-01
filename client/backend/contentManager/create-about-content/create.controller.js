@@ -1,7 +1,8 @@
 'use strict';
 
 class BackendCreateAboutContentCtrl {
-	constructor(AboutService, $uibModalInstance) {
+	constructor(AboutService, $uibModalInstance, growl) {
+		this.growl = growl;
 		this.AboutService = AboutService;
 		this.$uibModalInstance = $uibModalInstance;
 		this.page = 1;
@@ -19,12 +20,11 @@ class BackendCreateAboutContentCtrl {
 		if (form.$valid) {
 			this.AboutService.create(this.about).then(resp => {
 				this.$uibModalInstance.close(resp.data);
-			}).catch(err => {
-				console.log(err);
-				// TODO show error
+			}).catch(() => {
+				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 		} else {
-			// TODO show error
+			this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
 		}
 	}
 }

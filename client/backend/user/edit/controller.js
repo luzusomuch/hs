@@ -1,7 +1,8 @@
 'use strict';
 
 class BackendEditUserCtrl {
-	constructor($scope, user, $uibModalInstance, User) {
+	constructor($scope, user, $uibModalInstance, User, growl) {
+		this.growl = growl;
 		this.user = user;
 		this.user.location = (user.location) ? user.location : {};
 		this.$uibModalInstance = $uibModalInstance;
@@ -18,7 +19,7 @@ class BackendEditUserCtrl {
 		if (form.$valid) {
 			this.$uibModalInstance.close(this.user);
 		} else {
-			// TODO show error
+			this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
 		}
 	}
 }

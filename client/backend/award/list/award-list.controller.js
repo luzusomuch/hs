@@ -1,7 +1,8 @@
 'use strict';
 
 class BackendAwardListCtrl {
-	constructor($scope, $uibModal, $http, AwardService) {
+	constructor($scope, $uibModal, $http, AwardService, growl) {
+		this.growl = growl;
 		this.page = 1;
 		this.$uibModal = $uibModal;
 		this.$http = $http;
@@ -39,9 +40,8 @@ class BackendAwardListCtrl {
 	search(params) {
 		this.AwardService.search(params).then(resp => {
 			this.searchItems = resp.data.items;
-		}).catch(err => {
-			// TODO shwo error
-			console.log(err);
+		}).catch(() => {
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 
@@ -50,18 +50,17 @@ class BackendAwardListCtrl {
 	  		this.page += 1;
 	  		this.awards.items = (this.awards.items) ? this.awards.items.concat(resp.data.items) : resp.data.items;
 	  		this.awards.totalItem = resp.data.totalItem;
-		}).catch(err => {
-			console.log(err);
-			// TODO show error
+		}).catch(() => {
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 
 	block(award) {
 		this.AwardService.delete(award._id).then(() => {
 			award.deleted = true;
-		}).catch(err => {
-			console.log(err);
-			// TODO show error
+			this.growl.success(`<p>{{'BLOCKED_ITEM_SUCCESSFULLY' | translate}}</p>`);
+		}).catch(() => {
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 
@@ -84,10 +83,8 @@ class BackendAwardListCtrl {
 				data.event = award.event;
 				data.ownerId = award.ownerId;
 				this.awards.items[index] = data;
+				this.growl.success(`<p>{{'UPDATE_AWARD_SUCCESSFULLY' | translate}}</p>`);
 			}
-		}, err => {
-			console.log(err);
-			// TODO show error
 		});
 	}
 }

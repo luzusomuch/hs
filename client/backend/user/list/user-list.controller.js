@@ -1,7 +1,8 @@
 'use strict';
 
 class BackendUsersListCtrl {
-	constructor($scope, User, $uibModal) {
+	constructor($scope, User, $uibModal, growl) {
+		this.growl = growl;
 		this.User = User;
 		this.$uibModal = $uibModal;
 		this.users = {
@@ -52,9 +53,8 @@ class BackendUsersListCtrl {
 	blockUser(user) {
 		this.User.blockUser(user._id).then(resp => {
 			user.blocked = resp.data.blocked;
-		}).catch(err => {
-			// TODO show error
-			console.log(err);
+		}).catch(() => {
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 
@@ -74,14 +74,10 @@ class BackendUsersListCtrl {
 				data.location.coordinates = [0, 0];
 			}
 			this.User.updateProfile(data._id, data).then(() => {
-				// TODO show message
-	      	}).catch(err => {
-	      		console.log(err);
-	      		// TODO show error
+				this.growl.success(`<p>{{'BLOCKED_ITEM_SUCCESSFULLY' | translate}}</p>`);
+	      	}).catch(() => {
+	      		this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 	      	});
-		}, err => {
-			// TODO show erro
-			console.log(err);
 		});
 	}
 }

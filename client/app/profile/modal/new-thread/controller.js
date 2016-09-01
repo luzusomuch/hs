@@ -7,13 +7,14 @@ class NewThreadCtrl {
 		this.authUser = $localStorage.authUser;
 		friends.unshift({name: ' '});
 		this.friends = friends;
+		this.toUsers = [];
 
 		this.submitted = false;
 	}
 
 	submit(form) {
 		this.submitted = true;
-		if (form.$valid) {
+		if (form.$valid && this.toUsers && this.toUsers.length > 0) {
 			this.$uibModalInstance.close({toUsers: _.map(this.toUsers, '_id'), message: this.message});
 		} else {
 			this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);

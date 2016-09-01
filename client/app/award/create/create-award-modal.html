@@ -4,30 +4,51 @@
 
 	<form ng-submit="vm.submit(form)" name="form">
     <div class="modal-body">
-    <div class="form-group">
-    	<label>{{'AWARD_TITLE' | translate}}</label>
-      <input type="text" class="form-control" ng-model="vm.award.name" required>
-    </div>
-    <div class="form-group">
-    	<label>{{'AWARD_TYPE' | translate}}</label>
-    	<select ng-model="vm.award.type" class="form-control dropdown-toggle">
-    		<option ng-repeat="type in vm.types" ng-value="type.value"><a href="#">{{type.value.toUpperCase() | translate}}</a></option>
-    	</select>
-    </div>
-    
+      <div class="form-group">
+      	<label>{{'AWARD_TITLE' | translate}}</label>
+        <input type="text" class="form-control" ng-model="vm.award.name" required name="name">
+        <p class="error-text" ng-show="vm.submitted && form.name.$error.required">{{'PLEASE_SELECT_TO_PEOPLE' | translate}}</p>
+      </div>
+      <div class="form-group">
+      	<label>{{'AWARD_TYPE' | translate}}</label>
+      	<select ng-model="vm.award.type" class="form-control dropdown-toggle">
+      		<option ng-repeat="type in vm.types" ng-value="type.value"><a href="#">{{type.value.toUpperCase() | translate}}</a></option>
+      	</select>
+        <p class="error-text" ng-show="vm.submitted && !vm.award.type">{{'PLEASE_SELECT_TO_PEOPLE' | translate}}</p>
+      </div>
 
-    <div class="upload-img-event">
-                  <div class="row">
-                    <div class="col-xs-3">
-                      <img ng-show="vm.file.name" style="margin-bottom:5px" ngf-src="vm.file" width="100%">
-                    </div>
-                    <div class="col-xs-9 text-center ng-binding">
-                      <p><a href="#" class="btn btn-danger" ngf-select="vm.select($file)" ngf-multiple="false" accept="image/*">{{'UPLOAD_PICTURE' | translate}}</a></p>
-                      {{'FILE_REQUIREMENT' | translate}}
-                    </div>
-                  </div>
-                </div>
-                </div>
+      <div class="form-group">
+        <div class="radio-l" ng-repeat="type in vm.allowToUseTypes">
+          <input id="{{type}}" type="radio" name="category" value="{{type}}" ng-model="vm.award.allowToUseType">
+          <label for="{{type}}"> 
+            <span>{{type.toUpperCase() | translate}}</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group" ng-show="vm.award.allowToUseType==='friend'">
+        <ui-select multiple tagging tagging-label="false" ng-model="vm.award.allowToUse" theme="bootstrap">
+          <ui-select-match placeholder="{{'TO' | translate}}">{{$item.name}}</ui-select-match>
+          <ui-select-choices repeat="user in vm.friends">
+            {{user.name}}
+          </ui-select-choices>
+        </ui-select>
+        <p class="error-text" ng-show="vm.submitted && (!vm.award.allowToUse || vm.award.allowToUse.length===0)">{{'PLEASE_SELECT_TO_PEOPLE' | translate}}</p>
+      </div>
+
+      <div class="upload-img-event">
+        <div class="row">
+          <div class="col-xs-3">
+            <img ng-show="vm.file.name" style="margin-bottom:5px" ngf-src="vm.file" width="100%">
+          </div>
+          <div class="col-xs-9 text-center ng-binding">
+            <p><a href="#" class="btn btn-danger" ngf-select="vm.select($file)" ngf-multiple="false" accept="image/*">{{'UPLOAD_PICTURE' | translate}}</a></p>
+            {{'FILE_REQUIREMENT' | translate}}
+          </div>
+        </div>
+      </div>
+    </div>
+
 		<div class="modal-footer">
 			<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>
 		</div>    

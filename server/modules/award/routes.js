@@ -42,7 +42,8 @@ module.exports = function(kernel) {
       var award = {
         objectName: req.body.award.name,
         type: req.body.award.type,
-        ownerId: req.user._id
+        ownerId: req.user._id,
+        allowToUseType: req.body.award.allowToUseType
       };
       var schema = Joi.object().keys({
         objectName: Joi.string().required().options({
@@ -53,6 +54,11 @@ module.exports = function(kernel) {
         type: Joi.string().required().options({
           language: {
             key: 'type'
+          }
+        }),
+        allowToUseType: Joi.string().required().options({
+          language: {
+            key: 'allowToUseType'
           }
         })
       });
@@ -74,12 +80,26 @@ module.exports = function(kernel) {
             case 'string.type':
               type = 'AWARD_TYPE_REQUIRED';
               break;
+            case 'string.allowToUseType':
+              type = 'AWARD_USE_TYPE_REQUIRED';
+              break;
             default:
               break;
           }
           errors.push({type: type, path: error.path, message: error.message});
         });
         return res.status(422).json(errors);
+      }
+
+      // validate allowToUse user base on allowToUseType
+      if (award.allowToUseType==='friend') {
+        if (req.body.award.allowToUseId instanceof Array) {
+          award.allowToUse = req.body.award.allowToUseId;
+        } else {
+          award.allowToUse = [req.body.award.allowToUseId];
+        }
+      } else {
+        award.allowToUse = [];
       }
 
       var photo = {

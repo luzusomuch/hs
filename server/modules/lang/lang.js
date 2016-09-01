@@ -302,7 +302,9 @@ let Language = {
 		FRIENDS_ACTIVITIES: 'Friends activities',
 		NEW_EVENTS: 'new events',
 		INTERESTED: 'Interested',
-		PARTICIPATINGS: 'Participatings'
+		PARTICIPATINGS: 'Participatings',
+		OWNER: 'Owner',
+		ALL: 'All'
 	},
 	de: {
 

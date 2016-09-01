@@ -60,11 +60,11 @@ class MyAwardCtrl {
 	    	controller: 'CreateAwardCtrl',
 	    	controllerAs: 'vm',
 	    	resolve: {
-	    		friends: (RelationService) => {
+	    		friends: ['RelationService', (RelationService) => {
 	    			return RelationService.getAll({id: this.authUser._id, type: 'friend'}, {showAll: true}).then(resp => {
 	    				return resp.data.items;
 	    			});
-	    		}
+	    		}]
 	    	}
 	    });
 		modalInstance.result.then(data => {

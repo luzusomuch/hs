@@ -1,5 +1,7 @@
 class CreateAwardCtrl {
 	constructor($uibModalInstance, $cookies, Upload, growl, AwardService, friends) {
+		this.submitted = false;
+		friends.unshift({name: ' '});
 		this.friends = friends;
 		this.types = [
 			{value: 'accepted'}, 
@@ -7,14 +9,19 @@ class CreateAwardCtrl {
 			{value: 'organizer'}, 
 			{value: 'offline'}
 		];
-		this.award = {};
+		
 		this.file = {};
 		this.$uibModalInstance = $uibModalInstance;
 		this.$cookies = $cookies;
 		this.Upload = Upload;
 		this.growl = growl;
 		this.AwardService = AwardService;
-		this.allowToUseType = ['owner', 'friend', 'all'];
+		this.allowToUseTypes = ['owner', 'friend', 'all'];
+
+		this.award = {
+			allowToUse: [],
+			allowToUseType: this.allowToUseTypes[0]
+		};
 	}
 
 	select($file) {
@@ -23,6 +30,12 @@ class CreateAwardCtrl {
 
 	submit(form) {
 		if (form.$valid && this.file.name && this.award.type) {
+			if (this.award.allowToUseType==='owner' || this.award.allowToUseType==='all') {
+				this.award.allowToUseId = [];
+			} else if (this.award.allowToUseType==='friend') {
+				this.award.allowToUseId = _.map(this.award.allowToUse, '_id');
+			}
+
 			this.Upload.upload({
 		      	url: '/api/v1/awards',
 		      	arrayKey: '',

@@ -5,6 +5,8 @@ module.exports = {
       objectName: String,
       objectPhotoId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Photo'},
       ownerId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
+      allowToUseType: {type: String, enum: ['owner', 'friend', 'all']},
+      allowToUse: [{type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}],
       // this type of award will be use for grant to user base on type
         // accepted is for every user who accepted an event
         // gps is for every user who has gps signed from healthstar app

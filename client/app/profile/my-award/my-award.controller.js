@@ -58,7 +58,14 @@ class MyAwardCtrl {
 	    	animation: true,
 	    	templateUrl: 'app/award/create/create-award-modal.html',
 	    	controller: 'CreateAwardCtrl',
-	    	controllerAs: 'vm'
+	    	controllerAs: 'vm',
+	    	resolve: {
+	    		friends: (RelationService) => {
+	    			return RelationService.getAll({id: this.authUser._id, type: 'friend'}, {showAll: true}).then(resp => {
+	    				return resp.data.items;
+	    			});
+	    		}
+	    	}
 	    });
 		modalInstance.result.then(data => {
 			this.ownAwardLoaded = false;

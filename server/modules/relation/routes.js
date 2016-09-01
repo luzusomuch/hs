@@ -10,18 +10,35 @@ module.exports = function(kernel) {
   kernel.app.get('/api/v1/relations/:id/:type', kernel.middleware.isAuthenticated(), (req, res) => {
     let page = req.query.page || 1;
     let pageSize = req.query.pageSize || 20;
-    kernel.model.Relation.find({
-      status: 'completed', 
-      type: req.params.type, 
-      $or: [{
-        fromUserId: req.params.id
-      }, {
-        toUserId: req.params.id
-      }]
-    })
-    .limit(Number(pageSize))
-    .skip(pageSize * (page-1))
-    .exec().then(relations => {
+
+    let condition;
+
+    if (req.query.showAll) {
+      // show all friends when create/update award
+      condition = kernel.model.Relation.find({
+        status: 'completed', 
+        type: req.params.type, 
+        $or: [{
+          fromUserId: req.params.id
+        }, {
+          toUserId: req.params.id
+        }]
+      });
+    } else {
+      condition = kernel.model.Relation.find({
+        status: 'completed', 
+        type: req.params.type, 
+        $or: [{
+          fromUserId: req.params.id
+        }, {
+          toUserId: req.params.id
+        }]
+      })
+      .limit(Number(pageSize))
+      .skip(pageSize * (page-1));
+    }
+
+    condition.exec().then(relations => {
       let fromUserId = _.map(relations, 'fromUserId');
       let toUserId = _.map(relations, 'toUserId');
       let ids = _.union(fromUserId, toUserId);

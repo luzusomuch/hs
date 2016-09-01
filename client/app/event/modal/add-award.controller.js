@@ -16,11 +16,11 @@ class AddAwardCtrl {
 
 	showAddMoreAwardModal() {
 		let modalInstance = this.$uibModal.open({
-    	animation: true,
-    	templateUrl: 'app/award/create/create-award-modal.html',
-    	controller: 'CreateAwardCtrl',
-    	controllerAs: 'vm'
-    });
+	    	animation: true,
+	    	templateUrl: 'app/award/create/create-award-modal.html',
+	    	controller: 'CreateAwardCtrl',
+	    	controllerAs: 'vm'
+	    });
 		modalInstance.result.then(data => {
 			this.awards.push(data);
 		}, err => {

@@ -8,8 +8,8 @@
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/relations/${id}`);
       },
 
-      getAll(option) {
-      	return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/relations/${option.id}/${option.type}`);
+      getAll(option, params) {
+      	return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/relations/${option.id}/${option.type}`, {params: params});
       },
 
       create: (relation) => {

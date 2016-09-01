@@ -1,7 +1,7 @@
 'use strict';
 
 class NewThreadCtrl {
-	constructor($uibModalInstance, $localStorage, friends, growl) {
+	constructor(friends, $uibModalInstance, $localStorage, growl) {
 		this.growl = growl;
 		this.$uibModalInstance = $uibModalInstance;
 		this.authUser = $localStorage.authUser;

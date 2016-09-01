@@ -1,5 +1,5 @@
 class AddAwardCtrl {
-	constructor($uibModalInstance, growl, awards, selectedAward, $uibModal) {
+	constructor($uibModalInstance, growl, awards, selectedAward, $uibModal, $localStorage) {
 		this.awards = awards.data.items;
 		if (selectedAward) {
 			let index = _.findIndex(this.awards, (award) => {
@@ -12,6 +12,7 @@ class AddAwardCtrl {
 		this.$uibModalInstance = $uibModalInstance;
 		this.growl = growl;
 		this.$uibModal = $uibModal;
+		this.authUser = $localStorage.authUser;
 	}
 
 	showAddMoreAwardModal() {
@@ -19,7 +20,14 @@ class AddAwardCtrl {
 	    	animation: true,
 	    	templateUrl: 'app/award/create/create-award-modal.html',
 	    	controller: 'CreateAwardCtrl',
-	    	controllerAs: 'vm'
+	    	controllerAs: 'vm',
+	    	resolve: {
+	    		friends: ['RelationService', (RelationService) => {
+	    			return RelationService.getAll({id: this.authUser._id, type: 'friend'}, {showAll: true}).then(resp => {
+	    				return resp.data.items;
+	    			});
+	    		}]
+	    	}
 	    });
 		modalInstance.result.then(data => {
 			this.awards.push(data);

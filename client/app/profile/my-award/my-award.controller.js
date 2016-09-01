@@ -169,9 +169,16 @@ class MyAwardCtrl {
 	    	templateUrl: 'app/award/edit/edit.html',
 	    	controller: 'EditAwardCtrl',
 	    	resolve: {
-	    		award: () => {
-	    			return award;
-	    		}
+	    		award: ['AwardService', (AwardService) => {
+	    			return AwardService.get(award._id).then(resp => {
+	    				return resp.data;
+	    			});
+	    		}],
+	    		friends: ['RelationService', (RelationService) => {
+	    			return RelationService.getAll({id: this.authUser._id, type: 'friend'}, {showAll: true}).then(resp => {
+	    				return resp.data.items;
+	    			});
+	    		}]
 	    	}
 	    });
 		modalInstance.result.then(data => {

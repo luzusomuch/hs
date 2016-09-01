@@ -176,6 +176,21 @@ module.exports = function(kernel) {
       return res.status(500).json({type: 'SERVER_ERROR'});
     });
   });
+
+  /*Get award by id*/
+  kernel.app.get('/api/v1/awards/:id', kernel.middleware.isAuthenticated(), (req, res) => {
+    kernel.model.Award.findById(req.params.id)
+    .populate('allowToUse', '-password -salt')
+    .populate('objectPhotoId')
+    .exec().then(award => {
+      if (!award) {
+        return res.status(404).end();
+      }
+      return res.status(200).json(award);
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'})
+    });
+  });
   
   /**
    * Get list of awards created by current user
@@ -357,7 +372,8 @@ module.exports = function(kernel) {
           var awardValidation = {
             objectName: req.body.award.objectName,
             type: req.body.award.type,
-            ownerId: req.user._id
+            ownerId: req.user._id,
+            allowToUseType: req.body.award.allowToUseType
           };
           var schema = Joi.object().keys({
             objectName: Joi.string().required().options({
@@ -368,6 +384,11 @@ module.exports = function(kernel) {
             type: Joi.string().required().options({
               language: {
                 key: 'type'
+              }
+            }),
+            allowToUseType: Joi.string().required().options({
+              language: {
+                key: 'allowToUseType'
               }
             })
           });
@@ -389,12 +410,26 @@ module.exports = function(kernel) {
                 case 'string.type':
                   type = 'AWARD_TYPE_REQUIRED';
                   break;
+                case 'string.allowToUseType':
+                  type = 'AWARD_USE_TYPE_REQUIRED';
+                  break;
                 default:
                   break;
               }
               errors.push({type: type, path: error.path, message: error.message});
             });
             return res.status(422).json(errors);
+          }
+
+          // validate allowToUse user base on allowToUseType
+          if (awardValidation.allowToUseType==='friend') {
+            if (req.body.award.allowToUseId instanceof Array) {
+              awardValidation.allowToUse = req.body.award.allowToUseId;
+            } else {
+              awardValidation.allowToUse = [req.body.award.allowToUseId];
+            }
+          } else {
+            awardValidation.allowToUse = [];
           }
 
           async.parallel([
@@ -420,8 +455,10 @@ module.exports = function(kernel) {
             if (err) {
               return res.status(500).json({type: 'SERVER_ERROR'});
             }
-            award.objectName = req.body.award.objectName;
-            award.type = req.body.award.type;
+            award.objectName = awardValidation.objectName;
+            award.type = awardValidation.type;
+            award.allowToUseType = awardValidation.allowToUseType;
+            award.allowToUse = awardValidation.allowToUse;
             award.save().then(saved => {
               kernel.model.Photo.findById(award.objectPhotoId).then(photo => {
                 let data = saved.toJSON();

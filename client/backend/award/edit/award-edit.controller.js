@@ -1,5 +1,10 @@
 class BackendEditAwardCtrl {
-	constructor($scope, award, $uibModalInstance, $cookies, Upload, growl) {
+	constructor($scope, award, $uibModalInstance, $cookies, Upload, growl, friends) {
+		friends.unshift({name: ' '});
+		$scope.friends = friends;
+
+		$scope.allowToUseTypes = ['owner', 'friend', 'all'];
+
 		$scope.types = [
 			{value: 'accepted'}, 
 			{value: 'gps'}, 
@@ -7,7 +12,7 @@ class BackendEditAwardCtrl {
 			{value: 'offline'}
 		];
 		$scope.submitted = false;
-		$scope.award = award;
+		$scope.award = angular.copy(award);
 		$scope.file = {};
 
 		$scope.closeModal = () => {
@@ -21,6 +26,12 @@ class BackendEditAwardCtrl {
 		$scope.submit = (form) => {
 			$scope.submitted = true;
 			if (form.$valid) {
+				if ($scope.award.allowToUseType==='owner' || $scope.award.allowToUseType==='all') {
+					$scope.award.allowToUseId = [];
+				} else if ($scope.award.allowToUseType==='friend') {
+					$scope.award.allowToUseId = _.map($scope.award.allowToUse, '_id');
+				}
+				
 				Upload.upload({
 			      	url: '/api/v1/awards/'+$scope.award._id,
 			      	arrayKey: '',

@@ -4,7 +4,7 @@
             <div class="col-sm-3 col-lg-2">
                 <div class="checkbox-l">
                     <input id="checkbox1" type="checkbox" ng-model="vm.searchParams.friendActivities" name="checkbox" value="checkbox1" >
-                    <label for="checkbox1"> Friends activities</label>
+                    <label for="checkbox1"> {{'FRIENDS_ACTIVITIES' | translate}}</label>
                 </div>
             </div>
             <div class="col-sm-6  col-lg-8">
@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="col-sm-3  col-lg-2">
-                <a ui-sref="event.create" class="create-event"><i class="fa fa-calendar-plus-o"></i> Create Event</a>
+                <a ui-sref="event.create" class="create-event"><i class="fa fa-calendar-plus-o"></i> {{'CREATE_EVENT' | translate}}</a>
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@
             </div>
             <div class="show-sl-event m20" ng-show="vm.countNewEvent > 0">
                 <a href="#" style="color:#FFF">
-                    <i ng-click="vm.$state.reload()" class="fa fa-refresh"></i> {{vm.countNewEvent}}  new events.
+                    <i ng-click="vm.$state.reload()" class="fa fa-refresh"></i> {{vm.countNewEvent}} {{'NEW_EVENTS' | translate}}.
                 </a>
                 <a href="#" class="close-show"><img src="/assets/images/arrow.png" width="10"></a>
             </div>
@@ -76,11 +76,11 @@
                             <div class="row">
                                 <div class="col-xs-6">
                                     <div class="text-bottom-big" ng-click="vm.like(event)"><i class="fa fa-heart" ng-class="{liked: event.liked}"></i> {{event.totalLike || 0}}</div>
-                                    Interested
+                                    {{'INTERESTED' | translate}}
                                 </div>
                                 <div class="col-xs-6">
                                     <div class="text-bottom-big"><i class="fa fa-user-plus"></i> {{event.stats.totalParticipants || 0}}</div>
-                                    Participating
+                                    {{'PARTICIPATINGS' | translate}}
                                 </div>
                             </div>
                         </div>

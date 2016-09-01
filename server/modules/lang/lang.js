@@ -298,6 +298,11 @@ let Language = {
 		CREATED_NEW_ITEM_SUCCESSFULLY: 'Created new item successfully',
 		DELETED_ITEM_SUCCESSFULLY: 'Deleted item successfully',
 		BLOCKED_ITEM_SUCCESSFULLY: 'Blocked item successfully',
+		RESET_SEARCH: 'Reset search',
+		FRIENDS_ACTIVITIES: 'Friends activities',
+		NEW_EVENTS: 'new events',
+		INTERESTED: 'Interested',
+		PARTICIPATINGS: 'Participatings'
 	},
 	de: {
 

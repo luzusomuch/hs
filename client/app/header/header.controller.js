@@ -1,8 +1,10 @@
 'use strict';
 
 class HsHeaderCtrl {
-	constructor($scope, $localStorage, socket) {
+	constructor($scope, $localStorage, socket, $state) {
 		this.user = {};
+		this.$localStorage = $localStorage;
+		this.$state = $state;
 		$scope.$watch(() => {
 			return $localStorage.authUser;
 		}, nv => {
@@ -11,6 +13,11 @@ class HsHeaderCtrl {
 				socket.socket.emit('join', nv._id);
 			}
 		});
+	}
+
+	changeLanguage(value) {
+		this.$localStorage.language = value;
+		window.location.reload();
 	}
 }
 

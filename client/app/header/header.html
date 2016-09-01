@@ -17,6 +17,10 @@
                         <li><a ui-sref="profile.myMessages"><i class="fa fa-envelope-o"></i> <span>{{'MENU_MY_MESSENGER' | translate}}</span></a></li>
                         <li><a ui-sref="profile.healthBook"><i class="fa fa-heartbeat"></i> <span>{{'MENU_HEALTH_BOOK' | translate}}</span></a></li>
                         <li><a ui-sref="profile.mySetting"><i class="fa fa-cog"></i> <span>{{'MENU_SETTINGS' | translate}}</span></a></li>
+                        <!-- Multiple language -->
+                        <li><a href="#" ng-click="vm.changeLanguage('en')"><img src="assets/images/english.png"> <span>{{'ENGLISH' | translate}}</span></a></li>
+                        <li><a href="#" ng-click="vm.changeLanguage('de')"><img src="assets/images/german.png"> <span>{{'GERMAN' | translate}}</span></a></li>
+                        <!-- End multiple language -->
                         <li><a href="#" ui-sref="logout"><i class="fa fa-sign-out"></i> <span>{{'MENU_LOGOUT' | translate}}</span></a></li>
                     </ul>
                 </li>

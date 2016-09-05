@@ -164,6 +164,14 @@ class EventDetailCtrl {
 		});
 	}
 
+	blockFeed(feed) {
+		this.FeedService.block(feed._id).then(resp => {
+			feed.blocked = resp.data.blocked;
+		}).catch(err => {
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+		});
+	}
+
 }
 
 angular.module('healthStarsApp').controller('EventDetailCtrl', EventDetailCtrl);

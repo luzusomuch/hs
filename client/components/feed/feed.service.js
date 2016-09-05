@@ -11,6 +11,10 @@
 
       update: (id, feed) => {
         return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/feeds/${id}`, feed);
+      },
+
+      block: (id) => {
+        return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/feeds/${id}/block`);
       }
     };
   }

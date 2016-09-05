@@ -2041,7 +2041,7 @@ span.country-name {
 .action-comment {
     position: absolute;
     top: 15px;
-    right: 0px;
+    right: 5px;
     cursor: pointer;
 }
 .action-comment span.comment-option-button {

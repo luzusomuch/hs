@@ -304,7 +304,10 @@ let Language = {
 		INTERESTED: 'Interested',
 		PARTICIPATINGS: 'Participatings',
 		OWNER: 'Owner',
-		ALL: 'All'
+		ALL: 'All',
+		BLOCK_FEED: 'Block feed',
+		UNBLOCK_FEED: 'Unblock feed',
+		THIS_FEED_HAS_BLOCKED: 'This feed has blocked'
 	},
 	de: {
 

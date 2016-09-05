@@ -84,7 +84,12 @@ class UserController {
    * restriction: 'admin'
    */
   index(req, res) {
+    let page = req.query.page || 1;
+    let pageSize = req.query.pageSize || 10;
+    let skip = (page -1) * pageSize;
+
     let condition = {};
+    let query;
 
     if (req.query.blocked) {
       condition = {'blocked.status': true};
@@ -92,14 +97,16 @@ class UserController {
       condition = {$or: [{'blocked.status': false}, {'blocked.status': null}]};
     }
 
-    let page = req.query.page || 1;
-    let pageSize = req.query.pageSize || 10;
-    let skip = (page -1) * pageSize;
-    this.kernel.model.User.find(condition, '-password -salt')
-    .populate('avatar')
-    .skip(skip)
-    .limit(pageSize)
-    .exec().then(users => {
+    if (req.query.searchText) {
+      query = this.kernel.model.User.find(condition, '-password -salt').populate('avatar');
+    } else {
+      query = this.kernel.model.User.find(condition, '-password -salt')
+      .populate('avatar')
+      .skip(skip)
+      .limit(pageSize);
+    }
+    
+    query.exec().then(users => {
       this.kernel.model.User.count(condition).then(count => {
         if (req.query.searchText) {
           let results = [];

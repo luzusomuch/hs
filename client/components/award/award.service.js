@@ -8,6 +8,10 @@
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/awards/${id}`);
       },
 
+      getAvailableAwards() {
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/awards/available-awards`);
+      },
+
       getAll(id, params) {
       	id = id || 'me';
       	return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/awards/${id}/all`, {params: params});

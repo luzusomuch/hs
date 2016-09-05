@@ -177,6 +177,36 @@ module.exports = function(kernel) {
     });
   });
 
+  /*Get list of available awards for current user*/
+  kernel.app.get('/api/v1/awards/available-awards', kernel.middleware.isAuthenticated(), (req, res) => {
+    let defaultAwards = ['Foodstar Point', 'Sportstar Point', 'Socialstar Point', 'Actionstar Point', 'Ecostar Point'];
+    kernel.model.Award.find({
+      $or: [{deleted: null}, {deleted: false}]
+    }).populate('objectPhotoId')
+    .populate('ownerId', '-password -salt')
+    .exec().then(awards => {
+      let results = [];
+      _.each(awards, (award) => {
+        if (award.ownerId._id.toString()===req.user._id.toString()) {
+          results.push(award);
+        } else if (defaultAwards.indexOf(award.objectName) !== -1) {
+          results.push(award);
+        } else if (award.allowToUseType==='owner' && award.ownerId._id.toString()===req.user._id.toString()) {
+          results.push(award);
+        } else if (award.allowToUseType==='friend' && _.findIndex(award.allowToUse, (userId) => {
+          return userId.toString()===req.user._id.toString();
+        }) !== -1) {
+          results.push(award);
+        } else if (award.allowToUseType==='all') {
+          results.push(award);
+        }
+      });
+      return res.status(200).json({items: results});
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+  });
+
   /*Get award by id*/
   kernel.app.get('/api/v1/awards/:id', kernel.middleware.isAuthenticated(), (req, res) => {
     kernel.model.Award.findById(req.params.id)
@@ -199,7 +229,8 @@ module.exports = function(kernel) {
     let condition = {};
     let page = req.query.page || 1;
     let pageSize = req.query.pageSize || 10;
-    // let defaultAwardLoaded = req.params.defaultAwardLoaded || false;
+    let query;
+
     if (req.params.id==='me') {
       condition = {ownerId: req.user._id};
     } else if (req.params.id==='null' && req.user.role==='admin') {
@@ -207,32 +238,40 @@ module.exports = function(kernel) {
     } else {
       condition = {ownerId: req.params.id};
     }
+
     // if current user id admin then load all records
     if (req.user.role!=='admin') {
       condition.$or = [{deleted: null}, {deleted: false}];
     }
-    kernel.model.Award.find(condition)
-    .limit(Number(pageSize))
-    .skip(pageSize * (page-1))
-    .populate('objectPhotoId')
+
+    if (req.params.id==='null' && req.user.role==='admin') {
+      // list awards in backend with paging
+      query = kernel.model.Award.find(condition).limit(Number(pageSize)).skip(pageSize * (page-1));
+    } else {
+      // list awards in my awards page without paging
+      query = kernel.model.Award.find(condition);
+    }
+    
+    query.populate('objectPhotoId')
     .populate('ownerId', '-password -salt')
     .exec().then(awards => {
-      let defaultAwards = [];
       async.parallel([
         (cb) => {
           if (page===1) {
             // get default awards
             let defaultAwards = ['Foodstar Point', 'Sportstar Point', 'Socialstar Point', 'Actionstar Point', 'Ecostar Point'];
-              kernel.model.Award.find({objectName: {$in: defaultAwards}}).then(defaultAwards => {
-                defaultAwards = defaultAwards;
-                cb(null);
-              }).catch(cb);
+            kernel.model.Award.find({objectName: {$in: defaultAwards}}).then(defaultAwards => {
+              cb(null, defaultAwards);
+            }).catch(cb);
           } else {
             cb(null);
           }
         }
-      ], () => {
-        awards = awards.concat(defaultAwards);
+      ], (err, result) => {
+        if (err) {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        }
+        awards = (result[0] && result[0].length > 0) ? awards.concat(result[0]) : awards;
         awards = _.map(_.groupBy(awards,function(doc){
           return doc._id;
         }),function(grouped){
@@ -259,10 +298,12 @@ module.exports = function(kernel) {
             return res.status(200).json({items: awards, totalItem: (page===1) ? count+5 : count});
           }
         }).catch(err => {
+          console.log(err)
           return res.status(500).json({type: 'SERVER_ERROR'});
         });
       });
     }).catch(err => {
+      console.log(err)
       return res.status(500).json({type: 'SERVER_ERROR'});
     });
   });

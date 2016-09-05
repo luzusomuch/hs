@@ -587,6 +587,7 @@ gulp.task('build', cb => {
     [
       'build:images',
       'copy:extras',
+      'copy:angularSmile',
       'copy:fonts',
       'copy:assets',
       'copy:assetsServer',
@@ -728,6 +729,12 @@ gulp.task('copy:extras', () => {
     `${clientPath}/.htaccess`
   ], { dot: true })
     .pipe(gulp.dest(`${paths.dist}/${clientPath}`));
+});
+
+gulp.task('copy:angularSmile', () => {
+  return gulp.src([
+    `${clientPath}/bower_components/angular-smilies/dist/angular-smilies.png`
+  ], {dot: true}).pipe(gulp.dest(`${paths.dist}/${clientPath}/app`));
 });
 
 gulp.task('copy:fonts', () => { //bootstrap-sass-official\vendor\assets\fonts

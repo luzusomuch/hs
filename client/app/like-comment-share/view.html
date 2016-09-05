@@ -21,7 +21,7 @@
               <span class="date-post">{{comment.createdAt | fromNow}}</span> 
               <div class="action-comment">
               <span ng-click="comment.showOption=!comment.showOption" class="comment-option-button"><i class="fa fa-ellipsis-v"></i></span>
-              <ul ng-mouseleave="comment.showOption = false" class="comment-option" ng-show="comment.showOption">
+              <ul ng-class="{'first-item' : vm.data.comments.length === 1}" ng-mouseleave="comment.showOption = false" class="comment-option" ng-show="comment.showOption">
                 <li ng-show="!comment.deleted && !comment.blocked && (vm.authUser.role=='admin' || vm.authUser._id==vm.eventOwner || vm.authUser._id==vm.eventOwner._id || comment.ownerId._id==vm.authUser._id)" ng-click="comment.isEdit=!comment.isEdit; comment.showOption=false">{{'EDIT_COMMENT' | translate}}</li>
                 <li ng-show="!comment.blocked && !comment.deleted && (vm.authUser.role=='admin' || vm.authUser._id==vm.eventOwner || vm.authUser._id==vm.eventOwner._id || comment.ownerId._id==vm.authUser._id)" ng-click="vm.deleteComment(comment)">{{'DELETE_COMMENT' | translate}}</li>
                 <li ng-show="vm.authUser.role=='admin' || vm.authUser._id==vm.eventOwner || vm.authUser._id==vm.eventOwner._id" ng-click="vm.blockComment(comment)">

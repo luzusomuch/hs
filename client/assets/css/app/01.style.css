@@ -2404,3 +2404,6 @@ div.menu-tab > ul>li>a {
 .fc-widget-header, .fc-widget-content {
     border: 1px solid rgba(255,255,255,0.2);
 }
+.title-post-li ul.first-item {
+    top: -20px !important;
+}

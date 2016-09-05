@@ -156,14 +156,10 @@ class MyHomeCtrl {
 		        }).then(response => {
 		            	console.log(response.data);
 		            }, (resp) => {
-		            	console.log('error when get contact');
-						console.log(resp);
 		            	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		            }
 		        );
 			}, (resp) => {
-				console.log('error when login');
-				console.log(resp);
 				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 		}

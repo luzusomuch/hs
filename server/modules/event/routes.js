@@ -1481,7 +1481,7 @@ module.exports = function(kernel) {
       if (event.private) {
         return res.status(500).json({type: 'SERVER_ERROR', message: 'This event is not public'});
       }
-      let availableUser = event.participantsId;
+      let availableUser = _.clone(event.participantsId);
       availableUser.push(event.ownerId);
       // Check if user is already joined or not
       if (availableUser.indexOf(req.user._id) === -1) {

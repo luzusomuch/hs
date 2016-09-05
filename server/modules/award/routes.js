@@ -239,10 +239,7 @@ module.exports = function(kernel) {
       condition = {ownerId: req.params.id};
     }
 
-    // if current user id admin then load all records
-    if (req.user.role!=='admin') {
-      condition.$or = [{deleted: null}, {deleted: false}];
-    }
+    condition.$or = [{deleted: null}, {deleted: false}];
 
     if (req.params.id==='null' && req.user.role==='admin') {
       // list awards in backend with paging

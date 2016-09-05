@@ -156,4 +156,37 @@ module.exports = function(kernel) {
       });
     });
 	});
+
+  /*block/unblock feed*/
+  kernel.app.put('/api/v1/feeds/:id/block', kernel.middleware.isAuthenticated(), (req, res) => {
+    kernel.model.Feed.findById(req.params.id)
+    .populate('eventId')
+    .populate('userId')
+    .exec().then(feed => {
+      if (!feed) {
+        return res.status(404).end();
+      }
+
+      let availableUsers = [feed.ownerId.toString()];
+      if (feed.eventId && feed.eventId.ownerId) {
+        availableUsers.push(feed.eventId.ownerId.toString());
+      } else if (feed.userId && feed.userId._id) {
+        availableUsers.push(feed.userId._id.toString());
+      }
+
+      if (availableUsers.indexOf(req.user._id.toString()) !== -1) {
+        feed.blocked = !feed.blocked;
+        feed.blockedByUserId = (feed.blocked) ? req.user._id : null;
+        feed.save().then(saved => {
+          return res.status(200).json({blocked: saved.blocked});
+        }).catch(err => {
+          return res.status(500).json({type: 'SERVER_ERROR'});    
+        });
+      } else {
+        return res.status(403).end();
+      }
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+  });
 };

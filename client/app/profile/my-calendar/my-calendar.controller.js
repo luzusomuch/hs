@@ -132,17 +132,15 @@ class MyCalendarCtrl {
 	}
 
 	syncFacebookCalendar() {
-		FB.getLoginStatus(resp => {
+		FB.login(resp => {
 			if (resp.authResponse) {
 				FB.api('/me/events', (data) => {
 					if (data.data && data.data.length > 0) {
 						this.renderEvents(data.data, 'facebook');
 					}
 				});
-			} else {
-				FB.login();
 			}
-		});
+		}, {scope: 'user_events'});
 	}
 }
 

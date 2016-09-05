@@ -153,7 +153,7 @@ class BackendEventEditCtrl {
     	controllerAs: 'vm',
     	resolve: {
     		awards: () => {
-    			return this.AwardService.getAll();
+    			return this.AwardService.getAvailableAwards();
     		},
     		selectedAward: () => {
     			return this.event.award;

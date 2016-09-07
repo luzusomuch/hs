@@ -191,6 +191,9 @@
         float: none;
 
     }
+    .menu-account .showMenu {
+        display: block;
+    }
     .menu-account ul  {
         display: none;
     }

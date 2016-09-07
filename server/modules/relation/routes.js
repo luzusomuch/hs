@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import _ from 'lodash';
 import async from 'async';
-
+import helpers from './../../helpers';
 
 module.exports = function(kernel) {
 	/*
@@ -219,6 +219,39 @@ module.exports = function(kernel) {
       });
     }).catch(err => {
       return res.status(500).json({type: 'SERVER_ERROR'});  
+    });
+  });
+
+  // Invite friends via emails
+  kernel.app.post('/api/v1/relations/invite-via-emails', kernel.middleware.isAuthenticated(), (req, res) => {
+    if (!req.body.emails || req.body.emails instanceof Array !== true || req.body.emails.length === 0) {
+      return res.status(422).end();
+    }
+
+    // Check valid emails
+    _.each(req.body.emails, (email) => {
+      if (!helpers.StringHelper.isEmail(email)) {
+        return res.status(422).end();
+      }
+    });
+
+    // Create queue to sent invite email
+    async.each(req.body.emails, (email, callback) => {
+      kernel.emit('SEND_MAIL', {
+        template: 'invite-to-join-healthstars.html',
+        subject: 'Invite to join Healthstars',
+        data: {
+          user: req.user,
+          url: kernel.config.baseUrl + 'register'
+        },
+        to: email
+      });
+      callback();
+    }, (err) => {
+      if (err) {
+        return res.status(500).json({type: 'SERVER_ERROR'});
+      }
+      return res.status(200).end();
     });
   });
 

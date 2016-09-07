@@ -163,7 +163,11 @@ class MyHomeCtrl {
 				controllerAs: 'InviteEmails',
 				templateUrl: 'app/profile/modal/invite-via-emails/view.html'
 			}).result.then(data => {
-				console.log(data);
+				this.RelationService.inviteViaEmails({emails: data}).then(() => {
+					this.growl.success(`<p>{{'INVITE_FRIENDS_SUCCESSFULLY' | translate}}</p>`);
+				}).catch(() => {
+					this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);	
+				});
 			});
 		}
 	}

@@ -312,6 +312,7 @@ let Language = {
 		ENTER_NEW_EMAIL: 'Enter new email',
 		ADD_NEW_EMAIL: 'Add new email',
 		CURRENT_EMAILS_LIST: 'Current emails list',
+		INVITE_FRIENDS_SUCCESSFULLY: 'Invite friends successfully'
 	},
 	de: {
 

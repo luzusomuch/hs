@@ -307,7 +307,11 @@ let Language = {
 		ALL: 'All',
 		BLOCK_FEED: 'Block feed',
 		UNBLOCK_FEED: 'Unblock feed',
-		THIS_FEED_HAS_BLOCKED: 'This feed has blocked'
+		THIS_FEED_HAS_BLOCKED: 'This feed has blocked',
+		INVITE_VIA_EMAILS: 'Invite via emails',
+		ENTER_NEW_EMAIL: 'Enter new email',
+		ADD_NEW_EMAIL: 'Add new email',
+		CURRENT_EMAILS_LIST: 'Current emails list',
 	},
 	de: {
 

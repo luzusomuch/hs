@@ -63,6 +63,13 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
        fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
+    WL.init({
+      client_id: AppSettings.get('apiKey')['hotmailId'],
+      redirect_uri: AppSettings.get('apiKey')['hotmailCallbackUrl'],
+      scope: ['wl.basic', 'wl.contacts_emails'],
+      response_type: 'token'
+    });
+
     $rootScope.appSettings = AppSettings;                                   
     
     $rootScope.$on('$stateChangeStart', function(event, next) {

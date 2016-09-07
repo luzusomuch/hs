@@ -1,7 +1,8 @@
 'use strict';
 
 class MyHomeCtrl {
-	constructor($scope, $localStorage, APP_CONFIG, PhotoViewer, User, RelationService, Invite, $http, $timeout, growl) {
+	constructor($scope, $localStorage, APP_CONFIG, PhotoViewer, User, RelationService, Invite, $http, $timeout, growl, $uibModal) {
+		this.$uibModal = $uibModal;
 		this.growl = growl;
 		this.$http = $http;
 		this.RelationService = RelationService;
@@ -32,13 +33,6 @@ class MyHomeCtrl {
 			});
 			gapi.load('client', () => {
 				gapi.client.load('plus', 'v1');
-			});
-
-			WL.init({
-			    client_id: APP_CONFIG.apiKey.hotmailId,
-			    redirect_uri: APP_CONFIG.apiKey.hotmailCallbackUrl,
-			    scope: ['wl.basic', 'wl.contacts_emails'],
-			    response_type: 'token'
 			});
 		}, 1000);
 	}
@@ -161,6 +155,15 @@ class MyHomeCtrl {
 		        );
 			}, (resp) => {
 				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+			});
+		} else if (type==='viaEmails') {
+			this.$uibModal.open({
+				animation: true,
+				controller: 'InviteViaEmailsCtrl',
+				controllerAs: 'InviteEmails',
+				templateUrl: 'app/profile/modal/invite-via-emails/view.html'
+			}).result.then(data => {
+				console.log(data);
 			});
 		}
 	}

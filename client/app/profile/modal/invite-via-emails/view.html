@@ -1,0 +1,24 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{'INVITE_FRIEND' | translate}}</h3>
+</div>
+<div class="modal-body">
+	<form ng-submit="InviteEmails.submit()" name="form">
+	    <div class="form-group">
+	    	<h4>{{'CURRENT_EMAILS_LIST' | translate}}</h4>
+	    	<span class="badge" ng-repeat="email in InviteEmails.emails track by $index">
+	    		{{email}} 
+	    		<a class="liked" href="#" ng-click="InviteEmails.remove(index)">
+	    			<i class="fa fa-times"></i>
+	    		</a>
+			</span>
+	    </div>
+	    <div class="row">
+	    	<input class="thread-tag-input" type="email" ng-model="InviteEmails.email" placeholder="{{'ENTER_NEW_EMAIL' | translate}}">
+	    	<a ng-click="InviteEmails.add(InviteEmails.email)" href="#"><i class="fa fa-plus"></i> {{'ADD_NEW_EMAIL' | translate}}</a>
+	    </div>
+		<div class="modal-footer">
+      		<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>
+			<button ng-click="InviteEmails.close()" type="button" class="btn btn-warning btn-radius-20">{{'CLOSE' | translate}}</button>
+		</div>    
+  	</form>
+</div>

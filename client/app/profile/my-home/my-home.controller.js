@@ -1,7 +1,7 @@
 'use strict';
 
 class MyHomeCtrl {
-	constructor($scope, $localStorage, APP_CONFIG, PhotoViewer, User, RelationService, Invite, $http, $timeout, growl, $uibModal) {
+	constructor($scope, $localStorage, APP_CONFIG, PhotoViewer, User, RelationService, Invite, $http, growl, $uibModal) {
 		this.$uibModal = $uibModal;
 		this.growl = growl;
 		this.$http = $http;
@@ -22,19 +22,6 @@ class MyHomeCtrl {
 		});
 
 		this.loadItems();
-
-		$timeout(() => {
-			gapi.load('auth2', () => {
-				this.auth2 = gapi.auth2.init({
-					client_id: APP_CONFIG.apiKey.ggAppId,
-					fetch_basic_profile: true,
-					scope: 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/user.emails.read https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/contacts https://www.googleapis.com/auth/contacts.readonly'
-				});
-			});
-			gapi.load('client', () => {
-				gapi.client.load('plus', 'v1');
-			});
-		}, 1000);
 	}
 
 	loadItems() {
@@ -124,8 +111,8 @@ class MyHomeCtrl {
 
 	inviteFriend(type) {
 		if (type==='google') {
-			this.auth2.signIn().then(() => {
-				gapi.client.plus.people.list({
+			window.auth2.signIn().then(() => {
+				window.gapi.client.plus.people.list({
 				  	'userId' : 'me',
 				  	'collection' : 'visible'
 				}).execute(resp => {
@@ -134,7 +121,7 @@ class MyHomeCtrl {
 					} else {
 						_.each(resp.items, (item) => {
 							if (item.objectType==='person') {
-								gapi.client.plus.people.get({userId: item.id}).execute(profile => {
+								window.gapi.client.plus.people.get({userId: item.id}).execute(profile => {
 									console.log(profile);
 								});
 							}

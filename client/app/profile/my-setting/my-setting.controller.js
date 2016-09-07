@@ -1,8 +1,9 @@
 'use strict';
 
 class MySettingCtrl {
-	constructor($scope, $state, $localStorage, APP_CONFIG, $http, User, Auth, Upload, $cookies, $timeout, $window, growl) {
+	constructor($rootScope, $scope, $state, $localStorage, APP_CONFIG, $http, User, Auth, Upload, $cookies, growl) {
 		this.growl = growl;
+		this.$rootScope = $rootScope;
 		this.submitted =false;
 		this.errors = {};
 		this.authUser = $localStorage.authUser;
@@ -31,16 +32,6 @@ class MySettingCtrl {
 		this.Upload = Upload;
 		this.$cookies = $cookies;
 		this.APP_CONFIG = APP_CONFIG;
-		$timeout(() => {
-			gapi.load('auth2', () => {
-				this.auth2 = gapi.auth2.init({
-					client_id: this.APP_CONFIG.apiKey.ggAppId,
-					fetch_basic_profile: false,
-					scope: 'profile'
-				});
-			});
-		}, 1000);
-		this.$window = $window;
 	}
 
 	updateAccount(form) {
@@ -128,9 +119,9 @@ class MySettingCtrl {
   		} else if (type === 'tw') {
   			// TODO create function to get current twitter account
   		} else if (type === 'gg') {
-  			this.auth2.signIn().then(() => {
+  			window.auth2.signIn().then(() => {
   				let data = {
-  					data: {id: this.auth2.currentUser.get().getId()},
+  					data: {id: window.auth2.currentUser.get().getId()},
   					type: 'google'
   				};
 				this.User.addSocialAccount(data).then(() => {

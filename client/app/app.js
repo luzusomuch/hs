@@ -70,6 +70,21 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
       response_type: 'token'
     });
 
+    gapi.load('auth2', () => {
+      window.auth2 = gapi.auth2.init({
+        client_id: AppSettings.get('apiKey')['ggAppId'],
+        fetch_basic_profile: false,
+        scope: 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/user.emails.read https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/contacts https://www.googleapis.com/auth/contacts.readonly profile https://www.googleapis.com/auth/calendar.readonly'
+      });
+    });
+    gapi.load('client', () => {
+      gapi.client.load('plus', 'v1');
+    });
+    
+    if (!window.gapi) {
+      window.gapi = gapi;
+    }
+
     $rootScope.appSettings = AppSettings;                                   
     
     $rootScope.$on('$stateChangeStart', function(event, next) {

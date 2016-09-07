@@ -1,8 +1,7 @@
 'use strict';
 
 class MyCalendarCtrl {
-	constructor($scope, $state, $localStorage, EventService, $timeout, APP_CONFIG) {
-		this.APP_CONFIG = APP_CONFIG;
+	constructor($scope, $state, $localStorage, EventService, APP_CONFIG) {
 		this.errors = {};
 		this.authUser = $localStorage.authUser;
 		this.$state = $state;
@@ -33,10 +32,6 @@ class MyCalendarCtrl {
 		        }
 	      	}
 		};
-
-      	$timeout(() => {
-      		gapi.load('auth2');
-      	}, 1000);
 
       	this.loadEvents();
 	}
@@ -112,14 +107,10 @@ class MyCalendarCtrl {
 	}
 
 	syncGoogleCalendar() {
-		gapi.auth2.init({
-			client_id: this.APP_CONFIG.apiKey.ggAppId,
-			fetch_basic_profile: true,
-			scope: 'https://www.googleapis.com/auth/calendar.readonly'
-		}).signIn().then(() => {
-			gapi.load('client', () => {
-				gapi.client.load('calendar', 'v3', () => {
-					gapi.client.calendar.events.list({
+		window.auth2.signIn().then(() => {
+			window.gapi.load('client', () => {
+				window.gapi.client.load('calendar', 'v3', () => {
+					window.gapi.client.calendar.events.list({
 			          	'calendarId': 'primary',
 			          	'showDeleted': false,
 			        }).execute(resp => {

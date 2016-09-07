@@ -1,7 +1,7 @@
 'use strict';
 
 class MyMessageDetailCtrl {
-	constructor($localStorage, $state, ThreadService, thread, $uibModal, growl) {
+	constructor($localStorage, $state, ThreadService, thread, $uibModal, growl, $scope) {
 		this.growl = growl;
 		this.$uibModal = $uibModal;
 		this.authUser = $localStorage.authUser;
@@ -9,6 +9,7 @@ class MyMessageDetailCtrl {
 		this.ThreadService = ThreadService;
 		this.thread = thread;
 		this.thread.nonReceiveEmailUsers = (this.thread.nonReceiveEmailUsers) ? this.thread.nonReceiveEmailUsers : [];
+		this.message = '';
 	}
 
 	textAreaAdjust() {
@@ -26,7 +27,7 @@ class MyMessageDetailCtrl {
 			this.ThreadService.sendMessage(this.thread._id, {message: message}).then(resp => {
 				resp.data.sentUserId = this.authUser;
 				this.thread.messages.push(resp.data);
-				this.message = null;
+				this.message = '';
 				angular.element('textarea#reply-textarea')[0].style.height = 35+'px';
 			}).catch(() => {
 				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
@@ -45,11 +46,15 @@ class MyMessageDetailCtrl {
 	}
 
 	block() {
-		this.ThreadService.block(this.thread._id).then(resp => {
-			this.thread.blocked = resp.data.blocked;
-		}).catch(() => {
+		if (this.thread.blockedByUserId && this.thread.blockedByUserId===this.authUser._id) {
+			this.ThreadService.block(this.thread._id).then(resp => {
+				this.thread.blocked = resp.data.blocked;
+			}).catch(() => {
+				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+			});
+		} else {
 			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
-		});
+		}
 	}
 
 	addTags() {

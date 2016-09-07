@@ -76,7 +76,6 @@ module.exports = function(kernel) {
 
     /*Send message in my message page*/
     kernel.app.post('/api/v1/threads/new-threads', kernel.middleware.isAuthenticated(), (req, res) => {
-        console.log(req.body);
         if (!req.body.toUsers || !req.body.message || req.body.toUsers instanceof Array === false) {
             return res.status(422).end();
         }
@@ -119,6 +118,8 @@ module.exports = function(kernel) {
                             results.push(user);
                             return callback(null);
                         }).catch(callback);
+                    } else if (thread.blocked) {
+                        return callback(null);
                     } else {
                         thread.messages.push({
                             sentUserId: req.user._id, 
@@ -320,19 +321,20 @@ module.exports = function(kernel) {
             if (!thread) {
                 return res.status(404).end();
             }
-            let availableUser = [thread.fromUserId.toString(), thread.toUserId.toString()];
-            if (availableUser.indexOf(req.user._id.toString()) !== -1) {
+            if ((!thread.blockedByUserId && !thread.blocked) || (thread.blocked && thread.blockedByUserId && thread.blockedByUserId.toString()===req.user._id.toString())) {
                 thread.blocked = !thread.blocked;
                 thread.blockedByUserId = (thread.blocked) ? req.user._id : null;
                 thread.save().then(saved => {
                     return res.status(200).json({blocked: saved.blocked});
                 }).catch(err => {
+                    console.log(err);
                     return res.status(500).json({type: 'SERVER_ERROR'});        
                 });
             } else {
                 return res.status(403).end();
             }
         }).catch(err => {
+            console.log(err);
             return res.status(500).json({type: 'SERVER_ERROR'});
         });
     });

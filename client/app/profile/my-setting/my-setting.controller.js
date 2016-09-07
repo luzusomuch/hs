@@ -1,9 +1,8 @@
 'use strict';
 
 class MySettingCtrl {
-	constructor($rootScope, $scope, $state, $localStorage, APP_CONFIG, $http, User, Auth, Upload, $cookies, growl) {
+	constructor($scope, $state, $localStorage, APP_CONFIG, $http, User, Auth, Upload, $cookies, growl) {
 		this.growl = growl;
-		this.$rootScope = $rootScope;
 		this.submitted =false;
 		this.errors = {};
 		this.authUser = $localStorage.authUser;

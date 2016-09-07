@@ -186,22 +186,47 @@ module.exports = function(kernel) {
     .populate('ownerId', '-password -salt')
     .exec().then(awards => {
       let results = [];
-      _.each(awards, (award) => {
+      async.each(awards, (award, callback) => {
         if (award.ownerId._id.toString()===req.user._id.toString()) {
           results.push(award);
+          return callback(null);
         } else if (defaultAwards.indexOf(award.objectName) !== -1) {
           results.push(award);
+          return callback(null);
         } else if (award.allowToUseType==='owner' && award.ownerId._id.toString()===req.user._id.toString()) {
           results.push(award);
         } else if (award.allowToUseType==='friend' && _.findIndex(award.allowToUse, (userId) => {
           return userId.toString()===req.user._id.toString();
         }) !== -1) {
-          results.push(award);
+          kernel.model.Relation.findOne({
+            type: 'friend', 
+            status: 'completed', 
+            $or: [{
+              fromUserId: req.user._id,
+              toUserId: award.ownerId._id
+            }, {
+              fromUserId: award.ownerId._id,
+              toUserId: req.user._id
+            }]
+          }).then(friend => {
+            if (!friend) {
+              return callback(null);
+            }
+            results.push(award);
+            return callback(null);
+          }).catch(callback);
         } else if (award.allowToUseType==='all') {
           results.push(award);
+          return callback(null);
+        } else {
+          return callback(null);
         }
+      }, (err) => {
+        if (err) {
+          return res.status(500).json({type: 'SERVER_ERROR'});  
+        }
+        return res.status(200).json({items: results});
       });
-      return res.status(200).json({items: results});
     }).catch(err => {
       return res.status(500).json({type: 'SERVER_ERROR'});
     });
@@ -463,6 +488,8 @@ module.exports = function(kernel) {
           if (awardValidation.allowToUseType==='friend') {
             if (req.body.award.allowToUseId instanceof Array) {
               awardValidation.allowToUse = req.body.award.allowToUseId;
+            } else if (!req.body.award.allowToUseId) {
+              awardValidation.allowToUse = [];
             } else {
               awardValidation.allowToUse = [req.body.award.allowToUseId];
             }

@@ -19,8 +19,8 @@
     	<div ng-repeat="award in vm.grantedAwards.items" class="{{award.eventId.categoryId | categoryClass}}" ng-drag="true" ng-drag-data="award">
     		<div class="box-award">
     			<div class="top-li-event">
-    				<a href="#"><img src="{{award.eventId.ownerId | avatarUrl}}"></a>
-    				<h4><a href="#">{{award.eventId.ownerId.name}}&nbsp;</a> </h4>
+    				<a ui-sref="profile.detail({id: award.eventId.ownerId._id})"><img src="{{award.eventId.ownerId | avatarUrl}}"></a>
+    				<h4><a ui-sref="profile.detail({id: award.eventId.ownerId._id})">{{award.eventId.ownerId.name}}&nbsp;</a> </h4>
     				<i class="fa fa-clock-o"></i> {{award.createdAt | fromNow}}
     				<div class="arward-li-top">
     					<span>{{award.eventId.ownerId.totalAwards}}</span>

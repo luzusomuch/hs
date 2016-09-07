@@ -106,21 +106,25 @@ class MySettingCtrl {
 
   	addAccount(type) {
   		if (type === 'fb') {
-  			FB.api('/me', (response) => {
-  				if (!response.error) {
-	  				let data = {
-	  					data: response,
-	  					type: 'facebook'
-	  				};
-	  				this.User.addSocialAccount(data).then(() => {
-	  					this.growl.success(`<p>{{'ADD_SOCIAL_ACCOUNT_SUCCESSFULLY' | translate}}</p>`);
-	  				}).catch(() => {
-	  					this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
-	  				});
-  				} else {
-  					this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+  			FB.login(resp => {
+  				if (resp.authResponse) {
+		  			FB.api('/me', (response) => {
+		  				if (!response.error) {
+			  				let data = {
+			  					data: response,
+			  					type: 'facebook'
+			  				};
+			  				this.User.addSocialAccount(data).then(() => {
+			  					this.growl.success(`<p>{{'ADD_SOCIAL_ACCOUNT_SUCCESSFULLY' | translate}}</p>`);
+			  				}).catch(() => {
+			  					this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+			  				});
+		  				} else {
+		  					this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+		  				}
+				    });
   				}
-		    });
+  			});
   		} else if (type === 'tw') {
   			// TODO create function to get current twitter account
   		} else if (type === 'gg') {

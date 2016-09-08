@@ -321,7 +321,7 @@ module.exports = function(kernel) {
             if (!thread) {
                 return res.status(404).end();
             }
-            if ((!thread.blockedByUserId && !thread.blocked) || (thread.blocked && thread.blockedByUserId && thread.blockedByUserId.toString()===req.user._id.toString())) {
+            if (!thread.blocked || (thread.blocked && thread.blockedByUserId && thread.blockedByUserId.toString()===req.user._id.toString())) {
                 thread.blocked = !thread.blocked;
                 thread.blockedByUserId = (thread.blocked) ? req.user._id : null;
                 thread.save().then(saved => {

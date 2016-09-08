@@ -312,7 +312,8 @@ let Language = {
 		ENTER_NEW_EMAIL: 'Enter new email',
 		ADD_NEW_EMAIL: 'Add new email',
 		CURRENT_EMAILS_LIST: 'Current emails list',
-		INVITE_FRIENDS_SUCCESSFULLY: 'Invite friends successfully'
+		INVITE_FRIENDS_SUCCESSFULLY: 'Invite friends successfully',
+		NOT_ALLOW: 'Not allow'
 		// Enter new translate text below
 	},
 	de: {
@@ -627,7 +628,8 @@ let Language = {
 		ENTER_NEW_EMAIL: 'Geben Sie die neue E-Mail',
 		ADD_NEW_EMAIL: 'Hinzufügen neuer E-Mail',
 		CURRENT_EMAILS_LIST: 'Aktuelle E-Mails Liste',
-		INVITE_FRIENDS_SUCCESSFULLY: 'Laden Sie Freunde erfolgreich'
+		INVITE_FRIENDS_SUCCESSFULLY: 'Laden Sie Freunde erfolgreich',
+		NOT_ALLOW: 'Ablehnen'
 		// Enter new translate text below
 	}
 }

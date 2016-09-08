@@ -46,14 +46,14 @@ class MyMessageDetailCtrl {
 	}
 
 	block() {
-		if (this.thread.blockedByUserId && this.thread.blockedByUserId===this.authUser._id) {
+		if (!this.thread.blocked || (this.thread.blocked && this.thread.blockedByUserId===this.authUser._id)) {
 			this.ThreadService.block(this.thread._id).then(resp => {
 				this.thread.blocked = resp.data.blocked;
 			}).catch(() => {
 				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 		} else {
-			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+			this.growl.error(`<p>{{'NOT_ALLOW' | translate}}</p>`);
 		}
 	}
 

@@ -802,11 +802,11 @@ label .note-form {
 }
 .calendar-home .uib-month button {
     border: none;
-    padding: 10px 17px;
+    /*padding: 10px 17px;*/
 }
 .calendar-home .uib-years button {
     border: none;
-    padding: 10px 8px;
+    /*padding: 10px 8px;*/
 }
 .event-home-right {
     background: #2e3848;

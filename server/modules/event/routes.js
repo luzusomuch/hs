@@ -847,7 +847,7 @@ module.exports = function(kernel) {
               ]
             })
             .sort({ createdAt: -1 })
-            .limit(3)
+            .limit(5)
             .exec(cb);
           },
 

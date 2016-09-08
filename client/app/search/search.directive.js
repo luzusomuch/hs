@@ -84,8 +84,6 @@ angular.module('healthStarsApp')
 			let first = true;
 
 			scope.$watch('items', (nv) => {
-				console.log(nv);
-				console.log(first);
 				if(!first) {
 					SearchParams.params.keywords = nv.join(',');
 					$state.go('home');

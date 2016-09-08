@@ -29,7 +29,7 @@
 	                </div>
 	                <div class="text-box-message">
 	                    <h4><a ui-sref="profile.detail({id: message.sentUserId._id})">{{message.sentUserId.name}}</a></h4>
-	                    <p ng-bind-html="message.message | nl2br | smilies"></p>
+	                    <p ng-bind-html="message.message | nl2br | smilies | linky"></p>
 	                </div>
 	            </div>
 	            <div class="box-message box-message-1 message-detail">

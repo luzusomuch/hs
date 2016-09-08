@@ -17,6 +17,18 @@ module.exports = function(kernel) {
 		});
 	});
 
+  /*Get about content base on language*/
+  kernel.app.get('/api/v1/abouts/:language', (req, res) => {
+    kernel.model.About.findOne({language: req.params.language}).then(about => {
+      if (!about) {
+        return res.status(404).end();
+      }
+      return res.status(200).json(about);
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+  });
+
 	/*Create new about content*/
 	kernel.app.post('/api/v1/abouts', kernel.middleware.hasRole('admin'), (req, res) => {
 		if (!req.body) {

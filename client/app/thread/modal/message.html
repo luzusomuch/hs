@@ -7,11 +7,11 @@
         <div class="form-group">
             <label>{{'MESSAGE' | translate}}</label>
             <textarea name="message" style="width:100%; color: black" ng-model="message.message" required rows="5"></textarea>
-            <p ng-show="form.message.$error.required && submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+            <p ng-show="form.message.$error.required && submitted" class="error-text" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
         </div>
 
         <div class="modal-footer">
-            <button type="button" ng-click="close()" class="btn btn-default btn-radius-20">{{'CLOSE' | translate}}</button>
+            <button type="button" ng-click="close()" class="btn btn-default btn-radius-20" ng-bind-html="'CLOSE' | translate | html"></button>
         	<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>
         </div>
     </form>

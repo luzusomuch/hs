@@ -15,5 +15,5 @@
 </div>
 
 <div class="modal-footer">
-	<button ng-click="close()" class="btn btn-default btn-radius-20">{{'CLOSE' | translate}}</button>
+	<button ng-click="close()" class="btn btn-default btn-radius-20" ng-bind-html="'CLOSE' | translate | html"></button>
 </div>

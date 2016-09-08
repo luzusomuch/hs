@@ -15,7 +15,7 @@
                 <span ng-show="user.friendStatus==='pending'">{{'PENDING_FRIEND_REQUEST' | translate}}</span>
             </span>
 
-            <a ng-click="vm.addFriend(user)" href="#" class="btn-follow" ng-if="user._id!==vm.authUser._id && user.friendStatus==='none'"><i class="i-new user-i-1"></i> {{'ADD_FRIEND' | translate}}</a>
+            <a ng-click="vm.addFriend(user)" href="#" class="btn-follow" ng-if="user._id!==vm.authUser._id && user.friendStatus==='none'"><i class="i-new user-i-1"></i> <span ng-bind-html="'ADD_FRIEND' | translate | html"></span></a>
             <a ng-show="vm.isEventOwner" href="#" class="btn-follow" ng-click="vm.banUser(user)"><i class="fa fa-trash"></i></a>
             <a ng-show="vm.isEventOwner && !user.isGrantedAward && vm.eAward.type=='organizer'" href="#" class="btn-follow" ng-click="vm.grantAward(user)"><i class="fa fa-gift" aria-hidden="true"></i></a>
         </li>

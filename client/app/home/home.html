@@ -4,7 +4,7 @@
             <div class="col-sm-3 col-lg-2">
                 <div class="checkbox-l">
                     <input id="checkbox1" type="checkbox" ng-model="vm.searchParams.friendActivities" name="checkbox" value="checkbox1" >
-                    <label for="checkbox1"> {{'FRIENDS_ACTIVITIES' | translate}}</label>
+                    <label for="checkbox1" ng-bind-html="'FRIENDS_ACTIVITIES' | translate | html"></label>
                 </div>
             </div>
             <div class="col-sm-6  col-lg-8">

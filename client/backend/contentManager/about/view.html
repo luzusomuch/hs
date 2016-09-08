@@ -1,7 +1,7 @@
 <div class="page-content">
 	<div>
 		<h4>{{'ABOUT' | translate}}</h4>
-		<a href="#" ng-click="vm.create()"><i class="fa fa-plus"></i> {{'ADD_NEW_ABOUT' | translate}}</a>
+		<a href="#" ng-click="vm.create()"><i class="fa fa-plus"></i> <span ng-bind-html="'ADD_NEW_ABOUT' | translate | html"></span></a>
 	</div>
 	<hr>
 	<div>

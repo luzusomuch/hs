@@ -95,7 +95,8 @@
                         <a ng-click="vm.inviteFriend('google')" href="#" class="google-sign grey-color"><i class="fa fa-google-plus"></i> Google </a>
                     </li>
                     <li>
-                        <a ng-click="vm.inviteFriend('viaEmails')" href="#" class="facebook-sign grey-color"> {{'INVITE_VIA_EMAILS' | translate}} </a>
+                        <a ng-click="vm.inviteFriend('viaEmails')" href="#" class="facebook-sign grey-color" ng-bind-html="'INVITE_VIA_EMAILS' | translate | html"> 
+                        </a>
                     </li>
                 </ul>
             </div>

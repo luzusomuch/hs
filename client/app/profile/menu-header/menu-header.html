@@ -1,6 +1,6 @@
 <div class="box-blue hea-account">
   <div class="menu-account">
-    <a href="#" class="toogle-menu-account" ng-click="showMenu=!showMenu"><i class="fa fa-bars"></i> {{'MENU_ACCOUNT' | translate}}</a>
+    <a href="#" class="toogle-menu-account" ng-click="showMenu=!showMenu"><i class="fa fa-bars"></i> <span ng-bind-html="'MENU_ACCOUNT' | translate | html"></span></a>
     <ul ng-class="{'showMenu': showMenu}">
       <li ng-class="{'active': $state.includes('profile.home')}"><a ui-sref="profile.home"><i class="fa fa-home"></i> <span>{{'MENU_HOME' | translate}}</span></a></li>
       <li ng-class="{'active': $state.includes('profile.myCalendar')}"><a ui-sref="profile.myCalendar"><i class="fa fa-calendar"></i> <span>{{'MENU_MY_CALENDAR' | translate}}</span></a></li>

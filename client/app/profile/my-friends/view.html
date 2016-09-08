@@ -47,7 +47,7 @@
 						        </span>
 
                                 <a ng-show="friend.currentFriendStatus==='completed' && vm.authUser._id!==friend._id" href="#" ng-click="vm.friendAction(friend)" class="btn btn-create unfriend">{{'UNFRIEND' | translate}}</a>
-                                <a class="btn btn-create unfriend" href="#" ng-show="friend.currentFriendStatus==='none' && vm.authUser._id!==friend._id" ng-click="vm.friendAction(friend)">{{'ADD_FRIEND' | translate}}</a>
+                                <a class="btn btn-create unfriend" href="#" ng-show="friend.currentFriendStatus==='none' && vm.authUser._id!==friend._id" ng-click="vm.friendAction(friend)" ng-bind-html="'ADD_FRIEND' | translate | html"></a>
                             </div>
                         </div>
                     </li>

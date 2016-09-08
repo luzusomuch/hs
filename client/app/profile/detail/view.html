@@ -13,7 +13,7 @@
                         <div class="col-sm-8 col-lg-5">
                             <div class="row row-small action-user-detail" ng-show="vm.authUser._id!==vm.user._id">
                                 <div class="col-xs-6"><a ng-click="vm.addFriend()" href="#" class="btn btn-default btn-block">
-                                    <span ng-show="vm.user.isFriend==='none'"><i class="user-i i-new"></i> {{'ADD_TO_FRIENDS' | translate}}</span>
+                                    <span ng-show="vm.user.isFriend==='none'"><i class="user-i i-new"></i> <span ng-bind-html="'ADD_TO_FRIENDS' | translate | html"></span></span>
                                     <span ng-show="vm.user.isFriend==='pending'"><i class="fa fa-spinner"></i> {{'PENDING_FRIEND_REQUEST' | translate}}</span>
                                     <span ng-show="vm.user.isFriend==='completed'"><i class="fa fa-check"></i> {{'FRIEND' | translate}}</span>
                                 </a></div>

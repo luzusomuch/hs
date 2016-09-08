@@ -17,7 +17,7 @@
                 <span ng-show="user.friendStatus==='pending'">{{'PENDING_FRIEND_REQUEST' | translate}}</span>
             </span>
 
-            <a ng-click="addFriend(user)" href="#" class="btn-follow" ng-if="user._id!==authUser._id && user.friendStatus==='none'"><i class="i-new user-i-1"></i> {{'ADD_FRIEND' | translate}}</a>
+            <a ng-click="addFriend(user)" href="#" class="btn-follow" ng-if="user._id!==authUser._id && user.friendStatus==='none'"><i class="i-new user-i-1"></i> <span ng-bind-html="'ADD_FRIEND' | translate | html"></span></a>
         </li>
         <li ng-show="participants.items.length < participants.totalItem">
         	<a ng-click="getParticipants()" href="#">{{'LOAD_MORE_FRIENDS' | translate}}</a>
@@ -25,5 +25,5 @@
     </ul>
 </div>
 <div class="modal-footer">
-	<button ng-click="close()" class="btn btn-default">{{'CLOSE' | translate}}</button>
+	<button ng-click="close()" class="btn btn-default" ng-bind-html="'CLOSE' | translate | html"></button>
 </div>

@@ -1,5 +1,5 @@
 <div class="modal-header">
-	<h3 class="modal-title">{{'SELECT_AWARD_FOR_EVENT' | translate}}</h3>
+	<h3 class="modal-title" ng-bind-html="'SELECT_AWARD_FOR_EVENT' | translate | html"></h3>
 </div>
 <div class="modal-body">
 	<form ng-submit="vm.submit()" name="form">
@@ -10,7 +10,7 @@
       </div>
     </div>
 		<div class="modal-footer">
-      <button type="button" class="btn btn-default btn-radius-20" ng-click="vm.showAddMoreAwardModal()">{{'ADD_MORE_AWARD' | translate}}</button>
+      <button type="button" class="btn btn-default btn-radius-20" ng-click="vm.showAddMoreAwardModal()" ng-bind-html="'ADD_MORE_AWARD' | translate | html"></button>
 			<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>
 		</div>    
   </form>

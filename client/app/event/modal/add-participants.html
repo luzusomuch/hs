@@ -1,5 +1,5 @@
 <div class="modal-header">
-	<h3 class="modal-title">{{'ADD_PARTICIPANTS' | translate}}</h3>
+	<h3 class="modal-title" ng-bind-html="'ADD_PARTICIPANTS' | translate | html"></h3>
 </div>
 <div class="modal-body">
 	<form ng-submit="vm.submit()" name="form">

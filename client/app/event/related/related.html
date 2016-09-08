@@ -1,5 +1,5 @@
 <div class="box-blue p15">
-    <div class="title-blue">{{'RELATED_EVENTS' | translate}} <a href="#" class="show-all-box">{{'SHOW_ALL' | translate}}</a></div>
+    <div class="title-blue" ng-bind-html="'RELATED_EVENTS' | translate | html"> <a href="#" class="show-all-box">{{'SHOW_ALL' | translate}}</a></div>
     <ul class="list-my-event">
         <li ng-repeat="event in vm.events">
             <p><a ui-sref="event.detail({id: event._id})">{{event.name}}</a></p>

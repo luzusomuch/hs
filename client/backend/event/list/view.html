@@ -24,7 +24,7 @@
 			<thead>
 				<tr>
 					<td><strong>{{'EVENT_NAME' | translate}}</strong></td>
-					<td><strong>{{'EVENT_OWNER' | translate}}</strong></td>
+					<td><strong ng-bind-html="'EVENT_OWNER' | translate | html"></strong></td>
 					<td><strong>{{'EVENT_TOTAL_PARTICIPANTS' | translate}}</strong></td>
 					<td><strong>{{'EVENT_CATEGORY' | translate}}</strong></td>
 					<td>

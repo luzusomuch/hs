@@ -18,7 +18,7 @@
                                 <span><i class="fa fa-clock-o"></i> {{'FROM' | translate }} {{vm.event.startDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}} {{'TO' | translate}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}}</span>
                                 <span ng-click="vm.like()"><i class="fa fa-heart" ng-class="{liked: vm.liked}"></i> {{vm.event.totalLike || 0}}</span>
                                 <span><i class="fa fa-comment"></i> {{vm.event.totalComment || 0}}</span>
-                                <span ng-if="!vm.event.private"><i class="fa fa-unlock"></i> {{'PUBLIC_EVENT' | translate}}</span>
+                                <span ng-if="!vm.event.private"><i class="fa fa-unlock"></i> <span ng-bind-html="'PUBLIC_EVENT' | translate | html"></span></span>
                                 <span ng-if="vm.event.private"><i class="fa fa-lock"></i> {{'PRIVATE_EVENT' | translate}}</span>
                             </div>
                         </div>
@@ -44,7 +44,9 @@
                 <div class="title-blue">{{'AWARD_DETAIL' | translate}}</div>
                 <p>{{vm.event.awardId.objectName}}</p>
                 <img width="100%" src="{{vm.event.awardId | eventAwardImageUrl: 'small'}}">
-                <p>{{'AWARD_TYPE' | translate}}: {{vm.event.awardId.type.toUpperCase() | translate}}</p>
+                <p>
+                    <span ng-bind-html="'AWARD_TYPE' | translate | html"></span>: <span ng-bind-html="vm.event.awardId.type.toUpperCase() | translate | html"></span>
+                </p>
             </div>
             <hs-weather location="vm.event.location"></hs-weather >          
             <hs-event-best-pics e-owner="vm.event.ownerId" e-id="vm.event._id" limit="4"></hs-event-best-pics>          

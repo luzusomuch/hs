@@ -6,11 +6,11 @@
     <div class="form-group">
       <label>{{'REPEAT' | translate}}:</label>
       <select class="form-control" ng-model="vm.repeat.type" required>
-        <option value="daily">{{'DAILY' | translate}}</option>
-        <option value="weekly">{{'WEEKLY' | translate}}</option>
+        <option value="daily" ng-bind-html="'DAILY' | translate | html"></option>
+        <option value="weekly" ng-bind-html="'WEEKLY' | translate | html"></option>
         <option value="monthly">{{'MONTHLY' | translate}}</option>
       </select>
-      <p class="error-text" ng-show="vm.errors.type">{{'REQUIRED_ERROR' | translate}}</p>
+      <p class="error-text" ng-show="vm.errors.type" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
     </div>
     <div class="form-group">
       <label>{{'START' | translate}}:</label>
@@ -21,7 +21,7 @@
         </span>
       </div>
 
-      <p class="error-text" ng-show="form.startDate.$error.required && vm.submitted">{{'REQUIRED_ERROR' | translate}}</p>
+      <p class="error-text" ng-show="form.startDate.$error.required && vm.submitted" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
     </div>
     <div class="form-group">
       <label>{{'END' | translate}}:</label>
@@ -32,8 +32,8 @@
         </span>
       </div>
 
-      <p class="error-text" ng-show="vm.errors.date">{{'NOT_VALID_FIELD' | translate}}</p>
-      <p class="error-text" ng-show="form.endDate.$error.required && vm.submitted">{{'REQUIRED_ERROR' | translate}}</p>
+      <p class="error-text" ng-show="vm.errors.date" ng-bind-html="'NOT_VALID_FIELD' | translate | html"></p>
+      <p class="error-text" ng-show="form.endDate.$error.required && vm.submitted" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
     </div>
 		<div class="modal-footer">
 			<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>

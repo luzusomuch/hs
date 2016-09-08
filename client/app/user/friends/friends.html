@@ -12,7 +12,7 @@
         	{{'YOU' | translate}}
         </span>
         <span class="text-mo" ng-show="authUser._id!==friend._id && !hideDescription">
-        	<span style="cursor: pointer" ng-click="addFriend(friend)" ng-show="friend.currentFriendStatus==='none'">{{'ADD_FRIEND' | translate}}</span>
+        	<span style="cursor: pointer" ng-click="addFriend(friend)" ng-show="friend.currentFriendStatus==='none'" ng-bind-html="'ADD_FRIEND' | translate | html"></span>
         	<span ng-show="friend.currentFriendStatus==='pending'">{{'PENDING_FRIEND_REQUEST' | translate}}</span>
         	<span ng-show="friend.currentFriendStatus==='completed'">{{'YOUR_FRIEND' | translate}}</span>
         </span>

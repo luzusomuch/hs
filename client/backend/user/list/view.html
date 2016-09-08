@@ -9,7 +9,8 @@
 		</div>
 		<div class="col-sm-4 col-xs-12">
 			<label>
-	      		<input type="checkbox" ng-model="vm.showBlockedUsers">{{'SHOW_CHECKED_REPORTS' | translate}}
+	      		<input type="checkbox" ng-model="vm.showBlockedUsers">
+	      		<span ng-bind-html="'SHOW_CHECKED_REPORTS' | translate | html"></span>
 	    	</label>
 		</div>
 	</div>

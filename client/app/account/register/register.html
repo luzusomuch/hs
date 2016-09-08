@@ -108,7 +108,7 @@
                               <i class="fa fa-times fa-stack-1x fa-inverse fa-icon-input"></i>
                             </span>
 
-                            <p ng-show="form.firstName.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+                            <p ng-show="form.firstName.$error.required && vm.submitted" class="error-text" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
@@ -126,7 +126,7 @@
                               <i class="fa fa-times fa-stack-1x fa-inverse fa-icon-input"></i>
                             </span>
 
-                            <p ng-show="form.lastName.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+                            <p ng-show="form.lastName.$error.required && vm.submitted" class="error-text" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
@@ -149,7 +149,7 @@
                               <i class="fa fa-times fa-stack-1x fa-inverse fa-icon-input"></i>
                             </span>
 
-                            <p ng-show="!vm.address.selected.formatted_address && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+                            <p ng-show="!vm.address.selected.formatted_address && vm.submitted" class="error-text" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
                             <!-- <select class="form-control" ng-model="vm.user.location.country"><option>{{'SELECT_LOCATION' | translate}}</option></select> -->
                         </div>
                     </div>
@@ -167,8 +167,8 @@
                               <i class="fa fa-circle fa-stack-2x fa-cicle-input"></i>
                               <i class="fa fa-times fa-stack-1x fa-inverse fa-icon-input"></i>
                             </span>
-                            <p ng-show="form.email.$error.pattern || form.email.$error.email && vm.submitted" class="error-text">{{'EMAIL_TYPE_ERROR' | translate}}</p>
-                            <p ng-show="form.email.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+                            <p ng-show="form.email.$error.pattern || form.email.$error.email && vm.submitted" class="error-text" ng-bind-html="'EMAIL_TYPE_ERROR' | translate | html"></p>
+                            <p ng-show="form.email.$error.required && vm.submitted" class="error-text" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
                             <p ng-show="form.email.$error.mongoose && vm.submitted" class="error-text">{{'EMAIL_ALREADY_USED' | translate}}</p>
                         </div>
                     </div>
@@ -187,7 +187,7 @@
                               <i class="fa fa-times fa-stack-1x fa-inverse fa-icon-input"></i>
                             </span>
 
-                            <p class="error-text" ng-show="form.phoneNumber.$error.pattern">{{'PHONE_NUMBER_TYPE_ERROR' | translate}}</p>
+                            <p class="error-text" ng-show="form.phoneNumber.$error.pattern" ng-bind-html="'PHONE_NUMBER_TYPE_ERROR' | translate | html"></p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
@@ -212,13 +212,13 @@
                             </span>
 
                             <p ng-show="form.password.$error.pattern && !form.password.$error.minlength && vm.submitted" class="error-text">{{'PASSWORD_PATTERN_ERROR' | translate}}</p>
-                            <p ng-show="form.password.$error.minlength && vm.submitted" class="error-text">{{'PASSWORD_MIN_LENGTH_ERROR' | translate}}</p>
-                            <p ng-show="form.password.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+                            <p ng-show="form.password.$error.minlength && vm.submitted" class="error-text" ng-bind-html="'PASSWORD_MIN_LENGTH_ERROR' | translate | html"></p>
+                            <p ng-show="form.password.$error.required && vm.submitted" class="error-text" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group relative-div">
-                            <label>{{'CONFIRM_PASSWORD' | translate}} *</label>
+                            <label ng-bind-html="'CONFIRM_PASSWORD' | translate | html"> *</label>
                             <input type="password" class="form-control" ng-model="vm.user.repassword" name="repassword" required compare-to="form.password.$$rawModelValue" ng-class="{'error-input': (form.repassword.$error.compareTo || form.password.$error.required) && vm.submitted}">
 
                             <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.repassword.$error.compareTo && !form.repassword.$error.required">
@@ -230,13 +230,13 @@
                               <i class="fa fa-times fa-stack-1x fa-inverse fa-icon-input"></i>
                             </span>
                             
-                            <p ng-show="form.repassword.$error.compareTo && vm.submitted" class="error-text">{{'CONFIRM_PASSWORD_NOT_MATCH' | translate}}</p>
-                            <p ng-show="(!form.repassword.$error.compareTo && form.password.$error.required) && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+                            <p ng-show="form.repassword.$error.compareTo && vm.submitted" class="error-text" ng-bind-html="'CONFIRM_PASSWORD_NOT_MATCH' | translate | html"></p>
+                            <p ng-show="(!form.repassword.$error.compareTo && form.password.$error.required) && vm.submitted" class="error-text" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group">
-                            <label class="upper-case" style="margin-bottom: 10px;">{{'COMPANY_ACCOUNT' | translate}}</label>
+                            <label class="upper-case" style="margin-bottom: 10px;" ng-bind-html="'COMPANY_ACCOUNT' | translate | html"></label>
                             <div class="radio-l">
                                 <input id="radio1" type="radio" name="radio" ng-value="true" ng-model="vm.user.isCompanyAccount">
                                 <label for="radio1"> {{'YES' | translate}}</label>
@@ -248,8 +248,7 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-lg-8">
-                      <p ng-show="vm.user.isCompanyAccount" class="box-blue p15">
-                        {{'COMPANY_ACCOUNT_TEXT_INFO' | translate}}
+                      <p ng-show="vm.user.isCompanyAccount" class="box-blue p15" ng-bind-html="'COMPANY_ACCOUNT_TEXT_INFO' | translate | html">
                       </p>
                       <!-- <div class="form-group">
                         <input type="checkbox" ng-model="vm.user.term">

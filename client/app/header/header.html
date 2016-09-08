@@ -7,7 +7,7 @@
             <ul ng-class="{'toogle-menu': dropdowmenu}">
                 <li><a ui-sref="home"><i class="fa fa-home"></i> {{'MENU_HOME' | translate}}</a></li>
                 <li><a href="#"><i class="fa fa-calendar-check-o"></i> {{'MENU_EVENTS' | translate}}</a></li>
-                <li><a href="#"><i class="fa fa-exclamation-circle"></i> {{'MENU_ABOUT' | translate}}</a></li>
+                <li><a href="#"><i class="fa fa-exclamation-circle"></i> <span ng-bind-html="'MENU_ABOUT' | translate | html"></span></a></li>
                 <li class="profile-top" uib-dropdown>
                     <a href="#" uib-dropdown-toggle><img ng-src="{{vm.user | avatarUrl}}"><i class="fa fa-angle-down"></i></a>
                     <ul uib-dropdown-menu>

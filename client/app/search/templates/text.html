@@ -1,6 +1,6 @@
 <div class="venue-box">
 	<div class="box-search location-dropdown">
-		<span class="title-search" ng-click="removeAll()">{{'RESET_SEARCH' | translate}}</span>
+		<span class="title-search" ng-click="removeAll()" ng-bind-html="'RESET_SEARCH' | translate | html"></span>
 		<div class="search-input">
 			<input type="text" ng-model="vm.text" />
 			<button ng-click="search()"><i class="fa fa-search"></i></button>

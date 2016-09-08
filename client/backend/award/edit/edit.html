@@ -9,7 +9,7 @@
       <input type="text" class="form-control" ng-model="award.objectName" required>
     </div>
     <div class="form-group">
-    	<label>{{'AWARD_TYPE' | translate}}</label>
+    	<label ng-bind-html="'AWARD_TYPE' | translate | html"></label>
     	<select required ng-model="award.type" class="form-control dropdown-toggle">
     		<option ng-repeat="type in types" value="{{type.value}}" ng-selected="type.value==award.type"><a href="#">{{type.value.toUpperCase() | translate}}</a></option>
     	</select>
@@ -42,7 +42,7 @@
         </div>
         <div class="col-xs-9 text-center ng-binding">
           <p><a href="#" class="btn btn-danger" ngf-select="select($file)" ngf-multiple="false" accept="image/*">{{'UPLOAD_PICTURE' | translate}}</a></p>
-          {{'FILE_REQUIREMENT' | translate}}
+          <span ng-bind-html="'FILE_REQUIREMENT' | translate | html"></span>
         </div>
       </div>
     </div>

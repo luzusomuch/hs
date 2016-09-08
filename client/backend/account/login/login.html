@@ -9,15 +9,15 @@
       <label>{{'USERNAME_EMAIL' | translate}}</label>
       <input type="email" ng-model="vm.user.email" class="form-control" placeholder="Your Username" required name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$">
 
-      <label ng-show="(form.email.$error.pattern || form.email.$error.email) && vm.submitted" class="help-block">{{'EMAIL_TYPE_ERROR' | translate}}</label>
-      <label ng-show="form.email.$error.required && vm.submitted" class="help-block">{{'REQUIRED_ERROR' | translate}}</label>
+      <label ng-show="(form.email.$error.pattern || form.email.$error.email) && vm.submitted" class="help-block" ng-bind-html="'EMAIL_TYPE_ERROR' | translate | html"></label>
+      <label ng-show="form.email.$error.required && vm.submitted" class="help-block" ng-bind-html="'REQUIRED_ERROR' | translate | html"></label>
     </div>
 
     <div class="form-group" ng-class="{'has-error': form.password.$error.required && vm.submitted}">
       <label>{{'PASSWORD' | translate}}</label>
       <input type="password" ng-model="vm.user.password" class="form-control" placeholder="Your Password" required name="password">
 
-      <label ng-show="form.password.$error.required && vm.submitted" class="help-block">{{'REQUIRED_ERROR' | translate}}</label>
+      <label ng-show="form.password.$error.required && vm.submitted" class="help-block" ng-bind-html="'REQUIRED_ERROR' | translate | html"></label>
     </div>
 
     <div class="form-actions">

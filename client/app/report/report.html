@@ -7,7 +7,7 @@
       <label>{{'DESCRIPTION' | translate}}</label>
       <textarea class="form-control" rows="5" placeholder="Please describe, why this {{vm.type}} is not appropriated." ng-model="vm.report.description" name="description" required></textarea>
 
-      <p ng-show="form.description.$error.required && vm.submitted" class="error-text">{{'REQUIRED_ERROR' | translate}}</p>
+      <p ng-show="form.description.$error.required && vm.submitted" class="error-text" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
     </div>
 		<div class="modal-footer">
 			<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>

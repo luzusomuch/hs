@@ -12,6 +12,11 @@ angular.module('healthStarsApp').config(function($stateProvider) {
         return CategoryService.getAll().then(resp => {
           return resp.data.items;
         });
+      },
+      authUser: (Auth) => {
+        return Auth.getCurrentUser().then(resp => {
+          return resp.data;
+        });
       }
     },
     settings: {

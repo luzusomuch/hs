@@ -1,7 +1,7 @@
 'use strict';
 
 class HomeCtrl {
-	constructor($rootScope, $scope, EventService, LikeService, $localStorage, CategoryService, SearchParams, socket, $state, $timeout, categories, growl) {
+	constructor($rootScope, $scope, EventService, LikeService, authUser, CategoryService, SearchParams, socket, $state, $timeout, categories, growl) {
     this.growl = growl;
     this.$scope = $scope;
     this.categories = [];
@@ -45,7 +45,7 @@ class HomeCtrl {
     };
     this.EventService = EventService;
     this.LikeService = LikeService;
-    this.authUser = $localStorage.authUser;
+    this.authUser = authUser;
     this.locations = [];
     this.$state = $state;
 

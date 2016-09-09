@@ -46,6 +46,7 @@ class MyFriendsCtrl {
 					if (this.authUser._id===this.user._id) {
 						// If current user is owner of friends list then remove selected friend from list
 						this.friends.items.splice(index, 1);
+						this.friends.totalItem -=1;
 					} else {
 						// If current user isn't owner of friends list just update selected friend status
 						this.friends.items[index].currentFriendStatus = 'none';

@@ -56,6 +56,9 @@ module.exports = function(kernel) {
       				return res.status(500).json({type: 'SERVER_ERROR', message: err});
       			});
       		} else {
+                if (thread.blocked) {
+                    return res.status(403).end();
+                }
 	      		// If 2 users above already have a conversation then update it
 	      		thread.messages.push({
 	      			sentUserId: req.body.fromUserId, 

@@ -34,10 +34,17 @@
           </div>
           <div class="content-post-li">
             <p ng-show="!comment.isEdit">
-              <span ng-show="comment.deleted && !comment.blocked">This comment was deleted.</span>
-              <span ng-show="comment.blocked && !comment.deleted">{{vm.eventOwner._id==vm.authUser._id || vm.authUser.role=='admin' ? comment.content : 'This comment was blocked.'}}</span>
-              <span ng-show="comment.blocked && comment.deleted">This comment was blocked or deleted</span>
-              <span ng-show="!comment.blocked && !comment.deleted">{{comment.content}}</span>
+              <span ng-show="comment.deleted && !comment.blocked" ng-bind-html="'THIS_COMMENT_HAS_DELETED' | nl2br | html"></span>
+              <span ng-show="comment.blocked && !comment.deleted">
+                <!-- show comment for event owner or admin -->
+                <span ng-show="vm.eventOwner._id==vm.authUser._id || vm.authUser.role=='admin'" ng-bind-html="comment.content | nl2br | html"></span>
+
+                <span ng-show="vm.eventOwner._id!=vm.authUser._id || vm.authUser.role!='admin'">
+                  {{'THIS_COMMENT_HAS_BLOCKED' | translate}}
+                </span>
+              </span>
+              <span ng-show="comment.blocked && comment.deleted" ng-bind-html="'THIS_COMMENT_HAS_BLOCKED_OR_DELETED' | nl2br | html"></span>
+              <span ng-show="!comment.blocked && !comment.deleted" ng-bind-html="comment.content | nl2br | html"></span>
             </p>
             <input class="input-edit-comment" ng-show="comment.isEdit" type="text" ng-model="comment.content" ng-blur="vm.editComment(comment)">
             <!-- start sub-comment -->
@@ -78,10 +85,20 @@
                       </div>
                       <div class="content-post-li">
                         <p ng-show="!subComment.isEdit">
-                          <span ng-show="subComment.deleted && !subComment.blocked">This comment was deleted.</span>
-                          <span ng-show="subComment.blocked && !subComment.deleted">{{vm.eventOwner._id==vm.authUser._id || vm.authUser.role=='admin' ? subComment.content : 'This comment was blocked.'}}</span>
-                          <span ng-show="subComment.blocked && subComment.deleted">This comment was blocked or deleted</span>
-                          <span ng-show="!subComment.blocked && !subComment.deleted">{{subComment.content}}</span>
+                          <span ng-show="subComment.deleted && !subComment.blocked" ng-bind-html="'THIS_COMMENT_HAS_DELETED' | nl2br | html"></span>
+
+                          <span ng-show="subComment.blocked && !subComment.deleted">
+                            <!-- show comment for event owner or admin -->
+                            <span ng-show="vm.eventOwner._id==vm.authUser._id || vm.authUser.role=='admin'" ng-bind-html="subComment.content | nl2br | html"></span>
+
+                            <span ng-show="vm.eventOwner._id!=vm.authUser._id || vm.authUser.role!='admin'">
+                              {{'THIS_COMMENT_HAS_BLOCKED' | translate}}
+                            </span>
+                          </span>
+
+                          <span ng-show="subComment.blocked && subComment.deleted" ng-bind-html="'THIS_COMMENT_HAS_BLOCKED_OR_DELETED' | nl2br | html"></span>
+                          
+                          <span ng-show="!subComment.blocked && !subComment.deleted" ng-bind-html="subComment.content | nl2br | html"></span>
                         </p>
                         <input class="input-edit-comment" ng-show="subComment.isEdit" type="text" ng-model="subComment.content" ng-blur="vm.editComment(subComment)">
                       </div>

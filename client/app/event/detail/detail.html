@@ -97,9 +97,7 @@
                                 </div>
                             </h4>
                         </div>
-                        <div class="content-post-li" ng-show="!feed.blocked">
-                            {{feed.content}}
-                        </div>
+                        <div class="content-post-li" ng-show="!feed.blocked" ng-bind-html="feed.content | nl2br | html"></div>
                         <div class="content-post-li" ng-show="feed.blocked">
                             {{'THIS_FEED_HAS_BLOCKED' | translate}}
                         </div>

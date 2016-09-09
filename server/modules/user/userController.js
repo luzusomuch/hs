@@ -685,7 +685,6 @@ class UserController {
 
   /*Add social account to current user*/
   addSocialAccount(req, res) {
-    console.log(req.body);
     let validAccountType = ['google', 'twitter', 'facebook'];
     if (validAccountType.indexOf(req.body.type) !== -1) {
       let user = req.user;

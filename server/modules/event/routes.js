@@ -381,7 +381,8 @@ module.exports = function(kernel) {
                 if (!owner) {
                   return cb(null, result);
                 }
-                kernel.model.GrantAward.count({ownerId: owner._id}).then(count => {
+                owner = owner.toJSON();
+                kernel.model.GrantAward.count({ownerId: owner._id, deleted: false}).then(count => {
                   owner.totalAwards = count;
                   result.ownerId = owner;
                   cb(null, result);

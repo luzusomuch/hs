@@ -12,8 +12,14 @@ class MessageModalCtrl {
 				$scope.message.toUserId = $scope.user._id;
 				ThreadService.create($scope.message).then(() => {
 					$uibModalInstance.close();
-				}).catch(() => {
-					growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+				}).catch(err => {
+					console.log(err);
+					console.log(err.status);
+					if (err.status===403) {
+						growl.error(`<p>{{'MESSAGE_CONVERSATION_WAS_BLOCKED' | translate}}</p>`);
+					} else {
+						growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+					}
 				});
 			} else {
 				growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);

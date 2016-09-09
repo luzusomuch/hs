@@ -20,7 +20,7 @@ class MyMessageDetailCtrl {
 
 	sendMessage(message) {
 		if (this.thread.blocked) {
-			this.growl.error(`<p>{{'THIS_THREAD_HAS_BLOCKED' | translate}}</p>`);
+			this.growl.error(`<p>{{'MESSAGE_CONVERSATION_WAS_BLOCKED' | translate}}</p>`);
 			return false;
 		}
 		if (message && message.trim().length > 0) {

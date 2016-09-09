@@ -316,7 +316,8 @@ let Language = {
 		ADD_NEW_EMAIL: 'Add new email',
 		CURRENT_EMAILS_LIST: 'Current emails list',
 		INVITE_FRIENDS_SUCCESSFULLY: 'Invite friends successfully',
-		NOT_ALLOW: 'Not allow'
+		NOT_ALLOW: 'Not allow',
+		MESSAGE_CONVERSATION_WAS_BLOCKED: 'Conversation was blocked'
 		// Enter new translate text below
 	},
 	de: {
@@ -635,7 +636,8 @@ let Language = {
 		ADD_NEW_EMAIL: 'Hinzufügen neuer E-Mail',
 		CURRENT_EMAILS_LIST: 'Aktuelle E-Mails Liste',
 		INVITE_FRIENDS_SUCCESSFULLY: 'Laden Sie Freunde erfolgreich',
-		NOT_ALLOW: 'Ablehnen'
+		NOT_ALLOW: 'Ablehnen',
+		MESSAGE_CONVERSATION_WAS_BLOCKED: 'Gespräch wurde blockiert'
 		// Enter new translate text below
 	}
 }

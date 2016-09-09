@@ -33,7 +33,7 @@ angular.module('healthStarsApp')
     }
   };
 })
-.directive('shareToolBox', ['$timeout', 'ShareService', '$state', 'APP_CONFIG', function($timeout, ShareService, $state, APP_CONFIG) {
+.directive('shareToolBox', ['$timeout', 'ShareService', '$state', 'APP_CONFIG', function($timeout, ShareService, $state, APP_CONFIG, growl) {
   return {
     restrict : 'A',
     replace : true,
@@ -131,12 +131,11 @@ angular.module('healthStarsApp')
               ShareService.share($scope.data._id, $scope.type).then(() => {
                 $scope.data.totalShare = ($scope.data.totalShare) ? $scope.data.totalShare+1 : 1;
                 $scope.shared = !$scope.shared;
-              }).catch(err => {
-                console.log(err);
-                // TODO show error
+              }).catch(() => {
+                growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
               });
             } else {
-              // TODO show dialog
+              growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
             }
           });
         } else if (type === 'tw') {
@@ -147,9 +146,8 @@ angular.module('healthStarsApp')
                 ShareService.share($scope.data._id, $scope.type).then(() => {
                   $scope.data.totalShare = ($scope.data.totalShare) ? $scope.data.totalShare+1 : 1;
                   $scope.shared = !$scope.shared;
-                }).catch(err => {
-                  console.log(err);
-                  // TODO show error
+                }).catch(() => {
+                  growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
                 });
               }
             });
@@ -158,9 +156,8 @@ angular.module('healthStarsApp')
           ShareService.share($scope.data._id, $scope.type).then(() => {
             $scope.data.totalShare = ($scope.data.totalShare) ? $scope.data.totalShare+1 : 1;
             $scope.shared = !$scope.shared;
-          }).catch(err => {
-            console.log(err);
-            // TODO show error
+          }).catch(() => {
+            growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
           });
         }
       };

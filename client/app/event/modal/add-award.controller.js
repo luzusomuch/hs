@@ -31,8 +31,6 @@ class AddAwardCtrl {
 	    });
 		modalInstance.result.then(data => {
 			this.awards.push(data);
-		}, err => {
-			console.log(err);
 		});
 	}
 

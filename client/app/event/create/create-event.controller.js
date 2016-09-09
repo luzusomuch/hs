@@ -56,8 +56,7 @@ class CreateEventCtrl {
     				startDate: data.startDate,
     				endDate: data.endDate
     			};
-    		}, err => {
-    			console.log(err);
+    		}, () => {
           this.event.isRepeat = false;
     		});
     	}
@@ -150,8 +149,6 @@ class CreateEventCtrl {
     });
 		modalInstance.result.then(data => {
 			this.event.participants = data;
-		}, err => {
-			console.log(err);
 		});
   }
 
@@ -176,8 +173,6 @@ class CreateEventCtrl {
     });
 		modalInstance.result.then(data => {
 			this.event.award = data;
-		}, err => {
-			console.log(err);
 		});
   }
 

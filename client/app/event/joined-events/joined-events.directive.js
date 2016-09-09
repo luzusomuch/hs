@@ -10,8 +10,6 @@ class JoinedEventsCtrl {
 				$scope.friendsEvents.items = ($scope.friendsEvents.items) ? $scope.friendsEvents.items.concat(resp.data.items) : resp.data.items;
 				$scope.friendsEvents.totalItem = resp.data.totalItem;
 				$scope.page +=1;
-			}).catch(err => {
-				console.log(err);
 			});
 		};
 

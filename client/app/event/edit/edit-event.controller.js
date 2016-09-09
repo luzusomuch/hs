@@ -68,8 +68,7 @@ class EditEventCtrl {
     				startDate: data.startDate,
     				endDate: data.endDate
     			};
-    		}, err => {
-    			console.log(err);
+    		}, () => {
           this.event.isRepeat = false;
     		});
     	}
@@ -157,8 +156,6 @@ class EditEventCtrl {
     });
 		modalInstance.result.then(data => {
 			this.event.participants = data;
-		}, err => {
-			console.log(err);
 		});
   }
 
@@ -183,8 +180,6 @@ class EditEventCtrl {
     });
 		modalInstance.result.then(data => {
 			this.event.award = data;
-		}, err => {
-			console.log(err);
 		});
   }
 

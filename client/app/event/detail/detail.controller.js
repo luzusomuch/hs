@@ -85,8 +85,8 @@ class EventDetailCtrl {
 			} else {
 				this.event.totalLike = this.event.totalLike -1;
 			}
-		}).catch(err => {
-			console.log(err);
+		}).catch(() => {
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}
 

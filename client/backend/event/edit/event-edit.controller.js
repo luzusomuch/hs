@@ -64,8 +64,7 @@ class BackendEventEditCtrl {
     				startDate: data.startDate,
     				endDate: data.endDate
     			};
-    		}, err => {
-    			console.log(err);
+    		}, () => {
     			this.event.isRepeat = false;
     		});
     	}

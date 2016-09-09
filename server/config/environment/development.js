@@ -74,6 +74,7 @@ module.exports = {
   HOTMAIL: {
     clientSecret: process.env.HOTMAIL_SECRET || 'ux5VvaC9qGqZiV1f44oSDcw',
     clientID: process.env.HOTMAIL_ID || 'f6f1fb5a-0120-4336-9a00-a0f210e5b125',
-    callbackURL: baseUrl + 'api/v1/users/hotmail-contacts'
+    // callbackURL: baseUrl + 'api/v1/users/hotmail-contacts'
+    callbackURL: baseUrl + 'profile/'
   }
 };

@@ -17,7 +17,7 @@
 		"twAppId": "Qd9Qf8FXDTf6qf2cRtQV8Kss2",
 		"ggAppId": "415481653468-jnu548h7uhjeditfm1bqb1hb23fqosoc.apps.googleusercontent.com",
 		"hotmailId": "f6f1fb5a-0120-4336-9a00-a0f210e5b125",
-		"hotmailCallbackUrl": "http://localhost:9000/api/v1/users/hotmail-contacts"
+		"hotmailCallbackUrl": "http://localhost:9000/profile/"
 	}
 })
 

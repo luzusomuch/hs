@@ -130,6 +130,13 @@ class MyHomeCtrl {
 				});
 			});
 		} else if (type==='outlook') {
+			console.log(this.APP_CONFIG);
+			WL.init({
+		      	client_id: this.APP_CONFIG.apiKey.hotmailId,
+		      	redirect_uri: this.APP_CONFIG.apiKey.hotmailCallbackUrl,
+		      	scope: ['wl.basic', 'wl.contacts_emails'],
+		      	response_type: 'token'
+		    });
 			WL.login().then(() => {
 				WL.api({
 		            path: 'me/contacts',

@@ -7,12 +7,24 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
     'internationalPhoneNumber', 'masonry', 'slick', 'ngDraggable', 'monospaced.qrcode', 'ngScrollbars', 
     'angular-smilies', 'gm.datepickerMultiSelect', 'ui.calendar'
   ])
-  .config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider, growlProvider) {
+  .config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider, growlProvider, $provide) {
     $urlRouterProvider.otherwise('/');
     cfpLoadingBarProvider.includeSpinner = false;
     $locationProvider.html5Mode(true);
     growlProvider.globalTimeToLive(3000);
     growlProvider.globalDisableCountDown(true);
+
+    // ignore template required error
+    $provide.decorator('$templateRequest', ['$delegate', function($delegate) {
+      var fn = $delegate;
+      $delegate = function(tpl) {
+        for (var key in fn) {
+          $delegate[key] = fn[key];
+        }
+        return fn.apply(this, [tpl, true]);
+      };
+      return $delegate;
+    }]);
   })
   .factory('AppSettings', (APP_CONFIG) => {
     let _default = _.merge({
@@ -62,13 +74,6 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
        js.src = '//connect.facebook.net/en_US/sdk.js';
        fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
-
-    WL.init({
-      client_id: AppSettings.get('apiKey')['hotmailId'],
-      redirect_uri: AppSettings.get('apiKey')['hotmailCallbackUrl'],
-      scope: ['wl.basic', 'wl.contacts_emails'],
-      response_type: 'token'
-    });
 
     gapi.load('auth2', () => {
       window.auth2 = gapi.auth2.init({

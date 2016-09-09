@@ -473,6 +473,6 @@ angular.module('healthStarsApp')
   };
 }).filter('html', ['$sce', ($sce) => {
   return (text) => {
-    return $sce.trustAsHtml(text);
+    return $sce.trustAsHtml(text.replace(/(http[^\s]+)/g, '<a href="$1">$1</a>'));
   }
 }]);

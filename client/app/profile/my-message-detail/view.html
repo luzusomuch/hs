@@ -13,8 +13,8 @@
 	            	{{'MENU_MY_MESSENGER' | translate}}
 
 	            	<div class="show-all-box">
-		            	<button class="btn btn-default" ng-click="vm.addTags()">{{'ADD_TAGS' | translate}}</button>
-		            	<button class="btn btn-default" ng-click="vm.block()">{{(vm.thread.blocked) ? 'UNBLOCK_THIS_CONVERSATION' : 'BLOCK_THIS_CONVERSATION' | translate}}</button>
+		            	<button class="btn btn-default" ng-click="vm.addTags()" ng-bind-html="'ADD_TAGS' | translate | html"></button>
+		            	<button class="btn btn-default" ng-click="vm.block()" ng-bind-html="(vm.thread.blocked) ? 'UNBLOCK_THIS_CONVERSATION' : 'BLOCK_THIS_CONVERSATION' | translate | html"></button>
 		            	<label>
 		            		<input ng-click="vm.receiveEmail()" type="checkbox" name="" ng-checked="vm.thread.nonReceiveEmailUsers.indexOf(vm.authUser._id) !== -1">{{'NON_RECEIVE_EMAIL_WHEN_HAVE_NEW_MESSAGE' | translate}}
 		            	</label>
@@ -29,7 +29,7 @@
 	                </div>
 	                <div class="text-box-message">
 	                    <h4><a ui-sref="profile.detail({id: message.sentUserId._id})">{{message.sentUserId.name}}</a></h4>
-	                    <p ng-bind-html="message.message | nl2br | smilies | linky"></p>
+	                    <p ng-bind-html="message.message | nl2br | smilies | html"></p>
 	                </div>
 	            </div>
 	            <div class="box-message box-message-1 message-detail">

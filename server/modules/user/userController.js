@@ -651,7 +651,8 @@ class UserController {
         if (!user) {
           return res.status(404).end();
         }
-        if (user.notificationSetting && user.notificationSetting.isVisibleFriendsList) {
+        // If user set visible friends list and the selected user isn't a current user then hide all
+        if (user.notificationSetting && user.notificationSetting.isVisibleFriendsList && req.user._id.toString()!==user._id.toString()) {
           return res.status(200).json({items: [], totalItem: 0});
         }
         return res.status(200).json(friends);

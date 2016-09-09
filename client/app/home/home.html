@@ -80,7 +80,7 @@
                                 </div>
                                 <div class="col-xs-6">
                                     <div class="text-bottom-big"><i class="fa fa-user-plus"></i> {{event.stats.totalParticipants || 0}}</div>
-                                    {{'PARTICIPATINGS' | translate}}
+                                    {{(event.stats.totalParticipants && event.stats.totalParticipants > 1) ? 'PARTICIPATINGS' : 'PARTICIPATING' | translate}}
                                 </div>
                             </div>
                         </div>

@@ -90,7 +90,7 @@
                                 <div class="action-comment">
                                     <span ng-click="feed.showOption=!feed.showOption" class="comment-option-button"><i class="fa fa-ellipsis-v"></i></span>
                                     <ul ng-mouseleave="feed.showOption = false" class="comment-option" ng-show="feed.showOption">
-                                        <li ng-show="vm.authUser.role=='admin' || vm.authUser._id==vm.eventOwner || vm.authUser._id==vm.eventOwner._id" ng-click="vm.blockFeed(feed)">
+                                        <li ng-show="vm.authUser.role=='admin' || vm.authUser._id==vm.event.ownerId._id" ng-click="vm.blockFeed(feed)">
                                             <span>{{(feed.blocked) ? 'UNBLOCK_FEED' : 'BLOCK_FEED' | translate}}</span>
                                         </li>
                                     </ul>
@@ -105,10 +105,10 @@
                         </div>
                         <div class="img-content-post" ng-show="!feed.blocked">
                             <div class="row row-small">
-                                <div ng-mouseover="photo.showBlock=true" ng-mouseleave="photo.showBlock=false" class="relative-div" ng-class="{'col-xs-6': feed.photosId.length > 1, 'col-xs-12': feed.photosId.length==1}" ng-repeat="photo in feed.photosId" ng-show="!photo.blocked || vm.event.ownerId==vm.authUser._id || vm.event.ownerId._id==vm.authUser._id || vm.authUser.role=='admin'">
+                                <div ng-mouseover="photo.showBlock=true" ng-mouseleave="photo.showBlock=false" class="relative-div" ng-class="{'col-xs-6': feed.photosId.length > 1, 'col-xs-12': feed.photosId.length==1}" ng-repeat="photo in feed.photosId" ng-show="!photo.blocked || vm.event.ownerId._id==vm.authUser._id || vm.authUser.role=='admin'">
                                     <a href ng-click="vm.viewPhoto(photo, feed._id)">
                                         <div class="bg-cover " style="background-image: url({{photo | imageUrl: 'medium'}}); height: 150px"></div>
-                                        <a ng-click="vm.blockPhoto(photo)" ng-show="photo.showBlock && (vm.authUser._id==vm.event.ownerId._id || vm.authUser._id==vm.event.ownerId || vm.authUser.role=='admin')" href="#" class="block-photo-btn">
+                                        <a ng-click="vm.blockPhoto(photo)" ng-show="photo.showBlock && (vm.authUser._id==vm.event.ownerId._id || vm.authUser.role=='admin')" href="#" class="block-photo-btn">
                                             <span ng-show="photo.blocked">{{'UNBLOCK_PHOTO' | translate}}</span>
                                             <span ng-show="!photo.blocked">{{'BLOCK_PHOTO' | translate}}</span>
                                         </a>

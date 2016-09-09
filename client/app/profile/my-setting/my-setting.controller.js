@@ -5,6 +5,7 @@ class MySettingCtrl {
 		this.growl = growl;
 		this.submitted =false;
 		this.errors = {};
+		this.$localStorage = $localStorage;
 		this.authUser = $localStorage.authUser;
 		this.address = {};
 		if (this.authUser) {
@@ -150,12 +151,16 @@ class MySettingCtrl {
   	}
 
   	deleteAccount() {
-  		this.User.deleteAccount(this.authUser._id).then(() => {
-  			this.Auth.logout();
-  			this.$state.go('home');
-  		}).catch(() => {
-  			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
-  		});
+  		let confirmText = (this.$localStorage.language==='en') ? 'Do you want to delete your account?' : 'Wollen Sie Ihr Konto löschen?';
+  		let confirm = window.confirm(confirmText);
+  		if (confirm) {
+	  		this.User.deleteAccount(this.authUser._id).then(() => {
+	  			this.Auth.logout();
+	  			this.$state.go('home');
+	  		}).catch(() => {
+	  			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+	  		});
+  		}
   	}
 }
 

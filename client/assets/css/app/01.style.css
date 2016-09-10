@@ -2408,3 +2408,7 @@ div.menu-tab > ul>li>a {
 .title-post-li ul.first-item {
     top: -20px !important;
 }
+.choose-category label {
+    font-family: 'proxima_nova_rgbold';
+    color: #fff;
+}

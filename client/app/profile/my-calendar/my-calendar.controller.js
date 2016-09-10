@@ -22,6 +22,10 @@ class MyCalendarCtrl {
 		        	let photoUrl = 'assets/images/img.jpg';
 		        	if (event.photo) {
 	        			photoUrl = (event.photo.metadata.small) ? event.photo.metadata.small : 'assets/photos/'+event.photo.metadata.tmp;
+		        	} else if (event.type==='google') {
+		        		photoUrl = 'assets/images/google-logo.jpg';
+		        	} else if (event.type==='facebook') {
+		        		photoUrl = 'assets/images/FB-logo.png';
 		        	}
 	        		$(element).find('span:first').prepend('<img width="30" src='+photoUrl+'>');
 		        },

@@ -179,7 +179,9 @@ class EditEventCtrl {
     	}
     });
 		modalInstance.result.then(data => {
-			this.event.award = data;
+      this.AwardService.get(data._id).then(resp => {
+			 this.event.award = resp.data;
+      });
 		});
   }
 

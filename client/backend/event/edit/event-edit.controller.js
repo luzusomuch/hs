@@ -367,6 +367,10 @@ class AddAwardCtrl {
 			this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
 		}
 	}
+
+  close() {
+    this.$uibModalInstance.dismiss();
+  }
 }
 
 class CreateAwardCtrl {

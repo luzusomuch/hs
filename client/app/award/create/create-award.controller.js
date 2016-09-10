@@ -50,6 +50,10 @@ class CreateAwardCtrl {
 			this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
 		}
 	}
+
+	close() {
+		this.$uibModalInstance.dismiss();
+	}
 }
 
 angular.module('healthStarsApp').controller('CreateAwardCtrl', CreateAwardCtrl);

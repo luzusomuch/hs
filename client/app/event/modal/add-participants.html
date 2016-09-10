@@ -6,7 +6,9 @@
     <h4>{{'FRIENDS_LIST' | translate}}</h4>
     <div class="form-group">
       <div class="checkbox" ng-repeat="friend in vm.friends">
-        <label><input type="checkbox" ng-checked="friend.select" ng-click="friend.select=!friend.select">{{friend.name}}</label>
+        <label><input type="checkbox" ng-checked="friend.select" ng-click="friend.select=!friend.select">
+          <img width="40" style="border-radius: 50%" src="{{friend | avatarUrl}}"> {{friend.name}}
+        </label>
       </div>
     </div>
 		<div class="modal-footer">

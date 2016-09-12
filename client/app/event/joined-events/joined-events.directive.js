@@ -1,15 +1,45 @@
 'use strict';
 
 class JoinedEventsCtrl {
-	constructor($scope, EventService) {
+	constructor($scope, EventService, SearchParams) {
+		$scope.SearchParams = SearchParams.params;
 		$scope.friendsEvents = {};
+		$scope.searchItems = {};
 		$scope.page = 1;
+		$scope.searchPage = 1;
+		$scope.search = false;
+
+		$scope.$watch('SearchParams', (nv) => {
+			if (nv && nv.dates.length > 0) {
+				$scope.search = true;
+				$scope.loadMore(true);
+			} else {
+				$scope.searchPage = 1;
+				$scope.search = false;
+			}
+			console.log($scope.search);
+		}, true);
 
 		$scope.loadMore = () => {
-			EventService.myUpcomingEvents({page: $scope.page}).then(resp => {
-				$scope.friendsEvents.items = ($scope.friendsEvents.items) ? $scope.friendsEvents.items.concat(resp.data.items) : resp.data.items;
-				$scope.friendsEvents.totalItem = resp.data.totalItem;
-				$scope.page +=1;
+			let params = {};
+			if ($scope.search) {
+				params.dates = $scope.SearchParams.dates;
+				params.page = $scope.searchPage;
+			} else {
+				params.page = $scope.page;
+			}
+			EventService.myUpcomingEvents(params).then(resp => {
+				if ($scope.search) {
+					$scope.searchItems.items = ($scope.searchItems.items) ? $scope.searchItems.items.concat(resp.data.items) : resp.data.items;
+					$scope.searchItems.totalItem = resp.data.totalItem;
+					if ($scope.searchItems.items.length < $scope.searchItems.totalItem) {
+						$scope.searchPage += 1;
+					}
+				} else {
+					$scope.page +=1;
+					$scope.friendsEvents.items = ($scope.friendsEvents.items) ? $scope.friendsEvents.items.concat(resp.data.items) : resp.data.items;
+					$scope.friendsEvents.totalItem = resp.data.totalItem;
+				}
 			});
 		};
 

@@ -379,6 +379,48 @@ module.exports = function(kernel) {
         ]
       };
 
+      //process dates
+      if(req.query.dates instanceof Array && req.query.dates.length) {
+        let should = [];
+        _.each(req.query.dates, dateString => {
+          let time = parseInt(dateString);
+          let date = moment(new Date(time));
+          if(date.isValid()) {
+            should.push({
+              range: {
+                startDateTime: {
+                  gte: date.startOf('date').toISOString(),
+                  lte: date.endOf('date').toISOString()
+                }
+              }
+            });
+          }
+        });
+        if(should.length) {
+          query.query.filtered.filter.bool.must.push({
+            bool: {
+              should: should
+            } 
+          });
+        }
+      }
+
+      //process date
+      if(req.query.dates instanceof Array===false) {
+        let time = parseInt(req.query.dates);
+        let date = moment(new Date(time));
+        if(date.isValid()) {
+          query.query.filtered.filter.bool.must.push({
+            range: {
+              startDateTime: {
+                gte: date.startOf('date').toISOString(),
+                lte: date.endOf('date').toISOString()
+              }
+            }
+          });
+        }
+      }
+
       kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {
         if (err) {
           return res.status(500).json({type: 'SERVER_ERROR'});

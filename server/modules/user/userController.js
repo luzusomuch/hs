@@ -784,7 +784,7 @@ class UserController {
                         { term: { private: false } },
                       ],
                       should: [
-                        { term: { participantsId: id}}
+                        { term: { attendedIds: id}}
                       ]
                     }
                   }

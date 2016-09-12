@@ -1,5 +1,7 @@
 import Joi from 'joi';
 import async from 'async';
+import _ from 'lodash';
+
 module.exports = function(kernel) {
 	/*Create new event invite request*/
 	kernel.app.post('/api/v1/invites/event', kernel.middleware.isAuthenticated(), (req, res) => {
@@ -57,64 +59,86 @@ module.exports = function(kernel) {
 					if (!event) {
 						return res.status(404).end();
 					}
-					event.participantsId.push(req.user._id);
-					event.stats.totalParticipants = event.participantsId.length;
-					event.save().then(event => {
-						kernel.queue.create(kernel.config.ES.events.UPDATE, {
-							type: kernel.config.ES.mapping.eventType, 
-							id: event._id.toString(), data: event
-						}).save();
-						// grant award for current user
-						kernel.model.Award.findById(event.awardId).then(award => {
-							if (!award) {
-								// remove invite request when not found award
-								invite.remove().then(() => {
-									return res.status(200).end();
-								}).catch(err => {
-									return res.status(500).json({type: 'SERVER_ERROR'});
-								});
-							}
-							async.parallel([
-								(cb) => {
-									if (award.type==='gps' && req.user.accessViaApp) {
-						                kernel.model.GrantAward({
-						                  	ownerId: req.user._id,
-						                  	awardId: award._id,
-						                  	eventId: event._id
-						                }).save().then(data => {
-						                  	kernel.queue.create('EMAIL_GRANTED_AWARD', data).save();
-						                  	cb(null);
-						                }).catch(cb);
-					              	} else if (award.type==="accepted") {
-						                kernel.model.GrantAward({
-						                  	ownerId: req.user._id,
-						                  	awardId: award._id,
-						                  	eventId: event._id
-						                }).save().then(data => {
-						                  	kernel.queue.create('EMAIL_GRANTED_AWARD', data).save();
-						                  	cb(null);
-						                }).catch(cb);
-					              	} else {
-						                cb();
-					              	}
+					let availableUser = _.clone(event.participantsId);
+      				availableUser.push(event.ownerId);
+
+      				if (_.findIndex(availableUser, (userId) => {
+      					return userId.toString()===req.user._id.toString();
+      				}) !== -1) {
+      					// the current user was already joined or an owner of that event
+      					invite.remove().then(() => {
+							return res.status(200).end();
+						}).catch(err => {
+							return res.status(500).json({type: 'SERVER_ERROR'});
+						});
+      				} else {
+	      				// If current user wasn't join this event then add him to participants list
+						event.participantsId.push(req.user._id);
+						event.stats.totalParticipants = event.participantsId.length;
+						// add current user to attended ids list
+				        if (event.attendedIds) {
+				          event.attendedIds.push(req.user._id);
+				        } else {
+				          event.attendedIds = [req.user._id]
+				        }
+						event.save().then(event => {
+							kernel.queue.create(kernel.config.ES.events.UPDATE, {
+								type: kernel.config.ES.mapping.eventType, 
+								id: event._id.toString(), data: event
+							}).save();
+							// grant award for current user
+							kernel.model.Award.findById(event.awardId).then(award => {
+								if (!award) {
+									// remove invite request when not found award
+									invite.remove().then(() => {
+										return res.status(200).end();
+									}).catch(err => {
+										return res.status(500).json({type: 'SERVER_ERROR'});
+									});
 								}
-							], (err) => {
-								if (err) {
-									return res.status(500).json({type: 'SERVER_ERROR'});
-								}
-								// after granted award completed then remove invite request
-								invite.remove().then(() => {
-									return res.status(200).end();
-								}).catch(err => {
-									return res.status(500).json({type: 'SERVER_ERROR'});
+								async.parallel([
+									(cb) => {
+										if (award.type==='gps' && req.user.accessViaApp) {
+							                kernel.model.GrantAward({
+							                  	ownerId: req.user._id,
+							                  	awardId: award._id,
+							                  	eventId: event._id
+							                }).save().then(data => {
+							                  	kernel.queue.create('EMAIL_GRANTED_AWARD', data).save();
+							                  	cb(null);
+							                }).catch(cb);
+						              	} else if (award.type==="accepted") {
+							                kernel.model.GrantAward({
+							                  	ownerId: req.user._id,
+							                  	awardId: award._id,
+							                  	eventId: event._id
+							                }).save().then(data => {
+							                  	kernel.queue.create('EMAIL_GRANTED_AWARD', data).save();
+							                  	cb(null);
+							                }).catch(cb);
+						              	} else {
+							                cb();
+						              	}
+									}
+								], (err) => {
+									if (err) {
+										return res.status(500).json({type: 'SERVER_ERROR'});
+									}
+									// after granted award completed then remove invite request
+									invite.remove().then(() => {
+										return res.status(200).end();
+									}).catch(err => {
+										return res.status(500).json({type: 'SERVER_ERROR'});
+									});
 								});
+							}).catch(err => {
+								return res.status(500).json({type: 'SERVER_ERROR'});		
 							});
 						}).catch(err => {
-							return res.status(500).json({type: 'SERVER_ERROR'});		
+							console.log(err);
+							return res.status(500).json({type: 'SERVER_ERROR'});			
 						});
-					}).catch(err => {
-						return res.status(500).json({type: 'SERVER_ERROR'});			
-					});
+      				}
 				}).catch(err => {
 					return res.status(500).json({type: 'SERVER_ERROR'});		
 				});

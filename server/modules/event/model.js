@@ -11,7 +11,9 @@ module.exports = {
     	endDateTime: Date,
     	// organizerId: kernel.mongoose.Schema.Types.ObjectId,
     	awardId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Award'},
-    	participantsId: [{type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}],
+      participantsId: [{type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}],
+      // attendedIds is user who click attend or accepted the event invited
+      attendedIds: [{type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}],
     	photosId: [{type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Photo'}],
     	public: Boolean,
       publicStatusBy: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},

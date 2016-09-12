@@ -371,12 +371,7 @@ module.exports = function(kernel) {
               }
             }
           }
-        },
-        from: skip,
-        size: limit,
-        sort: [
-          { createdAt: 'desc' }
-        ]
+        }
       };
 
       //process dates
@@ -419,6 +414,14 @@ module.exports = function(kernel) {
             }
           });
         }
+      }
+
+      if (!req.query.dates) {
+        query.from = skip;
+        query.size = limit;
+        query.sort = [
+          { createdAt: 'desc' }
+        ];
       }
 
       kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {

@@ -16,8 +16,8 @@ class JoinedEventsCtrl {
 			} else {
 				$scope.searchPage = 1;
 				$scope.search = false;
+				$scope.searchItems = {};
 			}
-			console.log($scope.search);
 		}, true);
 
 		$scope.loadMore = () => {
@@ -30,7 +30,7 @@ class JoinedEventsCtrl {
 			}
 			EventService.myUpcomingEvents(params).then(resp => {
 				if ($scope.search) {
-					$scope.searchItems.items = ($scope.searchItems.items) ? $scope.searchItems.items.concat(resp.data.items) : resp.data.items;
+					$scope.searchItems.items = resp.data.items;
 					$scope.searchItems.totalItem = resp.data.totalItem;
 					if ($scope.searchItems.items.length < $scope.searchItems.totalItem) {
 						$scope.searchPage += 1;

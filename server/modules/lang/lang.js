@@ -318,7 +318,8 @@ let Language = {
 		INVITE_FRIENDS_SUCCESSFULLY: 'Invite friends successfully',
 		NOT_ALLOW: 'Not allow',
 		MESSAGE_CONVERSATION_WAS_BLOCKED: 'Conversation was blocked',
-		CLEAR_SEARCH_DATE: 'Clear all dates'
+		CLEAR_SEARCH_DATE: 'Clear all dates',
+		MY_UPCOMING_EVENTS: 'My upcoming events'
 		// Enter new translate text below
 	},
 	de: {
@@ -639,7 +640,8 @@ let Language = {
 		INVITE_FRIENDS_SUCCESSFULLY: 'Laden Sie Freunde erfolgreich',
 		NOT_ALLOW: 'Ablehnen',
 		MESSAGE_CONVERSATION_WAS_BLOCKED: 'Gespräch wurde blockiert',
-		CLEAR_SEARCH_DATE: 'löschen Sie alle Termine'
+		CLEAR_SEARCH_DATE: 'löschen Sie alle Termine',
+		MY_UPCOMING_EVENTS: 'Meine kommende Veranstaltungen'
 		// Enter new translate text below
 	}
 }

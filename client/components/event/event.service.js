@@ -26,6 +26,10 @@
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}`);
       },
 
+      myUpcomingEvents: (params) => {
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/upcoming-event`, {params: params});
+      },
+
       create: (event) => {
         return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events`, event);
       },

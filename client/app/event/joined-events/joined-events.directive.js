@@ -6,7 +6,7 @@ class JoinedEventsCtrl {
 		$scope.page = 1;
 
 		$scope.loadMore = () => {
-			EventService.getFriendsEvents({page: $scope.page}).then(resp => {
+			EventService.myUpcomingEvents({page: $scope.page}).then(resp => {
 				$scope.friendsEvents.items = ($scope.friendsEvents.items) ? $scope.friendsEvents.items.concat(resp.data.items) : resp.data.items;
 				$scope.friendsEvents.totalItem = resp.data.totalItem;
 				$scope.page +=1;

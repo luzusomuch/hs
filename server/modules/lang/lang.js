@@ -317,7 +317,8 @@ let Language = {
 		CURRENT_EMAILS_LIST: 'Current emails list',
 		INVITE_FRIENDS_SUCCESSFULLY: 'Invite friends successfully',
 		NOT_ALLOW: 'Not allow',
-		MESSAGE_CONVERSATION_WAS_BLOCKED: 'Conversation was blocked'
+		MESSAGE_CONVERSATION_WAS_BLOCKED: 'Conversation was blocked',
+		CLEAR_SEARCH_DATE: 'Clear all dates'
 		// Enter new translate text below
 	},
 	de: {
@@ -637,7 +638,8 @@ let Language = {
 		CURRENT_EMAILS_LIST: 'Aktuelle E-Mails Liste',
 		INVITE_FRIENDS_SUCCESSFULLY: 'Laden Sie Freunde erfolgreich',
 		NOT_ALLOW: 'Ablehnen',
-		MESSAGE_CONVERSATION_WAS_BLOCKED: 'Gespräch wurde blockiert'
+		MESSAGE_CONVERSATION_WAS_BLOCKED: 'Gespräch wurde blockiert',
+		CLEAR_SEARCH_DATE: 'löschen Sie alle Termine'
 		// Enter new translate text below
 	}
 }

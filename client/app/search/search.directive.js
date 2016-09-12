@@ -182,9 +182,14 @@ angular.module('healthStarsApp')
 		replace: true,
 		link: function(scope) {
 		  	SearchParams.params.dates = scope.selectedDates = [];
+
 		  	scope.$on('clear-dates', () => {
 		  		scope.selectedDates = SearchParams.params.dates;
 		  	});
+
+		  	scope.clear = () => {
+		  		SearchParams.params.dates = scope.selectedDates = [];
+		  	};
 			// angular.element(element).find('.calendar-home > div').datepicker({
 			// 	multidate: true,
 			// 	maxViewMode: 0,

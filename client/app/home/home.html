@@ -69,7 +69,7 @@
                             <div class="text-li-event">
                                 <h3>{{event.name}}</h3>
                                 <i class="fa fa-calendar"></i> {{event.startDateTime | date : 'dd.MM.yyyy'}} <i class="fa fa-clock-o"></i> {{event.startDateTime | date: 'HH:mm'}}<br>
-                                <i class="fa fa-map-marker"></i> Location : {{event.location.fullAddress}}
+                                <i class="fa fa-map-marker"></i> {{'LOCATION' | translate}} : {{event.location.fullAddress}}
                             </div>
                         </div>
                         <div class="bottom-li-event">

@@ -1,5 +1,5 @@
 <div class="box-blue p15">
-    <div class="title-blue">{{'WHO_ARE_ATTENDING' | translate}}  ({{vm.participants.totalItem || 0}}) <a ng-click="vm.showAllAttending()" href="#" class="show-all-box">Show all</a></div>
+    <div class="title-blue">{{'WHO_ARE_ATTENDING' | translate}}  ({{vm.participants.totalItem || 0}}) <a ng-click="vm.showAllAttending()" href="#" class="show-all-box">{{'SHOW_ALL' | translate}}</a></div>
     <ul class="list-media list-friend list-friend-1">
         <li ng-repeat="user in vm.participants.items" ng-class="{'no-online': !user.online}">
             <div class="img-media">

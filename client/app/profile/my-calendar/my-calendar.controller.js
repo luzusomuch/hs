@@ -18,17 +18,17 @@ class MyCalendarCtrl {
 	          		center: 'title',
 	          		right: 'agendaWeek month'
 		        },
-		        eventRender: (event, element) => {
-		        	let photoUrl = 'assets/images/img.jpg';
-		        	if (event.photo) {
-	        			photoUrl = (event.photo.metadata.small) ? event.photo.metadata.small : 'assets/photos/'+event.photo.metadata.tmp;
-		        	} else if (event.type==='google') {
-		        		photoUrl = 'assets/images/google-logo.jpg';
-		        	} else if (event.type==='facebook') {
-		        		photoUrl = 'assets/images/FB-logo.png';
-		        	}
-	        		$(element).find('span:first').prepend('<img width="30" src='+photoUrl+'>');
-		        },
+		        // eventRender: (event, element) => {
+		        // 	let photoUrl = 'assets/images/img.jpg';
+		        // 	if (event.photo) {
+	        	// 		photoUrl = (event.photo.metadata.small) ? event.photo.metadata.small : 'assets/photos/'+event.photo.metadata.tmp;
+		        // 	} else if (event.type==='google') {
+		        // 		photoUrl = 'assets/images/google-logo.jpg';
+		        // 	} else if (event.type==='facebook') {
+		        // 		photoUrl = 'assets/images/FB-logo.png';
+		        // 	}
+	        	// 	$(element).find('span:first').prepend('<img width="30" src='+photoUrl+'>');
+		        // },
 		        eventClick: (event) => {
 		        	if (event.type==='local') {
 		        		$state.go('event.detail', {id: event.id});

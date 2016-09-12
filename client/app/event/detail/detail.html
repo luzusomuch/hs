@@ -26,7 +26,7 @@
                             <div class="row row-small">
                                 <div class="col-xs-6"><a ng-click="vm.attendEvent()" href="#" class="btn btn-default btn-block" ng-if="vm.isNotParticipant() && vm.event.public"><i class="fa fa-user"></i> {{'ATTEND' | translate}}</a></div>
                                 <!-- <div class="col-xs-4"><a href="#" class="btn btn-default btn-block" ng-if="vm.isNotParticipant()"><i class="fa fa-plus"></i> {{'ATTEND' | translate}}</a></div> -->
-                                <div class="col-xs-6"><a href="#" class="btn btn-default btn-block" ng-click="vm.like()"><i ng-class="{liked: vm.liked}" class="fa fa-heart"></i> {{(vm.liked) ? 'UNLIKE' : 'LIKE' | translate}}</a></div>
+                                <div class="col-xs-6"><a href="#" class="btn btn-default btn-block" ng-click="vm.like()"><i ng-class="{liked: vm.liked}" class="fa fa-heart"></i> <span ng-bind-html="(vm.liked) ? 'UNLIKE' : 'LIKE' | translate | html"></span></a></div>
                             </div>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
 
             <div class="box-blue">
                 <div class="form-post">
-                    <textarea ng-model="vm.feed.content" placeholder="Write something....."></textarea>
+                    <textarea ng-model="vm.feed.content" placeholder="{{'WRITE_SOMETHING' | translate}}....."></textarea>
                     <div class="row new-feed-preview-images" ng-show="vm.files.length > 0">
                         <div ng-repeat="file in vm.files" class="col-sm-3 relative-div">
                             <img ng-class="{'nude-image': file.nude}" id="{{file.name}}" ngf-thumbnail="file" width="150" height="150">

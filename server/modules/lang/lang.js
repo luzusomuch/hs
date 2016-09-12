@@ -319,7 +319,9 @@ let Language = {
 		NOT_ALLOW: 'Not allow',
 		MESSAGE_CONVERSATION_WAS_BLOCKED: 'Conversation was blocked',
 		CLEAR_SEARCH_DATE: 'Clear all dates',
-		MY_UPCOMING_EVENTS: 'My upcoming events'
+		MY_UPCOMING_EVENTS: 'My upcoming events',
+		FOLLOWERS: 'Followers',
+		WRITE_SOMETHING: 'Write something'
 		// Enter new translate text below
 	},
 	de: {
@@ -421,7 +423,7 @@ let Language = {
 		ADD_FRIEND: 'Freund hinzufügen',
 		BEST_PICS: 'Beste Bilder für Ereignis',
 		EVENT_DETAIL: 'Veranstaltungsdetails',
-		POST: 'Post',
+		POST: 'Pfosten',
 		EVENT_LOCATION: 'Veranstaltungsort',
 		RELATED_EVENTS: 'Ähnliche Veranstaltungen',
 		SHOW_ALL: 'Zeige alles',
@@ -448,8 +450,8 @@ let Language = {
 		EMAIL_ALREADY_USED: 'Diese E-Mail wurde bereits verwendet',
 		LOAD_MORE_FEED: 'Laden Sie mehr Futter ...',
 		AWARD_GRANTED_ERROR: 'Dieses Ereignis Auszeichnung wurde dieses Benutzers gewährt',
-		LIKE: 'Like',
-		UNLIKE: 'Unlike',
+		LIKE: 'ähnlich',
+		UNLIKE: 'Unähnlich',
 		COMPANY_ACCOUNT_TEXT_INFO: 'Wenn Sie dieses Konto für eine Korporation, Institution oder Organisation erstellen, bitte hier, um das Firmenkonto verwenden. Es wird zusätzliche Funktionen zu Ihrem Konto zu bringen.',
 		EDIT_EVENT: 'Bearbeiten Veranstaltung',
 		CANCEL: 'Stornieren',
@@ -547,8 +549,8 @@ let Language = {
 		DELETE_ACCOUNT: 'Konto löschen',
 		USER_DELETED: 'Dieser Benutzer wurde gelöscht',
 		LAST_ONLINE: 'Zuletzt Online',
-		FOLLOW: 'Follow',
-		UNFOLLOW: 'Unfollow',
+		FOLLOW: 'Folgen',
+		UNFOLLOW: 'Entfolgen',
 		ADD_TO_FRIENDS: 'Zu Freunden hinzufügen',
 		MESSAGE: 'Nachricht',
 		MISSING_USER_ID: 'Fehlende User-ID',
@@ -641,7 +643,9 @@ let Language = {
 		NOT_ALLOW: 'Ablehnen',
 		MESSAGE_CONVERSATION_WAS_BLOCKED: 'Gespräch wurde blockiert',
 		CLEAR_SEARCH_DATE: 'löschen Sie alle Termine',
-		MY_UPCOMING_EVENTS: 'Meine kommende Veranstaltungen'
+		MY_UPCOMING_EVENTS: 'Meine kommende Veranstaltungen',
+		FOLLOWERS: 'Verfolger',
+		WRITE_SOMETHING: 'Schreibe etwas'
 		// Enter new translate text below
 	}
 }

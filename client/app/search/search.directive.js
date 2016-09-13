@@ -56,9 +56,9 @@ angular.module('healthStarsApp')
 					SearchParams.params.category = '';
 					SearchParams.params.categories = [];
 					SearchParams.params.friendActivities = false;
-					SearchParams.params.dates = [];
+					// SearchParams.params.dates = [];
 					angular.element(element).find('button').trigger('click');
-					// $rootScope.$broadcast('clear-dates');
+					$rootScope.$broadcast('clear-dates');
         		});
 			};
 
@@ -181,14 +181,18 @@ angular.module('healthStarsApp')
 		templateUrl: 'app/search/templates/datepicker.html',
 		replace: true,
 		link: function(scope) {
-		  	scope.selectedDates = SearchParams.params.dates;
+		  	scope.selectedDates = [];
 
 		  	scope.$on('clear-dates', () => {
-		  		scope.selectedDates = SearchParams.params.dates = [];
+		  		if (scope.selectedDates.length > 0) {
+		  			scope.selectedDates = SearchParams.params.dates = [];
+		  		}
 		  	});
 
 		  	scope.clear = () => {
-		  		scope.selectedDates = SearchParams.params.dates = [];
+		  		if (scope.selectedDates.length > 0) {
+		  			scope.selectedDates = SearchParams.params.dates = [];
+		  		}
 		  	};
 
 		  	scope.$watch('selectedDates', (nv) => {

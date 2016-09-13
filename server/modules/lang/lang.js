@@ -334,7 +334,11 @@ let Language = {
 		YEARS_AGO: 'years ago',
 		A_FEW_SECONDS_AGO: 'a few seconds ago',
 		WRITE_A_REPLY: 'Write a reply',
-		SEARCH: 'Search'
+		SEARCH: 'Search',
+		TERMS: 'Terms',
+		PRIVACY: 'Privacy',
+		CONTACT: 'Contact',
+		ALL_RIGHT_RESERVED: 'All right reserved'
 		// Enter new translate text below
 	},
 	de: {
@@ -673,7 +677,11 @@ let Language = {
 		WRITE_A_REPLY: 'Eine antwort schreiben',
 		SEARCH: 'Suche',
 		PREVIOUS: 'Früher',
-		NEXT: 'Nächster'
+		NEXT: 'Nächster',
+		TERMS: 'Bedingungen',
+		PRIVACY: 'Privatsphäre',
+		CONTACT: 'Kontakt',
+		ALL_RIGHT_RESERVED: 'Alle rechte vorbehalten'
 		// Enter new translate text below
 	}
 }

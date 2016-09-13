@@ -9,7 +9,6 @@ class MyCalendarCtrl {
 		this.localEvents = {};
 
       	this.eventSources = [];
-
 		this.uiConfig = {
 			calendarConfig: {
 		        height: 450,
@@ -17,6 +16,11 @@ class MyCalendarCtrl {
 	          		left: 'prev,next',
 	          		center: 'title',
 	          		right: 'agendaWeek month'
+		        },
+		        allDayText: ($localStorage.language==='en') ? 'All day' : 'Ganztägig',
+		        buttonText: {
+		        	month: ($localStorage.language==='en') ? 'Month' : 'Monat',
+		        	week: ($localStorage.language==='en') ? 'Week' : 'Woche'
 		        },
 		        eventRender: (event, element) => {
 		        	let photoUrl = 'assets/images/img.jpg';

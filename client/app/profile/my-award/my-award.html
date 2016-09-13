@@ -21,7 +21,7 @@
     			<div class="top-li-event">
     				<a ui-sref="profile.detail({id: award.eventId.ownerId._id})"><img src="{{award.eventId.ownerId | avatarUrl}}"></a>
     				<h4><a ui-sref="profile.detail({id: award.eventId.ownerId._id})">{{award.eventId.ownerId.name}}&nbsp;</a> </h4>
-    				<i class="fa fa-clock-o"></i> {{award.createdAt | fromNow}}
+    				<i class="fa fa-clock-o"></i> {{award.createdAt | fromNow | fromNowNumber}} {{award.createdAt | fromNow | fromNowTranslate | translate}}
     				<div class="arward-li-top">
     					<span>{{award.eventId.ownerId.totalAwards}}</span>
     					<i class="fa fa-trophy"></i>

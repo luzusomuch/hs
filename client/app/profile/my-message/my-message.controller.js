@@ -3,6 +3,7 @@
 class MyMessagesCtrl {
 	constructor($scope, $localStorage, $state, ThreadService, $uibModal, growl) {
 		this.growl = growl;
+		this.$localStorage = $localStorage;
 		this.authUser = $localStorage.authUser;
 		this.$state = $state;
 		this.ThreadService = ThreadService;

@@ -38,15 +38,15 @@
                     </div>
                     <div class="content-post-li">
                         <div class="title-post-li" ng-switch="item.itemType">
-                            <h4 class="title-generated-home" ng-switch-when="relation">{{'FRIEND_SHIP_REQUEST' | translate}}: <span class="date-post">{{item.createdAt | fromNow}}</span> </h4>
+                            <h4 class="title-generated-home" ng-switch-when="relation">{{'FRIEND_SHIP_REQUEST' | translate}}: <span class="date-post">{{item.createdAt | fromNow | fromNowNumber}} {{item.createdAt | fromNow | fromNowTranslate | translate}}</span> </h4>
 
-                            <h4 class="title-generated-home" ng-switch-when="upcoming-event">{{'UPCOMING_EVENT' | translate}}: <span class="date-post">{{item.createdAt | fromNow}}</span></h4>
+                            <h4 class="title-generated-home" ng-switch-when="upcoming-event">{{'UPCOMING_EVENT' | translate}}: <span class="date-post">{{item.createdAt | fromNow | fromNowNumber}} {{item.createdAt | fromNow | fromNowTranslate | translate}}</span></h4>
 
-                            <h4 class="title-generated-home" ng-switch-when="event-invited">{{'EVENT_INVITES' | translate}}: <span class="date-post">{{item.createdAt | fromNow}}</span></h4>
+                            <h4 class="title-generated-home" ng-switch-when="event-invited">{{'EVENT_INVITES' | translate}}: <span class="date-post">{{item.createdAt | fromNow | fromNowNumber}} {{item.createdAt | fromNow | fromNowTranslate | translate}}</span></h4>
 
-                            <h4 class="title-generated-home" ng-switch-when="liked">{{'LIKED_EVENT' | translate}}: <span class="date-post">{{item.createdAt | fromNow}}</span></h4>
+                            <h4 class="title-generated-home" ng-switch-when="liked">{{'LIKED_EVENT' | translate}}: <span class="date-post">{{item.createdAt | fromNow | fromNowNumber}} {{item.createdAt | fromNow | fromNowTranslate | translate}}</span></h4>
 
-                            <h4 class="title-generated-home" ng-switch-when="attend-event">{{'ATTEND_EVENT' | translate}}: <span class="date-post">{{item.createdAt | fromNow}}</span></h4>
+                            <h4 class="title-generated-home" ng-switch-when="attend-event">{{'ATTEND_EVENT' | translate}}: <span class="date-post">{{item.createdAt | fromNow | fromNowNumber}} {{item.createdAt | fromNow | fromNowTranslate | translate}}</span></h4>
                         </div>
                         <div class="content-post-li" ng-switch="item.itemType">
                             <p ng-switch-when="relation">{{item.fromUserId.name}} {{'INVITE_BECOME_FRIEND' | translate}}</p>

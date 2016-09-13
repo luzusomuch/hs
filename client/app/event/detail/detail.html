@@ -86,7 +86,7 @@
                     <div class="content-post-li">
                         <div class="title-post-li">
                             <h4 class="title-generated-home">{{feed.ownerId.name}}
-                                <span class="date-post">{{feed.createdAt | fromNow}}</span> 
+                                <span class="date-post">{{feed.createdAt | fromNow | fromNowNumber}} {{feed.createdAt | fromNow | fromNowTranslate | translate}}</span> 
                                 <div class="action-comment">
                                     <span ng-click="feed.showOption=!feed.showOption" class="comment-option-button"><i class="fa fa-ellipsis-v"></i></span>
                                     <ul ng-mouseleave="feed.showOption = false" class="comment-option" ng-show="feed.showOption">

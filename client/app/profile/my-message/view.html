@@ -15,7 +15,7 @@
                         <a ng-click="vm.compose()" href="#" class="btn-create" data-toggle="modal" data-target="#myModal"><i class="fa fa-envelope-o"></i> {{'COMPOSE' | translate}}</a>
                     </div>
                     <div class="search-main pull-right">
-                        <input ng-model="vm.searchTerm" type="text" class="form-control" placeholder="Search">
+                        <input ng-model="vm.searchTerm" type="text" class="form-control" placeholder="{{'SEARCH' | translate}}">
                         <button ng-click="vm.search(vm.searchTerm)"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                             <img src="{{owner | avatarUrl}}">
                             <h4>{{owner.name}}</h4>
                             <p ng-bind-html="owner.lastMessage.message | smilies"></p>
-                            <span class="date-mesage">{{owner.threadUpdatedAt | fromNow}}</span>
+                            <span class="date-mesage">{{owner.threadUpdatedAt | fromNow | fromNowNumber}} {{owner.threadUpdatedAt | fromNow | fromNowTranslate | translate}}</span>
                         </a>
                     </li>
 
@@ -36,7 +36,7 @@
                             <img src="{{owner | avatarUrl}}">
                             <h4>{{owner.name}}</h4>
                             <p ng-bind-html="owner.lastMessage.message | smilies"></p>
-                            <span class="date-mesage">{{owner.threadUpdatedAt | fromNow}}</span>
+                            <span class="date-mesage">{{owner.threadUpdatedAt | fromNow | fromNowNumber}} {{owner.threadUpdatedAt | fromNow | fromNowTranslate | translate}}</span>
                         </a>
                     </li>
                 </ul>

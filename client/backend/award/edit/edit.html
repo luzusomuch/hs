@@ -11,7 +11,7 @@
     <div class="form-group">
     	<label ng-bind-html="'AWARD_TYPE' | translate | html"></label>
     	<select required ng-model="award.type" class="form-control dropdown-toggle">
-    		<option ng-repeat="type in types" value="{{type.value}}" ng-selected="type.value==award.type"><a href="#">{{type.value.toUpperCase() | translate}}</a></option>
+    		<option ng-repeat="type in types" value="{{type.value}}" ng-selected="type.value==award.type" ng-bind-html="type.value.toUpperCase() | translate | html"></option>
     	</select>
     </div>
 
@@ -19,7 +19,7 @@
       <div class="radio-l" ng-repeat="type in allowToUseTypes">
         <input id="{{type}}" type="radio" name="category" value="{{type}}" ng-selected="award.allowToUseType==type" ng-model="award.allowToUseType">
         <label for="{{type}}"> 
-          <span>{{type.toUpperCase() | translate}}</span>
+          <span ng-bind-html="type.toUpperCase() | translate | html"></span>
         </label>
       </div>
     </div>

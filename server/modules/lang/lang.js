@@ -321,7 +321,20 @@ let Language = {
 		CLEAR_SEARCH_DATE: 'Clear all dates',
 		MY_UPCOMING_EVENTS: 'My upcoming events',
 		FOLLOWERS: 'Followers',
-		WRITE_SOMETHING: 'Write something'
+		WRITE_SOMETHING: 'Write something',
+		A_MINUTE_AGO: 'a minute ago',
+		MINUTES_AGO: 'minutes ago',
+		AN_HOUR_AGO: 'an hour ago',
+		HOURS_AGO: 'hours ago',
+		A_DAY_AGO: 'a day ago',
+		DAYS_AGO: 'days ago',
+		A_MONTH_AGO: 'a month ago',
+		MONTHS_AGO: 'months ago',
+		A_YEAR_AGO: 'a year ago',
+		YEARS_AGO: 'years ago',
+		A_FEW_SECONDS_AGO: 'a few seconds ago',
+		WRITE_A_REPLY: 'Write a reply',
+		SEARCH: 'Search'
 		// Enter new translate text below
 	},
 	de: {
@@ -645,7 +658,22 @@ let Language = {
 		CLEAR_SEARCH_DATE: 'löschen Sie alle Termine',
 		MY_UPCOMING_EVENTS: 'Meine kommende Veranstaltungen',
 		FOLLOWERS: 'Verfolger',
-		WRITE_SOMETHING: 'Schreibe etwas'
+		WRITE_SOMETHING: 'Schreibe etwas',
+		A_MINUTE_AGO: 'vor einer minute',
+		MINUTES_AGO: 'vor ein paar minuten',
+		AN_HOUR_AGO: 'vor einer stunde',
+		HOURS_AGO: 'vor stunden',
+		A_DAY_AGO: 'vor einem tag',
+		DAYS_AGO: 'vor tagen',
+		A_MONTH_AGO: 'vor einem monat',
+		MONTHS_AGO: 'vor wenigen monaten',
+		A_YEAR_AGO: 'vor einem jahr',
+		YEARS_AGO: 'jahre zuvor',
+		A_FEW_SECONDS_AGO: 'vor ein paar sekunden',
+		WRITE_A_REPLY: 'Eine antwort schreiben',
+		SEARCH: 'Suche',
+		PREVIOUS: 'Früher',
+		NEXT: 'Nächster'
 		// Enter new translate text below
 	}
 }

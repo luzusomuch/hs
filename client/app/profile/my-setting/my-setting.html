@@ -130,7 +130,10 @@
 	                            </div>
 	                        </div>
                 		</uib-tab>
-                		<uib-tab index="2" heading="{{'CHANGE_PASSWORD' | translate}}">
+                		<uib-tab index="2">
+                			<uib-tab-heading>
+                				<span ng-bind-html="'CHANGE_PASSWORD' | translate | html"></span>
+            				</uib-tab-heading>
                 			<div role="tabpanel" class="tab-pane" id="change-pass">
 	                            <form ng-submit="vm.changePassword(changePassForm)" name="changePassForm" novalidate>
 	                                <div class="row">
@@ -150,7 +153,7 @@
                             					<p ng-show="changePassForm.password.$error.required && vm.submitted" class="error-text" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
 	                                        </div>
 	                                        <div class="form-group">
-	                                            <label>{{'CONFIRM_PASSWORD' | translate}}</label>
+	                                            <label ng-bind-html="'CONFIRM_PASSWORD' | translate | html"></label>
 	                                            <input type="Password" class="form-control" name="repassword" ng-model="vm.repassword" required compare-to="changePassForm.password.$$rawModelValue">
 
 	                                            <p ng-show="changePassForm.repassword.$error.compareTo && vm.submitted" class="error-text" ng-bind-html="'CONFIRM_PASSWORD_NOT_MATCH' | translate | html"></p>

@@ -478,5 +478,45 @@ angular.module('healthStarsApp')
     } else {
       return text;
     }
-  }
-}]);
+  };
+}]).filter('fromNowTranslate', () => {
+  return (text) => {
+    if (text==='an hour ago') {
+      text = 'AN_HOUR_AGO';
+    } else if (text==='a day ago') {
+      text = 'A_DAY_AGO';
+    } else if (text==='a month ago') {
+      text = 'A_MONTH_AGO';
+    } else if (text==='a year ago') {
+      text = 'A_YEAR_AGO';
+    } else if (text==='a few seconds ago') {
+      text = 'A_FEW_SECONDS_AGO';
+    } else if (text ==='a minute ago') {
+      text = 'A_MINUTE_AGO';
+    } else {
+      let tmp = text.split(' ');
+      if (tmp[1]==='days') {
+        text = 'DAYS_AGO';
+      } else if (tmp[1]==='months') {
+        text = 'MONTHS_AGO';
+      } else if (tmp[1] === 'years') {
+        text = 'YEARS_AGO';
+      } else if (tmp[1] === 'hours') {
+        text = 'HOURS_AGO';
+      } else if (tmp[1] === 'minutes') {
+        text = 'MINUTES_AGO';
+      }
+    }
+    return text;
+  };
+}).filter('fromNowNumber', () => {
+  return (text) => {
+    let tmp = text.split(' ');
+    if (tmp[1]==='days' || tmp[1]==='months' || tmp[1] === 'years' || tmp[1] === 'hours' || tmp[1]==='minutes') {
+      text = tmp[0];
+    } else {
+      text = '';
+    }
+    return text;
+  };
+});

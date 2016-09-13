@@ -25,7 +25,7 @@
                                         <h4 class="title-generated-home">{{vm.photo.detail.ownerId.name}} </h4>
                                     </div>
                                     <div class="content-post-li">
-                                        {{vm.photo.detail.createdAt | fromNow}}
+                                        {{vm.photo.detail.createdAt | fromNow | fromNowNumber}} {{vm.photo.detail.createdAt | fromNow | fromNowTranslate | translate}}
                                     </div>
 
                                 </div>

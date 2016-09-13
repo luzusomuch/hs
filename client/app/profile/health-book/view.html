@@ -7,7 +7,7 @@
                 <div class="top-li-event">
                     <a ui-sref="profile.detail({id: event.ownerId._id})"><img src="{{event.ownerId | avatarUrl}}"></a>
                     <h4><a ui-sref="profile.detail({id: event.ownerId._id})">{{event.ownerId.name}} &nbsp;</a></h4>
-                    <i class="fa fa-clock-o"></i> {{event.createdAt | fromNow}}
+                    <i class="fa fa-clock-o"></i> {{event.createdAt | fromNow | fromNowNumber}} {{event.createdAt | fromNow | fromNowTranslate | translate}}
                     <div class="arward-li-top">
                         <span>{{event.ownerId.totalAwards || 0}}</span>
                         <i class="fa fa-trophy"></i>
@@ -18,18 +18,18 @@
                     <div class="text-li-event">
                         <h3>{{event.name}}</h3>
                         <i class="fa fa-calendar"></i> {{event.startDateTime | date : 'dd.MM.yyyy'}} <i class="fa fa-clock-o"></i> {{event.startDateTime | date: 'HH:mm'}}<br>
-                        <i class="fa fa-map-marker"></i> Location : {{event.location.fullAddress}}
+                        <i class="fa fa-map-marker"></i> {{'LOCATION' | translate}} : {{event.location.fullAddress}}
                     </div>
                 </div>
                 <div class="bottom-li-event">
                     <div class="row">
                         <div class="col-xs-6">
                             <div class="text-bottom-big" ng-click="vm.like(event)"><i class="fa fa-heart" ng-class="{liked: event.liked}"></i> {{event.totalLike || 0}}</div>
-                            Interested
+                            {{'INTERESTED' | translate}}
                         </div>
                         <div class="col-xs-6">
                             <div class="text-bottom-big"><i class="fa fa-user-plus"></i> {{event.stats.totalParticipants || 0}}</div>
-                            Participating
+                            {{(event.stats.totalParticipants && event.stats.totalParticipants > 1) ? 'PARTICIPATINGS' : 'PARTICIPATING' | translate}}
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 <div class="box-blue p15 box-user-event">
     <div class="img-user-main">
-        <img src="{{vm.user | avatarUrl}}" width="100%;">
+        <img ui-sref="profile.detail({id: vm.user._id})" src="{{vm.user | avatarUrl}}" width="100%;">
         <div class="code-qc">
             <!-- <img src="assets/images/code.jpg"> -->
             <qrcode version="20" error-correction-level="H" data="{{vm.link}}" href="{{vm.link}}" size="50"></qrcode>

@@ -47,8 +47,8 @@
                 <search-date></search-date>
             </div>
             <div class="show-sl-event m20" ng-show="vm.countNewEvent > 0">
-                <a href="#" style="color:#FFF">
-                    <i ng-click="vm.$state.reload()" class="fa fa-refresh"></i> {{vm.countNewEvent}} {{'NEW_EVENTS' | translate}}.
+                <a ng-click="vm.$state.reload()" href="#" style="color:#FFF">
+                    <i class="fa fa-refresh"></i> {{vm.countNewEvent}} {{'NEW_EVENTS' | translate}}.
                 </a>
                 <a href="#" class="close-show"><img src="/assets/images/arrow.png" width="10"></a>
             </div>
@@ -58,7 +58,7 @@
                         <div class="top-li-event">
                             <a ui-sref="profile.detail({id: event.ownerId._id})"><img src="{{event.ownerId | avatarUrl}}"></a>
                             <h4><a ui-sref="profile.detail({id: event.ownerId._id})">{{event.ownerId.name}} &nbsp;</a></h4>
-                            <i class="fa fa-clock-o"></i> {{event.createdAt | fromNow}}
+                            <i class="fa fa-clock-o"></i> {{event.createdAt | fromNow | fromNowNumber}} {{event.createdAt | fromNow | fromNowTranslate | translate}}</span>
                             <div class="arward-li-top">
                                 <span>{{event.ownerId.totalAwards || 0}}</span>
                                 <i class="fa fa-trophy"></i>

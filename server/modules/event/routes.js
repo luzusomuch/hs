@@ -1532,6 +1532,47 @@ module.exports = function(kernel) {
     });
   });
 
+  /*sync with google or facebook calendar*/
+  kernel.app.post('/api/v1/events/sync-events', kernel.middleware.isAuthenticated(), (req, res) => {
+    console.log(req.body);
+    console.log(req.body.events[0].place)
+    if (!req.body.type) {
+      return res.status(422).end();
+    }
+    // We need to find out all events have type equal to req.body.type and ownerId is the same as eventOwnerId
+    kernel.model.Event.find({ownerId: req.user._id, type: req.body.type}).then(events => {
+      async.each(events, (event, callback) => {
+        event.remove().then(() => {
+          // remove this event in ES
+          kernel.queue.create(kernel.config.ES.events.REMOVE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString()}).save();
+          return callback();
+        }).catch(callback);
+      }, (err) => {
+        if (err) {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        }
+        // Insert all events again
+        let result = [];
+        async.each(req.body.events, (event, callback) => {
+          let newEvent = {
+            ownerId: req.user._id,
+            name: event.name,
+            description: event.description,
+          }
+          return callback();
+        }, (err) => {
+          if (err) {
+            return res.status(500).json({type: 'SERVER_ERROR'});
+          }
+          return res.status(200).end();
+        });
+      });
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+  });
+  
+  /*Get best pictures of an event*/
   kernel.app.get('/api/v1/events/:id/bestPics/:limit', kernel.middleware.isAuthenticated(), (req, res) => {
 
     if(!kernel.mongoose.Types.ObjectId.isValid(req.params.id)) {

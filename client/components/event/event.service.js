@@ -68,6 +68,10 @@
 
       attendEvent(id) {
         return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/attend`);
+      },
+
+      syncEvents(data) {
+        return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/sync-events`, data);
       }
     };
   }

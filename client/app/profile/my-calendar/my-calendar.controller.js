@@ -1,7 +1,8 @@
 'use strict';
 
 class MyCalendarCtrl {
-	constructor($scope, $state, $localStorage, EventService, APP_CONFIG) {
+	constructor($scope, $state, $localStorage, EventService, APP_CONFIG, growl) {
+		this.growl = growl;
 		this.errors = {};
 		this.authUser = $localStorage.authUser;
 		this.$state = $state;
@@ -135,6 +136,11 @@ class MyCalendarCtrl {
 				FB.api('/me/events', (data) => {
 					if (data.data && data.data.length > 0) {
 						this.renderEvents(data.data, 'facebook');
+						this.EventService.syncEvents({events: data.data, type: 'facebook'}).then(() => {
+
+						}).catch(() => {
+							this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`)
+						});
 					}
 				});
 			}

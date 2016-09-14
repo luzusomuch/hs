@@ -16,7 +16,9 @@ class CreateEventCtrl {
       public: true,
       isRepeat: false,
       startDate: new Date(), 
-      allowShow: false
+      allowShow: false,
+      startTime: new Date(),
+      endTime: new Date()
 		};
     this.shareEventInfo = {};
     this.$http = $http;
@@ -31,6 +33,7 @@ class CreateEventCtrl {
     this.errors = {};
     this.selectedCategory = {};
 
+this.newDate = new Date();
     $scope.$on('$destroy', function() {
       //do anything such as remove socket
     });
@@ -248,7 +251,7 @@ class CreateEventCtrl {
       }
 
       this.files = _.union(this.files, this.newBanner);
-
+      
   		this.Upload.upload({
 	      url: '/api/v1/events',
 	      arrayKey: '',

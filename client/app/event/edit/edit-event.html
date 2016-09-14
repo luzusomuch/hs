@@ -51,16 +51,17 @@
                 </div>
                 <div class="col-sm-5">
                   <div class="form-group">
-                    <div class="input-group date" ng-click="vm.startTimeOpen=!vm.startTimeOpen">
-                      <input type="text" class="form-control" id="datetimepicker2" placeholder="Time" ng-model="vm.event.startTimeFormatted" required name="startTime">
+                    <div class="input-group date">
+                      <input class="form-control" ui-timepicker ng-model="vm.event.startTime">
+                      <!-- <input type="text" class="form-control" id="datetimepicker2" placeholder="Time" ng-model="vm.event.startTimeFormatted" required name="startTime"> -->
                       <span class="input-group-addon">
                           <span class="fa fa-clock-o"></span>
                       </span>
                     </div>
 
-                    <div ng-show="vm.startTimeOpen" class="absolute-timepicker">
+                    <!-- <div ng-show="vm.startTimeOpen" class="absolute-timepicker">
                       <uib-timepicker ng-mouseleave="vm.startTimeOpen = false" required name="startTime" ng-model="vm.event.startTime" show-meridian="false"></uib-timepicker>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
@@ -84,16 +85,17 @@
                 </div>
                 <div class="col-sm-5">
                   <div class="form-group relative-div">
-                    <div class="input-group date" ng-click="vm.endTimeOpen=!vm.endTimeOpen">
-                      <input type="text" class="form-control" id="datetimepicker4" placeholder="Time" ng-model="vm.event.endTimeFormatted" required name="endTime">
+                    <div class="input-group date">
+                      <input class="form-control" ui-timepicker ng-model="vm.event.endTime">
+                      <!-- <input type="text" class="form-control" id="datetimepicker4" placeholder="Time" ng-model="vm.event.endTimeFormatted" required name="endTime"> -->
                       <span class="input-group-addon">
                         <span class="fa fa-clock-o"></span>
                       </span>
                     </div>
 
-                    <div ng-show="vm.endTimeOpen" class="absolute-timepicker">
+                    <!-- <div ng-show="vm.endTimeOpen" class="absolute-timepicker">
                       <uib-timepicker ng-mouseleave="vm.endTimeOpen = false" required name="endTime" ng-model="vm.event.endTime" show-meridian="false"></uib-timepicker>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>

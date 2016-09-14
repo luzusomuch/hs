@@ -1642,7 +1642,7 @@ label {
     font-size: 12px;
 }
 .form-group .input-group-addon {
-    border-radius: 0px 20px 20px 0px;
+    border-radius: 0px 20px 20px 0px !important;
 }
 .event-info-form .form-group {
     margin-bottom: 10px;

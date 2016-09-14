@@ -6,7 +6,7 @@
 	<div class="row">
 		<div class="col-sm-8 col-xs-12">
 			<select class="col-sm-3" ng-model="vm.selectedFilterType">
-				<option ng-value="type.value" ng-repeat="type in vm.filterTypes">{{type.text | translate}}</option>
+				<option ng-value="type.value" ng-repeat="type in vm.filterTypes" ng-bind-html="type.text | translate | html"></option>
 			</select>
 			<div class="col-sm-1"></div>
 			<input class="col-sm-8" type="text" ng-model="vm.searchText">

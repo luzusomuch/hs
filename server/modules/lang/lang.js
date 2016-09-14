@@ -338,7 +338,8 @@ let Language = {
 		TERMS: 'Terms',
 		PRIVACY: 'Privacy',
 		CONTACT: 'Contact',
-		ALL_RIGHT_RESERVED: 'All right reserved'
+		ALL_RIGHT_RESERVED: 'All right reserved',
+		EVENT: 'Event'
 		// Enter new translate text below
 	},
 	de: {
@@ -681,7 +682,8 @@ let Language = {
 		TERMS: 'Bedingungen',
 		PRIVACY: 'Privatsphäre',
 		CONTACT: 'Kontakt',
-		ALL_RIGHT_RESERVED: 'Alle rechte vorbehalten'
+		ALL_RIGHT_RESERVED: 'Alle rechte vorbehalten',
+		EVENT: 'Ereignis'
 		// Enter new translate text below
 	}
 }

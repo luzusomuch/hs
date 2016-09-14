@@ -11,9 +11,9 @@ class BackendAwardListCtrl {
 		this.loadMore();
 		this.showBlockedAwards = false;
 		this.filterTypes = [
-			{value: 'objectName', text: 'Name'}, 
-			{value: 'ownerId.name', text: 'Owner name'}, 
-			{value: 'event.name', text: 'Event name'}
+			{value: 'objectName', text: 'AWARD_TITLE'}, 
+			{value: 'ownerId.name', text: 'PHOTO_OWNER_NAME'}, 
+			{value: 'event.name', text: 'EVENT_NAME'}
 		];
 		this.selectedFilterType = this.filterTypes[0].value;
 		this.sortType = 'createdAt';

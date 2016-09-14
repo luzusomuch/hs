@@ -8,7 +8,7 @@ class BackendReportListCtrl {
 		this.$uibModal = $uibModal;
 		this.ReportService = ReportService;
 		this.showCheckedReports = false;
-		this.filterTypes = [{value: 'reporterId.name', text: 'Owner'}, {value: 'event.name', text: 'Event'}];
+		this.filterTypes = [{value: 'reporterId.name', text: 'PHOTO_OWNER_NAME'}, {value: 'event.name', text: 'EVENT'}];
 		this.selectedFilterType = this.filterTypes[0].value;
 		this.sortType = 'createdAt';
 		this.sortReverse = false;

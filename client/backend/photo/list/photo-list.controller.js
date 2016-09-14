@@ -8,7 +8,7 @@ class BackendPhotoListCtrl {
 		this.photos = {};
 		this.PhotoService = PhotoService;
 		this.showBlockedPhotos = false;
-		this.filterTypes = [{value: 'ownerId.name', text: 'Owner'}, {value: 'event.name', text: 'Event'}];
+		this.filterTypes = [{value: 'ownerId.name', text: 'OWNER'}, {value: 'event.name', text: 'EVENT'}];
 		this.selectedFilterType = this.filterTypes[0].value;
 		this.sortType = 'createdAt';
 		this.sortReverse = false;

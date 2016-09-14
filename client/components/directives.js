@@ -113,11 +113,16 @@ angular.module('healthStarsApp')
           if ($scope.location) {
             description += '. Location: '+ $scope.location;
           }
-          if ($scope.startDate) {
-            description += '. Start date time: '+ moment($scope.startDate).format('MMM-DD-YYYY');
-          }
-          if ($scope.endDate) {
-            description += '. End date time: '+ moment($scope.endDate).format('MMM-DD-YYYY');
+          let startDate = moment($scope.startDate);
+          let endDate = moment($scope.endDate);
+          if ($scope.startDate && $scope.endDate) {
+            if (moment(startDate.format('YYYY-MM-DD')).isSame(endDate.format('YYYY-MM-DD'))) {
+              // If start date, end date is the same day
+              description += '. Timing: ' + startDate.format('DD.MMMM.YYYY') + ' ' + startDate.format('HH:mm') + ' - ' + endDate.format('HH:mm');
+            } else {
+              // If start date, end date is not the same day
+              description += '. Timing: ' + startDate.format('DD.MMMM.YYYY') + ' - ' + endDate.format('DD.MMMM.YYYY');
+            }
           }
           FB.ui({
             method: 'feed',

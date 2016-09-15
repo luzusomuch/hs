@@ -2359,21 +2359,21 @@ div.menu-tab > ul>li>a {
 }
 .fc-ltr .fc-event-hori {
     position: relative;
-    padding: 3px 0px;
-    padding-left: 55px;
-    border:0px !important;
+    padding: 10px 0px;
+    padding-left: 40px;
+    border: 0px !important;
     border-radius: 0px !important;
     cursor: pointer;
     font-size: 15px;
 }
 .fc-ltr .fc-event-hori img {
     position: absolute;
-    top: -16px;
+    top: 0px;
     left: -3px;
-    width: 50px;
-    height: 50px;
+    width: 35px;
+    height: 37px;
     object-fit: cover;
-    border-radius: 50%;
+     /*border-radius: 50%; */
 }
 .fc-ltr .fc-event-hori .fc-event-title {
     overflow: hidden;

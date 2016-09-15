@@ -1534,37 +1534,117 @@ module.exports = function(kernel) {
 
   /*sync with google or facebook calendar*/
   kernel.app.post('/api/v1/events/sync-events', kernel.middleware.isAuthenticated(), (req, res) => {
-    console.log(req.body);
-    console.log(req.body.events[0].place)
     if (!req.body.type) {
       return res.status(422).end();
     }
     // We need to find out all events have type equal to req.body.type and ownerId is the same as eventOwnerId
     kernel.model.Event.find({ownerId: req.user._id, type: req.body.type}).then(events => {
+      let count = 0;
       async.each(events, (event, callback) => {
         event.remove().then(() => {
           // remove this event in ES
           kernel.queue.create(kernel.config.ES.events.REMOVE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString()}).save();
+          count += 1;
           return callback();
         }).catch(callback);
       }, (err) => {
         if (err) {
           return res.status(500).json({type: 'SERVER_ERROR'});
         }
-        // Insert all events again
-        let result = [];
-        async.each(req.body.events, (event, callback) => {
-          let newEvent = {
-            ownerId: req.user._id,
-            name: event.name,
-            description: event.description,
+        async.parallel([
+          (cb) => {
+            // update count total events for current user
+            req.user.stats.totalCreatedEvent -= count;
+            req.user.save(cb);
+          },
+          (cb) => {
+            // find out all categories
+            kernel.model.Category.find({}, cb);
+          },
+          (cb) => {
+            // find out all default awards
+            let defaultAwards = ['Foodstar Point', 'Sportstar Point', 'Socialstar Point', 'Actionstar Point', 'Ecostar Point'];
+            kernel.model.Award.find({objectName: {$in: defaultAwards}}, cb);
           }
-          return callback();
-        }, (err) => {
+        ], (err, result) => {
           if (err) {
             return res.status(500).json({type: 'SERVER_ERROR'});
           }
-          return res.status(200).end();
+          // find out the social category
+          let selectedCategory;
+          let categoryIdx = _.findIndex(result[1], (category) => {
+            return category.type==='social';
+          });
+          if (categoryIdx !== -1) {
+            selectedCategory = result[1][categoryIdx];
+          } else {
+            return res.status(404).json({type: 'CATEGORY_NOT_FOUND', message: 'Category not found'});
+          }
+
+          // find out the social award point
+          let selectedAward;
+          let awardIdx = _.findIndex(result[2], (award) => {
+            return award.objectName==='Socialstar Point';
+          });
+          if (awardIdx !== -1) {
+            selectedAward = result[2][awardIdx];
+          } else {
+            return res.status(404).json({type: 'AWARD_NOT_FOUND', message: 'Award not found'});
+          }
+
+          // Insert all events again
+          let results = [];
+          async.each(req.body.events, (event, callback) => {
+            let newEvent;
+            if (req.body.type==='facebook') {
+              let eventLocation = event.place.location;
+              newEvent = {
+                ownerId: req.user._id,
+                name: event.name,
+                description: event.description,
+                categoryId: selectedCategory._id,
+                awardId: selectedAward._id,
+                startDateTime: event.start_time,
+                endDateTime: (event.end_time) ? event.end_time : event.start_time,
+                public: true,
+                private: false,
+                type: req.body.type,
+                location: {
+                  coordinates: [eventLocation.longitude, eventLocation.latitude],
+                  country: eventLocation.country,
+                  fullAddress: eventLocation.street
+                }
+              };
+            } else if (req.body.type==='google') {
+              newEvent = {
+                ownerId: req.user._id,
+                name: event.summary,
+                description: event.description,
+                categoryId: selectedCategory._id,
+                awardId: selectedAward._id,
+                startDateTime: new Date(event.start.date),
+                endDateTime: new Date(event.end.date),
+                public: true,
+                private: false,
+                type: req.body.type,
+                location: {
+                  coordinates: [0, 0],
+                  fullAddress: event.location
+                }
+              }
+            }
+            kernel.model.Event(newEvent).save().then(saved => {
+              results.push(saved);
+              kernel.queue.create(kernel.config.ES.events.CREATE, {type: kernel.config.ES.mapping.eventType, id: saved._id.toString(), data: saved}).save();
+              kernel.queue.create('TOTAL_EVENT_CREATED', {userId: req.user._id}).save();
+              return callback();
+            }).catch(callback);
+          }, (err) => {
+            if (err) {
+              return res.status(500).json({type: 'SERVER_ERROR'});
+            }
+            return res.status(200).end();
+          });
         });
       });
     }).catch(err => {

@@ -64,7 +64,7 @@ class HealthStarsES {
 	}
 
 	delete(params, cb) {
-		return this.es.update(this.indexName, {
+		return this.es.delete(this.indexName, {
 			type: params.type,
 			id: params.id,
 		}, cb);

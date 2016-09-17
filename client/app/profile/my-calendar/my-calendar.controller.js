@@ -38,6 +38,8 @@ class MyCalendarCtrl {
 		        eventClick: (event) => {
 		        	if (event.type==='local') {
 		        		$state.go('event.detail', {id: event.id});
+		        	} else {
+		        		window.open(event.link, '_blank');
 		        	}
 		        }
 	      	}
@@ -56,7 +58,7 @@ class MyCalendarCtrl {
 	renderEvents(events, type) {
 		let items = [];
 		_.each(events, (event) => {
-			let backgroundColor;
+			let backgroundColor, link;
 			if (event.categoryId && event.categoryId.type) {}
 			switch (event.categoryId.type) {
 				case 'action':
@@ -77,6 +79,11 @@ class MyCalendarCtrl {
 				default:
 					break;
 			}
+			if (event.type==='google') {
+				link = event.google.htmlLink;
+			} else if (event.type==='facebook') {
+				link = 'https://www.facebook.com/events/'+event.facebook.id
+			}
 			items.push({
 				title: event.name,
 				start: new Date(event.startDateTime),
@@ -84,7 +91,8 @@ class MyCalendarCtrl {
 				id: event._id,
 				type: (event.type) ? event.type : 'local',
 				photo: (event.photosId && event.photosId.length > 0) ? event.photosId[0] : null,
-				backgroundColor: backgroundColor
+				backgroundColor: backgroundColor, 
+				link: link
 			});
 			// if (event==='local') {
 			// 	let backgroundColor;

@@ -13,7 +13,7 @@
           </div>
         </div>
         <div class="text-li-event">
-          <h3 style="cursor:pointer" ui-sref="event.detail({id: event._id})">{{event.name}}</h3>
+          <h3 style="cursor:pointer" ng-click="openEventDetail(event)">{{event.name}}</h3>
           <i class="fa fa-calendar"></i> {{event.startDateTime | date : 'dd.MM.yyyy'}}  <i class="fa fa-clock-o"></i> {{event.startDateTime | date: 'HH:mm'}}<br>
           <div class="li-friend-event">
             <i class="fa fa-user-plus"></i>
@@ -39,7 +39,7 @@
           </div>
         </div>
         <div class="text-li-event">
-          <h3 style="cursor:pointer" ui-sref="event.detail({id: event._id})">{{event.name}}</h3>
+          <h3 style="cursor:pointer" ng-click="openEventDetail(event)">{{event.name}}</h3>
           <i class="fa fa-calendar"></i> {{event.startDateTime | date : 'dd.MM.yyyy'}}  <i class="fa fa-clock-o"></i> {{event.startDateTime | date: 'HH:mm'}}<br>
           <div class="li-friend-event">
             <i class="fa fa-user-plus"></i>

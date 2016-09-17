@@ -326,6 +326,7 @@ module.exports = function(kernel) {
                   ],
                   should: [
                     { term: { participantsId: req.user._id}},
+                    { term: { ownerId: req.user._id}},
                   ]
                 }
               }
@@ -1290,7 +1291,10 @@ module.exports = function(kernel) {
         { term: { participantsId: req.user._id } },
         { term: { ownerId: req.user._id} }
       ];
-      must = [{ term: { blocked: false } }];
+      must = [
+        { term: { blocked: false } },
+        { term: { type: 'local' } }
+      ];
     }
 
     let q = {
@@ -1582,15 +1586,15 @@ module.exports = function(kernel) {
           }
 
           // find out the social award point
-          let selectedAward;
-          let awardIdx = _.findIndex(result[2], (award) => {
-            return award.objectName==='Socialstar Point';
-          });
-          if (awardIdx !== -1) {
-            selectedAward = result[2][awardIdx];
-          } else {
-            return res.status(404).json({type: 'AWARD_NOT_FOUND', message: 'Award not found'});
-          }
+          // let selectedAward;
+          // let awardIdx = _.findIndex(result[2], (award) => {
+          //   return award.objectName==='Socialstar Point';
+          // });
+          // if (awardIdx !== -1) {
+          //   selectedAward = result[2][awardIdx];
+          // } else {
+          //   return res.status(404).json({type: 'AWARD_NOT_FOUND', message: 'Award not found'});
+          // }
 
           // Insert all events again
           let results = [];
@@ -1603,17 +1607,18 @@ module.exports = function(kernel) {
                 name: event.name,
                 description: event.description,
                 categoryId: selectedCategory._id,
-                awardId: selectedAward._id,
+                // awardId: selectedAward._id,
                 startDateTime: event.start_time,
                 endDateTime: (event.end_time) ? event.end_time : event.start_time,
-                public: true,
-                private: false,
+                public: false,
+                private: true,
                 type: req.body.type,
                 location: {
                   coordinates: [eventLocation.longitude, eventLocation.latitude],
                   country: eventLocation.country,
                   fullAddress: eventLocation.street
-                }
+                },
+                facebook: event
               };
             } else if (req.body.type==='google') {
               newEvent = {
@@ -1621,16 +1626,17 @@ module.exports = function(kernel) {
                 name: event.summary,
                 description: event.description,
                 categoryId: selectedCategory._id,
-                awardId: selectedAward._id,
+                // awardId: selectedAward._id,
                 startDateTime: new Date(event.start.date),
                 endDateTime: new Date(event.end.date),
-                public: true,
-                private: false,
+                public: false,
+                private: true,
                 type: req.body.type,
                 location: {
                   coordinates: [0, 0],
                   fullAddress: event.location
-                }
+                },
+                google: event
               }
             }
             kernel.model.Event(newEvent).save().then(saved => {

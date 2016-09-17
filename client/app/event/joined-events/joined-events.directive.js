@@ -1,7 +1,7 @@
 'use strict';
 
 class JoinedEventsCtrl {
-	constructor($scope, EventService, SearchParams) {
+	constructor($scope, EventService, SearchParams, $state) {
 		$scope.SearchParams = SearchParams.params;
 		$scope.friendsEvents = {};
 		$scope.searchItems = {};
@@ -44,6 +44,15 @@ class JoinedEventsCtrl {
 		};
 
 		$scope.loadMore();
+
+		$scope.openEventDetail = function(event) {
+			if (event.type==='local') {
+				$state.go('event.detail', {id: event._id});
+			} else {
+				let link = (event.type==='google') ? event.google.htmlLink : 'https://www.facebook.com/events/'+event.facebook.id;
+				window.open(link, '_blank');
+			}
+		};
 	}
 }
 

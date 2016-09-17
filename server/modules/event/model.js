@@ -41,7 +41,9 @@ module.exports = {
       },
       totalComment: {type: Number, default: 0},
       banner: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Photo'},
-      type: {type: String, enum: ['local', 'facebook', 'google'], default: 'local'}
+      type: {type: String, enum: ['local', 'facebook', 'google'], default: 'local'},
+      facebook: {},
+      google: {}
     });
     
     //import timestamp for auto create updatedAt, createdAt field manually

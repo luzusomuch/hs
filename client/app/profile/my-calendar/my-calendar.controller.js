@@ -49,7 +49,7 @@ class MyCalendarCtrl {
 	}
 
 	loadEvents(type) {
-		this.EventService.getUserEvent({getAll: true}).then(resp => {
+		this.EventService.getUserEvent({getAll: true, pageSize: 30}).then(resp => {
 			this.localEvents = resp.data;
 			this.renderEvents(this.localEvents.items, type);
 		});

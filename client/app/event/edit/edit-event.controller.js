@@ -8,6 +8,34 @@ class EditEventCtrl {
 			$state.go('home');
 		}
     this.categories = categories;
+    _.each(this.categories, (cat) => {
+      switch (cat.type) {
+        case 'food': 
+          cat.menuName = 'foodstar';
+          cat.order = 2;
+          break;
+        case 'action':
+          cat.menuName = 'actionstar';
+          cat.order = 5;
+          break;
+        case 'eco':
+          cat.menuName = 'ecostar';
+          cat.order = 4;
+          break;
+        case 'social': 
+          cat.menuName = 'socialstar';
+          cat.order = 3; 
+          break;
+        case 'internation':
+          cat.menuName = 'sportstar';
+          cat.order = 1;
+          break;
+        default:
+          cat.menuName = cat.type;
+          cat.order = this.categories.length;
+          break;
+      }
+    });
 		// Init event
 		this.event = event;
 		this.event.categoryId = event.categoryId._id;

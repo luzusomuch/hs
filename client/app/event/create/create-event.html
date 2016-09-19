@@ -21,7 +21,7 @@
                     <input id="{{category._id}}" type="radio" name="category" value="{{category._id}}" ng-model="vm.event.categoryId">
                     <label for="{{category._id}}"> 
                       <img src="{{category | categoryImagePath}}" >
-                      <span ng-show="vm.selectedCategory._id===category._id">{{category.name}}</span>
+                      <span ng-show="vm.selectedCategory._id===category._id">{{category.menuName.toUpperCase()}}</span>
                     </label>
                   </div>
                 </div>

@@ -18,7 +18,7 @@ class CreateEventCtrl {
       startDate: new Date(), 
       allowShow: false,
       startTime: new Date(),
-      endTime: new Date()
+      endTime: moment().add(1, 'hours')
 		};
     this.shareEventInfo = {};
     this.$http = $http;
@@ -97,6 +97,34 @@ this.newDate = new Date();
     CategoryService.getAll().then(resp => {
     	this.categories = resp.data.items;
       this.event.categoryId = this.categories[0]._id;
+      _.each(this.categories, (cat) => {
+        switch (cat.type) {
+          case 'food': 
+            cat.menuName = 'foodstar';
+            cat.order = 2;
+            break;
+          case 'action':
+            cat.menuName = 'actionstar';
+            cat.order = 5;
+            break;
+          case 'eco':
+            cat.menuName = 'ecostar';
+            cat.order = 4;
+            break;
+          case 'social': 
+            cat.menuName = 'socialstar';
+            cat.order = 3; 
+            break;
+          case 'internation':
+            cat.menuName = 'sportstar';
+            cat.order = 1;
+            break;
+          default:
+            cat.menuName = cat.type;
+            cat.order = this.categories.length;
+            break;
+        }
+      });
     });
 
     this.options = {

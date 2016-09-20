@@ -1601,7 +1601,15 @@ module.exports = function(kernel) {
           async.each(req.body.events, (event, callback) => {
             let newEvent;
             if (req.body.type==='facebook') {
-              let eventLocation = event.place.location;
+              let eventLocation = (event.place) ? event.place.location : {};
+              let location = {};
+              if (eventLocation.longitude && eventLocation.latitude) {
+                location.coordinates = [eventLocation.longitude, eventLocation.latitude];
+                location.country = eventLocation.country;
+                location.fullAddress = eventLocation.street;
+              } else {
+                location.coordinates = [0, 0];
+              }
               newEvent = {
                 ownerId: req.user._id,
                 name: event.name,
@@ -1613,11 +1621,7 @@ module.exports = function(kernel) {
                 public: false,
                 private: true,
                 type: req.body.type,
-                location: {
-                  coordinates: [eventLocation.longitude, eventLocation.latitude],
-                  country: eventLocation.country,
-                  fullAddress: eventLocation.street
-                },
+                location: location,
                 facebook: event
               };
             } else if (req.body.type==='google') {

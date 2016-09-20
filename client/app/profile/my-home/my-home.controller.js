@@ -119,18 +119,19 @@ class MyHomeCtrl {
 					if (resp.error) {
 						this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 					} else {
+						let friends = [];
 						_.each(resp.items, (item) => {
 							if (item.objectType==='person') {
 								window.gapi.client.plus.people.get({userId: item.id}).execute(profile => {
-									console.log(profile);
+									friends.push(profile);
 								});
 							}
 						});
+						this.showSocialFriends(friends, 'google');
 					}
 				});
 			});
 		} else if (type==='outlook') {
-			console.log(this.APP_CONFIG);
 			WL.init({
 		      	client_id: this.APP_CONFIG.apiKey.hotmailId,
 		      	redirect_uri: this.APP_CONFIG.apiKey.hotmailCallbackUrl,
@@ -142,7 +143,7 @@ class MyHomeCtrl {
 		            path: 'me/contacts',
 		            method: 'GET'
 		        }).then(response => {
-		            	console.log(response.data);
+		            	this.showSocialFriends(response.data, 'outlook');
 		            }, (resp) => {
 		            	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		            }
@@ -164,6 +165,25 @@ class MyHomeCtrl {
 				});
 			});
 		}
+	}
+
+	showSocialFriends(friends, type) {
+		this.$uibModal.open({
+			animation: true,
+			controller: 'ShowSocialFriendsCtrl',
+			controllerAs: 'ShowSocialFriends',
+			templateUrl: 'app/profile/modal/show-social-friends/view.html',
+			resolve: {
+				friends: () => {
+					return friends;
+				},
+				type: () => {
+					return type;
+				}
+			}
+		}).result.then(data => {
+			console.log(data);
+		});
 	}
 }
 

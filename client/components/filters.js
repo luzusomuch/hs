@@ -352,7 +352,7 @@ angular.module('healthStarsApp')
     let selectedImage;
     let photos = event.photosId;
     let category = event.categoryId;
-    if (photos.length > 0) {
+    if (photos && photos.length > 0) {
       angular.forEach(photos, (photo) => {
         if (!photo.blocked && photo._id) {
           selectedImage = photo;

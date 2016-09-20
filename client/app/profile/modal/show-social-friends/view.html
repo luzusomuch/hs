@@ -1,0 +1,24 @@
+<div class="modal-header">
+
+	<h3 class="modal-title">{{'INVITE_SOCIAL_FRIENDS' | translate}}</h3>
+</div>
+<div class="modal-body">
+	<form ng-submit="ShowSocialFriends.submit(form)" name="form" novalidate>
+		<div class="row">
+			<div class="col-sm-4" ng-repeat="friend in ShowSocialFriends.friends">
+				<div ng-show="ShowSocialFriends.type==='google'">
+					<img src="{{friend.image.url}}"> {{friend.displayName}}
+				</div>
+				<div ng-show="ShowSocialFriends.type==='outlook'">
+					<img src="{{friend | avatarUrl}}" style="width: 100%">
+					<p>{{friend.name}}</p>
+					<p>{{'EMAIL' | translate}}: {{friend.emails.account}}</p>
+				</div>
+			</div>			
+		</div>
+		<div class="modal-footer">
+      		<button type="submit" class="btn btn-success btn-radius-20">{{'SEND' | translate}}</button>
+			<button ng-click="ShowSocialFriends.close()" type="button" class="btn btn-default btn-radius-20" ng-bind-html="'CLOSE' | translate | html"></button>
+		</div>    
+  	</form>
+</div>

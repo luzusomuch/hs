@@ -322,7 +322,8 @@ module.exports = function(kernel) {
               filter: {
                 bool: {
                   must: [
-                    { term: { blocked: false } }
+                    { term: { blocked: false } },
+                    { range: { startDateTime: { gte: moment().toISOString() }}}
                   ],
                   should: [
                     { term: { participantsId: req.user._id}},

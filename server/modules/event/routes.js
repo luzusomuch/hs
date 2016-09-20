@@ -322,8 +322,7 @@ module.exports = function(kernel) {
               filter: {
                 bool: {
                   must: [
-                    { term: { blocked: false } },
-                    { range: { startDateTime: { gte: moment().toISOString() }}}
+                    { term: { blocked: false } }
                   ],
                   should: [
                     { term: { participantsId: req.user._id}},
@@ -424,6 +423,8 @@ module.exports = function(kernel) {
         query.sort = [
           { createdAt: 'desc' }
         ];
+
+        query.query.filtered.filter.bool.must.push({range : { startDateTime: { gte: moment().toISOString() }}});
       }
 
       kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {

@@ -240,7 +240,6 @@ module.exports = function(kernel) {
     let skip = (page -1) * pageSize;
     let date = moment(new Date());
     let must = [{ term: { blocked: false } }];
-
     if (!req.query.getAll) {
       must.push({ term: { private: false } })
     }
@@ -270,11 +269,6 @@ module.exports = function(kernel) {
         { createdAt: 'desc' }
       ]
     };
-
-    if (req.query.getAll) {
-      query = _.omit(query, 'from');
-      query = _.omit(query, 'size');
-    }
 
     kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {
       if (err) {

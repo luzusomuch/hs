@@ -868,6 +868,32 @@ class UserController {
             }).catch(callback);
           }, cb);
         }).catch(cb);
+      }, 
+      (cb) => {
+        this.kernel.model.Event.find({participantsId: req.user._id})
+        .populate('photosId')
+        .populate({
+          path: 'ownerId',
+          select: '-password -salt',
+          populate: {path: 'avatar', model: 'Photo'}
+        }).then(events => {
+          async.each(events, (event, callback) => {
+            if (_.findIndex(event.participantsId, (id) => {
+              return id.toString()===req.user._id.toString();
+            }) !== -1 && _.findIndex(event.attendedIds, (id) => {
+              if (id) {
+                return id.toString()===req.user._id.toString();
+              }
+            }) === -1) {
+              event = event.toJSON();
+              event.itemType = 'inviting-event';
+              results.push(event);
+              callback();
+            } else {
+              callback();
+            }
+          }, cb);
+        }).catch(cb);
       }
     ], (err) => {
       if (err) {

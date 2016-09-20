@@ -339,7 +339,9 @@ let Language = {
 		PRIVACY: 'Privacy',
 		CONTACT: 'Contact',
 		ALL_RIGHT_RESERVED: 'All right reserved',
-		EVENT: 'Event'
+		EVENT: 'Event',
+		EVENT_PARTICIPATION: 'Event participation',
+		WAS_ADDED_YOU_AS_MEMBER_OF_EVENT: 'was added you as member of event'
 		// Enter new translate text below
 	},
 	de: {
@@ -683,7 +685,9 @@ let Language = {
 		PRIVACY: 'Privatsphäre',
 		CONTACT: 'Kontakt',
 		ALL_RIGHT_RESERVED: 'Alle rechte vorbehalten',
-		EVENT: 'Ereignis'
+		EVENT: 'Ereignis',
+		EVENT_PARTICIPATION: 'Event-Teilnahme',
+		WAS_ADDED_YOU_AS_MEMBER_OF_EVENT: 'wurde sie als Mitglied der Veranstaltung hinzugefügt'
 		// Enter new translate text below
 	}
 }

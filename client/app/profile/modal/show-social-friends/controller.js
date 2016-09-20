@@ -7,15 +7,13 @@ class ShowSocialFriendsCtrl {
 		this.authUser = $localStorage.authUser;
 		this.friends = friends;
 		this.type = type;
-		console.log(this.friends);
-		console.log(this.type);
 
 		this.submitted = false;
 	}
 
 	submit(form) {
 		this.submitted = true;
-
+		this.$uibModalInstance.dismiss();
 	}
 
 	close() {

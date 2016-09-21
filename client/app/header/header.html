@@ -15,7 +15,7 @@
                         <li><a ui-sref="profile.myCalendar"><i class="fa fa-calendar"></i> <span>{{'MENU_MY_CALENDAR' | translate}}</span></a></li>
                         <li><a ui-sref="profile.myAward"><i class="fa fa-trophy"></i> <span>{{'MENU_MY_AWARDS' | translate}}</span></a></li>
                         <li><a ui-sref="profile.myMessages"><i class="fa fa-envelope-o"></i> <span>{{'MENU_MY_MESSENGER' | translate}}</span></a></li>
-                        <li><a ui-sref="profile.healthBook"><i class="fa fa-heartbeat"></i> <span>{{'MENU_HEALTH_BOOK' | translate}}</span></a></li>
+                        <li><a ui-sref="profile.detail({id: vm.user._id})"><i class="fa fa-heartbeat"></i> <span>{{'HEALTH_PROFILE' | translate}} </span></a></li>
                         <li><a ui-sref="profile.mySetting"><i class="fa fa-cog"></i> <span>{{'MENU_SETTINGS' | translate}}</span></a></li>
                         <!-- Multiple language -->
                         <li><a href="#" ng-click="vm.changeLanguage('en')"><img src="assets/images/english.png"> <span>{{'ENGLISH' | translate}}</span></a></li>

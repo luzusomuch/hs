@@ -341,7 +341,8 @@ let Language = {
 		ALL_RIGHT_RESERVED: 'All right reserved',
 		EVENT: 'Event',
 		EVENT_PARTICIPATION: 'Event participation',
-		WAS_ADDED_YOU_AS_MEMBER_OF_EVENT: 'was added you as member of event'
+		WAS_ADDED_YOU_AS_MEMBER_OF_EVENT: 'was added you as member of event',
+		HEALTH_PROFILE: 'Health profile',
 		// Enter new translate text below
 	},
 	de: {
@@ -687,7 +688,8 @@ let Language = {
 		ALL_RIGHT_RESERVED: 'Alle rechte vorbehalten',
 		EVENT: 'Ereignis',
 		EVENT_PARTICIPATION: 'Event-Teilnahme',
-		WAS_ADDED_YOU_AS_MEMBER_OF_EVENT: 'wurde sie als Mitglied der Veranstaltung hinzugefügt'
+		WAS_ADDED_YOU_AS_MEMBER_OF_EVENT: 'wurde sie als Mitglied der Veranstaltung hinzugefügt',
+		HEALTH_PROFILE: 'Gesundheitsprofil'
 		// Enter new translate text below
 	}
 }

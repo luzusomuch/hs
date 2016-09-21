@@ -32,6 +32,14 @@ class MySettingCtrl {
 		this.Upload = Upload;
 		this.$cookies = $cookies;
 		this.APP_CONFIG = APP_CONFIG;
+		this.language = $localStorage.language;
+
+		$scope.$watch('vm.language', (nv) => {
+			if (nv && nv!==$localStorage.language) {
+				this.$localStorage.language = nv;
+				window.location.reload();
+			}
+		});
 	}
 
 	updateAccount(form) {

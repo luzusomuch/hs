@@ -201,12 +201,21 @@
 	                                    <td>{{'VISIBLE_FRIENDS_LIST' | translate}}</td>
 	                                    <td  class="text-right">
 	                                        <div class="checkbox-l">
-	                                            <input ng-click="vm.notificationSetting('isVisibleFriendsList')" id="checkbox4" type="checkbox" name="checkbox" value="checkbox3" ng-model="vm.authUser.notificationSetting.isVisibleFriendsList">
+	                                            <input ng-click="vm.notificationSetting('isVisibleFriendsList')" id="checkbox4" type="checkbox" name="checkbox" value="checkbox4" ng-model="vm.authUser.notificationSetting.isVisibleFriendsList">
 	                                            <label for="checkbox4"></label>
 	                                        </div>
 	                                    </td>
 	                                </tr>
 	                            </table>
+	                        </div>
+                		</uib-tab>
+                		<uib-tab index="4" heading="{{'LANGUAGE_SETTINGS' | translate}}">
+                			<div role="tabpanel" class="tab-pane" id="language_settings">
+                				<p ng-bind-html="'SELECT_YOUR_LANGUAGE' | translate | html"></p>
+                				<div class="form-group">
+                					<input type="radio" name="gender" value="en" ng-model="vm.language"> <img src="assets/images/english.png"> <span>{{'ENGLISH' | translate}}</span> <br>
+                					<input type="radio" name="gender" value="de" ng-model="vm.language"> <img src="assets/images/german.png"> <span>{{'GERMAN' | translate}}</span> <br>
+                				</div>
 	                        </div>
                 		</uib-tab>
                 	</uib-tabset>

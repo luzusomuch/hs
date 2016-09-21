@@ -343,6 +343,8 @@ let Language = {
 		EVENT_PARTICIPATION: 'Event participation',
 		WAS_ADDED_YOU_AS_MEMBER_OF_EVENT: 'was added you as member of event',
 		HEALTH_PROFILE: 'Health profile',
+		LANGUAGE_SETTINGS: 'Language settings',
+		SELECT_YOUR_LANGUAGE: 'Select your language',
 		// Enter new translate text below
 	},
 	de: {
@@ -689,7 +691,9 @@ let Language = {
 		EVENT: 'Ereignis',
 		EVENT_PARTICIPATION: 'Event-Teilnahme',
 		WAS_ADDED_YOU_AS_MEMBER_OF_EVENT: 'wurde sie als Mitglied der Veranstaltung hinzugefügt',
-		HEALTH_PROFILE: 'Gesundheitsprofil'
+		HEALTH_PROFILE: 'Gesundheitsprofil',
+		LANGUAGE_SETTINGS: 'Spracheinstellungen',
+		SELECT_YOUR_LANGUAGE: 'Wähle deine Sprache'
 		// Enter new translate text below
 	}
 }

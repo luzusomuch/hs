@@ -26,6 +26,20 @@
           <a href="#" ui-sref="forgotPw" class="forgot-pass">{{'FORGOT_PASSWORD' | translate}}</a>
           <div class="or-login"><span>{{'OR' | translate}}</span></div>
           <oauth-buttons theme="icon"></oauth-buttons>
+
+          <!-- Multiple languages -->
+          <div class="form-group" style="text-align: center">
+            <p ng-bind-html="'SELECT_YOUR_LANGUAGE' | translate | html"></p>
+            <div class="form-group">
+              <div class="col-sm-5">
+                <input type="radio" name="gender" value="en" ng-model="vm.language"> <img class="m-top-3" src="assets/images/english.png"> <span>{{'ENGLISH' | translate}}</span> 
+              </div>
+              <div class="col-sm-2"></div>
+              <div class="col-sm-5">
+                <input type="radio" name="gender" value="de" ng-model="vm.language"> <img class="m-top-3" src="assets/images/german.png"> <span>{{'GERMAN' | translate}}</span> 
+              </div>
+            </div>
+          </div>
       </form>
       <div class="text-center">
       {{'NOT_REGISTERED' | translate}}? <a href="#" ui-sref="register">{{'SIGN_UP' | translate}}</a>

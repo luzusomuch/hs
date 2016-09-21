@@ -1,13 +1,21 @@
 'use strict';
 
 class LoginCtrl {
-  constructor(Auth, $state) {
+  constructor(Auth, $state, $localStorage, $scope) {
     this.user = {};
     this.errors = {};
     this.submitted = false;
 
     this.Auth = Auth;
     this.$state = $state;
+    this.language = $localStorage.language;
+
+    $scope.$watch('vm.language', (nv) => {
+      if (nv && nv!==$localStorage.language) {
+        $localStorage.language = nv;
+        window.location.reload();
+      }
+    });
   }
 
   login(form) {

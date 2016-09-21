@@ -1,5 +1,6 @@
 'use strict';
 import async from 'async';
+import _ from 'lodash';
 import moment from 'moment';
 
 // type is hours or minutes 
@@ -77,14 +78,14 @@ module.exports = (kernel, cb) => {
               categoryId: event.categoryId,
               tags: event.tags,
               awardId: event.awardId,
-              participantsId: event.participantsId,
+              participantsId: [],
               photosId: event.photosId,
               public: event.public,
               location: event.location,
               private: event.private,
               banner: event.banner,
               stats: {
-                totalParticipants: event.participantsId.length
+                totalParticipants: 0
               }
             };
             kernel.model.Event(newEvent).save().then(saved => {
@@ -107,9 +108,49 @@ module.exports = (kernel, cb) => {
                   callback(err);
                 });
               }, () => {
-                kernel.queue.create('TOTAL_EVENT_CREATED', {userId: saved.ownerId}).save();
-                kernel.queue.create('GRANTAWARD', saved).save();
-                kernel.ES.create({type: kernel.ES.config.mapping.eventType, id: saved._id.toString(), data: saved}, cb);
+                async.waterfall([
+                  (_cb) => {
+                    // get all user who like this event
+                    kernel.model.Like.find({objectName: 'Event', objectId: event._id}).distinct('ownerId').then(likedUsers => {
+                      _cb(null, likedUsers);
+                    }).catch(_cb);
+                  },
+                  (result, _cb) => {
+                    // join event participants and user whose liked this event
+                    let userIds = _.union(result, event.participantsId);
+                    // get uniq userIds
+                    userIds = _.map(_.groupBy(userIds, (doc) => {
+                      return doc;
+                    }), (grouped) => {
+                      return grouped[0];
+                    });
+                    // if event owner liked his event then remove his' _id from userIds list
+                    let index = _.findIndex(userIds, (id) => {
+                      return id.toString()===event.ownerId.toString();
+                    });
+                    if (index !== -1) {
+                      userIds.splice(index, 1);
+                    }
+                    _cb(null, userIds);
+                  }
+                ], (err, result) => {
+                  if (err) {
+                    return cb(err);
+                  }
+                  async.each(result, (userId, _callback) => {
+                    // Create new event invitation
+                    let invite = new kernel.model.InvitationRequest({
+                      fromUserId: saved.ownerId,
+                      toUserId: userId,
+                      objectId: saved._id
+                    });
+                    invite.save(_callback);
+                  }, () => {
+                    kernel.queue.create('TOTAL_EVENT_CREATED', {userId: saved.ownerId}).save();
+                    // kernel.queue.create('GRANTAWARD', saved).save();
+                    kernel.ES.create({type: kernel.ES.config.mapping.eventType, id: saved._id.toString(), data: saved}, cb);
+                  });
+                });
               });
             }).catch(err => {
               cb(err);

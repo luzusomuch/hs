@@ -34,7 +34,7 @@ module.exports = (kernel, cb) => {
           break;
         case 'weekly': 
           let diffDay = moment(todayFormated).diff(moment(eventRepeat.startDate).format(dateFormat), 'days');
-          if (diffDay % 7 === 0 && moment(todayFormated).isBefore(moment(eventRepeat.endDate).format(dateFormat))) {
+          if (diffDay!==0 && diffDay % 7 === 0 && moment(todayFormated).isBefore(moment(eventRepeat.endDate).format(dateFormat))) {
             newStartDateTime = new Date(moment().hours(getHourOrMinute('hours', event.startDateTime)).minutes(getHourOrMinute('minutes', event.startDateTime)));
             
             newEndDateTime = new Date(moment(newStartDateTime).add(eventTotalDays, 'days').hours(getHourOrMinute('hours', event.endDateTime)).minutes(getHourOrMinute('minutes', event.endDateTime)));
@@ -44,7 +44,7 @@ module.exports = (kernel, cb) => {
           if (moment(todayFormated).isSameOrAfter(moment(eventRepeat.startDate).format(dateFormat)) && moment(todayFormated).isSameOrBefore(moment(eventRepeat.endDate).format(dateFormat))) {
             let totalDaysInMonth = moment().daysInMonth();
             let diffDay = moment(todayFormated).diff(moment(eventRepeat.startDate).format(dateFormat), 'days');
-            if (diffDay % totalDaysInMonth === 0 && moment(todayFormated).isBefore(moment(eventRepeat.endDate).format(dateFormat))) {
+            if (diffDay!==0 && diffDay % totalDaysInMonth === 0 && moment(todayFormated).isBefore(moment(eventRepeat.endDate).format(dateFormat))) {
               newStartDateTime = new Date(moment().hours(getHourOrMinute('hours', event.startDateTime)).minutes(getHourOrMinute('minutes', event.startDateTime)));
               
               newEndDateTime = new Date(moment(newStartDateTime).add(eventTotalDays, 'days').hours(getHourOrMinute('hours', event.endDateTime)).minutes(getHourOrMinute('minutes', event.endDateTime)));

@@ -50,25 +50,25 @@ class BackendEventEditCtrl {
       //do anything such as remove socket
     });
 
-    $scope.$watch('vm.event.isRepeat', (nv) => {
-    	if (nv) {
-    		let modalInstance = $uibModal.open({
-		    	animation: true,
-		    	templateUrl: 'backend/event/edit/repeat-event.html',
-		    	controller: 'RepeatEventCtrl',
-		    	controllerAs: 'vm'
-		    });
-    		modalInstance.result.then(data => {
-    			this.event.repeat = {
-    				type: data.type,
-    				startDate: data.startDate,
-    				endDate: data.endDate
-    			};
-    		}, () => {
-    			this.event.isRepeat = false;
-    		});
-    	}
-    });
+    // $scope.$watch('vm.event.isRepeat', (nv) => {
+    // 	if (nv) {
+    // 		let modalInstance = $uibModal.open({
+		  //   	animation: true,
+		  //   	templateUrl: 'backend/event/edit/repeat-event.html',
+		  //   	controller: 'RepeatEventCtrl',
+		  //   	controllerAs: 'vm'
+		  //   });
+    // 		modalInstance.result.then(data => {
+    // 			this.event.repeat = {
+    // 				type: data.type,
+    // 				startDate: data.startDate,
+    // 				endDate: data.endDate
+    // 			};
+    // 		}, () => {
+    // 			this.event.isRepeat = false;
+    // 		});
+    // 	}
+    // });
 
     $scope.$watch('vm.event.endTime', (nv) => {
       if (nv) {
@@ -103,6 +103,37 @@ class BackendEventEditCtrl {
       minDate: new Date(),
       showWeeks: true
     };
+  }
+
+  repeatEvent(isRepeat) {
+    if (isRepeat) {
+      let modalInstance = this.$uibModal.open({
+        animation: true,
+        templateUrl: 'backend/event/edit/repeat-event.html',
+        controller: 'RepeatEventCtrl',
+        controllerAs: 'vm',
+        resolve: {
+          type: () => {
+            return (this.event.repeat) ? this.event.repeat.type : null;
+          },
+          startDate: () => {
+            return (this.event.repeat) ? this.event.repeat.startDate : null;
+          },
+          endDate: () => {
+            return (this.event.repeat) ? this.event.repeat.endDate : null;
+          }
+        }
+      });
+      modalInstance.result.then(data => {
+        this.event.repeat = {
+          type: data.type,
+          startDate: data.startDate,
+          endDate: data.endDate
+        };
+      }, () => {
+        this.event.isRepeat = false;
+      });
+    }
   }
 
   changeStartTime(time) {
@@ -276,12 +307,14 @@ class BackendEventEditCtrl {
 }
 
 class RepeatEventCtrl {
-	constructor($uibModalInstance, growl) {
+	constructor($uibModalInstance, growl, startDate, endDate, type) {
 		this.$uibModalInstance = $uibModalInstance;
 		this.growl = growl;
-		this.repeat = {
-			startDate: new Date()
-		};
+    this.repeat = {
+      startDate: (startDate) ? new Date(startDate) : new Date(),
+      endDate: (endDate) ? new Date(endDate) : new Date(moment().add(1, 'days')),
+      type: type
+    };
     this.errors = {};
     this.submitted = false;
     this.options = {

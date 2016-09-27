@@ -418,7 +418,7 @@ module.exports = function(kernel) {
           { createdAt: 'desc' }
         ];
 
-        query.query.filtered.filter.bool.must.push({range : { startDateTime: { gte: moment().toISOString() }}});
+        query.query.filtered.filter.bool.must.push({range : { startDateTime: { gte: moment().startOf('date').toISOString() }}});
       }
 
       kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {

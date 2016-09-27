@@ -152,6 +152,12 @@ class EditEventCtrl {
     };
   }
 
+  changeStartTime(time) {
+    if (time) {
+      this.event.endTime = moment(time).add(1, 'hours');
+    }
+  }
+
   refreshAddresses(address) {
     if (address.trim().length > 0) {
       var params = {address: address, sensor: false};

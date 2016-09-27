@@ -92,7 +92,7 @@
                   <div class="col-sm-5">
                     <div class="form-group">
                       <div class="input-group date">
-                        <input class="form-control" ui-timepicker ng-model="vm.event.startTime">
+                        <input class="form-control" ng-change="vm.changeStartTime(vm.event.startTime)" ui-timepicker ng-model="vm.event.startTime">
                         <!-- <input type="text" class="form-control" id="datetimepicker2" placeholder="Time" ng-model="vm.event.startTimeFormatted" required name="startTime"> -->
                         <span class="input-group-addon">
                             <span class="fa fa-clock-o"></span>

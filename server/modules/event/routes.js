@@ -285,8 +285,17 @@ module.exports = function(kernel) {
           if (!event) {
             return callback(null);
           }
-          results.items.push(event);
-          callback(null);
+          event = event.toJSON();
+          // Check if current user is liked this event or not
+          kernel.model.Like.findOne({objectId: event._id, objectName: 'Event', ownerId: req.user._id}).then(liked => {
+            if (!liked) {
+              event.liked = false;
+            } else {
+              event.liked = true;
+            }
+            results.items.push(event);
+            callback(null);
+          }).catch(callback);
         }).catch(callback);
       }, (err) => {
         return res.status(200).json(results);

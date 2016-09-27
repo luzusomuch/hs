@@ -74,7 +74,7 @@
                             </p>
                         </div>
                         <div class="img-content-post" ng-if="item.itemType!=='relation'">
-                            <div class="bg-cover" style="background-image: url('{{(item.event) ? item.event : item | eventThumbnail}}'); height: 200px"></div>
+                            <div class="bg-cover" style="background-image: url('{{(item.event) ? item.event : item | eventThumbnail}}'); height: 400px"></div>
 
                             <a ng-click="vm.eventAccept(item)" ng-if="item.itemType==='event-invited'" href="#" class="btn btn-success btn-radius-20">{{'ACCEPT' | translate}}</a>
                             <a ng-click="vm.eventReject(item)" ng-if="item.itemType==='event-invited'" href="#" class="btn btn-danger btn-radius-20">{{'DECLINE' | translate}}</a>

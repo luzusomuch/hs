@@ -34,6 +34,9 @@ class MyCalendarCtrl {
 		        		photoUrl = 'assets/images/FB-logo.png';
 		        	}
 	        		$(element).find('span:first').prepend('<img width="30" src='+photoUrl+'>');
+	        		if (event.liked) {
+	        			$(element).css('opacity', 0.6);
+	        		}
 		        },
 		        eventClick: (event) => {
 		        	if (event.type==='local') {
@@ -195,7 +198,8 @@ class MyCalendarCtrl {
 				type: (event.type) ? event.type : 'local',
 				photo: (event.photosId && event.photosId.length > 0) ? event.photosId[0] : null,
 				backgroundColor: backgroundColor, 
-				link: link
+				link: link,
+				liked: event.liked
 			});
 			// if (event==='local') {
 			// 	let backgroundColor;

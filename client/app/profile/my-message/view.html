@@ -21,7 +21,7 @@
                 </div>
 
                 <ul class="list-message">
-                    <li ng-show="!vm.searchQuery.search" class="new-message" ng-repeat="owner in vm.threads.items">
+                    <li ng-show="!vm.searchQuery.search" class="new-message" ng-repeat="owner in vm.threads.items | orderBy: '-threadUpdatedAt'">
                         <a ui-sref="profile.myMessagesDetail({messageId: owner.threadId})">
                             <img src="{{owner | avatarUrl}}">
                             <h4>{{owner.name}}</h4>
@@ -31,7 +31,7 @@
                     </li>
 
                     <!-- Search results -->
-                    <li ng-show="vm.searchQuery.search" class="new-message" ng-repeat="owner in vm.searchQuery.items">
+                    <li ng-show="vm.searchQuery.search" class="new-message" ng-repeat="owner in vm.searchQuery.items | orderBy: '-threadUpdatedAt'">
                         <a ui-sref="profile.myMessagesDetail({messageId: owner.threadId})">
                             <img src="{{owner | avatarUrl}}">
                             <h4>{{owner.name}}</h4>

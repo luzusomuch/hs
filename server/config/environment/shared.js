@@ -4,7 +4,7 @@ let config = require('./' + env + '.js');
 
 exports = module.exports = {
   // List of user roles
-  userRoles: ['guest', 'user', 'admin'],
+  userRoles: ['user', 'admin'],
   baseUrl: config.baseUrl,
   socketUrl: config.socketUrl,
   apiVer : 'v1',

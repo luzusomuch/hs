@@ -408,6 +408,10 @@ class UserController {
       user.email = req.body.email;
       user.isCompanyAccount = req.body.isCompanyAccount;
 
+      if (req.user.role==='admin' && req.body.role) {
+        user.role = req.body.role;
+      }
+
       user.save().then(() => {
         return res.status(200).end();
       }).catch(() => {

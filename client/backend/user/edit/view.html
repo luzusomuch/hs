@@ -24,6 +24,18 @@
 		  	<label>{{'ZIP_CODE' | translate}}</label>
 		    <input type="text" class="form-control" ng-model="EditUser.user.location.zipCode">
 	  	</div>
+
+	  	<div class="form-group">
+	  		<label>{{'USER_TYPE' | translate}}</label>
+	  		<div class="radio-list">
+                <label class="radio-inline" ng-repeat="role in EditUser.roles">
+                  	<div class="radio">
+                    	<span><input id="radio-{{role}}" ng-model="EditUser.user.role" type="radio" name="eventtype" value="{{role}}"></span>
+                    	<label for="radio-{{role}}" ng-bind-html="role.toUpperCase() | translate | html"></label>
+                  </div>
+                </label>
+              </div>
+	  	</div>
   	</div>
 	<div class="modal-footer">
 		<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>

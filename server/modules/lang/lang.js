@@ -345,6 +345,9 @@ let Language = {
 		HEALTH_PROFILE: 'Health profile',
 		LANGUAGE_SETTINGS: 'Language settings',
 		SELECT_YOUR_LANGUAGE: 'Select your language',
+		USER_TYPE: 'User type',
+		USER: 'User',
+		ADMIN: 'Admin',
 		// Enter new translate text below
 	},
 	de: {
@@ -691,7 +694,10 @@ let Language = {
 		WAS_ADDED_YOU_AS_MEMBER_OF_EVENT: 'wurde sie als Mitglied der Veranstaltung hinzugefügt',
 		HEALTH_PROFILE: 'Gesundheitsprofil',
 		LANGUAGE_SETTINGS: 'Spracheinstellungen',
-		SELECT_YOUR_LANGUAGE: 'Wähle deine Sprache'
+		SELECT_YOUR_LANGUAGE: 'Wähle deine Sprache',
+		USER_TYPE: 'User type',
+		USER: 'User',
+		ADMIN: 'Admin',
 		// Enter new translate text below
 	}
 }

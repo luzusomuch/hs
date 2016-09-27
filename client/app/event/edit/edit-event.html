@@ -134,7 +134,7 @@
                 <label for="radio3"> {{'ONE_TIME_EVENT' | translate}}</label>
               </div>
               <div class="radio-l">
-                <input id="radio4" type="radio" name="radio" value="radio4" ng-model="vm.event.isRepeat" ng-value="true">
+                <input ng-click="vm.repeatEvent(vm.event.isRepeat)" id="radio4" type="radio" name="radio" value="radio4" ng-model="vm.event.isRepeat" ng-value="true">
                 <label for="radio4"> {{'REPEATING_SCHEDULE' | translate}}</label>
               </div>
             </div>

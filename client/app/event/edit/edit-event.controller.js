@@ -82,26 +82,6 @@ class EditEventCtrl {
       //do anything such as remove socket
     });
 
-    $scope.$watch('vm.event.isRepeat', (nv) => {
-    	if (nv) {
-    		let modalInstance = $uibModal.open({
-		    	animation: true,
-		    	templateUrl: 'app/event/modal/repeat-event.html',
-		    	controller: 'RepeatEventCtrl',
-		    	controllerAs: 'vm'
-		    });
-    		modalInstance.result.then(data => {
-    			this.event.repeat = {
-    				type: data.type,
-    				startDate: data.startDate,
-    				endDate: data.endDate
-    			};
-    		}, () => {
-          this.event.isRepeat = false;
-    		});
-    	}
-    });
-
     $scope.$watch('vm.event.endTime', (nv) => {
       if (nv) {
         this.event.endTimeFormatted = moment(nv).format('HH:mm');
@@ -150,6 +130,37 @@ class EditEventCtrl {
         return {valid: false};
       }
     };
+  }
+
+  repeatEvent(isRepeat) {
+    if (isRepeat) {
+      let modalInstance = this.$uibModal.open({
+        animation: true,
+        templateUrl: 'app/event/modal/repeat-event.html',
+        controller: 'RepeatEventCtrl',
+        controllerAs: 'vm',
+        resolve: {
+          type: () => {
+            return (this.event.repeat) ? this.event.repeat.type : null;
+          },
+          startDate: () => {
+            return (this.event.repeat) ? this.event.repeat.startDate : null;
+          },
+          endDate: () => {
+            return (this.event.repeat) ? this.event.repeat.endDate : null;
+          }
+        }
+      });
+      modalInstance.result.then(data => {
+        this.event.repeat = {
+          type: data.type,
+          startDate: data.startDate,
+          endDate: data.endDate
+        };
+      }, () => {
+        this.event.isRepeat = false;
+      });
+    }
   }
 
   changeStartTime(time) {

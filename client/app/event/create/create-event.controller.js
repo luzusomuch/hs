@@ -301,11 +301,13 @@ this.newDate = new Date();
 }
 
 class RepeatEventCtrl {
-	constructor($uibModalInstance, growl) {
+	constructor($uibModalInstance, growl, startDate, endDate, type) {
 		this.$uibModalInstance = $uibModalInstance;
 		this.growl = growl;
 		this.repeat = {
-			startDate: new Date()
+      startDate: (startDate) ? new Date(startDate) : new Date(),
+			endDate: (endDate) ? new Date(endDate) : new Date(moment().add(1, 'days')),
+      type: type
 		};
     this.errors = {};
     this.submitted = false;

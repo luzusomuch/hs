@@ -1,7 +1,8 @@
 'use strict';
 
 class EditEventCtrl {
-	constructor(event, categories, APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies, growl) {
+	constructor(event, categories, APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies, growl, awards) {
+    this.awards = awards.data.items;
     this.growl = growl;
 		this.user = $localStorage.authUser;
 		if (event.ownerId._id!==this.user._id) {
@@ -102,6 +103,36 @@ class EditEventCtrl {
         });
         if (idx !== -1) {
           this.selectedCategory = this.categories[idx];
+          if (this.selectedCategory && this.awards && this.awards.length > 0 && !this.showAddAwards()) {
+            let selectedAwardName;
+            switch (this.selectedCategory.type) {
+              case 'food':
+                selectedAwardName = 'Foodstar Point';
+                break;
+              case 'action':
+                selectedAwardName = 'Actionstar Point';
+                break;
+              case 'eco':
+                selectedAwardName = 'Ecostar Point';
+                break;
+              case 'social':
+                selectedAwardName = 'Socialstar Point';
+                break;
+              case 'internation':
+                selectedAwardName = 'Sportstar Point';
+                break;
+              default:
+                break;
+            }
+            if (selectedAwardName) {
+              let index = _.findIndex(this.awards, (award) => {
+                return award.objectName===selectedAwardName;
+              });
+              if (index !== -1) {
+                this.event.award = this.awards[index];
+              }
+            }
+          }
         }
       }
     });
@@ -130,6 +161,16 @@ class EditEventCtrl {
         return {valid: false};
       }
     };
+  }
+
+  showAddAwards() {
+    let result = false;
+    if (this.user.role==='admin') {
+      result = true;
+    } else if (this.user.isCompanyAccount) {
+      result = true;
+    }
+    return result;
   }
 
   repeatEvent(isRepeat) {

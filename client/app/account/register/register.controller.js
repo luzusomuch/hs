@@ -64,7 +64,8 @@ class RegisterCtrl {
           email: this.user.email,
           password: this.user.password,
           phoneNumber: this.user.phoneNumber,
-          location: this.user.location
+          location: this.user.location,
+          isCompanyAccount: this.user.isCompanyAccount
         }).then(() => {
           // Account created, redirect to home
           this.$state.go('home');

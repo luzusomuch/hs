@@ -111,6 +111,16 @@ class MyAwardCtrl {
 		}
 	}
 
+	showOwnAwards() {
+		let result = false;
+		if (this.authUser.role==='admin') {
+			result = true;
+		} else if (this.authUser.isCompanyAccount) {
+			result = true;
+		}
+		return result;
+	}
+
 	viewAward(award) {
 		this.$uibModal.open({
 	    	animation: true,

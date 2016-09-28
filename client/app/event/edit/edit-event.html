@@ -217,7 +217,7 @@
                     <img ng-show="vm.event.award" src="{{vm.event.award | eventAwardImageUrl: 'small'}}" width="100%">
                   </div>
                   <div class="col-xs-9 col-sm-10 text-center" style="margin-top: 10px">
-                    <button class="btn btn-danger btn-sm" type="button" ng-click="vm.showAddAwardModal()">{{'ADD_AWARD' | translate}}</button>
+                    <button ng-if="vm.showAddAwards()" class="btn btn-danger btn-sm" type="button" ng-click="vm.showAddAwardModal()">{{'ADD_AWARD' | translate}}</button>
                   </div>
                 </div>
               </div>

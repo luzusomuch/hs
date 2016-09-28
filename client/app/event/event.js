@@ -11,6 +11,11 @@ angular.module('healthStarsApp').config(function($stateProvider) {
   	controller: 'CreateEventCtrl',
     controllerAs: 'vm',
     authenticate: true,
+    resolve: {
+      awards: (AwardService) => {
+        return AwardService.getAvailableAwards();
+      }
+    },
     settings: {
       pageTitle: 'HealthStars | Create Event'
     }
@@ -43,6 +48,9 @@ angular.module('healthStarsApp').config(function($stateProvider) {
         }).catch(() => {
           return $location.path('404');
         }); 
+      },
+      awards: (AwardService) => {
+        return AwardService.getAvailableAwards();
       }
     }
   }).state('event.detail', {

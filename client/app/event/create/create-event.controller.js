@@ -51,7 +51,18 @@ this.newDate = new Date();
 		    	animation: true,
 		    	templateUrl: 'app/event/modal/repeat-event.html',
 		    	controller: 'RepeatEventCtrl',
-		    	controllerAs: 'vm'
+		    	controllerAs: 'vm',
+          resolve: {
+            startDate: () => {
+              return null;
+            },
+            endDate: () => {
+              return null;
+            },
+            type: () => {
+              return null;
+            }
+          }
 		    });
     		modalInstance.result.then(data => {
     			this.event.repeat = {

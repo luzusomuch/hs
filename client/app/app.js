@@ -119,3 +119,7 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
       }
     });
   });
+
+angular.module('ui.timepicker').value('uiTimepickerConfig',{
+  step: 5
+});

@@ -3,7 +3,6 @@
 
 .constant("APP_CONFIG", {
 	"userRoles": [
-		"guest",
 		"user",
 		"admin"
 	],

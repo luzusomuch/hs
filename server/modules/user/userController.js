@@ -185,6 +185,7 @@ class UserController {
       friendInvitation: true,
       newPost: true
     };
+    newUser.isCompanyAccount = false;
 
     newUser.save()
     .then((user) => {
@@ -202,9 +203,19 @@ class UserController {
         expiresIn: 60 * 60 * 5
       });
       this.kernel.queue.create(this.kernel.config.ES.events.CREATE, {type: this.kernel.config.ES.mapping.userType, id: user._id.toString(), data: user}).save();
-      res.json({ token });
-    })
-    .catch(err => {
+      // if registered user request to be a company account
+      if (req.body.isCompanyAccount) {
+        this.kernel.model.CompanyAccountRequest({
+          ownerId: user._id
+        }).save().then(() => {
+          res.json({ token });
+        }).catch(err => {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        });
+      } else {
+        res.json({ token });
+      }
+    }).catch(err => {
       return res.status(500).json(err);
     });
   }
@@ -406,14 +417,25 @@ class UserController {
       user.location = req.body.location;
       user.location.type = 'Point';
       user.email = req.body.email;
-      user.isCompanyAccount = req.body.isCompanyAccount;
+      // user.isCompanyAccount =  req.body.isCompanyAccount;
 
       if (req.user.role==='admin' && req.body.role) {
         user.role = req.body.role;
       }
 
       user.save().then(() => {
-        return res.status(200).end();
+        // if updated user request to change to company account
+        if (req.body.isCompanyAccount && !user.isCompanyAccount) {
+          this.kernel.model.CompanyAccountRequest({
+            ownerId: user._id
+          }).save().then(() => {
+            return res.status(200).end();
+          }).catch(err => {
+            return res.status(500).json({type: 'SERVER_ERROR'});
+          });
+        } else {
+          return res.status(200).end();
+        }
       }).catch(() => {
         return res.status(500).json({type: 'SERVER_ERROR'});
       });

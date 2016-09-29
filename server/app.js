@@ -31,6 +31,7 @@ kernel.loadModule(require('./modules/comment'));
 kernel.loadModule(require('./modules/share'));
 kernel.loadModule(require('./modules/about'));
 kernel.loadModule(require('./modules/attend-event'));
+kernel.loadModule(require('./modules/company-account-request'));
 //compose then start server
 kernel.compose();
 

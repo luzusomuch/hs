@@ -1,5 +1,5 @@
 <div class="modal-header">
-	<h3 class="modal-title">{{'CREATE_AWARD' | translate}}</h3>
+	<h3 class="modal-title" ng-bind-html="'CREATE_AWARD' | translate"></h3>
 </div>
 
 	<form ng-submit="vm.submit(form)" name="form" novalidate>
@@ -42,7 +42,7 @@
             <img ng-show="vm.file.name" style="margin-bottom:5px" ngf-src="vm.file" width="100%">
           </div>
           <div class="col-xs-9 text-center ng-binding">
-            <p><a href="#" class="btn btn-danger" ngf-select="vm.select($file)" ngf-multiple="false" accept="image/*">{{'UPLOAD_PICTURE' | translate}}</a></p>
+            <p><a href="#" class="btn btn-danger" ngf-select="vm.select($file)" ngf-multiple="false" accept="image/*"><span ng-bind-html="'UPLOAD_PICTURE' | translate"></span></a></p>
             <span ng-bind-html="'FILE_REQUIREMENT' | translate | html"></span>
           </div>
         </div>

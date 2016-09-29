@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="row">
 		<div class="box-blue p15">
-			<div class="title-blue">{{'EDIT_EVENT' | translate}}</div>
+			<div class="title-blue" ng-bind-html="'EDIT_EVENT' | translate"></div>
       <form ng-submit="vm.edit(form)" name="form" novalidate>
 				<div class="row form-event">
           <div class="col-lg-6">
@@ -157,7 +157,7 @@
                       <img ngf-src="vm.newBanner[0]" width="100%" ng-show="vm.newBanner.length > 0">
                     </td>
                     <td  class="text-center">
-                      <p><a href="#" class="btn btn-danger btn-sm" ngf-select="vm.select($files, 'banner')" ngf-multiple="false" accept="image/*">{{'UPLOAD_PICTURE' | translate}}</a></p>
+                      <p><a href="#" class="btn btn-danger btn-sm" ngf-select="vm.select($files, 'banner')" ngf-multiple="false" accept="image/*"><span ng-bind-html="'UPLOAD_PICTURE' | translate"></span></a></p>
                       <span ng-bind-html="'FILE_REQUIREMENT' | translate | html"></span>
                     </td>
                   </tr>
@@ -184,7 +184,7 @@
                   </div>
                   <div class="col-xs-6 col-sm-3 text-center">
                   <div class="box-picture-upload-1">
-                    <p><a href="#" class="btn btn-danger btn-sm" ngf-select="vm.select($files, 'photo')" ngf-multiple="true" accept="image/*">{{'UPLOAD_PICTURE' | translate}}</a></p>
+                    <p><a href="#" class="btn btn-danger btn-sm" ngf-select="vm.select($files, 'photo')" ngf-multiple="true" accept="image/*"><span ng-bind-html="'UPLOAD_PICTURE' | translate"></span></a></p>
                         <span ng-bind-html="'FILE_REQUIREMENT' | translate | html"></span>
                       </div>
                   </div>
@@ -210,14 +210,14 @@
             </div>
 
             <div class="form-group">
-              <label>{{'ADD_AWARD' | translate}}</label>
+              <label ng-bind-html="'ADD_AWARD' | translate"></label>
               <div class="add-award-event">
                 <div class="row">
                   <div class="col-xs-3 col-sm-2">
                     <img ng-show="vm.event.award" src="{{vm.event.award | eventAwardImageUrl: 'small'}}" width="100%">
                   </div>
                   <div class="col-xs-9 col-sm-10 text-center" style="margin-top: 10px">
-                    <button ng-if="vm.showAddAwards()" class="btn btn-danger btn-sm" type="button" ng-click="vm.showAddAwardModal()">{{'ADD_AWARD' | translate}}</button>
+                    <button ng-if="vm.showAddAwards()" class="btn btn-danger btn-sm" type="button" ng-click="vm.showAddAwardModal()" ng-bind-html="'ADD_AWARD' | translate"></button>
                   </div>
                 </div>
               </div>
@@ -227,7 +227,7 @@
           </div>
       	</div>
       	<div class="bottom-button">
-          <button type="submit" class="btn btn-success btn-radius-20">{{'EDIT_EVENT' | translate}}</button>
+          <button type="submit" class="btn btn-success btn-radius-20" ng-bind-html="'EDIT_EVENT' | translate"></button>
           <a ui-sref="event.detail({id: vm.$state.params.id})" class="btn btn-default btn-radius-20">{{'CANCEL' | translate}}</a>
         </div>
       </form>

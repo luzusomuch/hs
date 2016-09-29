@@ -75,7 +75,7 @@
 				<li ng-class="{active: vm.$state.includes('backend.contentManager.about')}">
 					<a ui-sref="backend.contentManager.about">
 						<i class="icon-home"></i> 
-						<span class="title">{{'ABOUT' | translate}}</span>
+						<span class="title" ng-bind-html="'ABOUT' | translate"></span>
 						<span class="selected"></span>
 					</a>
 				</li>

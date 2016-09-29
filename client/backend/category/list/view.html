@@ -1,7 +1,7 @@
 <div class="page-content">
 	<div>
-		<h4>{{'CATEGORIES_LIST' | translate}}</h4>
-		<a href="#" ng-click="vm.create()"><i class="fa fa-plus"></i>{{'CREATE_NEW_CATEGORY' | translate}}</a>
+		<h4 ng-bind-html="'CATEGORIES_LIST' | translate"></h4>
+		<a href="#" ng-click="vm.create()"><i class="fa fa-plus"></i> <span ng-bind-html="'CREATE_NEW_CATEGORY' | translate"></span></a>
 	</div>
 
 	<hr>

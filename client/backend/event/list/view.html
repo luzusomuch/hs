@@ -1,6 +1,6 @@
 <div class="page-content">
 	<div>
-		<h4>{{'EVENTS_LIST' | translate}}</h4>
+		<h4 ng-bind-html="'EVENTS_LIST' | translate"></h4>
 	</div>
 
 	<div class="row">
@@ -77,6 +77,6 @@
 		</table>
 	</div>
 	<div ng-show="vm.events.items.length < vm.events.totalItem">
-		<a ng-click="vm.loadMore()" href="#">{{'LOAD_MORE_EVENTS' | translate}}</a>
+		<a ng-click="vm.loadMore()" href="#" ng-bind-html="'LOAD_MORE_EVENTS' | translate"></a>
 	</div>
 </div>

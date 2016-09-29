@@ -701,6 +701,8 @@ let Language = {
 		USER: 'User',
 		ADMIN: 'Admin',
 		// Enter new translate text below
+		COMPANY_REQUESTS: 'Company requests',
+		LOAD_MORE_REQUESTS: 'Load more requests'
 	}
 }
 

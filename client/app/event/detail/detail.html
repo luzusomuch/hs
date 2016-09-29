@@ -1,7 +1,7 @@
  <div class="top-detail">
     <div class="img-timline bg-cover" style="background-image: url('{{vm.event | eventBanner}}')"></div>
     <div class="event-edit-button" ng-show="vm.event.ownerId._id==vm.authUser._id">
-        <a class="btn btn-default btn-block" ui-sref="event.edit({id: vm.$stateParams.id})">{{'EDIT_EVENT' | translate}}</a>
+        <a class="btn btn-default btn-block" ui-sref="event.edit({id: vm.$stateParams.id})" ng-bind-html="'EDIT_EVENT' | translate"></a>
     </div>
     <div class="event-share-button" share-tool-box data="vm.event" type="Event" photo="vm.event.photosId[0]" title="vm.event.name" description="vm.event.description" url="vm.event.url" start-date="vm.event.startDateTime" end-date="vm.event.endDateTime" location="vm.event.location.fullAddress" fb="true" tw="true" gg="true" allow-show="true">
     </div>

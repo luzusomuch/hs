@@ -1,9 +1,7 @@
 <div class="page-content">
   <div class="portlet box green">
     <div class="portlet-title">
-      <div class="caption">
-        {{'EDIT_EVENT' | translate}}
-      </div>
+      <div class="caption" ng-bind-html="'EDIT_EVENT' | translate"></div>
     </div>
     <div class="portlet-body form">
       <form class="form-horizontal" ng-submit="vm.edit(form)" name="form" novalidate>
@@ -200,7 +198,7 @@
                         <img ngf-src="vm.newBanner[0]" width="100%" ng-show="vm.newBanner.length > 0">
                       </td>
                       <td  class="text-center">
-                        <p><a href="#" class="btn btn-danger btn-sm" ngf-select="vm.select($files, 'banner')" ngf-multiple="false" accept="image/*">{{'UPLOAD_PICTURE' | translate}}</a></p>
+                        <p><a href="#" class="btn btn-danger btn-sm" ngf-select="vm.select($files, 'banner')" ngf-multiple="false" accept="image/*"><span ng-bind-html="'UPLOAD_PICTURE' | translate"></span></a></p>
                         <span ng-bind-html="'FILE_REQUIREMENT' | translate | html"></span>
                       </td>
                     </tr>
@@ -226,7 +224,7 @@
                     </div>
                     <div class="col-xs-6 col-sm-3 text-center">
                     <div class="box-picture-upload-1">
-                      <p><a href="#" class="btn btn-danger btn-sm" ngf-select="vm.select($files, 'photo')" ngf-multiple="true" accept="image/*">{{'UPLOAD_PICTURE' | translate}}</a></p>
+                      <p><a href="#" class="btn btn-danger btn-sm" ngf-select="vm.select($files, 'photo')" ngf-multiple="true" accept="image/*"><span ng-bind-html="'UPLOAD_PICTURE' | translate"></span></a></p>
                           <span ng-bind-html="'FILE_REQUIREMENT' | translate | html"></span>
                         </div>
                     </div>
@@ -252,14 +250,14 @@
               </div>
 
               <div class="form-group" ng-class="{'has-error': vm.errors.award && vm.submitted}">
-                <label class="col-md-3 control-label">{{'ADD_AWARD' | translate}}</label>
+                <label class="col-md-3 control-label" ng-bind-html="'ADD_AWARD' | translate"></label>
                 <div class="col-md-9">
                   <div class="row">
                     <div class="col-xs-3 col-sm-2">
                       <img ng-show="vm.event.award" src="{{vm.event.award | eventAwardImageUrl: 'small'}}" width="100%">
                     </div>
                     <div class="col-xs-9 col-sm-10 text-center" style="margin-top: 10px">
-                      <button class="btn btn-danger btn-sm" type="button" ng-click="vm.showAddAwardModal()">{{'ADD_AWARD' | translate}}</button>
+                      <button class="btn btn-danger btn-sm" type="button" ng-click="vm.showAddAwardModal()" ng-bind-html="'ADD_AWARD' | translate"></button>
                     </div>
                   </div>
                   <span ng-show="vm.errors.award && vm.submitted" class="help-block" ng-bind-html="'REQUIRED_ERROR' | translate | html"></span>
@@ -269,7 +267,7 @@
           </div>
         </div>
         <div class="form-actions right">
-          <button type="submit" class="btn blue">{{'EDIT_EVENT' | translate}}</button>
+          <button type="submit" class="btn blue" ng-bind-html="'EDIT_EVENT' | translate"></button>
           <a ui-sref="backend.event.list" class="btn default">{{'CANCEL' | translate}}</a>
         </div>
       </form>

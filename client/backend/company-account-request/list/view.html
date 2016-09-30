@@ -39,8 +39,8 @@
 					</td>
 					<td>{{item.createdAt | date: 'HH:mm'}} {{item.createdAt | date: 'dd-MMMM-yyyy'}}</td>
 					<td>
-						<a uib-tooltip="{{(!user.blocked.status) ? 'BLOCK_USER' : 'UNBLOCK_USER' | translate}}" href="#" ng-click="vm.blockUser(user)"><i class="fa" ng-class="{'fa-lock': !user.blocked.status, 'fa-unlock': user.blocked.status}"></i></a>
-						<a href="#" ng-click="vm.editUserInfo(user)"><i class="fa fa-pencil"></i></a>
+						<a uib-tooltip="{{'ACCEPT_REQUEST' | translate}}" href="#" ng-click="vm.acceptRequest(item)"><i class="fa fa-check"></i></a>
+						<a uib-tooltip="{{'REJECT_REQUEST' | translate}}" href="#" ng-click="vm.rejectRequest(item)"><i class="fa fa-times"></i></a>
 					</td>
 				</tr>
 

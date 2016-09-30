@@ -350,7 +350,11 @@ let Language = {
 		ADMIN: 'Admin',
 		// Enter new translate text below
 		COMPANY_REQUESTS: 'Company requests',
-		LOAD_MORE_REQUESTS: 'Load more requests'
+		LOAD_MORE_REQUESTS: 'Load more requests',
+		ACCEPT_REQUEST_SUCCESSFULLY: 'Accept request successfully',
+		REJECT_REQUEST_SUCCESSFULLY: 'Reject request successfully',
+		ACCEPT_REQUEST: 'Accept request',
+		REJECT_REQUEST: 'Reject request'
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -702,7 +706,11 @@ let Language = {
 		ADMIN: 'Admin',
 		// Enter new translate text below
 		COMPANY_REQUESTS: 'Company requests',
-		LOAD_MORE_REQUESTS: 'Load more requests'
+		LOAD_MORE_REQUESTS: 'Load more requests',
+		ACCEPT_REQUEST_SUCCESSFULLY: 'Accept request successfully',
+		REJECT_REQUEST_SUCCESSFULLY: 'Reject request successfully',
+		ACCEPT_REQUEST: 'Accept request',
+		REJECT_REQUEST: 'Reject request'
 	}
 }
 

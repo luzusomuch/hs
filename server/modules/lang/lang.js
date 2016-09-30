@@ -705,12 +705,12 @@ let Language = {
 		USER: 'User',
 		ADMIN: 'Admin',
 		// Enter new translate text below
-		COMPANY_REQUESTS: 'Company requests',
-		LOAD_MORE_REQUESTS: 'Load more requests',
-		ACCEPT_REQUEST_SUCCESSFULLY: 'Accept request successfully',
-		REJECT_REQUEST_SUCCESSFULLY: 'Reject request successfully',
-		ACCEPT_REQUEST: 'Accept request',
-		REJECT_REQUEST: 'Reject request'
+		COMPANY_REQUESTS: 'Firmenanfragen',
+		LOAD_MORE_REQUESTS: 'Laden Sie mehr Anfragen',
+		ACCEPT_REQUEST_SUCCESSFULLY: 'Akzeptieren Anfrage erfolgreich',
+		REJECT_REQUEST_SUCCESSFULLY: 'Ablehnen Anforderung erfolgreich',
+		ACCEPT_REQUEST: 'Anfrage annehmen',
+		REJECT_REQUEST: 'Ablehnen Anfrage'
 	}
 }
 

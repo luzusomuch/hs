@@ -48,7 +48,7 @@ module.exports = function(kernel) {
             coordinates: [0, 0]
           };
         }
-        var data = {
+        let data = {
           name: req.body.event.name,
           description: req.body.event.description,
           categoryId: req.body.event.categoryId,
@@ -61,17 +61,21 @@ module.exports = function(kernel) {
         data.public = (req.body.event.public==='true') ? true : false;
         data.private = !data.public;
         data.location = req.body.event.location;
+        data.participantsId = [];
+
+        let participantsId = [];
         if (req.body.event.participants) {
           if (req.body.event.participants._id instanceof Array) {
-            data.participantsId = req.body.event.participants._id;
+            participantsId = req.body.event.participants._id;
           } else {
-            data.participantsId = [req.body.event.participants._id];
+            participantsId = [req.body.event.participants._id];
           }
         } else {
-          data.participantsId = [];
+          participantsId = [];
         }
+
         if (req.body.event.isRepeat === 'true') {
-          var repeatTypes = ['daily', 'weekly', 'monthly'];
+          let repeatTypes = ['daily', 'weekly', 'monthly'];
           if (!req.body.event.repeat.startDate || !req.body.event.repeat.endDate || !req.body.event.repeat.type) {
             return res.status(422).json({type: 'EVENT_REPEATING_MISSING_ENTITIES', path: 'repeat', message: 'Event repeat is missing some entities'}); 
           }
@@ -81,7 +85,7 @@ module.exports = function(kernel) {
           data.repeat = req.body.event.repeat;
         }
 
-        var schema = Joi.object().keys({
+        let schema = Joi.object().keys({
           name: Joi.string().required().options({
             language: {
               key: 'name'
@@ -188,38 +192,48 @@ module.exports = function(kernel) {
           };
           let model = new kernel.model.Event(data);
           model.save().then(event => {
-            var url = kernel.config.baseUrl + 'event/'+event._id;
-            async.each(event.participantsId, (id, cb) => {
-              kernel.model.User.findById(id, (err, user) => {
-                if (err || ! user) {return cb();}
-                kernel.emit('SEND_MAIL', {
-                  template: 'event-created.html',
-                  subject: 'New Event Created Named ' + event.name,
-                  data: {
-                    user: user, 
-                    url: url,
-                    event: event
-                  },
-                  to: user.email
-                });
-                cb();
-              });
+            // send event invitation request to participants (new request 10/04/2016)
+            async.each(participantsId, (userId, callback) => {
+              kernel.model.InvitationRequest({
+                fromUserId: req.user._id,
+                toUserId: userId,
+                objectId: event._id
+              }).save().then(callback).catch(callback);
             }, () => {
-              kernel.queue.create(kernel.config.ES.events.CREATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
-              kernel.queue.create('GRANT_AWARD', event).save();
-              kernel.queue.create('TOTAL_EVENT_CREATED', {userId: req.user._id}).save();
-              // get all user then update real-time count update in home page
-              kernel.model.User.find({}).then(users => {
-                users.forEach(user => {
-                  EventBus.emit('socket:emit', {
-                    event: 'tracking:count-new-event',
-                    room: user._id.toString(),
-                    data: event
+              // send email to participants (old request)
+              var url = kernel.config.baseUrl + 'event/'+event._id;
+              async.each(event.participantsId, (id, cb) => {
+                kernel.model.User.findById(id, (err, user) => {
+                  if (err || ! user) {return cb();}
+                  kernel.emit('SEND_MAIL', {
+                    template: 'event-created.html',
+                    subject: 'New Event Created Named ' + event.name,
+                    data: {
+                      user: user, 
+                      url: url,
+                      event: event
+                    },
+                    to: user.email
                   });
+                  cb();
                 });
-                return res.status(200).json(event);
-              }).catch(err => {
-                return res.status(500).json({type: 'SERVER_ERROR'});
+              }, () => {
+                kernel.queue.create(kernel.config.ES.events.CREATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
+                kernel.queue.create('GRANT_AWARD', event).save();
+                kernel.queue.create('TOTAL_EVENT_CREATED', {userId: req.user._id}).save();
+                // get all user then update real-time count update in home page
+                kernel.model.User.find({}).then(users => {
+                  users.forEach(user => {
+                    EventBus.emit('socket:emit', {
+                      event: 'tracking:count-new-event',
+                      room: user._id.toString(),
+                      data: event
+                    });
+                  });
+                  return res.status(200).json(event);
+                }).catch(err => {
+                  return res.status(500).json({type: 'SERVER_ERROR'});
+                });
               });
             });
           }).catch(err => {
@@ -979,21 +993,33 @@ module.exports = function(kernel) {
               if (req.body.event.bannerName && req.body.event.bannerName !== 'null') {
                 event.banner = newBannerId;
               }
+              // Old request
+
+              // if (req.body.event.participants) {
+              //   if (req.body.event.participants._id instanceof Array) {
+              //     event.participantsId = _.union(event.participantsId, req.body.event.participants._id);
+              //   } else {
+              //     event.participantsId.push(req.body.event.participants._id);
+              //   }
+              // } else {
+              //   event.participantsId = [];
+              // }
+              // // get unique participants
+              // event.participantsId = _.map(_.groupBy(event.participantsId, (doc) => {
+              //   return doc;
+              // }), (grouped) => {
+              //   return grouped[0];
+              // });
+
+              // New request
+              let participants = [];
               if (req.body.event.participants) {
                 if (req.body.event.participants._id instanceof Array) {
-                  event.participantsId = _.union(event.participantsId, req.body.event.participants._id);
+                  participants = req.body.event.participants._id;
                 } else {
-                  event.participantsId.push(req.body.event.participants._id);
+                  participants.push(req.body.event.participants._id);
                 }
-              } else {
-                event.participantsId = [];
               }
-              // get unique participants
-              event.participantsId = _.map(_.groupBy(event.participantsId, (doc) => {
-                return doc;
-              }), (grouped) => {
-                return grouped[0];
-              });
 
               if (req.body.event.isRepeat === 'true') {
                 var repeatTypes = ['daily', 'weekly', 'monthly'];
@@ -1007,8 +1033,16 @@ module.exports = function(kernel) {
               }
               event.stats.totalParticipants = event.participantsId.length;
               event.save().then(() => {
-                kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
-                return res.status(200).json({type: 'EVENT_UPDATE_SUCCESS', message: 'Event updated'});
+                async.each(participants, (userId, callback) => {
+                  kernel.model.InvitationRequest({
+                    fromUserId: req.user._id,
+                    toUserId: userId,
+                    objectId: event._id
+                  }).save().then(callback).catch(callback);
+                }, () => {
+                  kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
+                  return res.status(200).json({type: 'EVENT_UPDATE_SUCCESS', message: 'Event updated'});
+                });
               }).catch(err => {
                 return res.status(500).json({type: 'SERVER_ERROR'});
               });

@@ -61,14 +61,24 @@
        * @return {Promise}
        */
       createUser(user, callback) {
-        return User.save(user, function(data) {
-            $cookies.put('token', data.token);
-            currentUser = User.get();
-            return safeCb(callback)(null, user);
-          }, function(err) {
-            Auth.logout();
-            return safeCb(callback)(err);
-          });
+        return User.save(user).then(resp => {
+          $cookies.put('token', resp.data.token);
+          currentUser = User.get();
+          return safeCb(callback)(null, currentUser);
+        }).catch(err => {
+          Auth.logout();
+          return safeCb(callback)(err);
+        });
+        // , function(data) {
+        //   console.log(data);
+        //     $cookies.put('token', data.token);
+        //     currentUser = User.get().$promise;
+        //     console.log(currentUser);
+        //     return safeCb(callback)(null, user);
+        //   }, function(err) {
+        //     Auth.logout();
+        //     return safeCb(callback)(err);
+        //   });
       },
 
       /*verify account*/
@@ -146,10 +156,11 @@
         if (arguments.length === 0) {
           return currentUser;
         }
-
+console.log(currentUser);
         var value = currentUser.hasOwnProperty('$promise') ? currentUser.$promise : currentUser;
         return $q.when(value)
           .then(user => {
+            console.log(user);
             safeCb(callback)(user);
             return user;
           }, () => {

@@ -412,12 +412,14 @@ class UserController {
       if (!user) {
         return res.status(404).end();
       }
+      let companyAccount = _.clone(user).isCompanyAccount;
+
       user.name = req.body.name;
       user.phoneNumber = req.body.phoneNumber;
       user.location = req.body.location;
       user.location.type = 'Point';
       user.email = req.body.email;
-      // user.isCompanyAccount =  req.body.isCompanyAccount;
+      user.isCompanyAccount =  (req.body.isCompanyAccount && companyAccount) ? true : false;
 
       if (req.user.role==='admin' && req.body.role) {
         user.role = req.body.role;
@@ -425,16 +427,24 @@ class UserController {
 
       user.save().then(() => {
         // if updated user request to change to company account
-        if (req.body.isCompanyAccount && !user.isCompanyAccount) {
-          this.kernel.model.CompanyAccountRequest({
-            ownerId: user._id
-          }).save().then(() => {
-            return res.status(200).end();
+        if (req.body.isCompanyAccount && !companyAccount) {
+          this.kernel.model.CompanyAccountRequest.findOne({ownerId: user._id}).then(request => {
+            if (!request) {
+              this.kernel.model.CompanyAccountRequest({
+                ownerId: user._id
+              }).save().then(() => {
+                return res.status(200).json({isCompanyAccount: user.isCompanyAccount});
+              }).catch(err => {
+                return res.status(500).json({type: 'SERVER_ERROR'});
+              });
+            } else {
+              return res.status(200).json({isCompanyAccount: user.isCompanyAccount});
+            }
           }).catch(err => {
             return res.status(500).json({type: 'SERVER_ERROR'});
           });
         } else {
-          return res.status(200).end();
+          return res.status(200).json({isCompanyAccount: user.isCompanyAccount});
         }
       }).catch(() => {
         return res.status(500).json({type: 'SERVER_ERROR'});

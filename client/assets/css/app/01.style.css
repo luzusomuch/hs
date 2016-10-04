@@ -1784,7 +1784,7 @@ label {
 .error-text {
     color: red;
     position: absolute;
-    left: 15px;
+    /*left: 15px;*/
 }
 .relative-div {
     position: relative;

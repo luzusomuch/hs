@@ -53,7 +53,8 @@ class MySettingCtrl {
 		      	this.authUser.location.fullAddress = selectedAddress.formatted_address;
 		      	this.authUser.name = this.authUser.firstName +' '+ this.authUser.lastName;
 
-		      	this.User.updateProfile(this.authUser._id, this.authUser).then(() => {
+		      	this.User.updateProfile(this.authUser._id, this.authUser).then(resp => {
+		      		this.authUser.isCompanyAccount = resp.data.isCompanyAccount;
 		      		this.Auth.setAuthUser(this.authUser);
 		      		this.submitted = false;
 		      		this.growl.success(`<p>{{'UPDATE_ACCOUNT_SUCCESSFULLY' | translate}}</p>`);

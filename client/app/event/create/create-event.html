@@ -17,7 +17,7 @@
               <div class="form-group">
                 <label>{{'CATEGORY' | translate}} </label>
                 <div class="choose-category">
-                  <div class="radio-l" ng-repeat="category in vm.categories">
+                  <div class="radio-l" ng-repeat="category in vm.categories | orderBy: 'order'">
                     <input id="{{category._id}}" type="radio" name="category" value="{{category._id}}" ng-model="vm.event.categoryId">
                     <label for="{{category._id}}"> 
                       <img src="{{category | categoryImagePath}}" >

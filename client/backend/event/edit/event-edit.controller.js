@@ -117,7 +117,7 @@ class BackendEventEditCtrl {
             return (this.event.repeat) ? this.event.repeat.type : null;
           },
           startDate: () => {
-            return (this.event.repeat) ? this.event.repeat.startDate : null;
+            return this.event.startDate;
           },
           endDate: () => {
             return (this.event.repeat) ? this.event.repeat.endDate : null;

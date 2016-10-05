@@ -55,7 +55,7 @@ class CreateEventCtrl {
 		    	controllerAs: 'vm',
           resolve: {
             startDate: () => {
-              return null;
+              return this.event.startDate;
             },
             endDate: () => {
               return null;

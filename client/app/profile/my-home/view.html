@@ -6,11 +6,12 @@
                 <div class="img-user-main">
                     <img src="{{vm.authUser | avatarUrl}}" width="100%;">
                     <div class="code-qc">
-                        <qrcode version="20" error-correction-level="H" data="{{vm.authUser.link}}" href="{{vm.authUser.link}}" size="50"></qrcode>
+                        <!-- <qrcode version="20" error-correction-level="H" data="{{vm.authUser.link}}" href="{{vm.authUser.link}}" size="50"></qrcode> -->
                     </div>
                 </div>
                 <div class="bottom-user-main">
-                    <h3 style="margin-top: 0px">{{vm.authUser.name}}</h3>
+                    <h3 class="col-sm-9" style="margin-top: 0px">{{vm.authUser.name}}</h3>
+                    <qrcode class="col-sm-3" version="20" error-correction-level="H" data="{{vm.authUser.link}}" href="{{vm.authUser.link}}" size="50"></qrcode>
                     <div class="clear"></div>
                 </div>
             </div>

@@ -156,11 +156,9 @@
         if (arguments.length === 0) {
           return currentUser;
         }
-console.log(currentUser);
         var value = currentUser.hasOwnProperty('$promise') ? currentUser.$promise : currentUser;
         return $q.when(value)
           .then(user => {
-            console.log(user);
             safeCb(callback)(user);
             return user;
           }, () => {

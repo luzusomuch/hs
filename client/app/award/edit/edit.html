@@ -18,6 +18,7 @@
     </div>
     
     <div class="form-group">
+      <label ng-bind-html="'ALLOWANCE_TO_GRANT_THE_AWARD' | translate | html"></label>
       <div class="radio-l" ng-repeat="type in allowToUseTypes">
         <input id="{{type}}" type="radio" name="category" value="{{type}}" ng-model="award.allowToUseType">
         <label for="{{type}}"> 

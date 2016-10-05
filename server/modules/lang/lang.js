@@ -355,7 +355,8 @@ let Language = {
 		ACCEPT_REQUEST_SUCCESSFULLY: 'Accept request successfully',
 		REJECT_REQUEST_SUCCESSFULLY: 'Reject request successfully',
 		ACCEPT_REQUEST: 'Accept request',
-		REJECT_REQUEST: 'Reject request'
+		REJECT_REQUEST: 'Reject request',
+		ALLOWANCE_TO_GRANT_THE_AWARD: 'Allowance to grant the award'
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -712,7 +713,8 @@ let Language = {
 		ACCEPT_REQUEST_SUCCESSFULLY: 'Akzeptieren Anfrage erfolgreich',
 		REJECT_REQUEST_SUCCESSFULLY: 'Ablehnen Anforderung erfolgreich',
 		ACCEPT_REQUEST: 'Anfrage annehmen',
-		REJECT_REQUEST: 'Ablehnen Anfrage'
+		REJECT_REQUEST: 'Ablehnen Anfrage',
+		ALLOWANCE_TO_GRANT_THE_AWARD: 'Allowance die Auszeichnung zu gewähren'
 	}
 }
 

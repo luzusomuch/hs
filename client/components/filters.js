@@ -352,19 +352,20 @@ angular.module('healthStarsApp')
     let selectedImage;
     let photos = event.photosId;
     let category = event.categoryId;
-    if (photos && photos.length > 0) {
-      angular.forEach(photos, (photo) => {
-        if (!photo.blocked && photo._id) {
-          selectedImage = photo;
-        }
-        if (selectedImage && selectedImage._id) {
-          return false;
-        }
-      });
-      if (selectedImage && selectedImage._id) {
-        imageUrl = (selectedImage.metadata.small) ? selectedImage.metadata.small : '/assets/photos/'+selectedImage.metadata.tmp;
-      }
-    } else if (category && category.type && category.imagePath) {
+    // if (photos && photos.length > 0) {
+    //   angular.forEach(photos, (photo) => {
+    //     if (!photo.blocked && photo._id) {
+    //       selectedImage = photo;
+    //     }
+    //     if (selectedImage && selectedImage._id) {
+    //       return false;
+    //     }
+    //   });
+    //   if (selectedImage && selectedImage._id) {
+    //     imageUrl = (selectedImage.metadata.small) ? selectedImage.metadata.small : '/assets/photos/'+selectedImage.metadata.tmp;
+    //   }
+    // } else
+    if (category && category.type && category.imagePath) {
       switch (category.type) {
         case 'food':
           imageUrl = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : '/assets/images/star1.png';

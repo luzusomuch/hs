@@ -1,7 +1,8 @@
 'use strict';
 
 class MySettingCtrl {
-	constructor($scope, $state, $localStorage, APP_CONFIG, $http, User, Auth, Upload, $cookies, growl) {
+	constructor($scope, $state, $localStorage, APP_CONFIG, $http, User, Auth, Upload, $cookies, growl, $uibModal) {
+		this.$uibModal = $uibModal;
 		this.growl = growl;
 		this.submitted =false;
 		this.errors = {};
@@ -82,17 +83,46 @@ class MySettingCtrl {
   	}
 
   	upload(file, type) {
-  		this.Upload.upload({
-	      	url: '/api/v1/users/change-picture',
-	      	arrayKey: '',
-	      	data: {file: file, type: type},
-	      	headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
-	    }).then(resp =>{
-	    	this.authUser[resp.data.type] = resp.data.photo;
-	    	this.Auth.setAuthUser(this.authUser);
-	    }, () => {
-	    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
-	    });
+  		// If user upload avatar then open a modal to resize(crop image)
+  		if (file && file.length > 0) {
+	  		if (type==='avatar') {
+	  			this.$uibModal.open({
+	  				animation: true,
+	  				templateUrl: 'app/profile/modal/crop-image/view.html',
+	  				controller: 'CropImageCtrl',
+	  				controllerAs: 'CropImage',
+	  				resolve: {
+	  					file: () => {
+	  						return file;
+	  					}
+	  				}
+	  			}).result.then(data => {
+	  				this.Upload.upload({
+			      	url: '/api/v1/users/change-picture',
+			      	arrayKey: '',
+			      	data: {file: data, type: type},
+			      	headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
+				    }).then(resp =>{
+				    	this.authUser[resp.data.type] = resp.data.photo;
+				    	this.Auth.setAuthUser(this.authUser);
+				    }, () => {
+				    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+				    });
+	  			});
+	  		} else {
+		  		this.Upload.upload({
+			      	url: '/api/v1/users/change-picture',
+			      	arrayKey: '',
+			      	data: {file: file, type: type},
+			      	headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
+			    }).then(resp =>{
+			    	this.authUser[resp.data.type] = resp.data.photo;
+			    	this.Auth.setAuthUser(this.authUser);
+			    }, () => {
+			    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+			    });
+	  		}
+  		}
   	}
 
   	notificationSetting(type) {

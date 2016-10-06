@@ -226,7 +226,7 @@ class UserController {
         cb(null, this.kernel.config.tmpPhotoFolder)
       },
       filename: (req, file, cb) => {
-        return cb(null, file.originalname);
+        return cb(null, req.user._id+'_'+ StringHelper.randomString(10) +'_'+file.originalname);
       }
     });
     let upload = multer({
@@ -234,10 +234,12 @@ class UserController {
     }).single('file');
 
     upload(req, res, (err) => {
+      console.log(err);
       if (err) {return res.status(500).json({type: 'SERVER_ERROR'});}
       if (!req.file || !req.body.type) {
         return res.status(422).end();
       }
+
       let availableType = ['avatar', 'coverPhoto'];
       if (availableType.indexOf(req.body.type) === -1) {
         return res.status(422).end();

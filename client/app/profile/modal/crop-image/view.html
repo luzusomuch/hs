@@ -1,0 +1,15 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{'COMPOSE' | translate}}</h3>
+</div>
+<div class="modal-body">
+	<div class="cropArea">
+		<img-crop image="CropImage.file | ngfDataUrl" result-image="CropImage.myCroppedImage" ng-init="CropImage.myCroppedImage=''"></img-crop>
+	</div>
+	<!-- <div>
+		<img ng-src="{{CropImage.myCroppedImage}}" />
+	</div> -->
+	<div class="modal-footer">
+		<button ng-click="CropImage.submit()" type="button" class="btn btn-success btn-radius-20">{{'APPLY' | translate}}</button>
+		<button ng-click="CropImage.close()" type="button" class="btn btn-default btn-radius-20" ng-bind-html="'CLOSE' | translate | html"></button>
+	</div>    
+</div>

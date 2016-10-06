@@ -9,7 +9,7 @@
 				<option ng-value="type.value" ng-repeat="type in vm.filterTypes" ng-bind-html="type.text | translate | html"></option>
 			</select>
 			<div class="col-sm-1"></div>
-			<input class="col-sm-8" type="text" ng-model="vm.searchText[vm.selectedFilterType]">
+			<input class="col-sm-8" type="text" ng-model="vm.searchText">
 		</div>
 		<div class="col-sm-4 col-xs-12">
 			<label>
@@ -41,7 +41,20 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="report in vm.reports.items | filter: vm.searchText[vm.selectedFilterType] | showChecked: vm.showCheckedReports | orderBy: vm.sortType: vm.sortReverse">
+				<tr ng-show="!vm.search" ng-repeat="report in vm.reports.items | orderBy: vm.sortType: vm.sortReverse">
+					<td>{{report.reporterId.name}}</td>
+					<td>{{report.type}}</td>
+					<td>{{report.event.name}}</td>
+					<td>{{report.description}}</td>
+					<td>{{report.createdAt | date: 'HH:mm'}} {{report.createdAt | date: 'dd-MMMM-yyyy'}}</td>
+					<td>{{(report.checked) ? 'TRUE' : 'FALSE' | translate}}</td>
+					<td>
+						<a ng-show="!report.checked" uib-tooltip="{{'MARK_AS_CHECKED' | translate}}" href="#" ng-click="vm.markAsChecked(report)"><i class="fa fa-check"></i></a>
+						<a uib-tooltip="{{'VIEW_REPORT' | translate}}" href="#" ng-click="vm.view(report)"><i class="fa fa-eye"></i></a>
+					</td>
+				</tr>
+
+				<tr ng-show="vm.search" ng-repeat="report in vm.searchItems | orderBy: vm.sortType: vm.sortReverse">
 					<td>{{report.reporterId.name}}</td>
 					<td>{{report.type}}</td>
 					<td>{{report.event.name}}</td>
@@ -56,7 +69,7 @@
 			</tbody>
 		</table>
 	</div>
-	<div ng-show="vm.reports.items.length < vm.reports.totalItem">
+	<div ng-show="vm.reports.items.length < vm.reports.totalItem && !vm.search">
 		<a ng-click="vm.loadMore()" href="#">{{'LOAD_MORE_REPORTS' | translate}}</a>
 	</div>
 </div>

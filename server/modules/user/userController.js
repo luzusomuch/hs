@@ -234,7 +234,6 @@ class UserController {
     }).single('file');
 
     upload(req, res, (err) => {
-      console.log(err);
       if (err) {return res.status(500).json({type: 'SERVER_ERROR'});}
       if (!req.file || !req.body.type) {
         return res.status(422).end();

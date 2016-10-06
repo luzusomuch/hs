@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import async from 'async';
+import _ from 'lodash';
 
 module.exports = function(kernel) {
   /*Create new report*/
@@ -65,15 +66,53 @@ module.exports = function(kernel) {
     })
 	});
 
+  kernel.app.get('/api/v1/reports/search', kernel.middleware.hasRole('admin'), (req, res) => {
+    kernel.model.Report.find({checked: (req.query.checked) ? true : false})
+    .populate('reporterId', '-password -salt').exec().then(reports => {
+      let results = [];
+      async.each(reports, (report, callback) => {
+        report = report.toJSON();
+        kernel.model.Event.findById(report.reportedItemId).then(event => {
+          report.event = (event) ? event : null;
+          results.push(report);
+          return callback(null);
+        }).catch(callback);
+      }, (err) => {
+        if (err) {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        }
+        let items = [];
+        if (req.query.type && req.query.searchQuery) {
+          _.each(results, (item) => {
+            if (req.query.type==='reporterId.name' && item.reporterId) {
+              if (item.reporterId && item.reporterId!==null && item.reporterId.name && item.reporterId.name.toLowerCase().indexOf(req.query.searchQuery.toLowerCase()) !== -1) {
+                items.push(item);
+              }
+            } else if (req.query.type==='event.name') {
+              if (item.event && item.event.name.toLowerCase().indexOf(req.query.searchQuery.toLowerCase()) !== -1) {
+                items.push(item);
+              }
+            }
+          });
+        } else {
+          items = results;
+        }
+        return res.status(200).json({items: items});
+      });
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+  });
+
   /*get all reports for admin*/
   kernel.app.get('/api/v1/reports/all', kernel.middleware.hasRole('admin'), (req, res) => {
-    let pageSize = req.query.pageSize || 10;
+    let pageSize = req.query.pageSize || 3;
     let page = req.query.page || 1;
-    kernel.model.Report.find({}).limit(Number(pageSize))
+    kernel.model.Report.find({checked: false}).limit(Number(pageSize))
     .skip(pageSize * (page-1))
     .populate('reporterId', '-password -salt')
     .exec().then(reports => {
-      kernel.model.Report.count({}).then(count => {
+      kernel.model.Report.count({checked: false}).then(count => {
         let results = [];
         async.each(reports, (report, callback) => {
           let item = report.toJSON();

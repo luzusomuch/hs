@@ -5,22 +5,39 @@ class BackendReportListCtrl {
 		this.growl = growl;
 		this.page = 1;
 		this.reports = {};
+		this.searchItems = [];
+		this.search = false;
 		this.$uibModal = $uibModal;
 		this.ReportService = ReportService;
 		this.showCheckedReports = false;
-		this.filterTypes = [{value: 'reporterId.name', text: 'PHOTO_OWNER_NAME'}, {value: 'event.name', text: 'EVENT'}];
+		this.filterTypes = [
+			{value: 'reporterId.name', text: 'PHOTO_OWNER_NAME'}, 
+			{value: 'event.name', text: 'EVENT'}
+		];
 		this.selectedFilterType = this.filterTypes[0].value;
 		this.sortType = 'createdAt';
 		this.sortReverse = false;
 		this.loadMore();
 
-		$scope.$watch('vm.reports.items', (nv) => {
-			if (nv && nv.length > 0) {
-				let nonCheckedPhotos = _.filter(nv, {checked: false});
-				if (nonCheckedPhotos.length <= 5 && nv.length < this.reports.totalItem) {
-					this.loadMore();
-				}
+		$scope.$watchGroup(['vm.showCheckedReports', 'vm.selectedFilterType', 'vm.searchText'], (nv) => {
+			if (nv[0] && nv[2] && nv[2].trim().length > 0) {
+				this.search = true;
+				this.searchReport({checked: true, type: nv[1], searchQuery: nv[2]});
+			} else if (nv[0]) {
+				this.search = true;
+				this.searchReport({checked: true});
+			} else if (nv[2] && nv[2].trim().length > 0) {
+				this.search = true;
+				this.searchReport({type: nv[1], searchQuery: nv[2]});
+			} else {
+				this.search = false;
 			}
+		});
+	}
+
+	searchReport(params) {
+		this.ReportService.search(params).then(resp => {
+			this.searchItems = resp.data.items;
 		});
 	}
 

@@ -106,7 +106,7 @@ module.exports = function(kernel) {
 
   /*get all reports for admin*/
   kernel.app.get('/api/v1/reports/all', kernel.middleware.hasRole('admin'), (req, res) => {
-    let pageSize = req.query.pageSize || 3;
+    let pageSize = req.query.pageSize || 10;
     let page = req.query.page || 1;
     kernel.model.Report.find({checked: false}).limit(Number(pageSize))
     .skip(pageSize * (page-1))

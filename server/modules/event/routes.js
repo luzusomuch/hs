@@ -785,7 +785,10 @@ module.exports = function(kernel) {
         { private: false }
       ]
     })
-    .populate('ownerId', '-password -salt')
+    .populate({
+      path: 'ownerId', select: '-password -salt',
+      populate: {path: 'avatar', model: 'Photo'}
+    })
     .populate('categoryId')
     .populate('photosId')
     .populate('banner')
@@ -1170,10 +1173,10 @@ module.exports = function(kernel) {
         return res.status(404).end();
       }
       let response = {
-        totalItem: event.participantsId.length,
+        totalItem: event.participantsId.length+1,
         items: []
       };
-      let ids = [];
+      let ids = [event.ownerId];
       _.each(event.participantsId, (id, index) => {
         if (index < pageSize) {
           ids.push(id);

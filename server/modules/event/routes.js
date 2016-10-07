@@ -1435,24 +1435,48 @@ module.exports = function(kernel) {
       });
     }
 
-    //process friend activities
+    //process friend activities or company account events 
     let funcs = [];
-    if(req.body.friendActivities) {
-        let getFriends =  (cb) => {
-          kernel.model.Relation.find({
-            type: 'friend', 
-            status: 'completed', 
-            $or: [{fromUserId: req.user._id}, {toUserId: req.user._id}]
-          }).then(friends => {
-            if (friends.length === 0) {
-              return cb(null, []);
+    if(req.body.friendActivities || req.body.companyAccountEvents) {
+      let getFriends =  (cb) => {
+        async.waterfall([
+          (callback) => {
+            if (req.body.friendActivities) {
+              kernel.model.Relation.find({
+                type: 'friend', 
+                status: 'completed', 
+                $or: [{fromUserId: req.user._id}, {toUserId: req.user._id}]
+              }).then(friends => {
+                if (friends.length === 0) {
+                  return callback(null, []);
+                }
+                let friendIds = _.map(friends, (friend) => {
+                  return friend.fromUserId.toString() === req.user._id.toString() ? friend.toUserId : friend.fromUserId;
+                });
+                return callback(null, friendIds);
+              }, callback);
+            } else {
+              callback(null, []);
             }
-            let friendIds = _.map(friends, (friend) => {
-              return friend.fromUserId.toString() === req.user._id.toString() ? friend.toUserId : friend.fromUserId;
-            });
-            return cb(null, friendIds);
-          }, cb);
-        }
+          }, 
+          (userIds, callback) => {
+            if (req.body.companyAccountEvents) {
+              kernel.model.User.find({isCompanyAccount: true}).then(users => {
+                if (users.length===0) {
+                  return callback(null, userIds);
+                }
+                let companyAccountIds = _.map(users, (user) => {
+                  return user._id;
+                });
+                companyAccountIds = _.union(companyAccountIds, userIds);
+                return callback(null, companyAccountIds);
+              }, callback);
+            } else {
+              callback(null, userIds);
+            }
+          }
+        ], cb);
+      }
       funcs.push(getFriends);
     }
 

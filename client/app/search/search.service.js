@@ -13,7 +13,8 @@
       endDate: '',
       friendActivities: false,
       category: '',
-      categories: []
+      categories: [],
+      companyAccountEvents: false
     };
     return {
       _default: function() {
@@ -29,7 +30,8 @@
         endDate: '',
         friendActivities: false,
         category: '',
-        categories: []
+        categories: [],
+        companyAccountEvents: false
       }
     };
   }

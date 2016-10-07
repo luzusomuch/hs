@@ -202,6 +202,12 @@ class HomeCtrl {
     return this.searchParams.category === category._id;
     //return this.searchParams.categories.indexOf(category._id) !== -1;
   }
+
+  checkParticipants(participantsId, ownerId) {
+    let data = (participantsId && participantsId.length > 0) ? angular.copy(participantsId) : [];
+    data.push(ownerId._id);
+    return data.indexOf(this.authUser._id) !== -1;
+  }
 }
 
 angular.module('healthStarsApp').controller('HomeCtrl', HomeCtrl);

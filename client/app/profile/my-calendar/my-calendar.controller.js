@@ -10,50 +10,51 @@ class MyCalendarCtrl {
 		this.EventService = EventService;
 		this.localEvents = {};
 
-      	this.eventSources = [];
+  	this.eventSources = [];
 		this.uiConfig = {
 			calendarConfig: {
-		        height: 450,
-		        header:{
-	          		left: 'prev,next',
-	          		center: 'title',
-	          		right: 'agendaWeek month'
-		        },
-		        allDayText: ($localStorage.language==='en') ? 'All day' : 'Ganztägig',
-		        buttonText: {
-		        	month: ($localStorage.language==='en') ? 'Month' : 'Monat',
-		        	week: ($localStorage.language==='en') ? 'Week' : 'Woche'
-		        },
-		        eventRender: (event, element) => {
-		        	let photoUrl = 'assets/images/img.jpg';
-		        	if (event.photo) {
-	        			photoUrl = (event.photo.metadata.small) ? event.photo.metadata.small : 'assets/photos/'+event.photo.metadata.tmp;
-		        	} else if (event.type==='google') {
-		        		photoUrl = 'assets/images/google-logo.jpg';
-		        	} else if (event.type==='facebook') {
-		        		photoUrl = 'assets/images/FB-logo.png';
-		        	}
-	        		$(element).find('span:first').prepend('<img width="30" src='+photoUrl+'>');
-	        		if (event.liked) {
-	        			$(element).css('opacity', 0.6);
-	        		}
-		        },
-		        eventClick: (event) => {
-		        	if (event.type==='local') {
-		        		$state.go('event.detail', {id: event.id});
-		        	} else {
-		        		window.open(event.link, '_blank');
-		        	}
-		        }
-	      	}
+        height: 450,
+        header:{
+      		left: 'prev,next',
+      		center: 'title',
+      		right: 'agendaWeek month'
+        },
+        allDayText: ($localStorage.language==='en') ? 'All day' : 'Ganztägig',
+        buttonText: {
+        	month: ($localStorage.language==='en') ? 'Month' : 'Monat',
+        	week: ($localStorage.language==='en') ? 'Week' : 'Woche'
+        },
+        eventRender: (event, element) => {
+        	let photoUrl = 'assets/images/img.jpg';
+        	if (event.photo) {
+      			photoUrl = (event.photo.metadata.small) ? event.photo.metadata.small : 'assets/photos/'+event.photo.metadata.tmp;
+        	} else if (event.type==='google') {
+        		photoUrl = 'assets/images/google-logo.jpg';
+        	} else if (event.type==='facebook') {
+        		photoUrl = 'assets/images/FB-logo.png';
+        	}
+      		$(element).find('span:first').prepend('<img width="30" src='+photoUrl+'>');
+
+      		if (event.liked && event.participants.indexOf(this.authUser._id) === -1) {
+      			$(element).css('opacity', 0.6);
+      		}
+        },
+        eventClick: (event) => {
+        	if (event.type==='local') {
+        		$state.go('event.detail', {id: event.id});
+        	} else {
+        		window.open(event.link, '_blank');
+        	}
+        }
+    	}
 		};
 
-      	this.loadEvents();
+  	this.loadEvents();
 	}
 
 	loadEvents(type) {
 		let dateFormat = 'YYYY-MM-DD';
-  		let todayFormated = moment().format(dateFormat);
+		let todayFormated = moment().format(dateFormat);
 		this.EventService.getUserEvent({getAll: true, pageSize: 30}).then(resp => {
 			this.localEvents = resp.data;
 			if (this.localEvents.items && this.localEvents.items.length > 0) {
@@ -61,99 +62,99 @@ class MyCalendarCtrl {
 					// find out repeating event
 					if (event.repeat && event.repeat.type && event.repeat.type!=='none') {
 						let newStartDateTime, newEndDateTime;
-				      	let eventTotalDays = moment(moment(event.endDateTime).format(dateFormat)).diff(moment(event.startDateTime).format(dateFormat), 'days');
-				      	let eventRepeat = {
-			        		startDate: event.repeat.startDate,
-				        	endDate: event.repeat.endDate
-				      	};
-				      	let totalRepeatedDays = moment(moment(eventRepeat.endDate).format(dateFormat)).diff(moment(eventRepeat.startDate).format(dateFormat), 'days');
+		      	let eventTotalDays = moment(moment(event.endDateTime).format(dateFormat)).diff(moment(event.startDateTime).format(dateFormat), 'days');
+		      	let eventRepeat = {
+	        		startDate: event.repeat.startDate,
+		        	endDate: event.repeat.endDate
+		      	};
+		      	let totalRepeatedDays = moment(moment(eventRepeat.endDate).format(dateFormat)).diff(moment(eventRepeat.startDate).format(dateFormat), 'days');
 
 						switch (event.repeat.type) {
-					        case 'daily': 
-				            	for (var i = 0; i < totalRepeatedDays; i++) {
-				            		let newStartDateTime = new Date(moment().add(i, 'days'));
-				            		let newEndDateTime = new Date(moment(newStartDateTime).add(1, 'days'));
+			        case 'daily': 
+		            	for (var i = 0; i < totalRepeatedDays; i++) {
+		            		let newStartDateTime = new Date(moment().add(i, 'days'));
+		            		let newEndDateTime = new Date(moment(newStartDateTime).add(1, 'days'));
 
-				            		let newEvent = {
-				            			name: event.name,
-				            			startDateTime: newStartDateTime,
-				            			endDateTime: newEndDateTime,
-				            			ownerId: event.ownerId,
-				            			categoryId: event.categoryId,
-				            			_id: event._id,
-				            			type: 'local',
-				            			photosId: event.photosId
-				            		};
+		            		let newEvent = {
+		            			name: event.name,
+		            			startDateTime: newStartDateTime,
+		            			endDateTime: newEndDateTime,
+		            			ownerId: event.ownerId,
+		            			categoryId: event.categoryId,
+		            			_id: event._id,
+		            			type: 'local',
+		            			photosId: event.photosId
+		            		};
 
-				            		let index = _.findIndex(this.localEvents.items, (item) => {
-				            			return item.name===newEvent.name && moment(moment(newEvent.startDateTime).format(dateFormat)).isSame(moment(item.startDateTime).format(dateFormat)) && moment(moment(newEvent.endDateTime).format(dateFormat)).isSame(moment(item.endDateTime).format(dateFormat));
-				            		});
+		            		let index = _.findIndex(this.localEvents.items, (item) => {
+		            			return item.name===newEvent.name && moment(moment(newEvent.startDateTime).format(dateFormat)).isSame(moment(item.startDateTime).format(dateFormat)) && moment(moment(newEvent.endDateTime).format(dateFormat)).isSame(moment(item.endDateTime).format(dateFormat));
+		            		});
 
-				            		if (index === -1) {
-				            			this.localEvents.items.push(newEvent);
-				            		}
-				            	}
-					          	break;
-					        case 'weekly': 
-					        	for (var i = 0; i < totalRepeatedDays; i++) {
-					        		if (i%7 === 0 && i !== 0) {
-					        			newStartDateTime = new Date(moment().add(i, 'days'));
-					            		newEndDateTime = new Date(moment(newStartDateTime).add(eventTotalDays, 'days'));
+		            		if (index === -1) {
+		            			this.localEvents.items.push(newEvent);
+		            		}
+		            	}
+			          	break;
+			        case 'weekly': 
+			        	for (var i = 0; i < totalRepeatedDays; i++) {
+			        		if (i%7 === 0 && i !== 0) {
+			        			newStartDateTime = new Date(moment().add(i, 'days'));
+		            		newEndDateTime = new Date(moment(newStartDateTime).add(eventTotalDays, 'days'));
 
-					            		let newEvent = {
-					            			name: event.name,
-					            			startDateTime: newStartDateTime,
-					            			endDateTime: newEndDateTime,
-					            			ownerId: event.ownerId,
-					            			categoryId: event.categoryId,
-					            			_id: event._id,
-					            			type: 'local',
-					            			photosId: event.photosId
-					            		};
+		            		let newEvent = {
+		            			name: event.name,
+		            			startDateTime: newStartDateTime,
+		            			endDateTime: newEndDateTime,
+		            			ownerId: event.ownerId,
+		            			categoryId: event.categoryId,
+		            			_id: event._id,
+		            			type: 'local',
+		            			photosId: event.photosId
+		            		};
 
-					            		let index = _.findIndex(this.localEvents.items, (item) => {
-					            			return item.name===newEvent.name && moment(moment(newEvent.startDateTime).format(dateFormat)).isSame(moment(item.startDateTime).format(dateFormat)) && moment(moment(newEvent.endDateTime).format(dateFormat)).isSame(moment(item.endDateTime).format(dateFormat));
-					            		});
+		            		let index = _.findIndex(this.localEvents.items, (item) => {
+		            			return item.name===newEvent.name && moment(moment(newEvent.startDateTime).format(dateFormat)).isSame(moment(item.startDateTime).format(dateFormat)) && moment(moment(newEvent.endDateTime).format(dateFormat)).isSame(moment(item.endDateTime).format(dateFormat));
+		            		});
 
-					            		if (index === -1) {
-					            			this.localEvents.items.push(newEvent);
-					            		}
-					        		}
-					        	}
-					          	break;
-					        case 'monthly': 
-					        	for (var i = 0; i < totalRepeatedDays; i++) {
-					        		let tmpDate = moment().add(i, 'days').format(dateFormat);
-					        		let diffDay = moment(tmpDate).diff(moment(eventRepeat.startDate).format(dateFormat), 'days');
-					        		let totalDaysInMonth = moment(tmpDate).daysInMonth();
-					        		if (diffDay !== 0 && diffDay % totalDaysInMonth === 0) {
-					        			newStartDateTime = new Date(moment().add(i, 'days'));
-					            		newEndDateTime = new Date(moment(newStartDateTime).add(eventTotalDays, 'days'));
+		            		if (index === -1) {
+		            			this.localEvents.items.push(newEvent);
+		            		}
+			        		}
+			        	}
+		          	break;
+			        case 'monthly': 
+			        	for (var i = 0; i < totalRepeatedDays; i++) {
+			        		let tmpDate = moment().add(i, 'days').format(dateFormat);
+			        		let diffDay = moment(tmpDate).diff(moment(eventRepeat.startDate).format(dateFormat), 'days');
+			        		let totalDaysInMonth = moment(tmpDate).daysInMonth();
+			        		if (diffDay !== 0 && diffDay % totalDaysInMonth === 0) {
+			        			newStartDateTime = new Date(moment().add(i, 'days'));
+		            		newEndDateTime = new Date(moment(newStartDateTime).add(eventTotalDays, 'days'));
 
-					            		let newEvent = {
-					            			name: event.name,
-					            			startDateTime: newStartDateTime,
-					            			endDateTime: newEndDateTime,
-					            			ownerId: event.ownerId,
-					            			categoryId: event.categoryId,
-					            			_id: event._id,
-					            			type: 'local',
-					            			photosId: event.photosId
-					            		};
+		            		let newEvent = {
+		            			name: event.name,
+		            			startDateTime: newStartDateTime,
+		            			endDateTime: newEndDateTime,
+		            			ownerId: event.ownerId,
+		            			categoryId: event.categoryId,
+		            			_id: event._id,
+		            			type: 'local',
+		            			photosId: event.photosId
+		            		};
 
-					            		let index = _.findIndex(this.localEvents.items, (item) => {
-					            			return item.name===newEvent.name && moment(moment(newEvent.startDateTime).format(dateFormat)).isSame(moment(item.startDateTime).format(dateFormat)) && moment(moment(newEvent.endDateTime).format(dateFormat)).isSame(moment(item.endDateTime).format(dateFormat));
-					            		});
+		            		let index = _.findIndex(this.localEvents.items, (item) => {
+		            			return item.name===newEvent.name && moment(moment(newEvent.startDateTime).format(dateFormat)).isSame(moment(item.startDateTime).format(dateFormat)) && moment(moment(newEvent.endDateTime).format(dateFormat)).isSame(moment(item.endDateTime).format(dateFormat));
+		            		});
 
-					            		if (index === -1) {
-					            			this.localEvents.items.push(newEvent);
-					            		}
-					        		}
-					        	}
-					          	break;
-					        default:
-					          	break;
-				      	}
+		            		if (index === -1) {
+		            			this.localEvents.items.push(newEvent);
+		            		}
+			        		}
+			        	}
+		          	break;
+			        default:
+		          	break;
+		      	}
 					}
 				});
 			}
@@ -190,6 +191,13 @@ class MyCalendarCtrl {
 			} else if (event.type==='facebook') {
 				link = 'https://www.facebook.com/events/'+event.facebook.id
 			}
+
+			let participants = [];
+			if (event.participantsId && event.participantsId instanceof Array) {
+				participants = angular.copy(event.participantsId);
+			}
+			participants.push(event.ownerId);
+
 			items.push({
 				title: event.name,
 				start: new Date(event.startDateTime),
@@ -199,7 +207,8 @@ class MyCalendarCtrl {
 				photo: (event.photosId && event.photosId.length > 0) ? event.photosId[0] : null,
 				backgroundColor: backgroundColor, 
 				link: link,
-				liked: event.liked
+				liked: event.liked,
+				participants: participants
 			});
 			// if (event==='local') {
 			// 	let backgroundColor;
@@ -276,18 +285,18 @@ class MyCalendarCtrl {
 			window.gapi.load('client', () => {
 				window.gapi.client.load('calendar', 'v3', () => {
 					window.gapi.client.calendar.events.list({
-			          	'calendarId': 'primary',
-			          	'showDeleted': false,
-			        }).execute(resp => {
-			        	// this.renderEvents(resp.items, 'google');
-			        	this.EventService.syncEvents({events: resp.items, type: 'google'}).then(() => {
-			        		this.$timeout(() => {
-			        			this.loadEvents('google');
-			        		}, 1500);
+          	'calendarId': 'primary',
+          	'showDeleted': false,
+	        }).execute(resp => {
+	        	// this.renderEvents(resp.items, 'google');
+	        	this.EventService.syncEvents({events: resp.items, type: 'google'}).then(() => {
+	        		this.$timeout(() => {
+	        			this.loadEvents('google');
+	        		}, 1500);
 						}).catch(() => {
 							this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`)
 						});
-			        });
+	        });
 				});
 			});
 		});
@@ -301,8 +310,8 @@ class MyCalendarCtrl {
 						// this.renderEvents(data.data, 'facebook');
 						this.EventService.syncEvents({events: data.data, type: 'facebook'}).then(() => {
 							this.$timeout(() => {
-			        			this.loadEvents('facebook');
-			        		}, 1500);
+	        			this.loadEvents('facebook');
+	        		}, 1500);
 						}).catch(() => {
 							this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`)
 						});

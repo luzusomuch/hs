@@ -1785,7 +1785,7 @@ module.exports = function(kernel) {
         let index = event.participantsId.indexOf(req.body.userId);
         if (index !== -1) {
           event.participantsId.splice(index, 1);
-          event.save().then(() => {
+          event.save().then(event => {
             kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
             return res.status(200).end();
           }).catch(err => {

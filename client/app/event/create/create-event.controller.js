@@ -18,7 +18,8 @@ class CreateEventCtrl {
       startDate: new Date(), 
       allowShow: false,
       startTime: new Date(),
-      endTime: moment().add(1, 'hours')
+      endTime: moment().add(1, 'hours'),
+      limitNumberOfParticipate: false
 		};
     this.shareEventInfo = {};
     this.$http = $http;

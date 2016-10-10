@@ -61,6 +61,19 @@ class EventDetailCtrl {
 		}
 	}
 
+	isInWaitingList() {
+		if (!this.event.waitingParticipantIds) {
+			return false;
+		}
+		if (_.findIndex(this.event.waitingParticipantIds, (id) => {
+			return id.toString()===this.authUser._id.toString();
+		}) !== -1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	isNotParticipant() {
 		if(!this.event.participantsId) {
 			return true;

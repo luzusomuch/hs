@@ -358,7 +358,11 @@ let Language = {
 		REJECT_REQUEST: 'Reject request',
 		ALLOWANCE_TO_GRANT_THE_AWARD: 'Allowance to grant the award',
 		CO_OPERATION_EVENTS: 'Co-operation events',
-		MORE_FILTER: 'More filter'
+		MORE_FILTER: 'More filter',
+		LIMIT_NUMBER_OF_PARTICIPANTS: 'Limit number of participants',
+		NUMBER: 'Number',
+		NUMBER_OF_PARTICIPANTS_IS_BETWEEN_0_99: 'Number of participants is between 0 and 99',
+		WAITING_FOR_ACCEPTANCE: 'Waiting for acceptance'
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -718,7 +722,11 @@ let Language = {
 		REJECT_REQUEST: 'Ablehnen Anfrage',
 		ALLOWANCE_TO_GRANT_THE_AWARD: 'Allowance die Auszeichnung zu gewähren',
 		CO_OPERATION_EVENTS: 'Kooperationsveranstaltungen',
-		MORE_FILTER: 'mehr filter'
+		MORE_FILTER: 'mehr filter',
+		LIMIT_NUMBER_OF_PARTICIPANTS: 'Limit-Teilnehmerzahl',
+		NUMBER: 'Nummer',
+		NUMBER_OF_PARTICIPANTS_IS_BETWEEN_0_99: 'Teilnehmerzahl zwischen 0 und 99',
+		WAITING_FOR_ACCEPTANCE: 'Warten auf die Annahme'
 	}
 }
 

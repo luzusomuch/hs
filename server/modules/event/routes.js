@@ -37,6 +37,12 @@ module.exports = function(kernel) {
         return res.status(422).json({type: 'EVENT_AWARD_REQUIRED', path: 'award', message: 'Award is required'});
       }
 
+      if (req.body.event.limitNumberOfParticipate==='true' && !req.body.event.numberParticipants) {
+        return res.status(422).json({type: 'NUMBER_PARTICIPANTS_REQUIRED', path: 'numberParticipants', message: 'Number participants is required'});
+      } else if (req.body.event.limitNumberOfParticipate==='true' && (Number(req.body.event.numberParticipants) < 0 || Number(req.body.event.numberParticipants) > 99)) {
+        return res.status(422).json({type: 'NUMBER_OF_PARTICIPANTS_IS_BETWEEN_0_99', path: 'numberParticipants', message: 'Number of participants is between 0 and 99'});
+      }
+
       kernel.model.Category.findById(req.body.event.categoryId).then(category => {
         if (!category) {
           return res.status(404).end();
@@ -48,14 +54,19 @@ module.exports = function(kernel) {
             coordinates: [0, 0]
           };
         }
+
+        console.log(req.body.event);
+
         let data = {
           name: req.body.event.name,
           description: req.body.event.description,
           categoryId: req.body.event.categoryId,
           startDateTime: req.body.event.startDateTime,
           endDateTime: req.body.event.endDateTime,
-          awardId: req.body.event.award._id
+          awardId: req.body.event.award._id,
+          limitNumberOfParticipate: (req.body.event.limitNumberOfParticipate==='true') ? true : false,
         };
+        data.numberParticipants = (data.limitNumberOfParticipate) ? Number(req.body.event.numberParticipants) : 0
         data.ownerId = req.user._id;
         data.organizerId = req.user._id;
         data.public = (req.body.event.public==='true') ? true : false;
@@ -241,6 +252,7 @@ module.exports = function(kernel) {
           });
         });
       }).catch(err => {
+        console.log(err);
         return res.status(500).json({type: 'SERVER_ERROR'}); 
       });
     });
@@ -1806,9 +1818,37 @@ module.exports = function(kernel) {
         return res.status(404).end();
       }
       if (event.ownerId.toString()===req.user._id.toString()) {
+        console.log(_.clone(event));
         let index = event.participantsId.indexOf(req.body.userId);
         if (index !== -1) {
           event.participantsId.splice(index, 1);
+
+          // when waiting list having people then add them to participants list
+          if (event.limitNumberOfParticipate && event.numberParticipants > 0 && event.participantsId.length < event.numberParticipants) {
+            if (event.waitingParticipantIds && event.waitingParticipantIds.length > 0) {
+              let newWaitingList = _.clone(event.waitingParticipantIds);
+              _.each(event.waitingParticipantIds, (id) => {
+                event.participantsId.push(id);
+
+                // find out the user has been added to participants list
+                let idx = newWaitingList.indexOf(id);
+                if (idx !== -1) {
+                  newWaitingList.splice(idx, 1);
+                }
+
+                // check if event participants is isqual total number of participant
+                if (event.participantsId.length===event.numberParticipants) {
+                  return false;
+                }
+              });
+
+              // apply new waiting list to the old one
+              event.waitingParticipantIds = newWaitingList;
+            }
+          }
+          console.log('new event');
+console.log(event);
+return;
           event.save().then(event => {
             kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
             return res.status(200).end();
@@ -1879,29 +1919,51 @@ module.exports = function(kernel) {
       if (event.private) {
         return res.status(500).json({type: 'SERVER_ERROR', message: 'This event is not public'});
       }
+
+      // when total parcipants has reached the top then check waiting list
+      if (event.participantsId.length >= event.numberParticipants && event.waitingParticipantIds.indexOf(req.user._id) !== -1) {
+        return res.status(200).end();
+      }
+
       let availableUser = _.clone(event.participantsId);
       availableUser.push(event.ownerId);
       // Check if user is already joined or not
       if (availableUser.indexOf(req.user._id) === -1) {
-        event.participantsId.push(req.user._id);
-        event.stats.totalParticipants = event.participantsId.length;
+        if (event.limitNumberOfParticipate && event.numberParticipants > 0 && event.participantsId.length >= event.numberParticipants) {
+          if (event.waitingParticipantIds && event.waitingParticipantIds.length > 0) {
+            event.waitingParticipantIds.push(req.user._id);
+          } else {
+            event.waitingParticipantIds = [req.user._id];
+          }
+        } else {
+          event.participantsId.push(req.user._id);
+          event.stats.totalParticipants = event.participantsId.length;
+        }
         // add current user to attended ids list
         if (event.attendedIds) {
           event.attendedIds.push(req.user._id);
         } else {
           event.attendedIds = [req.user._id]
         }
+
         event.save().then(saved => {
           kernel.queue.create('GRANT_AWARD_FOR_USER', {event: event, user: req.user}).save();
           kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: saved}).save();
-          kernel.model.AttendEvent({
-            ownerId: req.user._id,
-            eventId: saved._id
-          }).save().then(() => {
+
+          if (event.participantsId.indexOf(req.user._id) !== -1) {
+            // if current user has added to participants list
+            kernel.model.AttendEvent({
+              ownerId: req.user._id,
+              eventId: saved._id
+            }).save().then(() => {
+              return res.status(200).end();
+            }).catch(err => {
+              return res.status(500).json({type: 'SERVER_ERROR'});  
+            });
+          } else {
+            // if user has added to waiting list
             return res.status(200).end();
-          }).catch(err => {
-            return res.status(500).json({type: 'SERVER_ERROR'});  
-          });
+          }
         }).catch(err => {
           return res.status(500).json({type: 'SERVER_ERROR'});
         });

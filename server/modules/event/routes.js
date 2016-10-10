@@ -857,6 +857,15 @@ module.exports = function(kernel) {
           if (!req.body.event.award) {
             return res.status(422).json({type: 'EVENT_AWARD_REQUIRED', path: 'award', message: 'Award is required'});
           }
+
+          if (req.body.event.limitNumberOfParticipate==='true' && !req.body.event.numberParticipants) {
+            return res.status(422).json({type: 'NUMBER_PARTICIPANTS_REQUIRED', path: 'numberParticipants', message: 'Number participants is required'});
+          } else if (req.body.event.limitNumberOfParticipate==='true' && (Number(req.body.event.numberParticipants) < 0 || Number(req.body.event.numberParticipants) > 99)) {
+            return res.status(422).json({type: 'NUMBER_OF_PARTICIPANTS_IS_BETWEEN_0_99', path: 'numberParticipants', message: 'Number of participants is between 0 and 99'});
+          } else if (req.body.event.limitNumberOfParticipate==='true' && Number(req.body.event.numberParticipants) < event.participantsId.length) {
+            return res.status(422).json({type: 'NUMBER_OF_LIMIT_PARTICIPANTS_MUST_GREATOR_THAN_TOTAL_PARTICIPANTS', path: 'numberParticipants', message: 'Number of limit participants must greater than total participants'});
+          }
+
           kernel.model.Category.findById(req.body.event.categoryId).then(category => {
             if (!category) {
               return res.status(404).end();
@@ -1004,6 +1013,8 @@ module.exports = function(kernel) {
               event.public = (req.body.event.public==='true') ? true : false;
               event.private = !event.public;
               event.location = req.body.event.location;
+              event.limitNumberOfParticipate = (req.body.event.limitNumberOfParticipate==='true') ? true : false,
+              event.numberParticipants = (event.limitNumberOfParticipate) ? Number(req.body.event.numberParticipants) : 0
 
               if (req.body.event.bannerName && req.body.event.bannerName !== 'null') {
                 event.banner = newBannerId;
@@ -1036,6 +1047,34 @@ module.exports = function(kernel) {
                 }
               }
 
+              // check waiting list with limit participants
+              if (event.waitingParticipantIds && event.waitingParticipantIds.length > 0 && event.limitNumberOfParticipate && event.numberParticipants > event.participantsId.length) {
+                let newWaitingList = _.clone(event.waitingParticipantIds);
+                _.each(event.waitingParticipantIds, (id) => {
+                  // check if event participants is isqual total number of participant
+                  if (event.participantsId.length===event.numberParticipants) {
+                    return false;
+                  }
+
+                  event.participantsId.push(id);
+                  // find out the user has been added to participants list
+                  let idx = newWaitingList.indexOf(id);
+                  if (idx !== -1) {
+                    newWaitingList.splice(idx, 1);
+                  }
+                });
+
+                // apply new waiting list to the old one
+                event.waitingParticipantIds = newWaitingList;
+              }
+
+              // unique event participants
+              event.participantsId = _.map(_.groupBy(event.participantsId, (doc) => {
+                return doc;
+              }), (grouped) => {
+                return grouped[0];
+              });
+
               if (req.body.event.isRepeat === 'true') {
                 var repeatTypes = ['daily', 'weekly', 'monthly'];
                 if (!req.body.event.repeat.startDate || !req.body.event.repeat.endDate || !req.body.event.repeat.type) {
@@ -1047,6 +1086,7 @@ module.exports = function(kernel) {
                 event.repeat = req.body.event.repeat;
               }
               event.stats.totalParticipants = event.participantsId.length;
+              
               event.save().then(() => {
                 async.each(participants, (userId, callback) => {
                   kernel.model.InvitationRequest({

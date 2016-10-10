@@ -363,7 +363,8 @@ let Language = {
 		NUMBER: 'Number',
 		NUMBER_OF_PARTICIPANTS_IS_BETWEEN_0_99: 'Number of participants is between 0 and 99',
 		WAITING_FOR_ACCEPTANCE: 'Waiting for acceptance',
-		YOU_ARE_NOW_IN_WAITING_LIST_IN: 'You are now in waiting list in'
+		YOU_ARE_NOW_IN_WAITING_LIST_IN: 'You are now in waiting list in',
+		NUMBER_OF_LIMIT_PARTICIPANTS_MUST_GREATOR_THAN_TOTAL_PARTICIPANTS: 'Number of limit participants must greater than total participants'
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -728,7 +729,8 @@ let Language = {
 		NUMBER: 'Nummer',
 		NUMBER_OF_PARTICIPANTS_IS_BETWEEN_0_99: 'Teilnehmerzahl zwischen 0 und 99',
 		WAITING_FOR_ACCEPTANCE: 'Warten auf die Annahme',
-		YOU_ARE_NOW_IN_WAITING_LIST_IN: 'Sie befinden sich nun auf der Warteliste in'
+		YOU_ARE_NOW_IN_WAITING_LIST_IN: 'Sie befinden sich nun auf der Warteliste in',
+		NUMBER_OF_LIMIT_PARTICIPANTS_MUST_GREATOR_THAN_TOTAL_PARTICIPANTS: 'Anzahl der Teilnehmer Limit muss größer als die Gesamtteilnehmer'
 	}
 }
 

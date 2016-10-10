@@ -210,6 +210,21 @@
             </div>
 
             <div class="form-group">
+              <label>{{'LIMIT_NUMBER_OF_PARTICIPANTS' | translate}}</label>
+              <toggle ng-model="vm.event.limitNumberOfParticipate"></toggle>
+            </div>
+
+            <div class="form-group" ng-show="vm.event.limitNumberOfParticipate">
+              <label id="">{{'NUMBER' | translate}}</label>
+              <input class="form-control" ng-required="vm.event.limitNumberOfParticipate" type="number" min="0" max="99" name="numberParticipants" ng-model="vm.event.numberParticipants">
+
+              <p ng-show="vm.submitted && form.numberParticipants.$error.min" class="error-text">{{'NUMBER_OF_PARTICIPANTS_IS_BETWEEN_0_99' | translate}}</p>
+              <p ng-show="vm.submitted && form.numberParticipants.$error.max" class="error-text">{{'NUMBER_OF_PARTICIPANTS_IS_BETWEEN_0_99' | translate}}</p>
+              <p ng-show="form.numberParticipants.$error.required && vm.submitted" class="error-text" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
+              <p ng-show="vm.errors.limitNumberOfParticipate && vm.submitted" class="error-text" ng-bind-html="'NUMBER_OF_LIMIT_PARTICIPANTS_MUST_GREATOR_THAN_TOTAL_PARTICIPANTS' | translate | html"></p>
+            </div>
+
+            <div class="form-group">
               <label ng-bind-html="'ADD_AWARD' | translate"></label>
               <div class="add-award-event">
                 <div class="row">

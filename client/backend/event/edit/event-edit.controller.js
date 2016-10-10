@@ -265,6 +265,10 @@ class BackendEventEditCtrl {
       this.errors.award = true;
     }
 
+    if (this.event.limitNumberOfParticipate && this.event.participants.length > this.event.numberParticipants) {
+      this.errors.limitNumberOfParticipate = true;
+    }
+
 		var selectedAddress = this.address.selected;
     if (selectedAddress) {
       this.event.location.coordinates = [selectedAddress.geometry.location.lng, selectedAddress.geometry.location.lat];
@@ -274,6 +278,7 @@ class BackendEventEditCtrl {
     } else {
       this.event.location.coordinates = [0, 0];
     }
+
     if (form.$valid && Object.keys(this.errors).length === 0) {
 
   		this.event.startDateTime = new Date(moment(this.event.startDate).hours(moment(this.event.startTime).hours()).minutes(moment(this.event.startTime).minutes()));

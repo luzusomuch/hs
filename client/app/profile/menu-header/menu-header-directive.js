@@ -1,8 +1,9 @@
 'use strict';
 
 class MenuHeaderCtrl {
-	constructor($scope, $state) {
+	constructor($scope, $state, $localStorage) {
 		$scope.$state = $state;
+		this.authUser = $localStorage.authUser;
 	}
 }
 

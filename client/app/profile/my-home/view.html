@@ -50,6 +50,8 @@
                             <h4 class="title-generated-home" ng-switch-when="attend-event">{{'ATTEND_EVENT' | translate}}: <span class="date-post">{{item.createdAt | fromNow | fromNowNumber}} {{item.createdAt | fromNow | fromNowTranslate | translate}}</span></h4>
 
                             <h4 class="title-generated-home" ng-switch-when="inviting-event">{{'EVENT_PARTICIPATION' | translate}}: <span class="date-post">{{item.createdAt | fromNow | fromNowNumber}} {{item.createdAt | fromNow | fromNowTranslate | translate}}</span></h4>
+
+                            <h4 class="title-generated-home" ng-switch-when="waiting-acceptance">{{'WAITING_FOR_ACCEPTANCE' | translate}}: <span class="date-post">{{item.createdAt | fromNow | fromNowNumber}} {{item.createdAt | fromNow | fromNowTranslate | translate}}</span></h4>
                         </div>
                         <div class="content-post-li" ng-switch="item.itemType">
                             <p ng-switch-when="relation">{{item.fromUserId.name}} {{'INVITE_BECOME_FRIEND' | translate}}</p>
@@ -71,6 +73,10 @@
                             </p>
 
                             <p ng-switch-when="inviting-event">{{item.ownerId.name}} <span ng-bind-html="'WAS_ADDED_YOU_AS_MEMBER_OF_EVENT' | translate"></span>: 
+                                <a ui-sref="event.detail({id: item._id})">{{item.name}}</a>
+                            </p>
+
+                            <p ng-switch-when="waiting-acceptance">{{'YOU_ARE_NOW_IN_WAITING_LIST_IN' | translate}}: 
                                 <a ui-sref="event.detail({id: item._id})">{{item.name}}</a>
                             </p>
                         </div>

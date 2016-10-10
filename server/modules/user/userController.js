@@ -931,6 +931,22 @@ class UserController {
             }
           }, cb);
         }).catch(cb);
+      }, 
+      (cb) => {
+        // show event when current in waiting list
+        this.kernel.model.Event.find({waitingParticipantIds: req.user._id})
+        .populate('photosId')
+        .populate({
+          path: 'ownerId', select: '-password -salt',
+          populate: {path: 'avatar', model: 'Photo'}
+        }).then(events => {
+          _.each(events, (event) => {
+            event = event.toJSON();
+            event.itemType = 'waiting-acceptance';
+            results.push(event);
+          });
+          cb();
+        }).catch(cb);
       }
     ], (err) => {
       if (err) {

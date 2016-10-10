@@ -1,14 +1,19 @@
 <div class="line-menu-home">
     <div class="container">
         <div class="row">
-            <div class="col-sm-3 col-lg-2">
-                <div class="checkbox-l">
-                    <input id="checkbox1" type="checkbox" ng-model="vm.searchParams.friendActivities" name="checkbox" value="checkbox1" >
-                    <label for="checkbox1" ng-bind-html="'FRIENDS_ACTIVITIES' | translate | html"></label>
-                </div>
-                <div class="checkbox-l">
-                    <input id="checkbox2" type="checkbox" ng-model="vm.searchParams.companyAccountEvents" name="checkbox" value="checkbox2" >
-                    <label for="checkbox2" ng-bind-html="'CO_OPERATION_EVENTS' | translate | html"></label>
+            <div class="col-sm-3 col-lg-2 menu-filter" uib-dropdown auto-close="outsideClick">
+                <a href="#" uib-dropdown-toggle class="create-event">
+                    <span class="glyphicon glyphicon-filter"></span> {{'MORE_FILTER' | translate}} 
+                </a>
+                <div uib-dropdown-menu class="menu-filter-dropdown">
+                    <div class="menu-filter-dropdown-item">
+                        <input id="checkbox1" type="checkbox" ng-model="vm.searchParams.friendActivities" name="checkbox" value="checkbox1" >
+                        <label for="checkbox1" ng-bind-html="'FRIENDS_ACTIVITIES' | translate | html"></label>
+                    </div>
+                    <div class="menu-filter-dropdown-item">
+                        <input id="checkbox2" type="checkbox" ng-model="vm.searchParams.companyAccountEvents" name="checkbox" value="checkbox2" >
+                        <label for="checkbox2" ng-bind-html="'CO_OPERATION_EVENTS' | translate | html"></label>
+                    </div>
                 </div>
             </div>
             <div class="col-sm-6  col-lg-8">

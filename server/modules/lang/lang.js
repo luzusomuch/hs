@@ -357,7 +357,8 @@ let Language = {
 		ACCEPT_REQUEST: 'Accept request',
 		REJECT_REQUEST: 'Reject request',
 		ALLOWANCE_TO_GRANT_THE_AWARD: 'Allowance to grant the award',
-		CO_OPERATION_EVENTS: 'Co-operation events'
+		CO_OPERATION_EVENTS: 'Co-operation events',
+		MORE_FILTER: 'More filter'
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -716,7 +717,8 @@ let Language = {
 		ACCEPT_REQUEST: 'Anfrage annehmen',
 		REJECT_REQUEST: 'Ablehnen Anfrage',
 		ALLOWANCE_TO_GRANT_THE_AWARD: 'Allowance die Auszeichnung zu gewähren',
-		CO_OPERATION_EVENTS: 'Kooperationsveranstaltungen'
+		CO_OPERATION_EVENTS: 'Kooperationsveranstaltungen',
+		MORE_FILTER: 'mehr filter'
 	}
 }
 

@@ -2424,3 +2424,11 @@ div.menu-tab > ul>li>a {
     width: 500px;
     height: 350px;
 }
+
+.menu-filter > .menu-filter-dropdown {
+    left: 14px;
+    color: #000;
+}
+.menu-filter > .menu-filter-dropdown > .menu-filter-dropdown-item {
+    margin-left: 10px;
+}

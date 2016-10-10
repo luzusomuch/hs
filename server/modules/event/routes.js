@@ -1818,10 +1818,10 @@ module.exports = function(kernel) {
         return res.status(404).end();
       }
       if (event.ownerId.toString()===req.user._id.toString()) {
-        console.log(_.clone(event));
         let index = event.participantsId.indexOf(req.body.userId);
         if (index !== -1) {
           event.participantsId.splice(index, 1);
+          let newAttendUserIds = [];
 
           // when waiting list having people then add them to participants list
           if (event.limitNumberOfParticipate && event.numberParticipants > 0 && event.participantsId.length < event.numberParticipants) {
@@ -1833,6 +1833,7 @@ module.exports = function(kernel) {
                 // find out the user has been added to participants list
                 let idx = newWaitingList.indexOf(id);
                 if (idx !== -1) {
+                  newAttendUserIds.push(id);
                   newWaitingList.splice(idx, 1);
                 }
 
@@ -1846,12 +1847,17 @@ module.exports = function(kernel) {
               event.waitingParticipantIds = newWaitingList;
             }
           }
-          console.log('new event');
-console.log(event);
-return;
+
           event.save().then(event => {
-            kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
-            return res.status(200).end();
+            async.each(newAttendUserIds, (userId, callback) => {
+              kernel.model.AttendEvent({
+                ownerId: userId,
+                eventId: event._id
+              }).save().then(callback).catch(callback);
+            }, () => {
+              kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
+              return res.status(200).end();
+            })
           }).catch(err => {
             return res.status(500).json({type: 'SERVER_ERROR'});
           });

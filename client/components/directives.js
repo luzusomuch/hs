@@ -18,6 +18,27 @@ angular.module('healthStarsApp')
     }
   };
 })
+.directive('dragMe', function() {
+  return {
+    restrict: 'A',
+    scope: {
+      oldTop: '='
+    },
+    link: function(scope, element) {
+      element.css('background-position', '0px '+scope.oldTop+'px');
+      element.draggable({
+        stop: function(event, ui) {
+          scope.oldTop = scope.oldTop+ui.position.top;
+          if (scope.oldTop > 0) {
+            scope.oldTop = 0;
+          }
+          console.log(scope.oldTop);
+          element.css('background-position', '0px '+scope.oldTop+'px');
+        }
+      });
+    }
+  };
+})
 .directive('autoFocus', function($timeout) {
   return {
     scope: {trigger: '=autoFocus'},

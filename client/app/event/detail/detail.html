@@ -1,5 +1,5 @@
  <div class="top-detail">
-    <div class="img-timline bg-cover" style="background-image: url('{{vm.event | eventBanner}}')"></div>
+    <div drag-me old-top="100" class="img-timline bg-cover" style="background-image: url('{{vm.event | eventBanner}}')"></div>
     <div class="event-edit-button" ng-show="vm.event.ownerId._id==vm.authUser._id">
         <a class="btn btn-default btn-block" ui-sref="event.edit({id: vm.$stateParams.id})" ng-bind-html="'EDIT_EVENT' | translate"></a>
     </div>

@@ -2,7 +2,7 @@
   <div class="title-box-1">{{'MY_UPCOMING_EVENTS' | translate}}</div>
   <div class="body-box-1 event-home-right">
   	<ul class="event-list">
-  		<li ng-show="!search" class="{{event.categoryId | categoryClass}}" ng-repeat="event in friendsEvents.items">
+  		<li ng-class="{'opacity06': event.liked && !checkParticipants(event.participantsId, event.ownerId)}" ng-show="!search" class="{{event.categoryId | categoryClass}}" ng-repeat="event in friendsEvents.items">
   			<div class="top-li-event">
           <a ui-sref="profile.detail({id: event.ownerId._id})"><img src="{{event.ownerId | avatarUrl}}"></a>
           <h4><a ui-sref="profile.detail({id: event.ownerId._id})">{{event.ownerId.name}} &nbsp;</a></h4>
@@ -28,7 +28,7 @@
         <a class="white-color" href="#" ng-click="loadMore()">{{'LOAD_MORE_EVENTS' | translate}}</a>
       </li>
 
-      <li ng-show="search" class="{{event.categoryId | categoryClass}}" ng-repeat="event in searchItems.items">
+      <li ng-show="search" ng-class="{'opacity06': event.liked && !checkParticipants(event.participantsId, event.ownerId)}" class="{{event.categoryId | categoryClass}}" ng-repeat="event in searchItems.items">
         <div class="top-li-event">
           <a ui-sref="profile.detail({id: event.ownerId._id})"><img src="{{event.ownerId | avatarUrl}}"></a>
           <h4><a ui-sref="profile.detail({id: event.ownerId._id})">{{event.ownerId.name}} &nbsp;</a></h4>

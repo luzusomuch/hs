@@ -1,7 +1,8 @@
 'use strict';
 
 class JoinedEventsCtrl {
-	constructor($scope, EventService, SearchParams, $state) {
+	constructor($scope, EventService, SearchParams, $state, $localStorage) {
+		$scope.authUser = $localStorage.authUser;
 		$scope.SearchParams = SearchParams.params;
 		$scope.friendsEvents = {};
 		$scope.searchItems = {};
@@ -53,6 +54,14 @@ class JoinedEventsCtrl {
 				window.open(link, '_blank');
 			}
 		};
+
+		$scope.checkParticipants = function(participants, owner) {
+			let data = (participants && participants.length > 0) ? angular.copy(participants) : [];
+	    data.push(owner);
+	    return _.findIndex(data, (item) => {
+	    	item._id.toString()===$scope.authUser._id.toString();
+	    }) !== -1;
+		}
 	}
 }
 

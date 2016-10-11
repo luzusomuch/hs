@@ -270,61 +270,78 @@ module.exports = function(kernel) {
       must.push({ term: { private: false } })
     }
 
-    let query = {
-      query: {
-        filtered: {
-          query: {
-            bool: {
-              should: []
-            }
-          },
-          filter: {
-            bool: {
-              must: must,
-              should: [
-                { term: { ownerId: (req.query.userId) ? req.query.userId : req.user._id}},
-                { term: { participantsId: (req.query.userId) ? req.query.userId : req.user._id}}
-              ]
-            }
-          }
+    let eventIds = [];
+
+    async.parallel([
+      (cb) => {
+        if (req.query.getAll) {
+          // get all events id which current user liked to show on my calendar
+          kernel.model.Like.find({ownerId: req.user._id, objectName: 'Event'}).then(likedEvents => {
+            eventIds = _.map(likedEvents, 'objectId');
+            return cb();
+          }).catch(cb);
+        } else {
+          return cb();
         }
-      },
-      from: skip,
-      size: pageSize,
-      sort: [
-        { createdAt: 'desc' }
-      ]
-    };
-
-    kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {
-      if (err) {
-        return res.status(500).json({type: 'SERVER_ERROR'});
       }
-
-      let results = {items: [], totalItem: result.totalItem};
-
-      async.each(result.items, (item, callback) => {
-        kernel.model.Event.findById(item._id)
-        .populate('photosId')
-        .populate('categoryId')
-        .exec().then(event => {
-          if (!event) {
-            return callback(null);
-          }
-          event = event.toJSON();
-          // Check if current user is liked this event or not
-          kernel.model.Like.findOne({objectId: event._id, objectName: 'Event', ownerId: req.user._id}).then(liked => {
-            if (!liked) {
-              event.liked = false;
-            } else {
-              event.liked = true;
+    ], () => {
+      let query = {
+        query: {
+          filtered: {
+            query: {
+              bool: {
+                should: []
+              }
+            },
+            filter: {
+              bool: {
+                must: must,
+                should: [
+                  { term: { ownerId: (req.query.userId) ? req.query.userId : req.user._id}},
+                  { term: { participantsId: (req.query.userId) ? req.query.userId : req.user._id}},
+                  {term: {_id: eventIds}}
+                ]
+              }
             }
-            results.items.push(event);
-            callback(null);
+          }
+        },
+        from: skip,
+        size: pageSize,
+        sort: [
+          { createdAt: 'desc' }
+        ]
+      };
+
+      kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {
+        if (err) {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        }
+
+        let results = {items: [], totalItem: result.totalItem};
+
+        async.each(result.items, (item, callback) => {
+          kernel.model.Event.findById(item._id)
+          .populate('photosId')
+          .populate('categoryId')
+          .exec().then(event => {
+            if (!event) {
+              return callback(null);
+            }
+            event = event.toJSON();
+            // Check if current user is liked this event or not
+            kernel.model.Like.findOne({objectId: event._id, objectName: 'Event', ownerId: req.user._id}).then(liked => {
+              if (!liked) {
+                event.liked = false;
+              } else {
+                event.liked = true;
+              }
+              results.items.push(event);
+              callback(null);
+            }).catch(callback);
           }).catch(callback);
-        }).catch(callback);
-      }, (err) => {
-        return res.status(200).json(results);
+        }, (err) => {
+          return res.status(200).json(results);
+        });
       });
     });
   });
@@ -465,6 +482,17 @@ module.exports = function(kernel) {
         async.each(result.items, (item, callback) => {
           async.waterfall([
             (cb) => {
+              // Check if current user is liked this event or not
+              kernel.model.Like.findOne({objectId: item._id, objectName: 'Event', ownerId: req.user._id}).then(liked => {
+                if (!liked) {
+                  item.liked = false;
+                } else {
+                  item.liked = true;
+                }
+                cb(null, item);
+              }).catch(cb);
+            },
+            (result, cb) => {
               kernel.model.Award.findById(item.awardId).then(award => {
                 if (!award) {
                   return cb(null, item);

@@ -55,7 +55,7 @@ class MyCalendarCtrl {
 	loadEvents(type) {
 		let dateFormat = 'YYYY-MM-DD';
 		let todayFormated = moment().format(dateFormat);
-		this.EventService.getUserEvent({getAll: true, pageSize: 30}).then(resp => {
+		this.EventService.getUserEvent({getAll: true, pageSize: 100}).then(resp => {
 			this.localEvents = resp.data;
 			if (this.localEvents.items && this.localEvents.items.length > 0) {
 				_.each(this.localEvents.items, (event) => {

@@ -57,7 +57,7 @@ class EventAttendingCtrl {
 				});
 				if (index !== -1) {
 					this.participants.items.splice(index ,1);
-					this.participants.total -=1;
+					this.participants.totalItem -=1;
 				}
 			}).catch(() => {
 				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);

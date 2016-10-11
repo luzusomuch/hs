@@ -241,7 +241,7 @@ class EditEventCtrl {
     	}
     });
 		modalInstance.result.then(data => {
-			this.event.participants = data;
+			this.event.participants = _.union(this.event.participants, data);
 		});
   }
 

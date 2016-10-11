@@ -173,7 +173,7 @@ class BackendEventEditCtrl {
     	}
     });
 		modalInstance.result.then(data => {
-			this.event.participants = data;
+      this.event.participants = _.union(this.event.participants, data);
 		});
   }
 

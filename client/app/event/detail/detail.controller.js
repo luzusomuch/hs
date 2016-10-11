@@ -169,9 +169,18 @@ class EventDetailCtrl {
 	}
 
 	attendEvent() {
-		this.EventService.attendEvent(this.event._id).then(() => {
-			this.event.participantsId.push(this.authUser);
-			this.$scope.$emit('event-update-participants');
+		this.EventService.attendEvent(this.event._id).then((resp) => {
+			if (resp.data.isParticipant) {
+				this.event.participantsId.push(this.authUser);
+				this.$scope.$emit('event-update-participants');
+			} else {
+				this.growl.success(`<p>{{'EVENT_REACHED_LIMIT_NUMBER' | translate}}</p>`)
+				if (this.event.waitingParticipantIds && this.event.waitingParticipantIds.length > 0) {
+					this.event.waitingParticipantIds.push(this.authUser._id);
+				} else {
+					this.event.waitingParticipantIds = [this.authUser._id];
+				}
+			}
 		}).catch(() => {
 			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});

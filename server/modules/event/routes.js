@@ -886,12 +886,11 @@ module.exports = function(kernel) {
             return res.status(422).json({type: 'EVENT_AWARD_REQUIRED', path: 'award', message: 'Award is required'});
           }
 
+          // check limit number of participate
           if (req.body.event.limitNumberOfParticipate==='true' && !req.body.event.numberParticipants) {
             return res.status(422).json({type: 'NUMBER_PARTICIPANTS_REQUIRED', path: 'numberParticipants', message: 'Number participants is required'});
           } else if (req.body.event.limitNumberOfParticipate==='true' && (Number(req.body.event.numberParticipants) < 0 || Number(req.body.event.numberParticipants) > 99)) {
             return res.status(422).json({type: 'NUMBER_OF_PARTICIPANTS_IS_BETWEEN_0_99', path: 'numberParticipants', message: 'Number of participants is between 0 and 99'});
-          } else if (req.body.event.limitNumberOfParticipate==='true' && Number(req.body.event.numberParticipants) < event.participantsId.length) {
-            return res.status(422).json({type: 'NUMBER_OF_LIMIT_PARTICIPANTS_MUST_GREATOR_THAN_TOTAL_PARTICIPANTS', path: 'numberParticipants', message: 'Number of limit participants must greater than total participants'});
           }
 
           kernel.model.Category.findById(req.body.event.categoryId).then(category => {
@@ -1075,6 +1074,24 @@ module.exports = function(kernel) {
                 }
               }
 
+              let newParticipantIds = [];
+              _.each(participants, (id) => {
+                let idx = _.findIndex(event.participantsId, (participantId) => {
+                  return id.toString()===participantId.toString();
+                });
+                if (idx === -1) {
+                  newParticipantIds.push(id);
+                }
+              });
+              if (participants.length < event.participantsId.length) {
+                event.participantsId = participants;
+              }
+
+              // check limit number of participate which current total participants length
+              if (req.body.event.limitNumberOfParticipate==='true' && Number(req.body.event.numberParticipants) < event.participantsId.length) {
+                return res.status(422).json({type: 'NUMBER_OF_LIMIT_PARTICIPANTS_MUST_GREATOR_THAN_TOTAL_PARTICIPANTS', path: 'numberParticipants', message: 'Number of limit participants must greater than total participants'});
+              }
+
               // check waiting list with limit participants
               if (event.waitingParticipantIds && event.waitingParticipantIds.length > 0 && event.limitNumberOfParticipate && event.numberParticipants > event.participantsId.length) {
                 let newWaitingList = _.clone(event.waitingParticipantIds);
@@ -1096,6 +1113,14 @@ module.exports = function(kernel) {
                 event.waitingParticipantIds = newWaitingList;
               }
 
+              // if event update limit number of participate to false then push every user in waiting list to participants
+              if (!event.limitNumberOfParticipate && event.waitingParticipantIds && event.waitingParticipantIds.length > 0) {
+                _.each(event.waitingParticipantIds, (id) => {
+                  event.participantsId.push(id);
+                });
+                event.waitingParticipantIds = [];
+              }
+
               // unique event participants
               event.participantsId = _.map(_.groupBy(event.participantsId, (doc) => {
                 return doc;
@@ -1114,9 +1139,9 @@ module.exports = function(kernel) {
                 event.repeat = req.body.event.repeat;
               }
               event.stats.totalParticipants = event.participantsId.length;
-              
+
               event.save().then(() => {
-                async.each(participants, (userId, callback) => {
+                async.each(newParticipantIds, (userId, callback) => {
                   kernel.model.InvitationRequest({
                     fromUserId: req.user._id,
                     toUserId: userId,
@@ -1996,7 +2021,7 @@ module.exports = function(kernel) {
 
       // when total parcipants has reached the top then check waiting list
       if (event.participantsId.length >= event.numberParticipants && event.waitingParticipantIds.indexOf(req.user._id) !== -1) {
-        return res.status(200).end();
+        return res.status(200).json({isParticipant: false});
       }
 
       let availableUser = _.clone(event.participantsId);
@@ -2030,13 +2055,13 @@ module.exports = function(kernel) {
               ownerId: req.user._id,
               eventId: saved._id
             }).save().then(() => {
-              return res.status(200).end();
+              return res.status(200).json({isParticipant: true});
             }).catch(err => {
               return res.status(500).json({type: 'SERVER_ERROR'});  
             });
           } else {
             // if user has added to waiting list
-            return res.status(200).end();
+            return res.status(200).json({isParticipant: false});
           }
         }).catch(err => {
           return res.status(500).json({type: 'SERVER_ERROR'});

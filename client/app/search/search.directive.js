@@ -56,6 +56,7 @@ angular.module('healthStarsApp')
 					SearchParams.params.category = '';
 					SearchParams.params.categories = [];
 					SearchParams.params.friendActivities = false;
+					SearchParams.params.companyAccountEvents = false;
 					// SearchParams.params.dates = [];
 					angular.element(element).find('button').trigger('click');
 					$rootScope.$broadcast('clear-dates');

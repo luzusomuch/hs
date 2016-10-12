@@ -1784,6 +1784,8 @@ label {
 .error-text {
     color: red;
     position: absolute;
+    line-height: 13px;
+    margin-top: 5px;
     /*left: 15px;*/
 }
 .relative-div {
@@ -2431,4 +2433,7 @@ div.menu-tab > ul>li>a {
 }
 .menu-filter > .menu-filter-dropdown > .menu-filter-dropdown-item {
     margin-left: 10px;
+}
+.m-top10 {
+    margin-top: 10px;
 }

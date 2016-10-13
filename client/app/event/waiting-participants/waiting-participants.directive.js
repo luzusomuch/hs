@@ -21,6 +21,12 @@ class EventWaitingParticipantsCtrl {
 			}
 		});
 
+		$rootScope.$on('event-update-participants', () => {
+			EventService.getWaitingParticipants($scope.eId, {pageSize: this.waitingParticipants.pageSize}).then(res => {
+				this.waitingParticipants = res.data;
+			});
+		});
+
 		// Tracking online/offline user
 	    socket.socket.on('tracking:user', (data) => {
 	    	this.onlineUsers = data;

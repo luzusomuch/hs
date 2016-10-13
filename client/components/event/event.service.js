@@ -74,6 +74,10 @@
         return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/attend`);
       },
 
+      leaveEvent(id) {
+        return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/leave`);
+      },
+
       syncEvents(data) {
         return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/sync-events`, data);
       }

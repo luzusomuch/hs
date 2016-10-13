@@ -172,14 +172,28 @@ class EventDetailCtrl {
 		this.EventService.attendEvent(this.event._id).then((resp) => {
 			if (resp.data.isParticipant) {
 				this.event.participantsId.push(this.authUser);
-				this.$scope.$emit('event-update-participants');
 			} else {
-				this.growl.success(`<p>{{'EVENT_REACHED_LIMIT_NUMBER' | translate}}</p>`)
+				this.growl.success(`<p>{{'EVENT_REACHED_LIMIT_NUMBER' | translate}}</p>`);
 				if (this.event.waitingParticipantIds && this.event.waitingParticipantIds.length > 0) {
 					this.event.waitingParticipantIds.push(this.authUser._id);
 				} else {
 					this.event.waitingParticipantIds = [this.authUser._id];
 				}
+			}
+			this.$scope.$emit('event-update-participants');
+		}).catch(() => {
+			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+		});
+	}
+
+	leaveEvent() {
+		this.EventService.leaveEvent(this.event._id).then(() => {
+			let index = _.findIndex(this.event.participantsId, (participant) => {
+				return participant._id.toString()===this.authUser._id;
+			});
+			if (index !== -1) {
+				this.event.participantsId.splice(index, 1);
+				this.$scope.$emit('event-update-participants');
 			}
 		}).catch(() => {
 			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);

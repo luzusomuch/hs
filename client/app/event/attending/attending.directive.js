@@ -13,6 +13,7 @@ class EventAttendingCtrl {
 		};
 		this.eAward = $scope.eAward;
 		this.onlineUsers = [];
+		this.$rootScope = $rootScope;
 
 		$scope.$watch('eId', (nv) => {
 			if(nv) {
@@ -29,22 +30,22 @@ class EventAttendingCtrl {
 		});
 
 		// Tracking online/offline user
-	    socket.socket.on('tracking:user', (data) => {
-	    	this.onlineUsers = data;
-	    	$scope.$watch('vm.participants.items', (nv) => {
-	    		if (nv && nv.length > 0 && data) {
-	    			_.each(this.participants.items, (friend) => {
-		     			friend.online = false;
-		     			let index = _.findIndex(data, (item) => {
-		     				return item===friend._id;
-		     			});
-		     			if (index !== -1) {
-		     				friend.online = true;
-		     			}
-		     		});
-	    		}
-	    	});
-	    });
+    socket.socket.on('tracking:user', (data) => {
+    	this.onlineUsers = data;
+    	$scope.$watch('vm.participants.items', (nv) => {
+    		if (nv && nv.length > 0 && data) {
+    			_.each(this.participants.items, (friend) => {
+	     			friend.online = false;
+	     			let index = _.findIndex(data, (item) => {
+	     				return item===friend._id;
+	     			});
+	     			if (index !== -1) {
+	     				friend.online = true;
+	     			}
+	     		});
+    		}
+    	});
+    });
 
 		this.isEventOwner = ($scope.eOwner && this.authUser._id===$scope.eOwner._id) ? true : false;
 	}
@@ -52,13 +53,7 @@ class EventAttendingCtrl {
 	banUser(user) {
 		if (this.isEventOwner) {
 			this.EventService.banUser(this.$state.params.id, user._id).then(() => {
-				let index = _.findIndex(this.participants.items, (participant) => {
-					return participant._id===user._id;
-				});
-				if (index !== -1) {
-					this.participants.items.splice(index ,1);
-					this.participants.totalItem -=1;
-				}
+				this.$rootScope.$emit('event-update-participants');
 			}).catch(() => {
 				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});

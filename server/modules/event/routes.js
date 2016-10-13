@@ -2062,6 +2062,56 @@ module.exports = function(kernel) {
     })
   });
 
+  kernel.app.put('/api/v1/events/:id/leave', kernel.middleware.isAuthenticated(), (req, res) => {
+    kernel.model.Event.findById(req.params.id).then(event => {
+      if (!event) {
+        return res.status(404).end();
+      }
+      let index = _.findIndex(event.participantsId, (id) => {
+        return id.toString()===req.user._id.toString();
+      });
+      if (index!==-1) {
+        event.participantsId.splice(index, 1);
+        // when waiting list having people then add them to participants list
+        if (event.limitNumberOfParticipate && event.numberParticipants > 0 && event.participantsId.length < event.numberParticipants) {
+          if (event.waitingParticipantIds && event.waitingParticipantIds.length > 0) {
+            let newWaitingList = _.clone(event.waitingParticipantIds);
+            _.each(event.waitingParticipantIds, (id) => {
+              event.participantsId.push(id);
+
+              // find out the user has been added to participants list
+              let idx = newWaitingList.indexOf(id);
+              if (idx !== -1) {
+                newWaitingList.splice(idx, 1);
+              }
+
+              // check if event participants is isqual total number of participant
+              if (event.participantsId.length===event.numberParticipants) {
+                return false;
+              }
+            });
+
+            // apply new waiting list to the old one
+            event.waitingParticipantIds = newWaitingList;
+          }
+        }
+          
+        event.stats.totalParticipants = event.participantsId.length;
+
+        event.save().then(saved => {
+          kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: saved}).save();
+          return res.status(200).end();
+        }).catch(err => {
+          return res.status(500).end();
+        })
+      } else {
+        return res.status(403).end();
+      }
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+  });
+
   /*Attend an event*/
   kernel.app.put('/api/v1/events/:id/attend', kernel.middleware.isAuthenticated(), (req, res) => {
     kernel.model.Event.findById(req.params.id).then(event => {

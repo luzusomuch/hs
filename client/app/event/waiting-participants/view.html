@@ -1,0 +1,23 @@
+<div class="box-blue p15">
+    <div class="title-blue">{{'WAITING_LIST' | translate}}  ({{vm.waitingParticipants.totalItem || 0}}) <a ng-click="vm.showAllWaitingParticipants()" href="#" class="show-all-box">{{'SHOW_ALL' | translate}}</a></div>
+    <ul class="list-media list-friend list-friend-1">
+        <li ng-repeat="user in vm.waitingParticipants.items" ng-class="{'no-online': !user.online}">
+            <div class="img-media">
+                <a ui-sref="profile.detail({id: user._id})"><img ng-src="{{user | avatarUrl}}"></a>
+            </div>
+            <h4><a ui-sref="profile.detail({id: user._id})">{{user.name}}</a></h4>
+
+            <span class="text-mo" ng-if="user._id===vm.authUser._id">
+                {{'YOU' | translate}}
+            </span>
+            <span class="text-mo" ng-if="user._id!==vm.authUser._id">
+                <span ng-show="user.friendStatus==='completed'">{{'YOUR_FRIEND' | translate}}</span>
+                <span ng-show="user.friendStatus==='pending'">{{'PENDING_FRIEND_REQUEST' | translate}}</span>
+            </span>
+
+            <a ng-click="vm.addFriend(user)" href="#" class="btn-follow" ng-if="user._id!==vm.authUser._id && user.friendStatus==='none'"><i class="i-new user-i-1"></i> <span ng-bind-html="'ADD_FRIEND' | translate | html"></span></a>
+            <!-- <a ng-show="vm.isEventOwner && user._id!==vm.authUser._id" href="#" class="btn-follow" ng-click="vm.banUser(user)"><i class="fa fa-trash"></i></a> -->
+            <!-- <a ng-show="vm.isEventOwner && !user.isGrantedAward && vm.eAward.type=='organizer'" href="#" class="btn-follow" ng-click="vm.grantAward(user)"><i class="fa fa-gift" aria-hidden="true"></i></a> -->
+        </li>
+    </ul>
+</div>

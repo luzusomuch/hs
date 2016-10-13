@@ -365,7 +365,8 @@ let Language = {
 		WAITING_FOR_ACCEPTANCE: 'Waiting for acceptance',
 		YOU_ARE_NOW_IN_WAITING_LIST_IN: 'You are now in waiting list in',
 		NUMBER_OF_LIMIT_PARTICIPANTS_MUST_GREATOR_THAN_TOTAL_PARTICIPANTS: 'Number of limit participants must greater than total participants',
-		EVENT_REACHED_LIMIT_NUMBER: 'Event has reached to limit, you will be in queued until someone left the event or owner edit this event'
+		EVENT_REACHED_LIMIT_NUMBER: 'Event has reached to limit, you will be in queued until someone left the event or owner edit this event',
+		WAITING_LIST: 'Waiting list',
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -732,7 +733,8 @@ let Language = {
 		WAITING_FOR_ACCEPTANCE: 'Warten auf die Annahme',
 		YOU_ARE_NOW_IN_WAITING_LIST_IN: 'Sie befinden sich nun auf der Warteliste in',
 		NUMBER_OF_LIMIT_PARTICIPANTS_MUST_GREATOR_THAN_TOTAL_PARTICIPANTS: 'Anzahl der Teilnehmer Limit muss größer als die Gesamtteilnehmer',
-		EVENT_REACHED_LIMIT_NUMBER: 'Die Veranstaltung ist zu begrenzen, erreicht, werden Sie in die Warteschlange gestellt werden, bis jemand dieses Ereignis das Ereignis oder die Eigentümer bearbeiten links'
+		EVENT_REACHED_LIMIT_NUMBER: 'Die Veranstaltung ist zu begrenzen, erreicht, werden Sie in die Warteschlange gestellt werden, bis jemand dieses Ereignis das Ereignis oder die Eigentümer bearbeiten links',
+		WAITING_LIST: 'Warteliste',
 	}
 }
 

@@ -50,6 +50,10 @@
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/participants`, {params: params});
       },
 
+      getWaitingParticipants: (id, params) => {
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/waiting-participants`, {params: params});
+      },
+
       getBestPics: (id, limit) => {
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/bestPics/${limit}`);
       },

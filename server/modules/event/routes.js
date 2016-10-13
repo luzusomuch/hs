@@ -1264,6 +1264,59 @@ module.exports = function(kernel) {
     });
   });
 
+  // get waiting participants of an event
+  kernel.app.get('/api/v1/events/:id/waiting-participants', kernel.middleware.isAuthenticated(), (req, res) => {
+    let pageSize = req.query.pageSize || 6;
+    kernel.model.Event.findById(req.params.id).then(event => {
+      if (!event) {
+        return res.status(404).end();
+      }
+      let data = {
+        totalItem: (event.waitingParticipantIds) ? event.waitingParticipantIds.length : 0,
+        items: []
+      };
+      let ids = [];
+      if (event.waitingParticipantIds && event.waitingParticipantIds.length > 0) {
+        _.each(event.waitingParticipantIds, (id, index) => {
+          if (index < pageSize) {
+            ids.push(id);
+          }
+        });
+      }
+      kernel.model.User.find({_id: {$in: ids}}, '-password -salt').populate('avatar').exec().then(users => {
+        async.each(users, (user, callback) => {
+          user = user.toJSON();
+          kernel.model.Relation.findOne({
+            type: 'friend',
+            $or: [{
+              fromUserId: req.user._id, toUserId: user._id
+            }, {
+              fromUserId: user._id, toUserId: req.user._id
+            }]
+          }).then(relation => {
+            if (!relation) {
+              user.friendStatus = 'none';
+              data.items.push(user);
+              return callback(null);
+            }
+            user.friendStatus = relation.status;
+            data.items.push(user);
+            callback(null);
+          }).catch(callback);
+        }, (err) => {
+          if (err) {
+            return res.status(500).json({type: 'SERVER_ERROR'});
+          }
+          return res.status(200).json(data);
+        });
+      }).catch(err => {
+        return res.status(500).json({type: 'SERVER_ERROR'});  
+      });
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    })
+  });
+
   /**
   * Get paticipants of an event
   */

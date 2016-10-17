@@ -5,7 +5,7 @@
     <div class="title-blue">{{'EXHIBIT' | translate}}:</div>
     <div class="exhibit-award">
       <div ng-drop="true" ng-drop-success="vm.dropData($data, $event, award.number)" class="award-step{{award.number}}" ng-repeat="award in vm.authUser.awardsExhibits">
-      	<img ng-drag="true" ng-drag-data="award" src="{{award.awardId.objectPhotoId | imageMyAwardUrl: 'small'}}">
+      	<img ng-drag="true" ng-drag-data="award" src="{{award.awardId | eventAwardImageUrl: 'small'}}">
       </div>
       <!-- <div class="award-step2"><img src="assets/images/award1.png"></div>
       <div class="award-step3"><img src="assets/images/award2.png"></div> -->
@@ -32,7 +32,7 @@
     				<div class="action-award">
     					<button ng-click="vm.delete(award, 'granted')"><i class="fa fa-trash-o"></i> </button>
     				</div>
-    				<img class="pointer" ng-click="vm.viewAward(award)" src="{{award.awardId.objectPhotoId | imageUrl: 'small'}}">
+    				<img class="pointer" ng-click="vm.viewAward(award)" src="{{award.awardId | eventAwardImageUrl: 'small'}}">
     			</div>
     			<div class="title-award pointer" ng-click="vm.viewAward(award)">
     				{{award.awardId.objectName}}

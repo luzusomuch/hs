@@ -297,8 +297,10 @@ angular.module('healthStarsApp')
   };
 })
 .filter('imageMyAwardUrl', () => {
-  return (image, type) => {
+  return (award, type) => {
     let imagePath;
+    console.log(image);
+    let image  = award.objectPhotoId;
     if (image) {
       switch (type) {
         case 'small':
@@ -314,6 +316,8 @@ angular.module('healthStarsApp')
           imagePath = '/assets/photos/'+image.metadata.tmp;
           break;
       }
+    } else {
+      
     }
     return imagePath;
   };

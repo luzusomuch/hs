@@ -27,7 +27,7 @@
                 <li class="col-xs-4" ng-repeat="award in vm.user.awardsExhibits">
                     <div class="exhibit-user">
                         <img src="assets/images/box-pic.png">
-                        <span><img ng-src="{{award.awardId.objectPhotoId | imageUrl: 'small'}}"></span>
+                        <span><img ng-src="{{award.awardId | eventAwardImageUrl: 'small'}}"></span>
                     </div>
                 </li>
             </ul>

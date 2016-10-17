@@ -54,7 +54,7 @@
                             <h4 class="title-generated-home" ng-switch-when="waiting-acceptance">{{'WAITING_FOR_ACCEPTANCE' | translate}}: <span class="date-post">{{item.createdAt | fromNow | fromNowNumber}} {{item.createdAt | fromNow | fromNowTranslate | translate}}</span></h4>
                         </div>
                         <div class="content-post-li" ng-switch="item.itemType">
-                            <p ng-switch-when="relation">{{item.fromUserId.name}} {{'INVITE_BECOME_FRIEND' | translate}}</p>
+                            <p ng-switch-when="relation">{{item.fromUserId.name}} <span ng-bind-html="'INVITE_BECOME_FRIEND' | translate | html"></span></p>
                             <a ng-click="vm.friendAccept(item)" ng-switch-when="relation" href="#" class="btn btn-success btn-radius-20">{{'ACCEPT' | translate}}</a>
                             <a ng-click="vm.friendReject(item)" ng-switch-when="relation" href="#" class="btn btn-danger btn-radius-20">{{'DECLINE' | translate}}</a>
 

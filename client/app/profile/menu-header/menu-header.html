@@ -6,7 +6,7 @@
       <li ng-class="{'active': $state.includes('profile.myCalendar')}"><a ui-sref="profile.myCalendar"><i class="fa fa-calendar"></i> <span>{{'MENU_MY_CALENDAR' | translate}}</span></a></li>
       <li ng-class="{'active': $state.includes('profile.myAward')}"><a ui-sref="profile.myAward"><i class="fa fa-trophy"></i> <span>{{'MENU_MY_AWARDS' | translate}}</span></a></li>
       <li ng-class="{'active': $state.includes('profile.myMessages') || $state.includes('profile.myMessagesDetail')}"><a ui-sref="profile.myMessages"><i class="fa fa-envelope-o"></i> <span>{{'MENU_MY_MESSENGER' | translate}}</span></a></li>
-      <li><a ui-sref="profile.detail({id: vm.authUser._id})"><i class="fa fa-heartbeat"></i> <span>{{'MENU_HEALTH_BOOK' | translate}}</span></a></li>
+      <li><a ui-sref="profile.detail({id: vm.authUser._id})"><i class="fa fa-heartbeat"></i> <span>{{'HEALTH_PROFILE' | translate}}</span></a></li>
       <li ng-class="{'active': $state.includes('profile.mySetting')}"><a ui-sref="profile.mySetting"><i class="fa fa-cog"></i> <span>{{'MENU_SETTINGS' | translate}}</span></a></li>
     </ul>
   </div>

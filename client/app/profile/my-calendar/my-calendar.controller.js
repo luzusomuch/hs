@@ -35,7 +35,7 @@ class MyCalendarCtrl {
         	}
       		$(element).find('span:first').prepend('<img width="30" src='+photoUrl+'>');
 
-      		if (event.liked && event.participants.indexOf(this.authUser._id) === -1) {
+      		if ((event.liked && event.participants.indexOf(this.authUser._id) === -1) || event.repeatEvent) {
       			$(element).css('opacity', 0.6);
       		}
         },
@@ -83,7 +83,8 @@ class MyCalendarCtrl {
 		            			categoryId: event.categoryId,
 		            			_id: event._id,
 		            			type: 'local',
-		            			photosId: event.photosId
+		            			photosId: event.photosId,
+		            			repeatEvent: true
 		            		};
 
 		            		let index = _.findIndex(this.localEvents.items, (item) => {
@@ -109,7 +110,8 @@ class MyCalendarCtrl {
 		            			categoryId: event.categoryId,
 		            			_id: event._id,
 		            			type: 'local',
-		            			photosId: event.photosId
+		            			photosId: event.photosId,
+		            			repeatEvent: true
 		            		};
 
 		            		let index = _.findIndex(this.localEvents.items, (item) => {
@@ -139,7 +141,8 @@ class MyCalendarCtrl {
 		            			categoryId: event.categoryId,
 		            			_id: event._id,
 		            			type: 'local',
-		            			photosId: event.photosId
+		            			photosId: event.photosId,
+		            			repeatEvent: true
 		            		};
 
 		            		let index = _.findIndex(this.localEvents.items, (item) => {
@@ -208,7 +211,8 @@ class MyCalendarCtrl {
 				backgroundColor: backgroundColor, 
 				link: link,
 				liked: event.liked,
-				participants: participants
+				participants: participants,
+				repeatEvent: (event.repeatEvent) ? true : false
 			});
 			// if (event==='local') {
 			// 	let backgroundColor;

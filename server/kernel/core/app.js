@@ -23,8 +23,8 @@ exports.core = (kernel) => {
   kernel.app = express();
   kernel.app.use(morgan('dev'));
   kernel.app.use(compression());
-  kernel.app.use(bodyParser.urlencoded({ extended: false }));
-  kernel.app.use(bodyParser.json());
+  kernel.app.use(bodyParser.urlencoded({ extended: false, limit: '200mb' }));
+  kernel.app.use(bodyParser.json({limit: '200mb'}));
   kernel.app.use(methodOverride());
   kernel.app.use(cookieParser());
 

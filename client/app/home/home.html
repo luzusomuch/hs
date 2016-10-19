@@ -63,7 +63,7 @@
             </div>
             <section class="grid" masonry='{ "transitionDuration" : "0.4s" , "itemSelector" : ".tile"}'>
                 <div class="grid-item tile" masonry-tile ng-repeat="event in vm.events.items">
-                    <div class="li-event {{event.categoryId | categoryClass}}" ng-class="{'opacity06': event.liked && !vm.checkParticipants(event.participantsId, event.ownerId)}">
+                    <div class="li-event {{event.categoryId | categoryClass}}">
                         <div class="top-li-event">
                             <a ui-sref="profile.detail({id: event.ownerId._id})"><img src="{{event.ownerId | avatarUrl}}"></a>
                             <h4><a ui-sref="profile.detail({id: event.ownerId._id})">{{event.ownerId.name}} &nbsp;</a></h4>

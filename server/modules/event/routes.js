@@ -1833,7 +1833,7 @@ module.exports = function(kernel) {
             if (req.body.type==='facebook') {
               let eventLocation = (event.place) ? event.place.location : {};
               let location = {};
-              if (eventLocation.longitude && eventLocation.latitude) {
+              if (eventLocation && eventLocation.longitude && eventLocation.latitude) {
                 location.coordinates = [eventLocation.longitude, eventLocation.latitude];
                 location.country = eventLocation.country;
                 location.fullAddress = eventLocation.street;

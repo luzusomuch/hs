@@ -285,6 +285,7 @@ module.exports = function(kernel) {
         }
       }
     ], () => {
+      console.log(eventIds);
       let query = {
         query: {
           filtered: {
@@ -299,7 +300,7 @@ module.exports = function(kernel) {
                 should: [
                   { term: { ownerId: (req.query.userId) ? req.query.userId : req.user._id}},
                   { term: { participantsId: (req.query.userId) ? req.query.userId : req.user._id}},
-                  {term: {_id: eventIds}}
+                  // {term: {_id: eventIds}}
                 ]
               }
             }
@@ -312,8 +313,13 @@ module.exports = function(kernel) {
         ]
       };
 
+      if (eventIds.length > 0) {
+        query.query.filtered.filter.bool.should.push({term: {_id: eventIds}});
+      }
+
       kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {
         if (err) {
+          console.log(err);
           return res.status(500).json({type: 'SERVER_ERROR'});
         }
 

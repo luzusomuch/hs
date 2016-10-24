@@ -73,7 +73,7 @@ class MyCalendarCtrl {
 			        case 'daily': 
 		            	for (var i = 0; i < totalRepeatedDays; i++) {
 		            		let newStartDateTime = new Date(moment().add(i, 'days'));
-		            		let newEndDateTime = new Date(moment(newStartDateTime).add(1, 'days'));
+		            		let newEndDateTime = new Date(moment(newStartDateTime).add(eventTotalDays, 'days'));
 
 		            		let newEvent = {
 		            			name: event.name,

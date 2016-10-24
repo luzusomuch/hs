@@ -29,7 +29,7 @@ module.exports = (kernel, cb) => {
         case 'daily': 
           if (moment(todayFormated).isSameOrAfter(moment(eventRepeat.startDate).format(dateFormat)) && moment(todayFormated).isSameOrBefore(moment(eventRepeat.endDate).format(dateFormat))) {
             newStartDateTime = new Date(moment().hours(getHourOrMinute('hours', event.startDateTime)).minutes(getHourOrMinute('minutes', event.startDateTime)));
-            newEndDateTime = new Date(moment(newStartDateTime).add(1, 'days').hours(getHourOrMinute('hours', event.endDateTime)).minutes(getHourOrMinute('minutes', event.endDateTime)));
+            newEndDateTime = new Date(moment(newStartDateTime).add(eventTotalDays, 'days').hours(getHourOrMinute('hours', event.endDateTime)).minutes(getHourOrMinute('minutes', event.endDateTime)));
           }
           break;
         case 'weekly': 

@@ -212,7 +212,7 @@ class MyCalendarCtrl {
 				link: link,
 				liked: event.liked,
 				participants: participants,
-				repeatEvent: (event.repeatEvent) ? true : false
+				repeatEvent: (event.repeatEvent || event.createdFromRepeatEvent) ? true : false
 			});
 			// if (event==='local') {
 			// 	let backgroundColor;

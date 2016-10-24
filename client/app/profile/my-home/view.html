@@ -27,8 +27,55 @@
         </div>
         <div class="col-sm-6">
             <div class="box-blue">
-                <div class="post-li" ng-repeat="item in vm.dashboardItems.items">
-                    <div class="img-post-li">
+                <div class="my-home-item" ng-repeat="item in vm.dashboardItems.items">
+                    <div class="my-home-top-li-event">
+                        <a ui-sref="profile.detail({id: (item.itemType==='relation' ? item.fromUserId._id : item.ownerId._id)})">
+                            <img src="{{(item.itemType==='relation') ? item.fromUserId : item.ownerId | avatarUrl}}">
+                        </a>
+                        <h4>
+                            <a ui-sref="profile.detail({id: (item.itemType==='relation' ? item.fromUserId._id : item.ownerId._id)})">{{(item.itemType==='relation' ? item.fromUserId.name : item.ownerId.name)}}</a>
+                        </h4>
+                        <i class="fa fa-clock-o"></i> <span>{{item.createdAt | fromNow | fromNowNumber}} {{item.createdAt | fromNow | fromNowTranslate | translate}}</span>
+                    </div>
+                    <div class="my-home-content-post-li row">
+                        <div class="col-sm-4">
+                            <img width="100%" height="auto" src="{{(item.event) ? item.event : item | eventThumbnail}}">
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="content-post-li" ng-switch="item.itemType">
+                                <p ng-switch-when="relation">{{item.fromUserId.name}} <span ng-bind-html="'INVITE_BECOME_FRIEND' | translate | html"></span></p>
+                                <a ng-click="vm.friendAccept(item)" ng-switch-when="relation" href="#" class="btn btn-success btn-radius-20">{{'ACCEPT' | translate}}</a>
+                                <a ng-click="vm.friendReject(item)" ng-switch-when="relation" href="#" class="btn btn-danger btn-radius-20">{{'DECLINE' | translate}}</a>
+
+                                <p ng-switch-when="upcoming-event">{{item.ownerId.name}} {{'INTERESTED_EVENT' | translate}}: <a ui-sref="event.detail({id: item._id})">{{item.name}}</a></p>
+
+                                <p ng-switch-when="event-invited">{{item.ownerId.name}} {{'INVITE_TO_EVENT' | translate}}: 
+                                    <a ui-sref="event.detail({id: item._id})">{{item.name}}</a>
+                                </p>
+
+                                <p ng-switch-when="liked">{{item.ownerId.name}} {{'HAS_LIKED_EVENT' | translate}}: 
+                                    <a ui-sref="event.detail({id: item.event._id})">{{item.event.name}}</a>
+                                </p>
+
+                                <p ng-switch-when="attend-event">{{item.ownerId.name}} {{'HAS_ATTEND_EVENT' | translate}}: 
+                                    <a ui-sref="event.detail({id: item.event._id})">{{item.event.name}}</a>
+                                </p>
+
+                                <p ng-switch-when="inviting-event">{{item.ownerId.name}} <span ng-bind-html="'WAS_ADDED_YOU_AS_MEMBER_OF_EVENT' | translate"></span>: 
+                                    <a ui-sref="event.detail({id: item._id})">{{item.name}}</a>
+                                </p>
+
+                                <p ng-switch-when="waiting-acceptance">{{'YOU_ARE_NOW_IN_WAITING_LIST_IN' | translate}}: 
+                                    <a ui-sref="event.detail({id: item._id})">{{item.name}}</a>
+                                </p>
+
+                                <a ng-click="vm.eventAccept(item)" ng-if="item.itemType==='event-invited'" href="#" class="btn btn-success btn-radius-20">{{'ACCEPT' | translate}}</a>
+
+                                <a ng-click="vm.eventReject(item)" ng-if="item.itemType==='event-invited'" href="#" class="btn btn-danger btn-radius-20">{{'DECLINE' | translate}}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="img-post-li">
                         <a ng-if="item.itemType==='relation'" ui-sref="profile.detail({id: item.fromUserId._id})">
                             <img src="{{item.fromUserId | avatarUrl}}">
                         </a>
@@ -36,8 +83,8 @@
                         <a ng-if="item.itemType!=='relation'" ui-sref="profile.detail({id: item.ownerId._id})">
                             <img src="{{item.ownerId | avatarUrl}}">
                         </a>
-                    </div>
-                    <div class="content-post-li">
+                    </div> -->
+                    <!-- <div class="content-post-li">
                         <div class="title-post-li" ng-switch="item.itemType">
                             <h4 class="title-generated-home" ng-switch-when="relation">{{'FRIEND_SHIP_REQUEST' | translate}}: <span class="date-post">{{item.createdAt | fromNow | fromNowNumber}} {{item.createdAt | fromNow | fromNowTranslate | translate}}</span> </h4>
 
@@ -86,7 +133,7 @@
                             <a ng-click="vm.eventAccept(item)" ng-if="item.itemType==='event-invited'" href="#" class="btn btn-success btn-radius-20">{{'ACCEPT' | translate}}</a>
                             <a ng-click="vm.eventReject(item)" ng-if="item.itemType==='event-invited'" href="#" class="btn btn-danger btn-radius-20">{{'DECLINE' | translate}}</a>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <!-- <div class="post-li" ng-show="vm.dashboardItems.items < vm.dashboardItems.totalItem">
                     <a href="#" ng-click="vm.loadItems()">{{'LOAD_MORE_FEEDS' | translate}}</a>

@@ -2437,3 +2437,24 @@ div.menu-tab > ul>li>a {
 .m-top10 {
     margin-top: 10px;
 }
+.my-home-item {
+    padding: 5px;
+    border-bottom: 1px solid;
+}
+.my-home-top-li-event {
+    position: relative;
+    padding: 15px 40px 10px 55px;
+}
+.my-home-top-li-event h4 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 14px;
+}
+.my-home-top-li-event img {
+    border-radius: 50%;
+    width: 33px;
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    border: 1px solid rgba(255,255,255,0.4);
+}

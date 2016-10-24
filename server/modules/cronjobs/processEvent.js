@@ -86,6 +86,7 @@ module.exports = (kernel, cb) => {
               location: event.location,
               private: event.private,
               banner: event.banner,
+              createdFromRepeatEvent: true
               stats: {
                 totalParticipants: 0
               }

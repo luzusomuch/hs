@@ -18,6 +18,8 @@ module.exports = (kernel, cb) => {
     blocked: false,
     $or: [{'repeat.type': 'daily'}, {'repeat.type': 'weekly'}, {'repeat.type': 'monthly'}]
   }).then(events => {
+    console.log('total repeated event');
+    console.log(events.length);
     async.each(events, (event, callback) => {
       let newStartDateTime, newEndDateTime;
       let eventTotalDays = moment(moment(event.endDateTime).format(dateFormat)).diff(moment(event.startDateTime).format(dateFormat), 'days');
@@ -89,6 +91,7 @@ module.exports = (kernel, cb) => {
               }
             };
             kernel.model.Event(newEvent).save().then(saved => {
+              console.log('new event created');
               var url = kernel.config.baseUrl + 'event/'+saved._id;
               async.each(saved.participantsId, (id, callback) => {
                 kernel.model.User.findById(id).then(user => {
@@ -137,6 +140,8 @@ module.exports = (kernel, cb) => {
                   if (err) {
                     return cb(err);
                   }
+                  console.log('send email to participantsId and liked user');
+                  console.log(result);
                   async.each(result, (userId, _callback) => {
                     // Create new event invitation
                     let invite = new kernel.model.InvitationRequest({
@@ -146,6 +151,7 @@ module.exports = (kernel, cb) => {
                     });
                     invite.save(_callback);
                   }, () => {
+                    console.log('invitation sent');
                     kernel.queue.create('TOTAL_EVENT_CREATED', {userId: saved.ownerId}).save();
                     // kernel.queue.create('GRANTAWARD', saved).save();
                     kernel.ES.create({type: kernel.ES.config.mapping.eventType, id: saved._id.toString(), data: saved}, cb);

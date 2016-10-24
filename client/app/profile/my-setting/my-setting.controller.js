@@ -94,6 +94,9 @@ class MySettingCtrl {
 	  				resolve: {
 	  					file: () => {
 	  						return file;
+	  					},
+	  					cropType: () => {
+	  						return 'circle';
 	  					}
 	  				}
 	  			}).result.then(data => {

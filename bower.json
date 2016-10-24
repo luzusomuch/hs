@@ -39,7 +39,7 @@
     "gm.datepicker-multi-select": "latest",
     "angular-ui-calendar": "0.8.0",
     "angular-jquery-timepicker": "0.11.0",
-    "ngImgCrop": "^0.3.2",
+    "ngImgCrop": "PortChaw/ngImgCrop#0.2.1",
     "angular-bootstrap-toggle": "^0.1.2"
   },
   "devDependencies": {

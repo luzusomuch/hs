@@ -156,7 +156,7 @@
                   <table class="table-upload">
                     <tr>
                       <td width="20%">
-                        <img ngf-src="vm.newBanner[0]" width="100%" ng-show="vm.newBanner.length > 0">
+                        <img ngf-src="vm.newBanner[0]" width="{{vm.newBanner[0].coords.w}}" height="{{vm.newBanner[0].coords.h}}" ng-show="vm.newBanner.length > 0">
                       </td>
                       <td  class="text-center">
                         <p><a href="#" class="btn btn-danger btn-sm" ngf-select="vm.select($files, 'banner')" ngf-multiple="false" accept="image/*"><span ng-bind-html="'UPLOAD_PICTURE' | translate"></span></a></p>

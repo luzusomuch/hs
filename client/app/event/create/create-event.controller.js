@@ -265,8 +265,24 @@ class CreateEventCtrl {
 
   select($files, type) {
     if (type==='banner') {
-      this.newBanner = $files;
-      this.event.bannerName = (this.newBanner.length > 0) ? this.newBanner[0].name : null;
+      this.$uibModal.open({
+        animation: true,
+        templateUrl: 'app/profile/modal/crop-image/view.html',
+        controller: 'CropImageCtrl',
+        controllerAs: 'CropImage',
+        resolve: {
+          file: () => {
+            return $files;
+          },
+          cropType: () => {
+            return 'rectangle';
+          }
+        }
+      }).result.then(resp => {
+        console.log(resp);
+        this.newBanner = [resp];
+        this.event.bannerName = (this.newBanner.length > 0) ? this.newBanner[0].name : null;
+      });
     } else {
     	$files.forEach(file => {
         file.photoType = type;
@@ -333,7 +349,7 @@ class CreateEventCtrl {
       }
 
       this.files = _.union(this.files, this.newBanner);
-      
+      return;
   		this.Upload.upload({
 	      url: '/api/v1/events',
 	      arrayKey: '',

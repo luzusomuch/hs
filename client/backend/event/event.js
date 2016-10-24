@@ -18,7 +18,7 @@ angular.module('healthStarsApp')
 	    },
 	    resolve: {
 	    	events: (EventService) => {
-	    		return EventService.search().then(resp => {
+	    		return EventService.search({backend:true}).then(resp => {
 		    		return resp.data;
 	    		});
 		    }

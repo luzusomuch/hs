@@ -62,7 +62,7 @@ class BackendEventListCtrl {
 	}
 
 	loadMore() {
-		this.EventService.search({page: this.page}).then(resp => {
+		this.EventService.search({page: this.page, backend:true}).then(resp => {
   		this.page += 1;
   		this.events.items = this.events.items.concat(resp.data.items);
 		}).catch(() => {

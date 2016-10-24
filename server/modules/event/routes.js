@@ -1490,7 +1490,8 @@ module.exports = function(kernel) {
 
     let term = [];
     let must = [];
-    if (req.user.role!=='admin') {
+
+    if (!req.body.backend) {
       term = [
         { missing: { field: 'private' } },
         { term: { private: false } },

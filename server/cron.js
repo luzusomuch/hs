@@ -1,7 +1,7 @@
 'use strict';
 
 // Set default node environment to development
-var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+var env = process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 
 if (env === 'development' || env === 'test') {
   // Register the Babel require hook
@@ -14,6 +14,8 @@ mongoose.Promise = require('bluebird');
 var config = require('./config/environment');
 
 // Connect to MongoDB
+console.log(env);
+console.log(config.MONGO_URL);
 mongoose.connect(config.MONGO_URL);
 mongoose.connection.on('error', function(err) {
   console.error('MongoDB connection error: ' + err);

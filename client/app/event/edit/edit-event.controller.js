@@ -289,11 +289,34 @@ class EditEventCtrl {
       	if (idx !== -1) {
       		this.files.splice(idx, 1);
       	}
-        this.files.push(file);
+
+        this.$uibModal.open({
+        animation: true,
+        templateUrl: 'app/profile/modal/crop-image/view.html',
+        controller: 'CropImageCtrl',
+        controllerAs: 'CropImage',
+        resolve: {
+          file: () => {
+            return [file];
+          },
+          cropType: () => {
+            return 'rectangle';
+          },
+          imageSize: () => {
+            return {width: $files[0].$ngfWidth};
+          }
+        }
+      }).result.then(resp => {
+        // this.files.push(file);
+        resp.photoType = 'banner';
+        this.files.push(resp);
+
+        this.newBanner = [resp];
+      });
       }
     });
-    this.newBanner = _.filter(this.files, {photoType: 'banner'});
-    this.event.bannerName = (this.newBanner.length > 0) ? this.newBanner[0].name : null;
+    // this.newBanner = _.filter(this.files, {photoType: 'banner'});
+    // this.event.bannerName = (this.newBanner.length > 0) ? this.newBanner[0].name : null;
   }
 
   removePhoto(photo, type) {

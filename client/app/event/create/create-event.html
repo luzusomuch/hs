@@ -153,7 +153,14 @@
               <div class="form-group">
                 <label>{{'EVENT_BANNER' | translate}}</label>
                 <div class="upload-img-event">
-                  <table class="table-upload">
+                  <div class="banner-preview">
+                    <img ngf-src="vm.newBanner[0]" width="{{vm.newBanner[0].coords.w}}" height="{{vm.newBanner[0].coords.h}}" ng-show="vm.newBanner.length > 0">
+                  </div>
+                  <div class="text-center">
+                    <p><a href="#" class="btn btn-danger btn-sm" ngf-select="vm.select($files, 'banner')" ngf-multiple="false" accept="image/*" ngf-min-height="1" or ngf-min-width="1"><span ng-bind-html="'UPLOAD_PICTURE' | translate"></span></a></p>
+                        <span ng-bind-html="'FILE_REQUIREMENT' | translate | html"></span>
+                  </div>
+                  <!-- <table class="table-upload">
                     <tr>
                       <td width="20%">
                         <img ngf-src="vm.newBanner[0]" width="{{vm.newBanner[0].coords.w}}" height="{{vm.newBanner[0].coords.h}}" ng-show="vm.newBanner.length > 0">
@@ -163,7 +170,7 @@
                         <span ng-bind-html="'FILE_REQUIREMENT' | translate | html"></span>
                       </td>
                     </tr>
-                  </table>
+                  </table> -->
                   
                 </div>
               </div>

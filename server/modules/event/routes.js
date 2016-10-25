@@ -4,15 +4,20 @@ import async from 'async';
 import multer from 'multer';
 import moment from 'moment';
 import {EventBus} from '../../components';
+import { StringHelper } from '../../kernel/helpers';
 
 module.exports = function(kernel) {
   kernel.app.post('/api/v1/events', kernel.middleware.isAuthenticated(), (req, res) => {
+    let bannerName;
     let storage = multer.diskStorage({
       destination: (req, file, cb) => {
         cb(null, kernel.config.tmpPhotoFolder)
       },
       filename: (req, file, cb) => {
-        return cb(null, file.originalname);
+        if (file.originalname && file.originalname==='blob') {
+          bannerName = req.user._id+'_'+ StringHelper.randomString(10) +'_'+file.originalname;
+        }
+        return cb(null, (bannerName) ? bannerName : file.originalname);
       }
     });
     let upload = multer({
@@ -54,8 +59,6 @@ module.exports = function(kernel) {
             coordinates: [0, 0]
           };
         }
-
-        console.log(req.body.event);
 
         let data = {
           name: req.body.event.name,
@@ -183,7 +186,7 @@ module.exports = function(kernel) {
           };
           let model = new kernel.model.Photo(photo);
           model.save().then(saved => {
-            if (req.body.event.bannerName && req.body.event.bannerName===file.filename) {
+            if (bannerName && bannerName===file.filename) {
               newBannerId = saved._id;
             } else {
               uploadedPhotoIds.push(saved._id);
@@ -195,7 +198,7 @@ module.exports = function(kernel) {
           });
         }, () => {
           data.photosId = uploadedPhotoIds;
-          if (req.body.event.bannerName && req.body.event.bannerName !== 'null') {
+          if (bannerName && bannerName.length > 0) {
             data.banner = newBannerId;
           }
           data.stats = {
@@ -864,12 +867,14 @@ module.exports = function(kernel) {
        return res.status(404).json({type: 'EVENT_NOT_FOUND', message: 'Event not found'}); 
       }
       if (event.ownerId.toString()===req.user._id.toString() || req.user.role==='admin') {
+        let bannerName;
         let storage = multer.diskStorage({
           destination: (req, file, cb) => {
             cb(null, kernel.config.tmpPhotoFolder)
           },
           filename: (req, file, cb) => {
-            return cb(null, file.originalname);
+            bannerName = req.user._id+'_'+ StringHelper.randomString(10) +'_'+file.originalname;
+            return cb(null, (bannerName && bannerName.length > 0) ? bannerName : file.originalname);
           }
         });
         let upload = multer({
@@ -1025,7 +1030,7 @@ module.exports = function(kernel) {
               };
               let model = new kernel.model.Photo(photo);
               model.save().then(saved => {
-                if (req.body.event.bannerName && req.body.event.bannerName===file.filename) {
+                if (bannerName && bannerName===file.filename) {
                   newBannerId = saved._id;
                 } else {
                   event.photosId.push(saved._id);
@@ -1049,7 +1054,7 @@ module.exports = function(kernel) {
               event.limitNumberOfParticipate = (req.body.event.limitNumberOfParticipate==='true') ? true : false,
               event.numberParticipants = (event.limitNumberOfParticipate) ? Number(req.body.event.numberParticipants) : 0
 
-              if (req.body.event.bannerName && req.body.event.bannerName !== 'null') {
+              if (bannerName && bannerName.length > 0) {
                 event.banner = newBannerId;
               }
               // Old request

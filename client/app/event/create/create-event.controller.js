@@ -264,7 +264,7 @@ class CreateEventCtrl {
   }
 
   select($files, type) {
-    if (type==='banner') {
+    if (type==='banner' && $files) {
       this.$uibModal.open({
         animation: true,
         templateUrl: 'app/profile/modal/crop-image/view.html',
@@ -276,10 +276,12 @@ class CreateEventCtrl {
           },
           cropType: () => {
             return 'rectangle';
+          },
+          imageSize: () => {
+            return {width: $files[0].$ngfWidth};
           }
         }
       }).result.then(resp => {
-        console.log(resp);
         this.newBanner = [resp];
         this.event.bannerName = (this.newBanner.length > 0) ? this.newBanner[0].name : null;
       });
@@ -349,7 +351,7 @@ class CreateEventCtrl {
       }
 
       this.files = _.union(this.files, this.newBanner);
-      return;
+      
   		this.Upload.upload({
 	      url: '/api/v1/events',
 	      arrayKey: '',

@@ -3,10 +3,10 @@
 </div>
 <div class="modal-body">
 	<div class="cropArea">
-		<img-crop image="CropImage.file | ngfDataUrl" area-type="{{CropImage.cropType}}" area-coords="CropImage.coords" result-image="CropImage.myCroppedImage" ng-init="CropImage.myCroppedImage=''"></img-crop>
+		<img-crop image="CropImage.file | ngfDataUrl" area-type="{{CropImage.cropType}}" area-coords="CropImage.coords" result-image-size="CropImage.imageSize" result-image="CropImage.myCroppedImage" ng-init="CropImage.myCroppedImage=''"></img-crop>
 	</div>
 	<div class="modal-footer">
-		<button ng-click="CropImage.submit()" type="button" class="btn btn-success btn-radius-20">{{'APPLY' | translate}}</button>
+		<button ng-click="CropImage.submit()" type="button" class="btn btn-success btn-radius-20" ng-bind-html="'APPLY' | translate | html"></button>
 		<button ng-click="CropImage.close()" type="button" class="btn btn-default btn-radius-20" ng-bind-html="'CLOSE' | translate | html"></button>
 	</div>    
 </div>

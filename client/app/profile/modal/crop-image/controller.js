@@ -1,14 +1,16 @@
 'use strict';
 
 class CropImageCtrl {
-	constructor(file, cropType, $uibModalInstance, Upload, $localStorage) {
+	constructor(file, cropType, imageSize, $uibModalInstance, Upload, $localStorage) {
 		this.Upload = Upload;
 		this.$uibModalInstance = $uibModalInstance;
 		this.file = file[0];
 		this.myCroppedImage;
 		this.authUser = $localStorage.authUser;
 		this.cropType = (cropType) ? cropType : 'circle';
+		this.imageSize = (imageSize.width) ? imageSize.width : 200;
 		this.coords = {};
+
 	}
 
 	submit() {

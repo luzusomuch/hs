@@ -97,6 +97,9 @@ class MySettingCtrl {
 	  					},
 	  					cropType: () => {
 	  						return 'circle';
+	  					},
+	  					imageSize: () => {
+	  						return {};
 	  					}
 	  				}
 	  			}).result.then(data => {

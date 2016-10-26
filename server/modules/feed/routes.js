@@ -143,8 +143,12 @@ module.exports = function(kernel) {
           data.ownerId = req.user._id;
           kernel.model.Feed(data).save().then(feed => {
             kernel.model.Feed.populate(feed, [
-              {path: 'ownerId', select: '-password -salt'},
-              {path: 'photosId'}
+              {
+                path: 'ownerId', 
+                select: '-password -salt',
+                populate: {path: 'avatar', model: 'Photo'}
+              },
+              {path: 'photosId'},
             ], (err, result) => {
               return res.status(200).json(result);
             });

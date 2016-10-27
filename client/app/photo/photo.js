@@ -99,6 +99,9 @@ angular.module('healthStarsApp.photoViewer', ['healthStarsApp.constants', 'healt
 		},
 		delete(id) {
 			return $http.delete(`${config.baseUrl}api/${config.apiVer}/photos/${id}`);	
+		},
+		deleteList(data) {
+			return $http.post(`${config.baseUrl}api/${config.apiVer}/photos/delete-photos-list`, data);
 		}
 	};
 })

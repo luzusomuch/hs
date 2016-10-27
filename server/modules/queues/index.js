@@ -49,6 +49,13 @@ exports.core = (kernel) => {
     });
   }
 
+  // remove file from s3
+  kernel.queue.process('REMOVE_AWS_FILE', (job, done) => {
+    S3.deleteFile(job.data.filename, (err, resp) => {
+      done();
+    });
+  });
+
 	// Process uploaded photo to s3
 	kernel.queue.process('PROCESS_AWS', (job, done) => {
 		let filePath = path.resolve(kernel.config.tmpPhotoFolder+'/'+job.data.metadata.tmp);

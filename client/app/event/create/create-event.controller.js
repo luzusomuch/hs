@@ -1,12 +1,21 @@
 'use strict';
 
 class CreateEventCtrl {
-	constructor(APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies, growl, awards) {
+	constructor(PhotoViewer, APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies, growl, awards) {
+    // check if user leave this state
+    $scope.$on('$stateChangeStart', (event, next) => {
+      if (this.files.length > 0) {
+        PhotoViewer.deleteList({filesId: _.map(this.files, '_id')}).then(resp => {
+          console.log(resp);
+        });
+      }
+    });
 		this.APP_CONFIG = APP_CONFIG;
     this.growl = growl;
     this.Upload = Upload;
 		this.$cookies = $cookies;
 		this.files = [];
+    this.isUploading = false;
     this.newBanner = [];
 		this.user = $localStorage.authUser;
 		this.event = {
@@ -269,7 +278,7 @@ class CreateEventCtrl {
   }
 
   select($files, type) {
-    if (type==='banner' && $files) {
+    if (type==='banner' && $files[0]) {
       this.$uibModal.open({
         animation: true,
         templateUrl: 'app/profile/modal/crop-image/view.html',
@@ -290,17 +299,36 @@ class CreateEventCtrl {
         this.newBanner = [resp];
         this.event.bannerName = (this.newBanner.length > 0) ? this.newBanner[0].name : null;
       });
-    } else {
-    	$files.forEach(file => {
-        file.photoType = type;
-        //check file
-        let index = _.findIndex(this.files, (f) => {
-          return f.name === file.name && f.size === file.size;
-        });
-
-        if (index === -1) {
-          this.files.push(file);
+    } else if (type==='photo' && $files[0]) {
+      this.$uibModal.open({
+        animation: true,
+        templateUrl: 'app/profile/modal/crop-image/view.html',
+        controller: 'CropImageCtrl',
+        controllerAs: 'CropImage',
+        resolve: {
+          file: () => {
+            return $files;
+          },
+          cropType: () => {
+            return 'rectangle';
+          },
+          imageSize: () => {
+            return {width: $files[0].$ngfWidth/2, height: $files[0].$ngfHeight/2};
+          }
         }
+      }).result.then(resp => {
+        this.isUploading = true;
+        this.Upload.upload({
+          url: '/api/v1/photos',
+          data: {file: resp},
+          headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
+        }).then(uploadedPhoto =>{
+          this.isUploading = false;
+          this.files.push(uploadedPhoto.data);
+        }, () => {
+          this.isUploading = false;
+          this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+        });
       });
     }
   }
@@ -355,14 +383,17 @@ class CreateEventCtrl {
         return false;
       }
 
-      this.files = _.union(this.files, this.newBanner);
+      // this.files = _.union(this.files, this.newBanner);
+      // get uploaded event photos
+      this.event.uploadedPhotoIds = _.map(this.files, '_id');
       
   		this.Upload.upload({
 	      url: '/api/v1/events',
 	      arrayKey: '',
-	      data: {file: this.files, event: this.event},
+	      data: {file: this.newBanner, event: this.event},
 	      headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
 	    }).then(resp =>{
+        this.files = [];
         this.event.url = `${this.APP_CONFIG.baseUrl}event/detail/${resp.data._id}`;
 	    	this.$state.go('event.detail', {id: resp.data._id});
         this.submitted = false;

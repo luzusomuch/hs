@@ -1,8 +1,73 @@
 import Joi from 'joi';
 import async from 'async';
 import _ from 'lodash';
+import multer from 'multer';
+import { StringHelper } from '../../kernel/helpers';
 
 module.exports = function(kernel) {
+	/*post a photo*/
+	kernel.app.post('/api/v1/photos', kernel.middleware.isAuthenticated(), (req, res) => {
+		let photoName;
+		let storage = multer.diskStorage({
+      destination: (req, file, cb) => {
+        cb(null, kernel.config.tmpPhotoFolder)
+      },
+      filename: (req, file, cb) => {
+        if (file.originalname && file.originalname==='blob') {
+          photoName = req.user._id+'_'+ StringHelper.randomString(10) +'_'+file.originalname+'.jpg';
+        }
+        return cb(null, (photoName) ? photoName : file.originalname);
+      }
+    });
+    let upload = multer({
+      storage: storage
+    }).single('file');
+
+    upload(req, res, (err) => {
+    	if (err) {
+    		return res.status(500).json(err);
+    	}
+    	
+    	let newPhoto = {
+    		ownerId: req.user._id,
+    		filename: req.file.filename,
+        metadata: {
+          tmp: req.file.filename
+        }
+    	};
+    	kernel.model.Photo(newPhoto).save().then(saved => {
+    		kernel.queue.create('PROCESS_AWS', saved).save();
+    		return res.status(200).json(saved);
+    	}).catch(err => {
+    		return res.status(500).json(err);
+    	});
+    });
+	});
+
+	/*delete photos when in a list*/
+	kernel.app.post('/api/v1/photos/delete-photos-list', kernel.middleware.isAuthenticated(), (req, res) => {
+		if (!req.body.filesId) {
+			return res.status(422).end();
+		} 
+		kernel.model.Photo.find({_id: {$in: req.body.filesId}}).then(photos => {
+			async.each(photos, (photo, callback) => {
+				photo.remove().then(() => {
+					if (photo.filename && !photo.metadata.tmp) {
+						kernel.queue.create('REMOVE_AWS_FILE', {filename: photo.filename}).save();
+					}
+					callback();
+				}).catch(callback);
+			}, (err) => {
+				if (err) {
+					return res.status(500).json(err);
+				}
+				return res.status(200).end();
+			});	
+		}).catch(err => {
+			return res.status(500).json(err);
+		});
+	});
+
 
 	/*Get all photos restrict admin*/
 	kernel.app.get('/api/v1/photos', kernel.middleware.hasRole('admin'), (req, res) => {

@@ -181,10 +181,10 @@
                   <div class="row">
                     <div class="col-xs-3">
                       <img ng-show="vm.files.length === 0" src="{{vm.selectedCategory | categoryImagePath}}" style="width: 100%">
-                      <img ng-show="vm.files.length > 0" style="margin-bottom:5px" ng-repeat="file in vm.files" ngf-src="file" width="100%">
+                      <img ng-show="vm.files.length > 0" style="margin-bottom:5px" ng-repeat="file in vm.files" src="{{file | imageUrl: 'small'}}" width="100%">
                     </div>
                     <div class="col-xs-9 text-center">
-                      <p><a href="#" class="btn btn-danger btn-sm" ngf-select="vm.select($files, 'photo')" ngf-multiple="true" accept="image/*"><span ng-bind-html="'UPLOAD_PICTURE' | translate"></span></a></p>
+                      <p><a href="#" class="btn btn-danger btn-sm" ngf-select="vm.select($files, 'photo')" ngf-min-height="1" or ngf-min-width="1" ngf-multiple="false" accept="image/*"><span ng-bind-html="'UPLOAD_PICTURE' | translate"></span></a></p>
                       <span ng-bind-html="'FILE_REQUIREMENT' | translate | html"></span>
                     </div>
                   </div>

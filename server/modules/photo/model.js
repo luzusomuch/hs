@@ -2,6 +2,7 @@ module.exports = {
   Photo(kernel) {
     let Schema = kernel.mongoose.Schema;
     let photoSchema = new Schema({
+      filename: String,
       ownerId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
       metadata: {},
       blocked: {type: Boolean, default: false},

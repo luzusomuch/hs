@@ -77,6 +77,15 @@ module.exports = function(kernel) {
         data.location = req.body.event.location;
         data.participantsId = [];
 
+        // apply uploaded photo to current event photos
+        if (req.body.event.uploadedPhotoIds) {
+          if (req.body.event.uploadedPhotoIds instanceof Array) {
+            uploadedPhotoIds = req.body.event.uploadedPhotoIds;
+          } else {
+            uploadedPhotoIds = [req.body.event.uploadedPhotoIds];
+          }
+        }
+
         let participantsId = [];
         if (req.body.event.participants) {
           if (req.body.event.participants._id instanceof Array) {

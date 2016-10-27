@@ -1,7 +1,7 @@
 <div class="venue-box" uib-dropdown auto-close="outsideClick">
     <a ng-click="focusInput=true" ng-style="style" href="#" uib-dropdown-toggle class="btn btn-default btn-block">
         <span ng-show="address.shorted_address">{{address.shorted_address}}</span>
-        <span>{{'LOCATION' | translate}}</span>
+        <span ng-show="!address.shorted_address">{{'LOCATION' | translate}}</span>
     </a>
     <div class="venue-dropdow" uib-dropdown-menu>
         <div class="form-group location-dropdown">

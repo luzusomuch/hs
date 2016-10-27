@@ -88,6 +88,11 @@ class CreateEventCtrl {
       if (nv) {
         this.event.endTime = moment(nv).add(1, 'hours');
         this.event.startTimeFormatted = moment(nv).format('HH:mm');
+        // check if user select start time more than 11pm then add new date for end date
+        let endTimeOfADay = moment('23:00', 'HH:mm');
+        if (moment(moment(nv)).isSameOrAfter(endTimeOfADay) && moment(moment(this.event.startDate)).isSame(moment(this.event.endDate))) {
+          this.event.endDate = new Date(moment(this.event.endDate).add(1, 'days'));
+        }
       }
     });
 

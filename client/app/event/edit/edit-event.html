@@ -151,7 +151,7 @@
           		<label>{{'EVENT_BANNER' | translate}}</label>
           		<div class="upload-img-event">
                 <div class="banner-preview">
-                  <img src="{{vm.event.banner | imageUrl: 'medium'}}" width="100%" height="350" ng-show="vm.event.banner && (!vm.newBanner || vm.newBanner.length===0)">
+                  <img src="{{vm.event.banner | imageUrl: 'medium'}}" width="100%" height="250" ng-show="vm.event.banner && (!vm.newBanner || vm.newBanner.length===0)">
                   <img ngf-src="vm.newBanner[0]" width="{{vm.newBanner[0].coords.w}}" height="{{vm.newBanner[0].coords.h}}" ng-show="vm.newBanner.length > 0">
                 </div>
                 <div class="text-center">

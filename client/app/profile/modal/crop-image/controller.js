@@ -8,7 +8,7 @@ class CropImageCtrl {
 		this.myCroppedImage;
 		this.authUser = $localStorage.authUser;
 		this.cropType = (cropType) ? cropType : 'circle';
-		this.imageSize = (imageSize.width) ? imageSize.width : 200;
+		this.imageSize = (imageSize.width) ? {w: imageSize.width, h: 250} : {w:200, h:200};
 		this.coords = {};
 
 	}

@@ -721,7 +721,6 @@ let Language = {
 		USER_TYPE: 'User type',
 		USER: 'User',
 		ADMIN: 'Admin',
-		// Enter new translate text below
 		COMPANY_REQUESTS: 'Firmenanfragen',
 		LOAD_MORE_REQUESTS: 'Laden Sie mehr Anfragen',
 		ACCEPT_REQUEST_SUCCESSFULLY: 'Akzeptieren Anfrage erfolgreich',
@@ -739,7 +738,11 @@ let Language = {
 		NUMBER_OF_LIMIT_PARTICIPANTS_MUST_GREATOR_THAN_TOTAL_PARTICIPANTS: 'Anzahl der Teilnehmer Limit muss größer als die Gesamtteilnehmer',
 		EVENT_REACHED_LIMIT_NUMBER: 'Die Veranstaltung ist zu begrenzen, erreicht, werden Sie in die Warteschlange gestellt werden, bis jemand dieses Ereignis das Ereignis oder die Eigentümer bearbeiten links',
 		WAITING_LIST: 'Warteliste',
-		LEAVE: 'verlassen'
+		LEAVE: 'verlassen',
+		// Enter new translate text below
+		A_NEW_INSTANCE_OF_EVENT: 'Eine neue Instanz des Ereignisses',
+		IS_SCHEDULED_FOR: 'Ist vorgesehen',
+		WOULD_YOU_LIKE_TO_JOIN: 'Würdest du gerne mitmachen?'
 	}
 }
 

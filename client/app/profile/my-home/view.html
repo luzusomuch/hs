@@ -51,7 +51,7 @@
 
                                 <p ng-switch-when="event-invited">{{item.ownerId.name}} {{(item.createdFromRepeatEvent) ? 'A_NEW_INSTANCE_OF_EVENT' : 'INVITE_TO_EVENT' | translate}}: 
                                     <a ui-sref="event.detail({id: item._id})">{{item.name}}</a>
-                                    <span ng-show="item.createdFromRepeatEvent">{{'IS_SCHEDULED_FOR' | translate}} {{item.startDateTime | date: 'medium'}} - {{item.endDateTime | date: 'medium'}}. {{WOULD_YOU_LIKE_TO_JOIN}}</span>
+                                    <span ng-show="item.createdFromRepeatEvent">{{'IS_SCHEDULED_FOR' | translate}} {{item.startDateTime | date: 'medium'}} - {{item.endDateTime | date: 'medium'}}. <span ng-bind-html="'WOULD_YOU_LIKE_TO_JOIN' | translate | html"></span></span>
                                 </p>
 
                                 <p ng-switch-when="liked">{{item.ownerId.name}} {{'HAS_LIKED_EVENT' | translate}}: 

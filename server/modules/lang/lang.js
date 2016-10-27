@@ -367,7 +367,10 @@ let Language = {
 		NUMBER_OF_LIMIT_PARTICIPANTS_MUST_GREATOR_THAN_TOTAL_PARTICIPANTS: 'Number of limit participants must greater than total participants',
 		EVENT_REACHED_LIMIT_NUMBER: 'Event has reached to limit, you will be in queued until someone left the event or owner edit this event',
 		WAITING_LIST: 'Waiting list',
-		LEAVE: 'Leave'
+		LEAVE: 'Leave',
+		A_NEW_INSTANCE_OF_EVENT: 'A new instance of event',
+		IS_SCHEDULED_FOR: 'is scheduled for',
+		WOULD_YOU_LIKE_TO_JOIN: 'Would you like to join?'
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',

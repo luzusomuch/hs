@@ -52,7 +52,17 @@ class HealthStarsES {
 			type: params.type,
 			id: params.id,
 			data: params.data 
-		}, cb);
+		}, (err, data) => {
+			if (err) {
+				console.log('errrr');
+				console.log(err);
+				cb(err);
+			} else {
+				console.log('data');
+				console.log(data);
+				cb(data);
+			}
+		});
 	}
 
 	update(params, cb) {

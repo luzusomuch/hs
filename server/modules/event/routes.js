@@ -255,7 +255,6 @@ module.exports = function(kernel) {
           });
         });
       }).catch(err => {
-        console.log(err);
         return res.status(500).json({type: 'SERVER_ERROR'}); 
       });
     });
@@ -288,7 +287,6 @@ module.exports = function(kernel) {
         }
       }
     ], () => {
-      console.log(eventIds);
       let query = {
         query: {
           filtered: {
@@ -322,7 +320,6 @@ module.exports = function(kernel) {
 
       kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {
         if (err) {
-          console.log(err);
           return res.status(500).json({type: 'SERVER_ERROR'});
         }
 
@@ -1495,7 +1492,6 @@ module.exports = function(kernel) {
 
     let term = [];
     let must = [];
-
     if (!req.body.backend) {
       term = [
         { missing: { field: 'private' } },
@@ -1649,7 +1645,6 @@ module.exports = function(kernel) {
       }
       funcs.push(getFriends);
     }
-
     if(!funcs.length) {
       funcs.push((cb) => {
         return cb(null, null);

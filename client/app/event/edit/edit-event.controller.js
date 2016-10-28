@@ -1,7 +1,13 @@
 'use strict';
 
 class EditEventCtrl {
-	constructor(event, categories, APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies, growl, awards) {
+	constructor(PhotoViewer, event, categories, APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies, growl, awards) {
+    // removed photo ids use when user remove photo and then update event
+    this.removedPhotoIds = [];
+
+    this.isUploading = false;
+
+    this.PhotoViewer = PhotoViewer;
     this.awards = awards.data.items;
     this.growl = growl;
 		this.user = $localStorage.authUser;
@@ -92,6 +98,11 @@ class EditEventCtrl {
     $scope.$watch('vm.event.startTime', (nv) => {
       if (nv) {
         this.event.startTimeFormatted = moment(nv).format('HH:mm');
+        // check if user select start time more than 11pm then add new date for end date
+        let endTimeOfADay = moment('23:00', 'HH:mm');
+        if (moment(moment(nv)).isSameOrAfter(endTimeOfADay) && moment(moment(this.event.startDate).format('YYYY-MM-DD')).isSame(moment(this.event.endDate).format('YYYY-MM-DD'))) {
+          this.event.endDate = new Date(moment(this.event.endDate).add(1, 'days'));
+        }
       }
     });
 
@@ -272,32 +283,60 @@ class EditEventCtrl {
   }
 
   select($files, type) {
-  	$files.forEach(file => {
-      //check file
-      file.photoType = type;
-      let index = _.findIndex(this.files, (f) => {
-        return f.name === file.name && f.size === file.size;
-      });
+  	// $files.forEach(file => {
+   //    //check file
+   //    file.photoType = type;
+   //    let index = _.findIndex(this.files, (f) => {
+   //      return f.name === file.name && f.size === file.size;
+   //    });
 
-      if (index === -1) {
-      	// find out the current banner index and remove it from files array
-      	let idx = _.findIndex(this.files, (file) => {
-      		if (type==='banner') {
-      			return file.photoType === 'banner';
-      		}
-      	});
-      	if (idx !== -1) {
-      		this.files.splice(idx, 1);
-      	}
+   //    if (index === -1) {
+   //    	// find out the current banner index and remove it from files array
+   //    	let idx = _.findIndex(this.files, (file) => {
+   //    		if (type==='banner') {
+   //    			return file.photoType === 'banner';
+   //    		}
+   //    	});
+   //    	if (idx !== -1) {
+   //    		this.files.splice(idx, 1);
+   //    	}
 
-        this.$uibModal.open({
+   //      this.$uibModal.open({
+   //      animation: true,
+   //      templateUrl: 'app/profile/modal/crop-image/view.html',
+   //      controller: 'CropImageCtrl',
+   //      controllerAs: 'CropImage',
+   //      resolve: {
+   //        file: () => {
+   //          return [file];
+   //        },
+   //        cropType: () => {
+   //          return 'rectangle';
+   //        },
+   //        imageSize: () => {
+   //          return {width: $files[0].$ngfWidth};
+   //        }
+   //      }
+   //    }).result.then(resp => {
+   //      // this.files.push(file);
+   //      resp.photoType = 'banner';
+   //      this.files.push(resp);
+
+   //      this.newBanner = [resp];
+   //    });
+   //    }
+   //  });
+    // this.newBanner = _.filter(this.files, {photoType: 'banner'});
+    // this.event.bannerName = (this.newBanner.length > 0) ? this.newBanner[0].name : null;
+    if (type==='banner' && $files[0]) {
+      this.$uibModal.open({
         animation: true,
         templateUrl: 'app/profile/modal/crop-image/view.html',
         controller: 'CropImageCtrl',
         controllerAs: 'CropImage',
         resolve: {
           file: () => {
-            return [file];
+            return $files;
           },
           cropType: () => {
             return 'rectangle';
@@ -307,16 +346,52 @@ class EditEventCtrl {
           }
         }
       }).result.then(resp => {
-        // this.files.push(file);
-        resp.photoType = 'banner';
-        this.files.push(resp);
-
         this.newBanner = [resp];
+        this.event.bannerName = (this.newBanner.length > 0) ? this.newBanner[0].name : null;
       });
-      }
-    });
-    // this.newBanner = _.filter(this.files, {photoType: 'banner'});
-    // this.event.bannerName = (this.newBanner.length > 0) ? this.newBanner[0].name : null;
+    } else if (type==='photo' && $files[0]) {
+      this.$uibModal.open({
+        animation: true,
+        templateUrl: 'app/profile/modal/crop-image/view.html',
+        controller: 'CropImageCtrl',
+        controllerAs: 'CropImage',
+        resolve: {
+          file: () => {
+            return $files;
+          },
+          cropType: () => {
+            return 'rectangle';
+          },
+          imageSize: () => {
+            return {width: $files[0].$ngfWidth/2, height: $files[0].$ngfHeight/2};
+          }
+        }
+      }).result.then(resp => {
+        this.isUploading = true;
+        this.Upload.upload({
+          url: '/api/v1/photos',
+          data: {file: resp},
+          headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
+        }).then(uploadedPhoto =>{
+          this.isUploading = false;
+          // this.files.push(uploadedPhoto.data);
+          this.event.photosId.push(uploadedPhoto.data);
+        }, () => {
+          this.isUploading = false;
+          this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+        });
+      });
+    }
+  }
+
+  removePhotoInServer(id) {
+    let ids = [];
+    if (id instanceof Array) {
+      ids = id;
+    } else {
+      ids = [id];
+    }
+    this.PhotoViewer.deleteList({filesId: ids});
   }
 
   removePhoto(photo, type) {
@@ -325,6 +400,7 @@ class EditEventCtrl {
         return p._id === photo._id;
       });
       if (index !== -1) {
+        this.removedPhotoIds.push(photo._id);
         this.event.photosId.splice(index, 1);
       }
     } else if (type==='file') {
@@ -340,6 +416,9 @@ class EditEventCtrl {
   }
 
   edit(form) {
+    if (this.isUploading) {
+      return this.growl.error(`<p>{{'PLEASE_WATI_UNTIL_UPLOAD_DONE' | translate}}</p>`);
+    }
     this.errors = {};
     this.submitted = true;
     if (this.checkValidTime(this.event.startTimeFormatted).valid) {
@@ -403,11 +482,14 @@ class EditEventCtrl {
 	      url: '/api/v1/events/'+this.$state.params.id,
 	      method: 'PUT',
 	      arrayKey: '',
-	      data: {file: this.files, event: this.event},
+	      data: {file: this.newBanner, event: this.event},
 	      headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
 	    }).then(() => {
         this.submitted = false;
 	    	this.$state.go('event.detail', {id: this.$state.params.id});
+        if (this.removedPhotoIds.length > 0) {
+          this.removePhotoInServer(this.removedPhotoIds);
+        }
 	    }, () => {
 	    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 	    });

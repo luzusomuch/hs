@@ -334,6 +334,9 @@ class CreateEventCtrl {
   }
 
   create(form) {
+    if (this.isUploading) {
+      return this.growl.error(`<p>{{'PLEASE_WATI_UNTIL_UPLOAD_DONE' | translate}}</p>`);
+    }
     this.errors = {};
     this.submitted = true;
     if (this.checkValidTime(this.event.startTimeFormatted).valid) {

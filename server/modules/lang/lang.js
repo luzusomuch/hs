@@ -349,7 +349,6 @@ let Language = {
 		USER_TYPE: 'User type',
 		USER: 'User',
 		ADMIN: 'Admin',
-		// Enter new translate text below
 		COMPANY_REQUESTS: 'Company requests',
 		LOAD_MORE_REQUESTS: 'Load more requests',
 		ACCEPT_REQUEST_SUCCESSFULLY: 'Accept request successfully',
@@ -368,9 +367,11 @@ let Language = {
 		EVENT_REACHED_LIMIT_NUMBER: 'Event has reached to limit, you will be in queued until someone left the event or owner edit this event',
 		WAITING_LIST: 'Waiting list',
 		LEAVE: 'Leave',
+		// Enter new translate text below
 		A_NEW_INSTANCE_OF_EVENT: 'A new instance of event',
 		IS_SCHEDULED_FOR: 'is scheduled for',
-		WOULD_YOU_LIKE_TO_JOIN: 'Would you like to join?'
+		WOULD_YOU_LIKE_TO_JOIN: 'Would you like to join?',
+		PLEASE_WATI_UNTIL_UPLOAD_DONE: 'Please wait until upload done',
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -742,7 +743,8 @@ let Language = {
 		// Enter new translate text below
 		A_NEW_INSTANCE_OF_EVENT: 'Eine neue Instanz des Ereignisses',
 		IS_SCHEDULED_FOR: 'Ist vorgesehen',
-		WOULD_YOU_LIKE_TO_JOIN: 'Würdest du gerne mitmachen?'
+		WOULD_YOU_LIKE_TO_JOIN: 'Würdest du gerne mitmachen?',
+		PLEASE_WATI_UNTIL_UPLOAD_DONE: 'Bitte warten Sie, bis der Upload abgeschlossen ist',
 	}
 }
 

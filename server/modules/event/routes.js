@@ -879,7 +879,9 @@ module.exports = function(kernel) {
             cb(null, kernel.config.tmpPhotoFolder)
           },
           filename: (req, file, cb) => {
-            bannerName = req.user._id+'_'+ StringHelper.randomString(10) +'_'+file.originalname+'.jpg';
+            if (file.originalname && file.originalname==='blob') {
+              bannerName = req.user._id+'_'+ StringHelper.randomString(10) +'_'+file.originalname+'.jpg';
+            }
             return cb(null, (bannerName && bannerName.length > 0) ? bannerName : file.originalname);
           }
         });
@@ -1156,7 +1158,6 @@ module.exports = function(kernel) {
                 event.repeat = req.body.event.repeat;
               }
               event.stats.totalParticipants = event.participantsId.length;
-
               event.save().then(() => {
                 async.each(newParticipantIds, (userId, callback) => {
                   kernel.model.InvitationRequest({

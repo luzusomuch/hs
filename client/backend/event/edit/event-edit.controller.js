@@ -2,7 +2,18 @@
 
 class BackendEventEditCtrl {
 	constructor(growl, event, categories, APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $cookies) {
-		this.growl = growl;
+		// check if user leave this state
+    $scope.$on('$stateChangeStart', (event, next) => {
+      if (this.removedPhotoIds.length > 0) {
+        this.removePhotoInServer(this.removedPhotoIds);
+      }
+    });
+
+    // removed photo ids use when user remove photo and then update event
+    this.removedPhotoIds = [];
+    this.isUploading = false;
+
+    this.growl = growl;
     this.categories = categories;
     // Init event
 		this.event = event;
@@ -202,28 +213,82 @@ class BackendEventEditCtrl {
   }
 
   select($files, type) {
-  	$files.forEach(file => {
-      //check file
-      file.photoType = type;
-      let index = _.findIndex(this.files, (f) => {
-        return f.name === file.name && f.size === file.size;
-      });
+  	// $files.forEach(file => {
+   //    //check file
+   //    file.photoType = type;
+   //    let index = _.findIndex(this.files, (f) => {
+   //      return f.name === file.name && f.size === file.size;
+   //    });
 
-      if (index === -1) {
-      	// find out the current banner index and remove it from files array
-      	let idx = _.findIndex(this.files, (file) => {
-      		if (type==='banner') {
-      			return file.photoType === 'banner';
-      		}
-      	});
-      	if (idx !== -1) {
-      		this.files.splice(idx, 1);
-      	}
-        this.files.push(file);
-      }
-    });
-    this.newBanner = _.filter(this.files, {photoType: 'banner'});
-    this.event.bannerName = (this.newBanner.length > 0) ? this.newBanner[0].name : null;
+   //    if (index === -1) {
+   //    	// find out the current banner index and remove it from files array
+   //    	let idx = _.findIndex(this.files, (file) => {
+   //    		if (type==='banner') {
+   //    			return file.photoType === 'banner';
+   //    		}
+   //    	});
+   //    	if (idx !== -1) {
+   //    		this.files.splice(idx, 1);
+   //    	}
+   //      this.files.push(file);
+   //    }
+   //  });
+   //  this.newBanner = _.filter(this.files, {photoType: 'banner'});
+   //  this.event.bannerName = (this.newBanner.length > 0) ? this.newBanner[0].name : null;
+    if (type==='banner' && $files[0]) {
+      this.$uibModal.open({
+        animation: true,
+        templateUrl: 'backend/modal/crop-image/view.html',
+        controller: 'BackendCropImageCtrl',
+        controllerAs: 'CropImage',
+        resolve: {
+          file: () => {
+            return $files;
+          },
+          cropType: () => {
+            return 'rectangle';
+          },
+          imageSize: () => {
+            return {width: $files[0].$ngfWidth};
+          }
+        }
+      }).result.then(resp => {
+        this.newBanner = [resp];
+        this.event.bannerName = (this.newBanner.length > 0) ? this.newBanner[0].name : null;
+      });
+    } else if (type==='photo' && $files[0]) {
+      this.$uibModal.open({
+        animation: true,
+        templateUrl: 'backend/modal/crop-image/view.html',
+        controller: 'BackendCropImageCtrl',
+        controllerAs: 'CropImage',
+        resolve: {
+          file: () => {
+            return $files;
+          },
+          cropType: () => {
+            return 'rectangle';
+          },
+          imageSize: () => {
+            return {width: $files[0].$ngfWidth/2, height: $files[0].$ngfHeight/2};
+          }
+        }
+      }).result.then(resp => {
+        this.isUploading = true;
+        this.Upload.upload({
+          url: '/api/v1/photos',
+          data: {file: resp},
+          headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
+        }).then(uploadedPhoto =>{
+          this.isUploading = false;
+          // this.files.push(uploadedPhoto.data);
+          this.event.photosId.push(uploadedPhoto.data);
+        }, () => {
+          this.isUploading = false;
+          this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+        });
+      });
+    }
   }
 
   removePhoto(photo, type) {
@@ -232,6 +297,7 @@ class BackendEventEditCtrl {
         return p._id === photo._id;
       });
       if (index !== -1) {
+        this.removedPhotoIds.push(photo._id);
         this.event.photosId.splice(index, 1);
       }
     } else if (type==='file') {
@@ -246,7 +312,20 @@ class BackendEventEditCtrl {
     }
   }
 
+  removePhotoInServer(id) {
+    let ids = [];
+    if (id instanceof Array) {
+      ids = id;
+    } else {
+      ids = [id];
+    }
+    this.$http.post(`${config.baseUrl}api/${config.apiVer}/photos/delete-photos-list`, {filesId: ids});
+  }
+
   edit(form) {
+    if (this.isUploading) {
+      return this.growl.error(`<p>{{'PLEASE_WATI_UNTIL_UPLOAD_DONE' | translate}}</p>`);
+    }
     this.errors = {};
     this.submitted = true;
     if (!this.event.categoryId) {

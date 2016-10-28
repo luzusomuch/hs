@@ -4131,3 +4131,9 @@ Responsive Flip Scroll Tables
   right: 10px;
   color: red !important;
 }
+.cropArea {
+    background: #E4E4E4;
+    overflow: hidden;
+    width: 100%;
+    height: 350px;
+}

@@ -372,6 +372,7 @@ let Language = {
 		IS_SCHEDULED_FOR: 'is scheduled for',
 		WOULD_YOU_LIKE_TO_JOIN: 'Would you like to join?',
 		PLEASE_WATI_UNTIL_UPLOAD_DONE: 'Please wait until upload done',
+		CROP_IMAGE: 'Crop image'
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -745,6 +746,7 @@ let Language = {
 		IS_SCHEDULED_FOR: 'Ist vorgesehen',
 		WOULD_YOU_LIKE_TO_JOIN: 'Würdest du gerne mitmachen?',
 		PLEASE_WATI_UNTIL_UPLOAD_DONE: 'Bitte warten Sie, bis der Upload abgeschlossen ist',
+		CROP_IMAGE: 'Bild zuschneiden'
 	}
 }
 

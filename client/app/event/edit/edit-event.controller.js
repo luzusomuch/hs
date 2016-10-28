@@ -2,6 +2,13 @@
 
 class EditEventCtrl {
 	constructor(PhotoViewer, event, categories, APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies, growl, awards) {
+    // check if user leave this state
+    $scope.$on('$stateChangeStart', (event, next) => {
+      if (this.removedPhotoIds.length > 0) {
+        this.removePhotoInServer(this.removedPhotoIds);
+      }
+    });
+
     // removed photo ids use when user remove photo and then update event
     this.removedPhotoIds = [];
 
@@ -487,9 +494,6 @@ class EditEventCtrl {
 	    }).then(() => {
         this.submitted = false;
 	    	this.$state.go('event.detail', {id: this.$state.params.id});
-        if (this.removedPhotoIds.length > 0) {
-          this.removePhotoInServer(this.removedPhotoIds);
-        }
 	    }, () => {
 	    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 	    });

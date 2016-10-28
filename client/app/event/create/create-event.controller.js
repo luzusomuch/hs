@@ -5,9 +5,7 @@ class CreateEventCtrl {
     // check if user leave this state
     $scope.$on('$stateChangeStart', (event, next) => {
       if (this.files.length > 0) {
-        PhotoViewer.deleteList({filesId: _.map(this.files, '_id')}).then(resp => {
-          console.log(resp);
-        });
+        PhotoViewer.deleteList({filesId: _.map(this.files, '_id')});
       }
     });
 		this.APP_CONFIG = APP_CONFIG;

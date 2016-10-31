@@ -36,10 +36,7 @@ module.exports = function(kernel) {
         }
     	};
     	kernel.model.Photo(newPhoto).save().then(saved => {
-    		kernel.queue.create('PROCESS_AWS', saved).save(err => {
-    			console.log(err);
-    			console.log('done');
-    		});
+    		kernel.queue.create('PROCESS_AWS', saved).save();
     		return res.status(200).json(saved);
     	}).catch(err => {
     		return res.status(500).json(err);

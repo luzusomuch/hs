@@ -121,13 +121,12 @@ exports.core = (kernel) => {
     	if (err) {
     		done(err);
     	} else {
-	      fs.unlink(filePath);
-	      // DB update
-	      kernel.model.Photo.findById(job.data._id).then(photo => {
-	      	photo.metadata = result.metadata;
+        // DB update
+        kernel.model.Photo.findById(job.data._id).then(photo => {
+          photo.metadata = result.metadata;
           photo.markModified('metadata');
-	      	photo.save().then(() => {
-            console.log(photo);
+          photo.save().then(() => {
+            fs.unlink(filePath);
 	      		done();
 	      	}).catch(err => {
 	      		done(err);

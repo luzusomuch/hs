@@ -126,7 +126,9 @@ exports.core = (kernel) => {
           photo.metadata = result.metadata;
           photo.markModified('metadata');
           photo.save().then(() => {
-            fs.unlink(filePath);
+            setTimeout(() => {
+              fs.unlink(filePath);
+            }, 2000);
 	      		done();
 	      	}).catch(err => {
 	      		done(err);

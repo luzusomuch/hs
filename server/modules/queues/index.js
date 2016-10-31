@@ -127,6 +127,7 @@ exports.core = (kernel) => {
 	      	photo.metadata = result.metadata;
           photo.markModified('metadata');
 	      	photo.save().then(() => {
+            console.log(photo);
 	      		done();
 	      	}).catch(err => {
 	      		done(err);

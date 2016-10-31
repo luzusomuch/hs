@@ -87,6 +87,7 @@ module.exports = (kernel, cb) => {
               private: event.private,
               banner: event.banner,
               createdFromRepeatEvent: true,
+              parentId: event._id,
               stats: {
                 totalParticipants: 0
               }

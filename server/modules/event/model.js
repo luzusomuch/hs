@@ -50,7 +50,8 @@ module.exports = {
       // when participants reached max munber of participants then next participant will added to waiting participants list
       waitingParticipantIds: [{type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}],
       // if event was created by repeating event
-      createdFromRepeatEvent: {type: Boolean, default: false}
+      createdFromRepeatEvent: {type: Boolean, default: false},
+      parentId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Event'}
     });
     
     //import timestamp for auto create updatedAt, createdAt field manually

@@ -86,7 +86,6 @@ class MyCalendarCtrl {
 		            			photosId: event.photosId,
 		            			repeatEvent: true
 		            		};
-
 		            		let index = _.findIndex(this.localEvents.items, (item) => {
 		            			return item.name===newEvent.name && moment(moment(newEvent.startDateTime).format(dateFormat)).isSame(moment(item.startDateTime).format(dateFormat)) && moment(moment(newEvent.endDateTime).format(dateFormat)).isSame(moment(item.endDateTime).format(dateFormat));
 		            		});
@@ -201,6 +200,21 @@ class MyCalendarCtrl {
 			}
 			participants.push(event.ownerId);
 
+			// find out parent of repeated event
+			let repeatEvent;
+			if (event.repeatEvent || event.createdFromRepeatEvent) {
+				repeatEvent = true;
+			}
+
+			let index = _.findIndex(events, (e) => {
+				if (event.parentId) {
+					return event.parentId.toString()===e._id.toString();
+				}
+			});
+			if (index!==-1) {
+				repeatEvent = false;
+			}
+
 			items.push({
 				title: event.name,
 				start: new Date(event.startDateTime),
@@ -212,59 +226,22 @@ class MyCalendarCtrl {
 				link: link,
 				liked: event.liked,
 				participants: participants,
-				repeatEvent: (event.repeatEvent || event.createdFromRepeatEvent) ? true : false
+				repeatEvent: repeatEvent
 			});
-			// if (event==='local') {
-			// 	let backgroundColor;
-			// 	if (event.categoryId && event.categoryId.type) {}
-			// 	switch (event.categoryId.type) {
-			// 		case 'action':
-			// 			backgroundColor = '#9c59b8';
-			// 			break;
-			// 		case 'food':
-			// 			backgroundColor = '#e84c3d';
-			// 			break;
-			// 		case 'eco':
-			// 			backgroundColor = '#2fcc71';
-			// 			break;
-			// 		case 'social':
-			// 			backgroundColor = '#f1c40f';
-			// 			break;
-			// 		case 'internation':
-			// 			backgroundColor = '#3598dc';
-			// 			break;
-			// 		default:
-			// 			break;
-			// 	}
-			// 	items.push({
-			// 		title: event.name,
-			// 		start: new Date(event.startDateTime),
-			// 		end: new Date(event.endDateTime),
-			// 		id: event._id,
-			// 		type: (event.type) ? event.type : 'local',
-			// 		photo: (event.photosId && event.photosId.length > 0) ? event.photosId[0] : null,
-			// 		backgroundColor: backgroundColor
-			// 	});
-			// } else if (event==='google') {
-			// 	items.push({
-			// 		title: event.summary,
-			// 		start: new Date(event.startDateTime),
-			// 		end: new Dateevent.startDateTime),
-			// 		id: event.id,
-			// 		type: 'google',
-			// 		url: event.htmlLink
-			// 	});
-			// } else if (event==='facebook') {
-			// 	items.push({
-			// 		title: event.name,
-			// 		start: new Date(event.start_time),
-			// 		end: new Date(event.end_time),
-			// 		id: event.id,
-			// 		type: 'facebook',
-			// 		url: 'https://www.facebook.com/events/'+event.id+'/'
-			// 	});
-			// }
 		});
+		
+		// filter created items array again to find out parent event
+		_.each(items, (item) => {
+			let index = _.findIndex(events, (event) => {
+				if (event.parentId) {
+					return event.parentId.toString()===item.id.toString();
+				}
+			});
+			if (index !== -1 && !item.repeatEvent) {
+				item.participants = _.union(item.participants, events[index].participantsId);
+			}
+		});
+
 		if (type) {
 			this.$timeout(() => {
 				let calendar = angular.element('#calendar');
@@ -274,14 +251,6 @@ class MyCalendarCtrl {
 		} else {
 			this.eventSources.push(items);	
 		}
-		// if (type==='local') {
-		// 	this.eventSources.push(items);
-		// }
-		//  else if (type==='google' || type==='facebook') {
-		// 	let calendar = angular.element('#calendar');
-		// 	// calendar.fullCalendar('removeEvents');
-		// 	calendar.fullCalendar('addEventSource', items);
-		// }
 	}
 
 	syncGoogleCalendar() {

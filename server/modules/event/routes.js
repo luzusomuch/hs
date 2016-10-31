@@ -282,14 +282,22 @@ module.exports = function(kernel) {
     }
 
     let eventIds = [];
+    let likedEvents = [];
 
     async.parallel([
       (cb) => {
         if (req.query.getAll) {
           // get all events id which current user liked to show on my calendar
-          kernel.model.Like.find({ownerId: req.user._id, objectName: 'Event'}).then(likedEvents => {
-            eventIds = _.map(likedEvents, 'objectId');
-            return cb();
+          kernel.model.Like.find({ownerId: req.user._id, objectName: 'Event'}).then(resp => {
+            eventIds = _.map(resp, 'objectId');
+            if (eventIds.length > 0) {
+              kernel.model.Event.find({_id: {$in: eventIds}, blocked: false}).then(resp => {
+                likedEvents = resp;
+                cb();
+              }).catch(cb);
+            } else {
+              return cb();
+            }
           }).catch(cb);
         } else {
           return cb();
@@ -310,7 +318,6 @@ module.exports = function(kernel) {
                 should: [
                   { term: { ownerId: (req.query.userId) ? req.query.userId : req.user._id}},
                   { term: { participantsId: (req.query.userId) ? req.query.userId : req.user._id}},
-                  // {term: {_id: eventIds}}
                 ]
               }
             }
@@ -323,16 +330,15 @@ module.exports = function(kernel) {
         ]
       };
 
-      if (eventIds.length > 0) {
-        query.query.filtered.filter.bool.should.push({term: {_id: eventIds}});
-      }
-
       kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {
         if (err) {
           return res.status(500).json({type: 'SERVER_ERROR'});
         }
 
         let results = {items: [], totalItem: result.totalItem};
+        if (likedEvents.length > 0) {
+          result.items = _.union(result.items, likedEvents);
+        }
 
         async.each(result.items, (item, callback) => {
           kernel.model.Event.findById(item._id)

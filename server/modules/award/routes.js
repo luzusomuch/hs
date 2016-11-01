@@ -356,29 +356,35 @@ module.exports = function(kernel) {
       let result = [];
       async.each(awards, (award, callback) => {
         let aw = award.toJSON();
-        kernel.model.User.findById(award.eventId.ownerId, '-password -salt')
-        .populate('avatar')
-        .then(u => {
-          if (u) {
-            let user = u.toJSON();
-            kernel.model.GrantAward.count({ownerId: user._id, deleted: false}).then(count => {
-              user.totalAwards = count;
-              aw.eventId.ownerId = user;
+        if (award.eventId) {
+          kernel.model.User.findById(award.eventId.ownerId, '-password -salt')
+          .populate('avatar')
+          .then(u => {
+            if (u) {
+              let user = u.toJSON();
+              kernel.model.GrantAward.count({ownerId: user._id, deleted: false}).then(count => {
+                user.totalAwards = count;
+                aw.eventId.ownerId = user;
+                result.push(aw);
+                callback();
+              }).catch(callback);
+            } else {
               result.push(aw);
-              callback();
-            }).catch(callback);
-          } else {
-            result.push(aw);
-            callback({error: 'User not found'});
-          }
-        }).catch(callback);
+              callback({error: 'User not found'});
+            }
+          }).catch(callback);
+        } else {
+          callback();
+        }
       }, (err) => {
         if (err) {
+          console.log(err);
           return res.status(500).json({type: 'SERVER_ERROR'});
         }
         return res.status(200).json({items: result, totalItem: result.length});
       });
     }).catch(err => {
+      console.log(err);
       return res.status(500).json({type: 'SERVER_ERROR'});
     });
   });

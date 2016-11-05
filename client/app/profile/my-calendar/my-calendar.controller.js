@@ -59,8 +59,8 @@ class MyCalendarCtrl {
 			this.localEvents = resp.data;
 			if (this.localEvents.items && this.localEvents.items.length > 0) {
 				_.each(this.localEvents.items, (event) => {
-					// find out repeating event
-					if (event.repeat && event.repeat.type && event.repeat.type!=='none') {
+					// find out repeating event and now is after event end date
+					if (event.repeat && event.repeat.type && event.repeat.type!=='none' && moment(moment()).isAfter(moment(event.endDateTime))) {
 						let newStartDateTime, newEndDateTime;
 		      	let eventTotalDays = moment(moment(event.endDateTime).format(dateFormat)).diff(moment(event.startDateTime).format(dateFormat), 'days');
 		      	let eventRepeat = {

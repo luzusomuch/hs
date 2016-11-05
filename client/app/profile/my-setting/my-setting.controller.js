@@ -100,7 +100,10 @@ class MySettingCtrl {
 	  					},
 	  					imageSize: () => {
 	  						return {};
-	  					}
+	  					},
+		          isBanner: () => {
+		            return false;
+		          }
 	  				}
 	  			}).result.then(data => {
 	  				this.Upload.upload({

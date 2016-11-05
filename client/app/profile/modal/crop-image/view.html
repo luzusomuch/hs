@@ -3,7 +3,8 @@
 </div>
 <div class="modal-body">
 	<div class="cropArea">
-		<img-crop image="CropImage.file | ngfDataUrl" area-type="{{CropImage.cropType}}" area-coords="CropImage.coords" result-image-size="CropImage.imageSize" result-image="CropImage.myCroppedImage" ng-init="CropImage.myCroppedImage=''"></img-crop>
+		{{CropImage.aspectRatio}}
+		<img-crop image="CropImage.file | ngfDataUrl" area-type="{{CropImage.cropType}}" area-coords="CropImage.coords" result-image-size="CropImage.imageSize" result-image="CropImage.myCroppedImage" ng-init="CropImage.myCroppedImage=''" aspect-ratio="CropImage.aspectRatio" init-max-area="true"></img-crop>
 	</div>
 	<div class="modal-footer">
 		<button ng-click="CropImage.submit()" type="button" class="btn btn-success btn-radius-20" ng-bind-html="'APPLY' | translate | html"></button>

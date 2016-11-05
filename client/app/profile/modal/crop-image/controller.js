@@ -1,7 +1,7 @@
 'use strict';
 
 class CropImageCtrl {
-	constructor($scope, file, cropType, imageSize, $uibModalInstance, Upload, $localStorage) {
+	constructor($scope, file, cropType, imageSize, isBanner, $uibModalInstance, Upload, $localStorage) {
 		this.Upload = Upload;
 		this.$uibModalInstance = $uibModalInstance;
 		this.file = file[0];
@@ -13,6 +13,14 @@ class CropImageCtrl {
 			this.imageSize.h = imageSize.height;
 		}
 		this.coords = {};
+
+		this.aspectRatio = '1';
+		if (this.cropType==='rectangle') {
+			this.aspectRatio ='3';
+		}
+		if (!isBanner) {
+			this.aspectRatio = '';
+		}
 	}
 
 	submit() {

@@ -250,6 +250,9 @@ class BackendEventEditCtrl {
           },
           imageSize: () => {
             return {width: $files[0].$ngfWidth};
+          },
+          isBanner: () => {
+            return true;
           }
         }
       }).result.then(resp => {
@@ -271,6 +274,9 @@ class BackendEventEditCtrl {
           },
           imageSize: () => {
             return {width: $files[0].$ngfWidth/2, height: $files[0].$ngfHeight/2};
+          },
+          isBanner: () => {
+            return false;
           }
         }
       }).result.then(resp => {

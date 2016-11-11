@@ -3,7 +3,7 @@
 class BackendEventEditCtrl {
 	constructor(growl, event, categories, APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $cookies) {
 		// check if user leave this state
-    $scope.$on('$stateChangeStart', (event, next) => {
+    $scope.$on('$stateChangeStart', () => {
       if (this.removedPhotoIds.length > 0) {
         this.removePhotoInServer(this.removedPhotoIds);
       }
@@ -325,7 +325,7 @@ class BackendEventEditCtrl {
     } else {
       ids = [id];
     }
-    this.$http.post(`${config.baseUrl}api/${config.apiVer}/photos/delete-photos-list`, {filesId: ids});
+    this.$http.post(`${this.APP_CONFIG.baseUrl}api/${this.APP_CONFIG.apiVer}/photos/delete-photos-list`, {filesId: ids});
   }
 
   edit(form) {

@@ -1,7 +1,7 @@
 'use strict';
 
 class MyMessageDetailCtrl {
-	constructor($localStorage, $state, ThreadService, thread, $uibModal, growl, $scope) {
+	constructor($localStorage, $state, ThreadService, thread, $uibModal, growl) {
 		this.growl = growl;
 		this.$uibModal = $uibModal;
 		this.authUser = $localStorage.authUser;

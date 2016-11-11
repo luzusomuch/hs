@@ -22,7 +22,7 @@ class BackendCompanyAccountRequestListCtrl {
 	}
 
 	acceptRequest(request) {
-		this.CompanyAccountRequestService.accept(request._id).then(resp => {
+		this.CompanyAccountRequestService.accept(request._id).then(() => {
 			let index = _.findIndex(this.requests.items, (item) => {
 				return item._id.toString()===request._id.toString();
 			});
@@ -37,7 +37,7 @@ class BackendCompanyAccountRequestListCtrl {
 	}
 
 	rejectRequest(request) {
-		this.CompanyAccountRequestService.reject(request._id).then(resp => {
+		this.CompanyAccountRequestService.reject(request._id).then(() => {
 			let index = _.findIndex(this.requests.items, (item) => {
 				return item._id.toString()===request._id.toString();
 			});

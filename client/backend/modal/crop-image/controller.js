@@ -5,7 +5,7 @@ class BackendCropImageCtrl {
 		this.Upload = Upload;
 		this.$uibModalInstance = $uibModalInstance;
 		this.file = file[0];
-		this.myCroppedImage;
+		this.myCroppedImage = '';
 		this.authUser = $localStorage.authUser;
 		this.cropType = (cropType) ? cropType : 'circle';
 		this.imageSize = (imageSize.width) ? {w: imageSize.width, h: 250} : {w:200, h:200};

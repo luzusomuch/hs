@@ -47,7 +47,7 @@ class MyAwardCtrl {
 				this.authUser.awardsExhibits.push({number: 3, awardId: {}});
 			} else if ([1,3].indexOf(this.authUser.awardsExhibits[0].number)!==-1 && [1,3].indexOf(this.authUser.awardsExhibits[1].number)!==-1) {
 				this.authUser.awardsExhibits.push({number: 2, awardId: {}});
-			} else if ([2,3].indexOf(this.authUser.awardsExhibits[0].number)!=-1 && [2,3].indexOf(this.authUser.awardsExhibits[1].number)!==-1) {
+			} else if ([2,3].indexOf(this.authUser.awardsExhibits[0].number)!==-1 && [2,3].indexOf(this.authUser.awardsExhibits[1].number)!==-1) {
 				this.authUser.awardsExhibits.push({number: 1, awardId: {}});
 			}
 		}

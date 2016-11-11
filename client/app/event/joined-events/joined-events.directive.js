@@ -61,7 +61,7 @@ class JoinedEventsCtrl {
 	    return _.findIndex(data, (item) => {
 	    	item._id.toString()===$scope.authUser._id.toString();
 	    }) !== -1;
-		}
+		};
 	}
 }
 

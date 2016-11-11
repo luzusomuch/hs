@@ -3,7 +3,7 @@
 class EditEventCtrl {
 	constructor(PhotoViewer, event, categories, APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies, growl, awards) {
     // check if user leave this state
-    $scope.$on('$stateChangeStart', (event, next) => {
+    $scope.$on('$stateChangeStart', () => {
       if (this.removedPhotoIds.length > 0) {
         this.removePhotoInServer(this.removedPhotoIds);
       }

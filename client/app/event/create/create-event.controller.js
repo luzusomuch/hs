@@ -3,7 +3,7 @@
 class CreateEventCtrl {
 	constructor(PhotoViewer, APP_CONFIG, Upload, $http, $state, $scope, $uibModal, EventService, RelationService, AwardService, CategoryService, $localStorage, $cookies, growl, awards) {
     // check if user leave this state
-    $scope.$on('$stateChangeStart', (event, next) => {
+    $scope.$on('$stateChangeStart', () => {
       if (this.files.length > 0) {
         PhotoViewer.deleteList({filesId: _.map(this.files, '_id')});
       }

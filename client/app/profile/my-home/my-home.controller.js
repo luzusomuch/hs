@@ -145,11 +145,11 @@ class MyHomeCtrl {
 		            method: 'GET'
 		        }).then(response => {
 		            	this.showSocialFriends(response.data, 'outlook');
-		            }, (resp) => {
+		            }, () => {
 		            	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		            }
 		        );
-			}, (resp) => {
+			}, () => {
 				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 		} else if (type==='viaEmails') {

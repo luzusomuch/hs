@@ -11,7 +11,7 @@ class ShowSocialFriendsCtrl {
 		this.submitted = false;
 	}
 
-	submit(form) {
+	submit() {
 		this.submitted = true;
 		this.$uibModalInstance.dismiss();
 	}

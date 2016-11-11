@@ -23,7 +23,7 @@ class BackendCreateCategoryCtrl {
 		      		headers: {'Authorization': `Bearer ${$cookies.get('token')}`}
 		    	}).then(resp =>{
 					$uibModalInstance.close(resp.data);
-			    }, (err) => {
+			    }, () => {
 			    	growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			    });
 			} else {

@@ -54,7 +54,7 @@ class MyCalendarCtrl {
 
 	loadEvents(type) {
 		let dateFormat = 'YYYY-MM-DD';
-		let todayFormated = moment().format(dateFormat);
+		// let todayFormated = moment().format(dateFormat);
 		this.EventService.getUserEvent({getAll: true, pageSize: 100}).then(resp => {
 			this.localEvents = resp.data;
 			if (this.localEvents.items && this.localEvents.items.length > 0) {
@@ -191,7 +191,7 @@ class MyCalendarCtrl {
 			if (event.type==='google') {
 				link = event.google.htmlLink;
 			} else if (event.type==='facebook') {
-				link = 'https://www.facebook.com/events/'+event.facebook.id
+				link = 'https://www.facebook.com/events/'+event.facebook.id;
 			}
 
 			let participants = [];
@@ -267,7 +267,7 @@ class MyCalendarCtrl {
 	        			this.loadEvents('google');
 	        		}, 1500);
 						}).catch(() => {
-							this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`)
+							this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 						});
 	        });
 				});
@@ -286,7 +286,7 @@ class MyCalendarCtrl {
 	        			this.loadEvents('facebook');
 	        		}, 1500);
 						}).catch(() => {
-							this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`)
+							this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 						});
 					}
 				});

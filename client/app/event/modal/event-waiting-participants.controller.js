@@ -39,7 +39,7 @@ class WaitingParticipantsCtrl {
 		this.$uibModalInstance.dismiss();
 	}
 
-	addFriend() {
+	addFriend(friend) {
 		this.RelationService.create({userId: friend._id, type: 'friend'}).then(resp => {
   		friend.friendStatus = resp.data.type;
 		}).catch(() => {

@@ -77,8 +77,8 @@ class ProfileDetailCtrl {
 
   	checkNude(file, cb) {
 	  	setTimeout(function() {
-	  		nude.load(file.name);
-		  	nude.scan(result => {
+	  		window.nude.load(file.name);
+		  	window.nude.scan(result => {
 		  		cb(result);
 		  	});
 	  	}, 500);
@@ -187,7 +187,7 @@ class ProfileDetailCtrl {
 	blockFeed(feed) {
 		this.FeedService.block(feed._id).then(resp => {
 			feed.blocked = resp.data.blocked;
-		}).catch(err => {
+		}).catch(() => {
 			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
 	}

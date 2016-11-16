@@ -13,6 +13,7 @@ function getHourOrMinute(type, dateTime) {
 }
 module.exports = (kernel, cb) => {
   let dateFormat = 'YYYY-MM-DD';
+  let hourFormat = 'HH:mm';
   let fullDateFormat = 'YYYY-MM-DD HH:mm';
   let todayFormated = moment().format(dateFormat);
   // kernel.model.Event.find({
@@ -261,8 +262,6 @@ module.exports = (kernel, cb) => {
                   totalParticipants: 0
                 }
               };
-              console.log('new event');
-              console.log(newEvent);
               // check out if new event that existed or not
               kernel.model.Event.find({
                 ownerId: newEvent.ownerId, 
@@ -272,23 +271,21 @@ module.exports = (kernel, cb) => {
                 awardId: newEvent.awardId
               }).then(existeds => {
                 let allowCreate = false;
-                console.log(existeds);
                 if (existeds && existeds.length > 0) {
-                  _.each(existeds, (item) => {
-                    console.log(moment(moment(item.startDateTime)).isSame(moment(newEvent.startDateTime)));
-                    console.log(moment(moment(item.endDateTime)).isSame(moment(newEvent.endDateTime)));
-                    if (moment(moment(item.startDateTime)).isSame(moment(newEvent.startDateTime)) && moment(moment(item.endDateTime)).isSame(moment(newEvent.endDateTime))) {
-                      allowCreate = true;
-                    }
-                    if (allowCreate) {
-                      return false;
-                    }
+                  let index = _.findIndex(existeds, (item) => {
+                    return moment(moment(item.startDateTime).format(fullDateFormat)).isSame(moment(newEvent.startDateTime).format(fullDateFormat)) && moment(moment(item.endDateTime).format(fullDateFormat)).isSame(moment(newEvent.endDateTime).format(fullDateFormat)) 
                   });
+                  
+                  if (index === -1) {
+                    allowCreate = true;
+                  }
                 } else {
                   allowCreate = true;
                 }
 
                 console.log(allowCreate);
+                // cb();
+                
                 if (allowCreate) {
                   console.log('create new event');
                   kernel.model.Event(newEvent).save().then(saved => {
@@ -342,7 +339,6 @@ module.exports = (kernel, cb) => {
                           return cb(err);
                         }
                         console.log('send email to participantsId and liked user');
-                        console.log(result);
                         async.each(result, (userId, _callback) => {
                           // Create new event invitation
                           let invite = new kernel.model.InvitationRequest({
@@ -363,6 +359,7 @@ module.exports = (kernel, cb) => {
                     cb(err);
                   });
                 } else {
+                  console.log('event was existed');
                   cb();
                 }
               }).catch(cb);
@@ -375,23 +372,49 @@ module.exports = (kernel, cb) => {
     }).catch(_callback);
   };
 
+  // insert the unique event id to events id array
+  let getUniqueEventsId = (array, id, callback) => {
+    let index = _.findIndex(array, (item) => {
+      return item.toString()===id.toString();
+    });
+
+    if (index === -1) {
+      array.push(id);
+    }
+    callback();
+  };
+
   // new flow
   kernel.model.Event.find({blocked: false}).then(events => {
+    let uniqueEventsId = [];
     async.each(events, (event, callback) => {
       // again we filter out event that end date time is greator than today to make sure it was end
       if (moment(moment().format(fullDateFormat)).isSameOrAfter(moment(event.endDateTime).format(fullDateFormat))) {
         // if event was already a repeat instance
         if (event.parentId && event.createdFromRepeatEvent) {
-          createRepeatEvent(event.parentId, callback);
+          getUniqueEventsId(uniqueEventsId, event.parentId, callback);
         } else {
-          createRepeatEvent(event._id, callback);
+          if (event.repeat && ['daily', 'weekly', 'monthly'].indexOf(event.repeat.type) !== -1) {
+            // check if the parent event has child or not
+            kernel.model.Event.find({parentId: event._id}).then(resp => {
+              if (resp.length===0) {
+                getUniqueEventsId(uniqueEventsId, event._id, callback);
+              } else {
+                callback();
+              }
+            }).catch(callback);
+          }
         }
       } else {
         callback();
       }
     }, () => {
-      console.log('done create repeat event');
-      cb();
+      async.each(uniqueEventsId, (id, callback) => {
+        createRepeatEvent(id, callback);
+      }, () => {
+        console.log('done create repeat event');
+        cb();
+      });
     });
   }).catch(err => {
     console.log('error when create repeat event');

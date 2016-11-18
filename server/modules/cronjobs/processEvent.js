@@ -403,6 +403,8 @@ module.exports = (kernel, cb) => {
                 callback();
               }
             }).catch(callback);
+          } else {
+            callback();
           }
         }
       } else {

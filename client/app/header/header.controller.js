@@ -1,7 +1,7 @@
 'use strict';
 
 class HsHeaderCtrl {
-	constructor($scope, $localStorage, socket, $state) {
+	constructor($scope, $localStorage, socket, $state, $rootScope) {
 		this.user = {};
 		this.$localStorage = $localStorage;
 		this.$state = $state;
@@ -12,6 +12,10 @@ class HsHeaderCtrl {
 				this.user = nv;
 				socket.socket.emit('join', nv._id);
 			}
+		});
+
+		socket.socket.on('tracking:user', (data) => {
+			$rootScope.onlineUsers = _.uniq(data);
 		});
 	}
 

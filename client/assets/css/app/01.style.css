@@ -2458,3 +2458,6 @@ div.menu-tab > ul>li>a {
     left: 10px;
     border: 1px solid rgba(255,255,255,0.4);
 }
+a {
+    outline: none !important;
+}

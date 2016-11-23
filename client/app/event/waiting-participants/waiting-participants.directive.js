@@ -8,10 +8,10 @@ class EventWaitingParticipantsCtrl {
 		this.EventService = EventService;
 		this.authUser = $localStorage.authUser;
 		this.$state = $state;
+		this.$scope = $scope;
 		this.waitingParticipants = {
 			pageSize: 10
 		};
-		this.onlineUsers = [];
 
 		$scope.$watch('eId', (nv) => {
 			if(nv) {
@@ -27,23 +27,22 @@ class EventWaitingParticipantsCtrl {
 			});
 		});
 
-		// Tracking online/offline user
-	    socket.socket.on('tracking:user', (data) => {
-	    	this.onlineUsers = data;
-	    	$scope.$watch('vm.waitingParticipants.items', (nv) => {
-	    		if (nv && nv.length > 0 && data) {
-	    			_.each(this.waitingParticipants.items, (friend) => {
-		     			friend.online = false;
-		     			let index = _.findIndex(data, (item) => {
-		     				return item===friend._id;
-		     			});
-		     			if (index !== -1) {
-		     				friend.online = true;
-		     			}
-		     		});
-	    		}
-	    	});
-	    });
+		$rootScope.$watch('onlineUsers', nv => {
+			$scope.onlineUsers = nv;
+		});
+
+	  $scope.$watchGroup(['onlineUsers', 'vm.waitingParticipants.items'], (nv) => {
+	  	if (nv[0] && nv[1]) {
+	  		_.each(nv[1], (friend) => {
+	  			let index = _.findIndex(nv[0], (onlineId) => {
+	  				return onlineId.toString()===friend._id.toString();
+	  			});
+	  			if (index !== -1) {
+	  				friend.online=true;
+	  			}
+	  		});
+	  	}
+	  }, true);
 
 		this.isEventOwner = ($scope.eOwner && this.authUser._id===$scope.eOwner._id) ? true : false;
 	}
@@ -82,7 +81,7 @@ class EventWaitingParticipantsCtrl {
     	controllerAs: 'wp',
     	resolve: {
     		onlineUsers: () => {
-    			return this.onlineUsers;
+    			return this.$scope.onlineUsers;
     		}
     	}
     });

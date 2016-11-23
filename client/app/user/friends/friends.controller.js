@@ -1,7 +1,7 @@
 'use strict';
 
 class UserFriendCtrl {
-	constructor($scope, User, APP_CONFIG, socket, $localStorage, RelationService, growl) {
+	constructor($scope, $rootScope, User, APP_CONFIG, $localStorage, RelationService, growl) {
 		$scope.friends = {};
 		$scope.authUser = $localStorage.authUser;
 		$scope.page = 1;
@@ -20,28 +20,30 @@ class UserFriendCtrl {
 			}
 		});
 
-		// Tracking online/offline user
-	    socket.socket.on('tracking:user', (data) => {
-	     	if (data && $scope.friends.items) {
-	     		_.each($scope.friends.items, (friend) => {
-	     			friend.online = false;
-	     			let index = _.findIndex(data, (item) => {
-	     				return item===friend._id;
-	     			});
-	     			if (index !== -1) {
-	     				friend.online = true;
-	     			}
-	     		});
-	     	}
-	    });
+		$rootScope.$watch('onlineUsers', nv => {
+			$scope.onlineUsers = nv;
+		});
 
-	    $scope.addFriend = (friend) => {
-	    	RelationService.create({userId: friend._id, type: 'friend'}).then(resp => {
-	    		friend.currentFriendStatus = resp.data.type;
+	  $scope.$watchGroup(['onlineUsers', 'friends.items'], (nv) => {
+	  	if (nv[0] && nv[1]) {
+	  		_.each(nv[1], (friend) => {
+	  			let index = _.findIndex(nv[0], (onlineId) => {
+	  				return onlineId.toString()===friend._id.toString();
+	  			});
+	  			if (index !== -1) {
+	  				friend.online=true;
+	  			}
+	  		});
+	  	}
+	  }, true);
+
+    $scope.addFriend = (friend) => {
+    	RelationService.create({userId: friend._id, type: 'friend'}).then(resp => {
+    		friend.currentFriendStatus = resp.data.type;
 			}).catch(() => {
 				growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
-	    };
+    };
 	}
 }
 

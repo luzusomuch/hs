@@ -1,7 +1,7 @@
 'use strict';
 
 class EventAttendingCtrl {
-	constructor($scope, $rootScope, EventService, $state, $localStorage, socket, $uibModal, RelationService, growl) {
+	constructor($scope, $rootScope, EventService, $state, $localStorage, $uibModal, RelationService, growl) {
 		this.$uibModal = $uibModal;
 		this.growl = growl;
 		this.RelationService = RelationService;
@@ -12,8 +12,8 @@ class EventAttendingCtrl {
 			pageSize: 10
 		};
 		this.eAward = $scope.eAward;
-		this.onlineUsers = [];
 		this.$rootScope = $rootScope;
+		this.$scope = $scope;
 
 		$scope.$watch('eId', (nv) => {
 			if(nv) {
@@ -29,23 +29,22 @@ class EventAttendingCtrl {
 			});
 		});
 
-		// Tracking online/offline user
-    socket.socket.on('tracking:user', (data) => {
-    	this.onlineUsers = data;
-    	$scope.$watch('vm.participants.items', (nv) => {
-    		if (nv && nv.length > 0 && data) {
-    			_.each(this.participants.items, (friend) => {
-	     			friend.online = false;
-	     			let index = _.findIndex(data, (item) => {
-	     				return item===friend._id;
-	     			});
-	     			if (index !== -1) {
-	     				friend.online = true;
-	     			}
-	     		});
-    		}
-    	});
-    });
+		$rootScope.$watch('onlineUsers', nv => {
+			$scope.onlineUsers = nv;
+		});
+
+	  $scope.$watchGroup(['onlineUsers', 'vm.participants.items'], (nv) => {
+	  	if (nv[0] && nv[1]) {
+	  		_.each(nv[1], (friend) => {
+	  			let index = _.findIndex(nv[0], (onlineId) => {
+	  				return onlineId.toString()===friend._id.toString();
+	  			});
+	  			if (index !== -1) {
+	  				friend.online=true;
+	  			}
+	  		});
+	  	}
+	  }, true);
 
 		this.isEventOwner = ($scope.eOwner && this.authUser._id===$scope.eOwner._id) ? true : false;
 	}
@@ -77,7 +76,7 @@ class EventAttendingCtrl {
 	    	controller: 'EventParticipantsCtrl',
 	    	resolve: {
 	    		onlineUsers: () => {
-	    			return this.onlineUsers;
+	    			return this.$scope.onlineUsers;
 	    		}
 	    	}
 	    });

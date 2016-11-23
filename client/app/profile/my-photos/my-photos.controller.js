@@ -29,10 +29,11 @@ class MyPhotosCtrl {
 		if (photo.ownerId===this.authUser._id) {
 			this.PhotoViewer.delete(photo._id).then(() => {
 				let index = _.findIndex(this.photos.items, (item) => {
-					return item._id===photo._id;
+					return item._id.toString()===photo._id.toString();
 				});
-				if (index) {
+				if (index !== -1) {
 					this.photos.items.splice(index, 1);
+					this.growl.success(`<p>{{'DELETE_PHOTO_SUCCESSFULLY' | translate}}</p>`);
 				}
 			}).catch(() => {
 				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);

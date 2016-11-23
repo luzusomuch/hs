@@ -367,12 +367,13 @@ let Language = {
 		EVENT_REACHED_LIMIT_NUMBER: 'Event has reached to limit, you will be in queued until someone left the event or owner edit this event',
 		WAITING_LIST: 'Waiting list',
 		LEAVE: 'Leave',
-		// Enter new translate text below
 		A_NEW_INSTANCE_OF_EVENT: 'A new instance of event',
 		IS_SCHEDULED_FOR: 'is scheduled for',
 		WOULD_YOU_LIKE_TO_JOIN: 'Would you like to join?',
 		PLEASE_WATI_UNTIL_UPLOAD_DONE: 'Please wait until upload done',
-		CROP_IMAGE: 'Crop image'
+		CROP_IMAGE: 'Crop image',
+		// Enter new translate text below
+		DELETE_PHOTO_SUCCESSFULLY: 'Delete photo successfully'
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -741,12 +742,13 @@ let Language = {
 		EVENT_REACHED_LIMIT_NUMBER: 'Die Veranstaltung ist zu begrenzen, erreicht, werden Sie in die Warteschlange gestellt werden, bis jemand dieses Ereignis das Ereignis oder die Eigentümer bearbeiten links',
 		WAITING_LIST: 'Warteliste',
 		LEAVE: 'verlassen',
-		// Enter new translate text below
 		A_NEW_INSTANCE_OF_EVENT: 'Eine neue Instanz des Ereignisses',
 		IS_SCHEDULED_FOR: 'Ist vorgesehen',
 		WOULD_YOU_LIKE_TO_JOIN: 'Würdest du gerne mitmachen?',
 		PLEASE_WATI_UNTIL_UPLOAD_DONE: 'Bitte warten Sie, bis der Upload abgeschlossen ist',
-		CROP_IMAGE: 'Bild zuschneiden'
+		CROP_IMAGE: 'Bild zuschneiden',
+		// Enter new translate text below
+		DELETE_PHOTO_SUCCESSFULLY: 'Foto erfolgreich löschen'
 	}
 }
 

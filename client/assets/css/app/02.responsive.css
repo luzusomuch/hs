@@ -352,6 +352,14 @@
         font-size: 13px;
         margin-top: 5px;
     }
+    .popup-animation {
+        margin-left:5%;
+        left: 0px;
+        width: 90%;
+    }
+    .popup-animation img {
+        width: 100%;
+    }
 }
 
 @media all and (min-width: 768px) and (max-width: 1024px) {

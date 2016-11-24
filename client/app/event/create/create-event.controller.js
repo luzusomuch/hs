@@ -8,6 +8,7 @@ class CreateEventCtrl {
         PhotoViewer.deleteList({filesId: _.map(this.files, '_id')});
       }
     });
+    this.isCreatingEvent = false;
 		this.APP_CONFIG = APP_CONFIG;
     this.growl = growl;
     this.Upload = Upload;
@@ -393,7 +394,7 @@ class CreateEventCtrl {
       // this.files = _.union(this.files, this.newBanner);
       // get uploaded event photos
       this.event.uploadedPhotoIds = _.map(this.files, '_id');
-      
+      this.isCreatingEvent = true;
   		this.Upload.upload({
 	      url: '/api/v1/events',
 	      arrayKey: '',
@@ -405,8 +406,10 @@ class CreateEventCtrl {
 	    	this.$state.go('event.detail', {id: resp.data._id});
         this.submitted = false;
         this.event.allowShow = true;
+        this.isCreatingEvent = false;
 	    }, () => {
 	    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+        this.isCreatingEvent = false;
 	    });
   	} else {
       this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);

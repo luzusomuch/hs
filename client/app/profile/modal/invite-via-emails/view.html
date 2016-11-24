@@ -14,10 +14,10 @@
 	    </div>
 	    <div class="row">
 	    	<input class="thread-tag-input" type="email" ng-model="InviteEmails.email" placeholder="{{'ENTER_NEW_EMAIL' | translate}}">
-	    	<a ng-click="InviteEmails.add(InviteEmails.email)" href="#"><i class="fa fa-plus"></i> {{'ADD_NEW_EMAIL' | translate}}</a>
+	    	<a ng-click="InviteEmails.add(InviteEmails.email)" href="#"><i class="fa fa-plus"></i> <span ng-bind-html="'ADD_NEW_EMAIL' | translate | html"></span></a>
 	    </div>
 		<div class="modal-footer">
-      		<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>
+      		<button type="submit" class="btn btn-success btn-radius-20">{{'INVITE' | translate}}</button>
 			<button ng-click="InviteEmails.close()" type="button" class="btn btn-warning btn-radius-20" ng-bind-html="'CLOSE' | translate | html"></button>
 		</div>    
   	</form>

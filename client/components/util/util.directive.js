@@ -214,5 +214,18 @@ angular.module('healthStarsApp.util').directive('autoFrameHeight', ($) => ({
       scope.width = scope.size || 50;
     }
   };
+})
+.directive('loadingAnimation', function() {
+  return {
+    restrict: 'E',
+    scope: {
+      show: '='
+    },
+    template: `
+      <div class="popup-animation" ng-show="show">
+        <img src="/assets/images/animation.gif"></img>
+      </div>
+    `
+  }
 });
 /* jshint ignore:end */

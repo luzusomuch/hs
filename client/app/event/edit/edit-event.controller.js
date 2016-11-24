@@ -8,7 +8,7 @@ class EditEventCtrl {
         this.removePhotoInServer(this.removedPhotoIds);
       }
     });
-
+    this.isEditingEvent = false;
     // removed photo ids use when user remove photo and then update event
     this.removedPhotoIds = [];
 
@@ -490,7 +490,7 @@ class EditEventCtrl {
         return photo._id;
       });
       this.event.photosLength = this.event.photos.length;
-
+      this.isEditingEvent = true;
   		this.Upload.upload({
 	      url: '/api/v1/events/'+this.$state.params.id,
 	      method: 'PUT',
@@ -500,8 +500,10 @@ class EditEventCtrl {
 	    }).then(() => {
         this.submitted = false;
 	    	this.$state.go('event.detail', {id: this.$state.params.id});
+        this.isEditingEvent = false;
 	    }, () => {
 	    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+        this.isEditingEvent = false;
 	    });
   	} else {
       this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);

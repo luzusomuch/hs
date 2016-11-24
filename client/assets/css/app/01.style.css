@@ -2461,3 +2461,15 @@ div.menu-tab > ul>li>a {
 a {
     outline: none !important;
 }
+
+.popup-animation {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -155px;
+    margin-left: -155px;
+    z-index: 9999;
+}
+.popup-animation img {
+    width: 310px;
+}

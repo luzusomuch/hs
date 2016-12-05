@@ -663,13 +663,13 @@ label .note-form {
     font-size: 25px;
 }
 .arward-li-top span {
-    width: 15px;
+    width: 30px;
     height: 15px;
     line-height: 17px;
     text-align: center;
     position: absolute;
-    top: -5px;
-    right: -5px;
+    top: 18px;
+    right: -3px;
     background: rgba(255,255,255,0.8);
     color: #333;
     border-radius: 50%;
@@ -1803,8 +1803,11 @@ label {
 .ui-select-match {
     width: 100% !important;
     border-radius: 20px;
-    height: 38px !important;
+    /*height: 38px !important;*/
     overflow: hidden;
+}
+.ui-select-container {
+    height: 37px !important;
 }
 
 .box-weather {

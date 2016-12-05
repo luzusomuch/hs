@@ -523,4 +523,13 @@ angular.module('healthStarsApp')
     }
     return text;
   };
+})
+.filter('countAward', () => {
+  return (number) => {
+    if (number) {
+      return number > 999 ? (number/1000).toFixed(1) + 'k' : number;
+    } else {
+      return 0;
+    }
+  }
 });

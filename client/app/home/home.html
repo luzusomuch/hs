@@ -69,7 +69,7 @@
                             <h4><a ui-sref="profile.detail({id: event.ownerId._id})">{{event.ownerId.name}} &nbsp;</a></h4>
                             <i class="fa fa-clock-o"></i> <span>{{event.createdAt | fromNow | fromNowNumber}} {{event.createdAt | fromNow | fromNowTranslate | translate}}</span>
                             <div class="arward-li-top">
-                                <span>{{event.ownerId.totalAwards || 0}}</span>
+                                <span>{{event.ownerId.totalAwards | countAward}}</span>
                                 <i class="fa fa-trophy"></i>
                             </div>
                         </div>

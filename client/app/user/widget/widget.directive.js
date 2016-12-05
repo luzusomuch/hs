@@ -4,6 +4,7 @@ class UserWidgetCtrl {
 	constructor($scope, User, APP_CONFIG) {
 		this.link = APP_CONFIG.baseUrl + 'profile/' + $scope.uId + '/detail';
 		this.user = {};
+		this.hideAwardExhibit = $scope.hideAwardExhibit;
 			
 		$scope.$watch('uId', nv => {
 			if(nv) {
@@ -21,7 +22,8 @@ angular.module('healthStarsApp').directive('hsUserWidget', () => {
 	return {
 		restrict: 'E',
 		scope: {
-			uId : '='
+			uId : '=',
+			hideAwardExhibit: '@'
 		},
 		templateUrl: 'app/user/widget/widget.html',
 		controller: 'UserWidgetCtrl',

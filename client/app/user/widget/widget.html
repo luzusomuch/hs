@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <div class="arward-user-review">
+        <div ng-hide="vm.hideAwardExhibit" class="arward-user-review">
             <ul class="row" ng-show="vm.user.awardsExhibits.length > 0">
                 <li class="col-xs-4" ng-repeat="award in vm.user.awardsExhibits">
                     <div class="exhibit-user">

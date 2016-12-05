@@ -36,7 +36,20 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-3">
-                <hs-user-widget u-id="vm.user._id"></hs-user-widget>
+                <hs-user-widget hide-award-exhibit="true" u-id="vm.user._id"></hs-user-widget>
+
+                <div class="box-blue p15">
+                    <div class="title-blue">{{vm.user.name}} {{'AWARDS' | translate}}</div>
+                    <ul class="row" ng-show="vm.user.awardsExhibits.length > 0">
+                        <li class="col-xs-4" ng-repeat="award in vm.user.awardsExhibits">
+                            <div class="exhibit-user">
+                                <img src="assets/images/box-pic.png">
+                                <span><img ng-src="{{award.awardId | eventAwardImageUrl: 'small'}}"></span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
                 <div class="box-blue p15">
                     <ul class="list-info-user">
                         <li><i class="map-i i-new"></i>  {{vm.user.location.fullAddress}}</li>

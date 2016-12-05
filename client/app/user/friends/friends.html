@@ -1,6 +1,6 @@
 <div class="title-blue">{{'FRIENDS' | translate}} ({{friends.totalItem}}) <a ui-sref="profile.friends({id: uId})" href="#" class="show-all-box grey-color">{{'SHOW_ALL' | translate}}</a></div>
 <ul class="list-media list-friend list-friend-1">
-    <li ng-repeat="friend in friends.items" ng-class="{'no-online': !friend.online}">
+    <li ng-repeat="friend in friends.items | limitTo: 5 | orderBy: 'online'" ng-class="{'no-online': !friend.online}">
         <div class="img-media">
             <a href="#"><img src="{{friend | avatarUrl}}"></a>
         </div>

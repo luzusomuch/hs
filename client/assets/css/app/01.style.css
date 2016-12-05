@@ -2476,3 +2476,6 @@ a {
 .popup-animation img {
     width: 310px;
 }
+.text-muted {
+    color: #999999 !important;
+}

@@ -520,12 +520,15 @@ class UserController {
         (cb) => {
           // count event
           this.kernel.model.Event.count({
-            ownerId: user.id,
+            // ownerId: user.id,
             blocked: false,
             $or : [
-              { private : false },
-              { private : { $exists: false } }
-            ]
+              // { private : false },
+              // { private : { $exists: false } },
+              {ownerId: user.id}, 
+              {participantsId: user.id}, 
+              {waitingParticipantIds: user.id}
+            ],
           }, cb);
         },
         (cb) => {

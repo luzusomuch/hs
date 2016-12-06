@@ -32,6 +32,7 @@ kernel.loadModule(require('./modules/share'));
 kernel.loadModule(require('./modules/about'));
 kernel.loadModule(require('./modules/attend-event'));
 kernel.loadModule(require('./modules/company-account-request'));
+kernel.loadModule(require('./modules/country'));
 //compose then start server
 kernel.compose();
 

@@ -27,7 +27,8 @@ class CreateEventCtrl {
       allowShow: false,
       startTime: new Date(),
       endTime: moment().add(1, 'hours'),
-      limitNumberOfParticipate: false
+      limitNumberOfParticipate: false,
+      costOfEvent: false,
 		};
     this.shareEventInfo = {};
     this.$http = $http;
@@ -203,6 +204,20 @@ class CreateEventCtrl {
         return {valid: false};
       }
     };
+
+    // find out currency based on selected country 
+    $scope.$watch('vm.address.selected', (nv) => {
+      this.currencies = [];
+      if (nv && nv.address_components && nv.address_components.length > 0) {
+        _.each(nv.address_components, (item) => {
+          if (item.types[0]==='country') {
+            $http.get('/api/v1/countries/currency', {params: {countryCode: item.short_name}}).then(resp => {
+              this.currencies = resp.data.currencies;
+            });
+          }
+        });
+      }
+    });
   }
 
   showAddAwards() {

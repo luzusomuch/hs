@@ -377,7 +377,11 @@ let Language = {
 		// Enter new translate text below
 		PLEASE_CLICK: 'Please click',
 		HERE: 'here',
-		TO_RESET_PASSWORD: 'to reset password'
+		TO_RESET_PASSWORD: 'to reset password',
+		COSTS_OF_EVENT: 'Costs of event',
+		AMOUNT: 'Amount',
+		CURRENCY: 'Currency',
+		MIN_AMOUNT_IS: 'Min amount is'
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -756,7 +760,8 @@ let Language = {
 		// Enter new translate text below
 		PLEASE_CLICK: 'Bitte klicken',
 		HERE: 'hier',
-		TO_RESET_PASSWORD: 'um das Passwort zurückzusetzen'
+		TO_RESET_PASSWORD: 'um das Passwort zurückzusetzen',
+		COSTS_OF_EVENT: 'Kosten der veranstaltung'
 	}
 }
 

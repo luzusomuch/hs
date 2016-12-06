@@ -1,5 +1,8 @@
 <div class="top-detail">
 	<div class="img-timline bg-cover" style="background-image: url('{{vm.user | userBannerUrl}}')"></div>
+
+    <button ng-show="vm.user._id==vm.authUser._id" type="button" class="uploadimg-a" data-toggle="tooltip" data-placement="top" title="Upload image" ngf-select="vm.upload($files, 'coverPhoto')" accept="image/*"><i class="fa fa-picture-o"></i></button>
+
 	<div class="text-top-detail">
 		<div class="container">
 			<div class="row">
@@ -36,7 +39,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-3">
-                <hs-user-widget hide-award-exhibit="true" u-id="vm.user._id"></hs-user-widget>
+                <hs-user-widget hide-award-exhibit="true" current-user="vm.authUser" u-id="vm.user._id"></hs-user-widget>
 
                 <div class="box-blue p15">
                     <div class="title-blue">{{vm.user.name}} {{'AWARDS' | translate}}</div>

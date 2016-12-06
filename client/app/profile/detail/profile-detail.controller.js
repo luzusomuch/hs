@@ -1,7 +1,8 @@
 'use strict';
 
 class ProfileDetailCtrl {
-	constructor(growl, $scope, $state, $uibModal, $localStorage, APP_CONFIG, PhotoViewer, user, $cookies, Upload, FeedService, EventService, RelationService) {
+	constructor(Auth, growl, $scope, $state, $uibModal, $localStorage, APP_CONFIG, PhotoViewer, user, $cookies, Upload, FeedService, EventService, RelationService) {
+		this.Auth = Auth;
 		this.growl = growl;
 		if ((user.deleted && user.deleted.status) || (user.blocked && user.blocked.status)) {
 			this.growl.error(`<p>{{'EMAIL_DELETED' | translate}}</p>`);
@@ -86,6 +87,26 @@ class ProfileDetailCtrl {
 
   	removeImage(index) {
   		this.files.splice(index, 1);
+  	}
+
+  	upload(file, type) {
+  		if (this.user._id.toString()===this.authUser._id.toString()) {
+	  		if (file && file.length > 0) {
+		  		this.Upload.upload({
+		      	url: '/api/v1/users/change-picture',
+		      	arrayKey: '',
+		      	data: {file: file, type: type},
+		      	headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
+			    }).then(resp =>{
+			    	this.user[resp.data.type] = resp.data.photo;
+			    	this.Auth.setAuthUser(this.user);
+			    }, () => {
+			    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+			    });
+	  		}
+  		} else {
+  			this.growl.error(`<p>{{'NOT_ALLOW' | translate}}</p>`);
+  		}
   	}
 
   	createNewFeed(feed) {

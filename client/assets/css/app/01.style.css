@@ -2479,3 +2479,6 @@ a {
 .text-muted {
     color: #999999 !important;
 }
+.cursor-pointer {
+    cursor: pointer;
+}

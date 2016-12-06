@@ -1,6 +1,9 @@
 <div class="box-blue p15 box-user-event">
     <div class="img-user-main">
         <img ui-sref="profile.detail({id: vm.user._id})" src="{{vm.user | avatarUrl}}" width="100%;">
+
+        <button ng-show="vm.user._id===vm.currentUser._id" type="button" class="uploadimg-a" data-toggle="tooltip" data-placement="top" title="Upload Avatar" ngf-select="vm.upload($files, 'avatar')" accept="image/jpeg"><i class="fa fa-picture-o"></i></button>
+
         <div class="code-qc">
             <!-- <img src="assets/images/code.jpg"> -->
             <qrcode version="20" error-correction-level="H" data="{{vm.link}}" href="{{vm.link}}" size="50"></qrcode>

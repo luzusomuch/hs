@@ -768,6 +768,7 @@ class UserController {
                   like.ownerId = user;
                   this.kernel.model[like.objectName].findById(like.objectId)
                   .populate('photosId')
+                  .populate('categoryId')
                   .exec().then(data => {
                     like.event = data;
                     results.push(like);
@@ -839,7 +840,9 @@ class UserController {
               .populate('avatar').exec().then(user => {
                 async.each(result.items, (item, callback) => {
                   this.kernel.model.Event.findById(item._id)
-                  .populate('photosId').exec().then(event => {
+                  .populate('photosId')
+                  .populate('categoryId')
+                  .exec().then(event => {
                     if (!event) {
                       callback(null);
                     } else {
@@ -870,6 +873,7 @@ class UserController {
               populate: {path: 'avatar', model: 'Photo'}
             })
             .populate('photosId')
+            .populate('categoryId')
             .exec().then(event => {
               if (!event) {
                 callback(null);
@@ -887,7 +891,10 @@ class UserController {
       },
       (cb) => {
         //get user has attend event's current user that created
-        this.kernel.model.Event.find({ownerId: req.user._id}).populate('photosId').then(events => {
+        this.kernel.model.Event.find({ownerId: req.user._id})
+        .populate('photosId')
+        .populate('categoryId')
+        .then(events => {
           async.each(events, (event, callback) => {
             this.kernel.model.AttendEvent.findOne({eventId: event._id})
             .populate({
@@ -912,6 +919,7 @@ class UserController {
       (cb) => {
         this.kernel.model.Event.find({participantsId: req.user._id})
         .populate('photosId')
+        .populate('categoryId')
         .populate({
           path: 'ownerId',
           select: '-password -salt',
@@ -939,6 +947,7 @@ class UserController {
         // show event when current in waiting list
         this.kernel.model.Event.find({waitingParticipantIds: req.user._id})
         .populate('photosId')
+        .populate('categoryId')
         .populate({
           path: 'ownerId', select: '-password -salt',
           populate: {path: 'avatar', model: 'Photo'}

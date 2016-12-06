@@ -373,8 +373,11 @@ let Language = {
 		WOULD_YOU_LIKE_TO_JOIN: 'Would you like to join?',
 		PLEASE_WATI_UNTIL_UPLOAD_DONE: 'Please wait until upload done',
 		CROP_IMAGE: 'Crop image',
+		DELETE_PHOTO_SUCCESSFULLY: 'Delete photo successfully',
 		// Enter new translate text below
-		DELETE_PHOTO_SUCCESSFULLY: 'Delete photo successfully'
+		PLEASE_CLICK: 'Please click',
+		HERE: 'here',
+		TO_RESET_PASSWORD: 'to reset password'
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -749,8 +752,11 @@ let Language = {
 		WOULD_YOU_LIKE_TO_JOIN: 'Würdest du gerne mitmachen?',
 		PLEASE_WATI_UNTIL_UPLOAD_DONE: 'Bitte warten Sie, bis der Upload abgeschlossen ist',
 		CROP_IMAGE: 'Bild zuschneiden',
+		DELETE_PHOTO_SUCCESSFULLY: 'Foto erfolgreich löschen',
 		// Enter new translate text below
-		DELETE_PHOTO_SUCCESSFULLY: 'Foto erfolgreich löschen'
+		PLEASE_CLICK: 'Bitte klicken',
+		HERE: 'hier',
+		TO_RESET_PASSWORD: 'um das Passwort zurückzusetzen'
 	}
 }
 

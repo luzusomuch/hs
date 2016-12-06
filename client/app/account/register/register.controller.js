@@ -66,27 +66,55 @@ class RegisterCtrl {
           phoneNumber: this.user.phoneNumber,
           location: this.user.location,
           isCompanyAccount: this.user.isCompanyAccount
-        }).then(() => {
-          // Account created, redirect to home
-          this.$state.go('home');
-        }).catch(err => {
-          this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+        }, (err, resp) => {
+          if (err) {
+            this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+            this.errors = {};
+  
+            angular.forEach(err.data, (err) => {
+              if (err && err.path) {
+                form[err.path].$setValidity(err.path, false);
+                this.errors[err.path] = err.type;
+              }
+            });
+
+            // Update validity of form fields that match the mongoose errors
+            err = err.data;
+            angular.forEach(err.errors, (error, field) => {
+              form[field].$setValidity('mongoose', false);
+              if (error.message==='The specified email address is already in use.') {
+                this.errors.emailUsed = true;
+              }
+              this.errors[field] = error.message;
+            });
+          } else {
+            this.$state.go('home');
+          }
+//         }).then((err, resp) => {
+//           console.log(err);
+//           console.log(resp);
+//           // Account created, redirect to home
+//           this.$state.go('home');
+//         }, err => {
+//           console.log(err);
+//         }).catch(err => {
+//           this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
           
-          this.errors = {};
+//           this.errors = {};
+// console.log(err.data);
+//           angular.forEach(err.data, (err) => {
+//             if (err && err.path) {
+//               form[err.path].$setValidity(err.path, false);
+//               this.errors[err.path] = err.type;
+//             }
+//           });
 
-          angular.forEach(err.data, (err) => {
-            if (err && err.path) {
-              form[err.path].$setValidity(err.path, false);
-              this.errors[err.path] = err.type;
-            }
-          });
-
-          // Update validity of form fields that match the mongoose errors
-          err = err.data;
-          angular.forEach(err.errors, (error, field) => {
-            form[field].$setValidity('mongoose', false);
-            this.errors[field] = error.message;
-          });
+//           // Update validity of form fields that match the mongoose errors
+//           err = err.data;
+//           angular.forEach(err.errors, (error, field) => {
+//             form[field].$setValidity('mongoose', false);
+//             this.errors[field] = error.message;
+//           });
         });
       });
     } else {

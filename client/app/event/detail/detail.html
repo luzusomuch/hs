@@ -13,14 +13,14 @@
                     <h2 class="title-detail"><img ng-src="{{vm.event.categoryId | categoryImagePath}}" width="60"> {{vm.event.name}}</h2>
                     <div class="row ">
                         <div class="col-sm-8 col-lg-7">
-                            <div class="action-event">
+                            <!-- <div class="action-event">
                                 <span><i class="fa fa-user"></i> {{'BY' | translate}} {{vm.event.ownerId.name}}</span>
                                 <span><i class="fa fa-clock-o"></i> {{'FROM' | translate }} {{vm.event.startDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}} {{'TO' | translate}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}}</span>
                                 <span ng-click="vm.like()"><i class="fa fa-heart" ng-class="{liked: vm.liked}"></i> {{vm.event.totalLike || 0}}</span>
                                 <span><i class="fa fa-comment"></i> {{vm.event.totalComment || 0}}</span>
                                 <span ng-if="!vm.event.private"><i class="fa fa-unlock"></i> <span ng-bind-html="'PUBLIC_EVENT' | translate | html"></span></span>
                                 <span ng-if="vm.event.private"><i class="fa fa-lock"></i> {{'PRIVATE_EVENT' | translate}}</span>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="col-sm-4 col-lg-5">
                             <div class="row row-small">
@@ -55,10 +55,30 @@
         <div class="col-sm-6">
 
             <div class="box-blue p15">
-                <div class="title-blue">{{'EVENT_DETAIL' | translate}}</div>
+                <div style="text-align: right;">
+                    <span ng-click="vm.like()"><i class="fa fa-heart" ng-class="{liked: vm.liked}"></i> {{vm.event.totalLike || 0}}</span>
+                    <span><i class="fa fa-comment"></i> {{vm.event.totalComment || 0}}</span>
+                    <span ng-if="!vm.event.private"><i class="fa fa-unlock"></i> <span ng-bind-html="'PUBLIC_EVENT' | translate | html"></span></span>
+                    <span ng-if="vm.event.private"><i class="fa fa-lock"></i> {{'PRIVATE_EVENT' | translate}}</span>
+                </div>
+                <div class="title-blue">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <img ng-src="{{vm.event.categoryId | categoryImagePath}}" width="40"> <span class="event-title">{{vm.event.name}}</span>
+                        </div>
+                        <div class="col-md-3" ng-show="vm.event.costOfEvent">
+                            <i class="fa fa-money"></i> {{vm.event.amount}} {{vm.event.currency}}
+                            <span ng-show="vm.event.repeat.type && vm.event.repeat.type!=='none'"><i class="fa fa-refresh"></i> {{vm.event.repeat.type}} {{'REPEATING' | translate}}</span>
+                        </div>
+                    </div>
+                    <p>
+                        <span ng-show="!vm.event.isSameDate"><i class="fa fa-clock-o"></i> {{'FROM' | translate }} {{vm.event.startDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}} {{'TO' | translate}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}}</span>
+                        <span ng-show="vm.event.isSameDate"><i class="fa fa-clock-o"></i> {{vm.event.startDateTime | hsDate: 'HH:mm a'}} {{'TO' | translate}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}}</span>
+                    </p>
+                    
+                </div>
                 {{vm.event.description}}
             </div>
-
 
             <div class="box-blue">
                 <div class="form-post">

@@ -9,12 +9,17 @@ class EventDetailCtrl {
 		}
 		this.$scope = $scope;
 		this.event = event;
+		// check start and end date is the same or not
+		if (moment(moment(this.event.startDateTime).format('YYYY-MM-DD')).isSame(moment(this.event.endDateTime).format('YYYY-MM-DD'))) {
+			this.event.isSameDate = true;
+		}
+
 		this.event.url = APP_CONFIG.baseUrl + 'event/detail/'+event._id;
 		if (this.event.location) {
 			this.event.location.lat = this.event.location.coordinates[1];
 			this.event.location.lng = this.event.location.coordinates[0];
 		}
-		
+
 		this.viewer = PhotoViewer;
 		this.submitted = false;
 		this.feed = {};

@@ -4,9 +4,10 @@
 
         <button ng-show="vm.user._id===vm.currentUser._id" type="button" class="uploadimg-a" data-toggle="tooltip" data-placement="top" title="Upload Avatar" ngf-select="vm.upload($files, 'avatar')" accept="image/jpeg"><i class="fa fa-picture-o"></i></button>
 
-        <div class="code-qc">
+        <div class="code-qc" style="width: 100%">
             <!-- <img src="assets/images/code.jpg"> -->
-            <qrcode version="20" error-correction-level="H" data="{{vm.link}}" href="{{vm.link}}" size="50"></qrcode>
+            <qrcode class="col-xs-4" version="20" error-correction-level="H" data="{{vm.link}}" href="{{vm.link}}" size="50"></qrcode>
+            <div style="font-size: 20px" class="col-xs-8" ng-show="!vm.hideAwardExhibit"><i class="fa fa-user"></i> {{vm.user.name}}</div>
         </div>
     </div>
     

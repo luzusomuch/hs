@@ -386,6 +386,12 @@ class CreateEventCtrl {
     if (!this.event.award) {
       this.errors.award = true;
     }
+    if (this.event.costOfEvent) {
+      if (this.currencies && this.currencies.length > 0 && this.event.currency && this.currencies.indexOf(this.event.currency)===-1) {
+        this.errors.currency = true;
+        this.growl.error(`<p>{{'AVAILABLE_CURRENCIES' | translate}} ${this.currencies.toString()}</p>`)
+      }
+    }
 
 		var selectedAddress = this.address.selected;
     if (selectedAddress) {
@@ -410,6 +416,7 @@ class CreateEventCtrl {
       // get uploaded event photos
       this.event.uploadedPhotoIds = _.map(this.files, '_id');
       this.isCreatingEvent = true;
+      
   		this.Upload.upload({
 	      url: '/api/v1/events',
 	      arrayKey: '',

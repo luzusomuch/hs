@@ -51,7 +51,10 @@ module.exports = {
       waitingParticipantIds: [{type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}],
       // if event was created by repeating event
       createdFromRepeatEvent: {type: Boolean, default: false},
-      parentId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Event'}
+      parentId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'Event'},
+      costOfEvent: {type: Boolean, default: false},
+      amount: {type: Number},
+      currency: {type: 'String'}
     });
     
     //import timestamp for auto create updatedAt, createdAt field manually

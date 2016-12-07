@@ -70,6 +70,7 @@ class EditEventCtrl {
 					}
 				},
 				address_components: [{
+          types: ['country'],
 					long_name: event.location.country,
 					short_name: event.location.countryCode
 				}]
@@ -152,6 +153,20 @@ class EditEventCtrl {
             }
           }
         }
+      }
+    });
+
+    // find out currency based on selected country 
+    $scope.$watch('vm.address.selected', (nv) => {
+      this.currencies = [];
+      if (nv && nv.address_components && nv.address_components.length > 0) {
+        _.each(nv.address_components, (item) => {
+          if (item.types[0]==='country') {
+            $http.get('/api/v1/countries/currency', {params: {countryCode: item.short_name}}).then(resp => {
+              this.currencies = resp.data.currencies;
+            });
+          }
+        });
       }
     });
 
@@ -460,6 +475,12 @@ class EditEventCtrl {
     }
     if (!this.event.award) {
       this.errors.award = true;
+    }
+    if (this.event.costOfEvent) {
+      if (this.currencies && this.currencies.length > 0 && this.event.currency && this.currencies.indexOf(this.event.currency)===-1) {
+        this.errors.currency = true;
+        this.growl.error(`<p>{{'AVAILABLE_CURRENCIES' | translate}} ${this.currencies.toString()}</p>`)
+      }
     }
 
     if (this.event.limitNumberOfParticipate && this.event.participants.length > this.event.numberParticipants) {

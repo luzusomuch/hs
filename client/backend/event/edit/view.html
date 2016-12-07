@@ -268,6 +268,35 @@
                 </div>
               </div>
 
+              <!-- COST OF EVENT -->
+              <div class="form-group">
+                <label class="control-label col-md-3">{{'COSTS_OF_EVENT' | translate}}</label>
+                <div class="col-md-9">
+                  <toggle ng-model="vm.event.costOfEvent"></toggle>
+                </div>
+              </div>
+
+              <div class="form-group" ng-show="vm.event.costOfEvent" ng-class="{'has-error': form.amount.$error && vm.submitted}">
+                <label class="control-label col-md-3">{{'AMOUNT' | translate}}</label>
+                <div class="col-sm-9">
+                  <input class="form-control" ng-required="vm.event.costOfEvent" type="number" min="0" name="amount" ng-model="vm.event.amount">
+
+                  <p ng-show="vm.submitted && form.amount.$error.min" class="error-text">{{'MIN_AMOUNT_IS' | translate}} 0</p>
+                  <p ng-show="form.amount.$error.required && vm.submitted" class="error-text" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
+                </div>
+              </div>
+
+              <div class="form-group" ng-show="vm.event.costOfEvent" ng-class="{'has-error': (form.currency.$error || vm.errors.currency) && vm.submitted}">
+                <label class="control-label col-md-3">{{'CURRENCY' | translate}}</label>
+                <div class="col-sm-9">
+                  <input class="form-control" ng-required="vm.event.costOfEvent" type="text" name="currency" ng-model="vm.event.currency">
+                  
+                  <p ng-show="form.currency.$error.required && vm.submitted" class="error-text" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
+                  <p ng-show="vm.submitted && vm.errors.currency" class="error-text">{{'AVAILABLE_CURRENCIES' | translate}} {{vm.currencies.toString()}}</p>
+                </div>
+              </div>
+              <!-- COST OF EVENT -->
+
               <div class="form-group" ng-class="{'has-error': vm.errors.award && vm.submitted}">
                 <label class="col-md-3 control-label" ng-bind-html="'ADD_AWARD' | translate"></label>
                 <div class="col-md-9">

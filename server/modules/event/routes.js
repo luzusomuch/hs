@@ -48,6 +48,12 @@ module.exports = function(kernel) {
         return res.status(422).json({type: 'NUMBER_OF_PARTICIPANTS_IS_BETWEEN_0_99', path: 'numberParticipants', message: 'Number of participants is between 0 and 99'});
       }
 
+      if (req.body.event.costOfEvent==='true' && !req.body.event.amount) {
+        return res.status(422).json({path: 'amount', message: 'Event cost amount is required'});
+      } else if (req.body.event.costOfEvent==='true' && !req.body.event.currency) {
+        return res.status(422).json({path: 'currency', message: 'Event currency is required'});
+      }
+
       kernel.model.Category.findById(req.body.event.categoryId).then(category => {
         if (!category) {
           return res.status(404).end();
@@ -68,8 +74,11 @@ module.exports = function(kernel) {
           endDateTime: req.body.event.endDateTime,
           awardId: req.body.event.award._id,
           limitNumberOfParticipate: (req.body.event.limitNumberOfParticipate==='true') ? true : false,
+          costOfEvent: (req.body.event.costOfEvent==='true') ? true : false,
         };
-        data.numberParticipants = (data.limitNumberOfParticipate) ? Number(req.body.event.numberParticipants) : 0
+        data.numberParticipants = (data.limitNumberOfParticipate) ? Number(req.body.event.numberParticipants) : 0;
+        data.amount = (data.costOfEvent) ? Number(req.body.event.amount) : 0;
+        data.currency = (data.costOfEvent) ? req.body.event.currency : null;
         data.ownerId = req.user._id;
         data.organizerId = req.user._id;
         data.public = (req.body.event.public==='true') ? true : false;
@@ -918,6 +927,12 @@ module.exports = function(kernel) {
             return res.status(422).json({type: 'NUMBER_OF_PARTICIPANTS_IS_BETWEEN_0_99', path: 'numberParticipants', message: 'Number of participants is between 0 and 99'});
           }
 
+          if (req.body.event.costOfEvent==='true' && !req.body.event.amount) {
+            return res.status(422).json({path: 'amount', message: 'Event cost amount is required'});
+          } else if (req.body.event.costOfEvent==='true' && !req.body.event.currency) {
+            return res.status(422).json({path: 'currency', message: 'Event currency is required'});
+          }
+
           kernel.model.Category.findById(req.body.event.categoryId).then(category => {
             if (!category) {
               return res.status(404).end();
@@ -1065,8 +1080,11 @@ module.exports = function(kernel) {
               event.public = (req.body.event.public==='true') ? true : false;
               event.private = !event.public;
               event.location = req.body.event.location;
-              event.limitNumberOfParticipate = (req.body.event.limitNumberOfParticipate==='true') ? true : false,
-              event.numberParticipants = (event.limitNumberOfParticipate) ? Number(req.body.event.numberParticipants) : 0
+              event.limitNumberOfParticipate = (req.body.event.limitNumberOfParticipate==='true') ? true : false;
+              event.numberParticipants = (event.limitNumberOfParticipate) ? Number(req.body.event.numberParticipants) : 0;
+              event.costOfEvent = (req.body.event.costOfEvent==='true') ? true : false;
+              event.amount = (event.costOfEvent) ? Number(req.body.event.amount) : 0;
+              event.currency = (event.costOfEvent) ? req.body.event.currency : null;
 
               if (bannerName && bannerName.length > 0) {
                 event.banner = newBannerId;

@@ -381,7 +381,8 @@ let Language = {
 		COSTS_OF_EVENT: 'Costs of event',
 		AMOUNT: 'Amount',
 		CURRENCY: 'Currency',
-		MIN_AMOUNT_IS: 'Min amount is'
+		MIN_AMOUNT_IS: 'Min amount is',
+		AVAILABLE_CURRENCIES: 'Available currencies: '
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',

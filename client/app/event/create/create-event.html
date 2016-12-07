@@ -249,6 +249,7 @@
                         <input class="form-control" ng-required="vm.event.costOfEvent" type="text" name="currency" ng-model="vm.event.currency">
                         
                         <p ng-show="form.currency.$error.required && vm.submitted" class="error-text" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
+                        <p ng-show="vm.submitted && vm.errors.currency" class="error-text">{{'AVAILABLE_CURRENCIES' | translate}} {{vm.currencies.toString()}}</p>
                       </div>
                     </div>
                   </div>

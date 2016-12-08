@@ -668,7 +668,7 @@ label .note-form {
     line-height: 17px;
     text-align: center;
     position: absolute;
-    top: 18px;
+    top: 25px;
     right: -3px;
     background: rgba(255,255,255,0.8);
     color: #333;
@@ -2485,4 +2485,12 @@ a {
 .event-title {
     font-size: 25px;
     font-weight: 800;
+}
+.event-owner-detail {
+    font-size: 20px;
+    position: absolute;
+    bottom: 0px;
+    right: 5px;
+    background: rgba(15,24,56,0.87);
+    padding: 5px;
 }

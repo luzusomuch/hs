@@ -10,7 +10,7 @@
             <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm-9">
-                    <h2 class="title-detail"><img ng-src="{{vm.event.categoryId | categoryImagePath}}" width="60"> {{vm.event.name}}</h2>
+                    <!-- <h2 class="title-detail"><img ng-src="{{vm.event.categoryId | categoryImagePath}}" width="60"> {{vm.event.name}}</h2> -->
                     <div class="row ">
                         <div class="col-sm-8 col-lg-7">
                             <!-- <div class="action-event">
@@ -67,8 +67,8 @@
                             <img ng-src="{{vm.event.categoryId | categoryImagePath}}" width="40"> <span class="event-title">{{vm.event.name}}</span>
                         </div>
                         <div class="col-md-3" ng-show="vm.event.costOfEvent">
-                            <i class="fa fa-money"></i> {{vm.event.amount}} {{vm.event.currency}}
-                            <span ng-show="vm.event.repeat.type && vm.event.repeat.type!=='none'"><i class="fa fa-refresh"></i> {{vm.event.repeat.type}} {{'REPEATING' | translate}}</span>
+                            <p style="margin-bottom: 0px"><i class="fa fa-money"></i> {{vm.event.amount}} {{vm.event.currency}}</p>
+                            <p ng-show="vm.event.repeat.type && vm.event.repeat.type!=='none'"><i class="fa fa-refresh"></i> {{vm.event.repeat.type}} {{'REPEATING' | translate}}</p>
                         </div>
                     </div>
                     <p>

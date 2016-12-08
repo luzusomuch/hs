@@ -382,7 +382,8 @@ let Language = {
 		AMOUNT: 'Amount',
 		CURRENCY: 'Currency',
 		MIN_AMOUNT_IS: 'Min amount is',
-		AVAILABLE_CURRENCIES: 'Available currencies: '
+		AVAILABLE_CURRENCIES: 'Available currencies: ',
+		REPEATING: 'repeating'
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -762,7 +763,12 @@ let Language = {
 		PLEASE_CLICK: 'Bitte klicken',
 		HERE: 'hier',
 		TO_RESET_PASSWORD: 'um das Passwort zurückzusetzen',
-		COSTS_OF_EVENT: 'Kosten der veranstaltung'
+		COSTS_OF_EVENT: 'Kosten der veranstaltung',
+		AMOUNT: 'Menge',
+		CURRENCY: 'Währung',
+		MIN_AMOUNT_IS: 'Mindestbetrag ist',
+		AVAILABLE_CURRENCIES: 'Verfügbare Währungen: ',
+		REPEATING: 'wiederholen'
 	}
 }
 

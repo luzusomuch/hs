@@ -7,7 +7,7 @@
         <div class="code-qc" style="width: 100%">
             <!-- <img src="assets/images/code.jpg"> -->
             <qrcode class="col-xs-4" version="20" error-correction-level="H" data="{{vm.link}}" href="{{vm.link}}" size="50"></qrcode>
-            <div style="font-size: 20px" class="col-xs-8" ng-show="!vm.hideAwardExhibit"><i class="fa fa-user"></i> {{vm.user.name}}</div>
+            <div class="col-xs-8 event-owner-detail" ng-show="!vm.hideAwardExhibit"><i class="fa fa-user"></i> {{vm.user.name}}</div>
         </div>
     </div>
     

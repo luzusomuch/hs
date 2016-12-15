@@ -55,6 +55,10 @@
 
       deleteAccount: (id) => {
         return $http.delete(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/${id}`);
+      },
+
+      updateUserLocation: (id, data) => {
+        return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/${id}/update-user-location`, data);
       }
     };
   }

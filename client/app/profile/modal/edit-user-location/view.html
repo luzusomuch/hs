@@ -1,0 +1,35 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{'UPDATE_ACCOUNT' | translate}}</h3>
+</div>
+<div class="modal-body">
+	<form ng-submit="EditUL.submit(form)" name="form" novalidate>
+		<div class="form-group">
+			<label>{{'LOCATION' | translate}}</label>
+      <ui-select ng-model="EditUL.address.selected" theme="bootstrap" append-to-body="false" reset-search-input="false">
+				<ui-select-match placeholder="{{'SELECT_YOUR_LOCATION' | translate}}">{{$select.selected.formatted_address}}</ui-select-match>
+				<ui-select-choices repeat="address in EditUL.addresses track by $index" refresh="EditUL.refreshAddresses($select.search)" refresh-delay="0">
+				<div ng-bind-html="address.formatted_address"></div>
+				</ui-select-choices>
+			</ui-select>	
+		</div>
+
+		<div class="form-group">
+			<label>{{'POINT_CLUB' | translate}}</label>
+			<input class="form-control" type="text" name="poinClub" ng-model="EditUL.user.pointClub" required>
+
+			<p class="error-text" ng-show="EditUL.submitted && form.poinClub.$error.required" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
+		</div>
+
+		<div class="form-group">
+			<label>{{'JOB' | translate}}</label>
+			<input class="form-control" type="text" name="job" ng-model="EditUL.user.job" required>
+
+			<p class="error-text" ng-show="EditUL.submitted && form.job.$error.required" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
+		</div>
+
+		<div class="modal-footer">
+			<button type="submit" class="btn btn-success btn-radius-20" ng-bind-html="'APPLY' | translate | html"></button>
+			<button ng-click="EditUL.close()" type="button" class="btn btn-default btn-radius-20" ng-bind-html="'CLOSE' | translate | html"></button>
+		</div>    
+	</form>
+</div>

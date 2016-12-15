@@ -54,12 +54,19 @@
                 </div>
 
                 <div class="box-blue p15">
-                    <ul class="list-info-user">
-                        <li><i class="map-i i-new"></i>  {{vm.user.location.fullAddress}}</li>
-                        <li><i class="business-i i-new"></i>  {{vm.user.job}}</li>
-                        <li><i class="fa fa-music"></i></li>
-                        <li><i class="achive-i i-new"></i>  {{vm.user.posts || 0}} {{'EVENTS' | translate}}</li>
-                    </ul>
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <ul class="list-info-user">
+                                <li><i class="map-i i-new"></i>  {{vm.user.location.fullAddress}}</li>
+                                <li><i class="business-i i-new"></i>  {{vm.user.job}}</li>
+                                <li><i class="fa fa-music"></i> {{vm.user.pointClub}}</li>
+                                <li><i class="achive-i i-new"></i>  {{vm.user.posts || 0}} {{'EVENTS' | translate}}</li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-3">
+                            <button class="btn btn-primary" ng-click="vm.editSetting()" ng-show="vm.user._id===vm.authUser._id">{{'EDIT' | translate}}</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="box-blue p15">
                     <div class="title-blue">{{vm.user.name}} {{'PHOTOS' | translate}} <a ui-sref="profile.photos({id: vm.user._id})" class="show-all-box">{{'SHOW_ALL' | translate}}</a></div>

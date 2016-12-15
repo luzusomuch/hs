@@ -61,55 +61,55 @@ class ProfileDetailCtrl {
 	}
 
 	select($files) {
-	  	$files.forEach(file => {
-	      	//check file
-	      	let index = _.findIndex(this.files, (f) => {
-	        	return f.name === file.name && f.size === file.size;
-	      	});
-
-	      	if (index === -1) {
-		      	this.files.push(file);
-		      	this.checkNude(file, (result) => {
-		      		file.nude = result;
-		      	});
-      		}
+  	$files.forEach(file => {
+      	//check file
+    	let index = _.findIndex(this.files, (f) => {
+      	return f.name === file.name && f.size === file.size;
     	});
-  	}
 
-  	checkNude(file, cb) {
-	  	setTimeout(function() {
-	  		window.nude.load(file.name);
-		  	window.nude.scan(result => {
-		  		cb(result);
-		  	});
-	  	}, 500);
-  	}
-
-  	removeImage(index) {
-  		this.files.splice(index, 1);
-  	}
-
-  	upload(file, type) {
-  		if (this.user._id.toString()===this.authUser._id.toString()) {
-	  		if (file && file.length > 0) {
-		  		this.Upload.upload({
-		      	url: '/api/v1/users/change-picture',
-		      	arrayKey: '',
-		      	data: {file: file, type: type},
-		      	headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
-			    }).then(resp =>{
-			    	this.user[resp.data.type] = resp.data.photo;
-			    	this.Auth.setAuthUser(this.user);
-			    }, () => {
-			    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
-			    });
-	  		}
-  		} else {
-  			this.growl.error(`<p>{{'NOT_ALLOW' | translate}}</p>`);
+    	if (index === -1) {
+      	this.files.push(file);
+      	this.checkNude(file, (result) => {
+      		file.nude = result;
+      	});
   		}
-  	}
+  	});
+	}
 
-  	createNewFeed(feed) {
+	checkNude(file, cb) {
+  	setTimeout(function() {
+  		window.nude.load(file.name);
+	  	window.nude.scan(result => {
+	  		cb(result);
+	  	});
+  	}, 500);
+	}
+
+	removeImage(index) {
+		this.files.splice(index, 1);
+	}
+
+	upload(file, type) {
+		if (this.user._id.toString()===this.authUser._id.toString()) {
+  		if (file && file.length > 0) {
+	  		this.Upload.upload({
+	      	url: '/api/v1/users/change-picture',
+	      	arrayKey: '',
+	      	data: {file: file, type: type},
+	      	headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
+		    }).then(resp =>{
+		    	this.user[resp.data.type] = resp.data.photo;
+		    	this.Auth.setAuthUser(this.user);
+		    }, () => {
+		    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+		    });
+  		}
+		} else {
+			this.growl.error(`<p>{{'NOT_ALLOW' | translate}}</p>`);
+		}
+	}
+
+	createNewFeed(feed) {
 		this.submitted = true;
 		this.errors = {};
 		if (_.filter(this.files, {nude: true}).length > 0) {
@@ -181,28 +181,28 @@ class ProfileDetailCtrl {
 
 	showAllEvents() {
 		this.$uibModal.open({
-	    	animation: true,
-	    	templateUrl: 'app/profile/user-events/view.html',
-	    	controller: 'UserEventsCtrl',
-	    	resolve: {
-	    		user: () => {
-	    			return this.user;
-	    		}
-	    	}
-	    });
+    	animation: true,
+    	templateUrl: 'app/profile/user-events/view.html',
+    	controller: 'UserEventsCtrl',
+    	resolve: {
+    		user: () => {
+    			return this.user;
+    		}
+    	}
+    });
 	}
 
 	sendMessage() {
 		this.$uibModal.open({
-	    	animation: true,
-	    	templateUrl: 'app/thread/modal/message.html',
-	    	controller: 'MessageModalCtrl',
-	    	resolve: {
-	    		user: () => {
-	    			return this.user;
-	    		}
-	    	}
-	    });
+    	animation: true,
+    	templateUrl: 'app/thread/modal/message.html',
+    	controller: 'MessageModalCtrl',
+    	resolve: {
+    		user: () => {
+    			return this.user;
+    		}
+    	}
+    });
 	}
 
 	blockFeed(feed) {
@@ -210,6 +210,25 @@ class ProfileDetailCtrl {
 			feed.blocked = resp.data.blocked;
 		}).catch(() => {
 			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+		});
+	}
+
+	editSetting() {
+		this.$uibModal.open({
+			animation: true,
+			templateUrl: 'app/profile/modal/edit-user-location/view.html',
+			controller: 'EditUserLocationCtrl',
+			controllerAs: 'EditUL',
+			resolve: {
+				user: () => {
+					return this.user;
+				}
+			}
+		}).result.then(resp => {
+			this.user.location = resp.location;
+			this.user.pointClub = resp.pointClub;
+			this.user.job = resp.job;
+			this.Auth.setAuthUser(this.user);
 		});
 	}
 }

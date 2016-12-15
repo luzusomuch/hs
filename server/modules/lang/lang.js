@@ -374,7 +374,6 @@ let Language = {
 		PLEASE_WATI_UNTIL_UPLOAD_DONE: 'Please wait until upload done',
 		CROP_IMAGE: 'Crop image',
 		DELETE_PHOTO_SUCCESSFULLY: 'Delete photo successfully',
-		// Enter new translate text below
 		PLEASE_CLICK: 'Please click',
 		HERE: 'here',
 		TO_RESET_PASSWORD: 'to reset password',
@@ -383,7 +382,11 @@ let Language = {
 		CURRENCY: 'Currency',
 		MIN_AMOUNT_IS: 'Min amount is',
 		AVAILABLE_CURRENCIES: 'Available currencies: ',
-		REPEATING: 'repeating'
+		REPEATING: 'repeating',
+		// Enter new translate text below
+		EDIT: 'Edit',
+		POINT_CLUB: 'Point club',
+		JOB: 'Job'
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -759,7 +762,6 @@ let Language = {
 		PLEASE_WATI_UNTIL_UPLOAD_DONE: 'Bitte warten Sie, bis der Upload abgeschlossen ist',
 		CROP_IMAGE: 'Bild zuschneiden',
 		DELETE_PHOTO_SUCCESSFULLY: 'Foto erfolgreich löschen',
-		// Enter new translate text below
 		PLEASE_CLICK: 'Bitte klicken',
 		HERE: 'hier',
 		TO_RESET_PASSWORD: 'um das Passwort zurückzusetzen',
@@ -768,7 +770,11 @@ let Language = {
 		CURRENCY: 'Währung',
 		MIN_AMOUNT_IS: 'Mindestbetrag ist',
 		AVAILABLE_CURRENCIES: 'Verfügbare Währungen: ',
-		REPEATING: 'wiederholen'
+		REPEATING: 'wiederholen',
+		// Enter new translate text below
+		EDIT: 'Bearbeiten',
+		POINT_CLUB: 'Punkt verein',
+		JOB: 'Arbeit'
 	}
 }
 

@@ -55,7 +55,9 @@ module.exports = exports = function(kernel) {
         totalJoinedEvent: {type: Number, default: 0},
         totalCreatedEvent: {type: Number, default: 0}
       },
-      isCompanyAccount: {type: Boolean, default: false}
+      isCompanyAccount: {type: Boolean, default: false},
+      pointClub: {type: String, default: ''},
+      job: {type: String, default: ''}
     });
   };
 

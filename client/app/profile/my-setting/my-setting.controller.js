@@ -21,7 +21,7 @@ class MySettingCtrl {
 				$http.get('http://maps.googleapis.com/maps/api/geocode/json', {params: params})
 				.then( res => {
 					this.address.selected = res.data.results[0];
-	      		});
+    		});
 			}
 			this.authUser.location = (this.authUser.location) ? this.authUser.location : {};
 		}

@@ -93,6 +93,8 @@ class EditEventCtrl {
     this.submitted = false;
     this.errors = {};
 
+    this.imageStyle = {};
+
     $scope.$on('$destroy', function() {
       //do anything such as remove socket
     });
@@ -371,7 +373,12 @@ class EditEventCtrl {
           }
         }
       }).result.then(resp => {
+        this.bannerPreviewWidth = $('.banner-preview').width();
+        this.imageStyle = {};
         this.newBanner = [resp];
+        if (this.newBanner[0].coords.w >= this.bannerPreviewWidth) {
+          this.imageStyle = {'width': '100%'};
+        }
         this.event.bannerName = (this.newBanner.length > 0) ? this.newBanner[0].name : null;
       });
     } else if (type==='photo' && $files[0]) {

@@ -155,7 +155,7 @@
                 <label>{{'EVENT_BANNER' | translate}}</label>
                 <div class="upload-img-event">
                   <div class="banner-preview">
-                    <img ngf-src="vm.newBanner[0]" width="{{vm.newBanner[0].coords.w}}" height="{{vm.newBanner[0].coords.h}}" ng-show="vm.newBanner.length > 0">
+                    <img ngf-src="vm.newBanner[0]" width="{{vm.newBanner[0].coords.w}}" height="{{vm.newBanner[0].coords.h}}" ng-show="vm.newBanner.length > 0" ng-style="vm.imageStyle">
                   </div>
                   <div class="text-center">
                     <p><a href="#" class="btn btn-danger btn-sm" ngf-select="vm.select($files, 'banner')" ngf-multiple="false" accept="image/*" ngf-min-height="1" or ngf-min-width="1"><span ng-bind-html="'UPLOAD_PICTURE' | translate"></span></a></p>

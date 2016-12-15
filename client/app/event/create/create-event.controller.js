@@ -43,6 +43,7 @@ class CreateEventCtrl {
     this.errors = {};
     this.selectedCategory = {};
     this.awards = awards.data.items;
+    this.imageStyle = {};
 
     this.newDate = new Date();
     $scope.$on('$destroy', function() {
@@ -313,7 +314,12 @@ class CreateEventCtrl {
           }
         }
       }).result.then(resp => {
+        this.imageStyle = {};
+        this.bannerPreviewWidth = $('.banner-preview').width();
         this.newBanner = [resp];
+        if (this.newBanner[0].coords.w >= this.bannerPreviewWidth) {
+          this.imageStyle = {'width': '100%'};
+        }
         this.event.bannerName = (this.newBanner.length > 0) ? this.newBanner[0].name : null;
       });
     } else if (type==='photo' && $files[0]) {

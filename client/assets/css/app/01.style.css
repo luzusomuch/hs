@@ -2494,3 +2494,6 @@ a {
     background: rgba(15,24,56,0.87);
     padding: 5px;
 }
+.point-club-i {
+    background-image: url('/assets/images/point_club.png');
+}

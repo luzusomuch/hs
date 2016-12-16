@@ -1,6 +1,6 @@
  <div class="top-detail">
     <div drag-me old-top="100" class="img-timline bg-cover" style="background-image: url('{{vm.event | eventBanner}}')"></div>
-    <div class="event-edit-button" ng-show="vm.event.ownerId._id==vm.authUser._id">
+    <div class="event-edit-button" ng-show="vm.event.ownerId._id==vm.authUser._id || vm.event.adminId._id==vm.authUser._id">
         <a class="btn btn-default btn-block" ui-sref="event.edit({id: vm.$stateParams.id})" ng-bind-html="'EDIT_EVENT' | translate"></a>
     </div>
     <div class="event-share-button" share-tool-box data="vm.event" type="Event" photo="vm.event.photosId[0]" title="vm.event.name" description="vm.event.description" url="vm.event.url" start-date="vm.event.startDateTime" end-date="vm.event.endDateTime" location="vm.event.location.fullAddress" fb="true" tw="true" gg="true" allow-show="true">
@@ -111,7 +111,7 @@
                                 <div class="action-comment">
                                     <span ng-click="feed.showOption=!feed.showOption" class="comment-option-button"><i class="fa fa-ellipsis-v"></i></span>
                                     <ul ng-mouseleave="feed.showOption = false" class="comment-option" ng-show="feed.showOption">
-                                        <li ng-show="vm.authUser.role=='admin' || vm.authUser._id==vm.event.ownerId._id" ng-click="vm.blockFeed(feed)">
+                                        <li ng-show="vm.authUser.role=='admin' || vm.authUser._id==vm.event.ownerId._id || vm.authUser._id==vm.event.adminId._id" ng-click="vm.blockFeed(feed)">
                                             <span>{{(feed.blocked) ? 'UNBLOCK_FEED' : 'BLOCK_FEED' | translate}}</span>
                                         </li>
                                     </ul>
@@ -124,10 +124,10 @@
                         </div>
                         <div class="img-content-post" ng-show="!feed.blocked">
                             <div class="row row-small">
-                                <div ng-mouseover="photo.showBlock=true" ng-mouseleave="photo.showBlock=false" class="relative-div" ng-class="{'col-xs-6': feed.photosId.length > 1, 'col-xs-12': feed.photosId.length==1}" ng-repeat="photo in feed.photosId" ng-show="!photo.blocked || vm.event.ownerId._id==vm.authUser._id || vm.authUser.role=='admin'">
+                                <div ng-mouseover="photo.showBlock=true" ng-mouseleave="photo.showBlock=false" class="relative-div" ng-class="{'col-xs-6': feed.photosId.length > 1, 'col-xs-12': feed.photosId.length==1}" ng-repeat="photo in feed.photosId" ng-show="!photo.blocked || vm.event.ownerId._id==vm.authUser._id || vm.authUser.role=='admin' || vm.authUser._id==vm.event.adminId._id">
                                     <a href ng-click="vm.viewPhoto(photo, feed._id)">
                                         <div class="bg-cover " style="background-image: url({{photo | imageUrl: 'medium'}}); height: 150px"></div>
-                                        <a ng-click="vm.blockPhoto(photo)" ng-show="photo.showBlock && (vm.authUser._id==vm.event.ownerId._id || vm.authUser.role=='admin')" href="#" class="block-photo-btn">
+                                        <a ng-click="vm.blockPhoto(photo)" ng-show="photo.showBlock && (vm.authUser._id==vm.event.ownerId._id || vm.authUser.role=='admin' || vm.authUser._id==vm.event.adminId._id)" href="#" class="block-photo-btn">
                                             <span ng-show="photo.blocked">{{'UNBLOCK_PHOTO' | translate}}</span>
                                             <span ng-show="!photo.blocked">{{'BLOCK_PHOTO' | translate}}</span>
                                         </a>
@@ -136,7 +136,7 @@
                             </div>
                         </div>
                     </div>
-                    <like-comment-share ng-show="!feed.blocked" data="feed" type="Feed" event-owner="vm.event.ownerId">
+                    <like-comment-share ng-show="!feed.blocked" data="feed" type="Feed" event-owner="vm.event.ownerId" event-admin="vm.event.adminId">
                 </div>
                 <div ng-show="vm.feeds.length < vm.pageSize">
                     <a href="#" ng-click="vm.loadMoreFeeds()">
@@ -146,10 +146,10 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <hs-event-attending e-id="vm.event._id" e-owner="vm.event.ownerId" e-award="vm.event.awardId"></hs-event-attending>
+            <hs-event-attending e-id="vm.event._id" e-owner="vm.event.ownerId" e-admin="vm.event.adminId" e-award="vm.event.awardId"></hs-event-attending>
             <div ng-show="!vm.isNotParticipant()" class="box-blue"><a href="#" class="btn btn-primary btn-block" u-id="vm.authUser._id" e-id="vm.event._id" hs-event-invite><i class="user-i-1 i-new"></i> {{'INVITE_FRIEND' | translate}} </a></div>
 
-            <hs-event-waiting-participants e-owner="vm.event.ownerId" e-id="vm.event._id"></hs-event-waiting-participants>
+            <hs-event-waiting-participants e-owner="vm.event.ownerId" e-admin="vm.event.adminId" e-id="vm.event._id"></hs-event-waiting-participants>
 
             <hs-related-events e-id="vm.event._id"></hs-related-events>
             <div class="box-blue"><a hs-report id="vm.event._id" type="Event" href="#" class="btn btn-primary btn-block"><i class="fa fa-file-text-o"></i> {{'REPORT_EVENT' | translate}}</a></div>

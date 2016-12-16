@@ -56,9 +56,18 @@ module.exports = function(kernel) {
       }
       let model = new kernel.model.Comment(data);
       model.save().then(comment => {
-        kernel.queue.create(kernel.config.ES.events.CREATE, {type: kernel.config.ES.mapping.commentType, id: comment._id.toString(), data: comment}).save();
-        comment.ownerId = req.user;
-        return res.status(200).json(comment);
+        let data = Object.assign({}, comment);
+        kernel.queue.create(kernel.config.ES.events.CREATE, {type: kernel.config.ES.mapping.commentType, id: comment._id.toString(), data: data}).save();
+        
+        kernel.model.Feed.populate(comment, [
+          {
+            path: 'ownerId', 
+            select: '-password -salt',
+            populate: {path: 'avatar', model: 'Photo'}
+          }
+        ], (err, result) => {
+          return res.status(200).json(result);
+        });
       }).catch(err => {
         return res.status(500).json(err);
       });
@@ -203,7 +212,7 @@ module.exports = function(kernel) {
             return res.status(404).end();
           }
           let allow = false;
-          if (result[0].type==='Event' && (req.user._id.toString()=== data.ownerId.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin')) {
+          if (result[0].type==='Event' && ((data.adminId && req.user._id.toString()===data.adminId.toString()) || req.user._id.toString()=== data.ownerId.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin')) {
             allow = true;
           } else if (result[0].type==='User' && (req.user._id.toString()=== data._id.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin')) {
             allow = true;
@@ -339,7 +348,7 @@ module.exports = function(kernel) {
             return res.status(404).end();
           }
           let allow = false;
-          if (result[0].type==='Event' && (req.user._id.toString()=== data.ownerId.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin')) {
+          if (result[0].type==='Event' && ((data.adminId && req.user._id.toString()===data.adminId.toString()) || req.user._id.toString()=== data.ownerId.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin')) {
             allow = true;
           } else if (result[0].type==='User' && (req.user._id.toString()=== data._id.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin')) {
             allow = true;
@@ -458,7 +467,7 @@ module.exports = function(kernel) {
             return res.status(404).end();
           }
           let allow = false;
-          if (result[0].type==='Event' && (req.user._id.toString()=== data.ownerId.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin')) {
+          if (result[0].type==='Event' && ((data.adminId && req.user._id.toString()===data.adminId.toString()) || req.user._id.toString()=== data.ownerId.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin')) {
             allow = true;
           } else if (result[0].type==='User' && (req.user._id.toString()=== data._id.toString() || comment.ownerId.toString() === req.user._id.toString() || req.user.role === 'admin')) {
             allow = true;

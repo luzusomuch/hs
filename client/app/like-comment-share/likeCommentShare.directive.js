@@ -5,7 +5,8 @@ angular.module('healthStarsApp').directive('likeCommentShare', () => ({
   scope: {
   	data: '=',
     type: '@',
-    eventOwner: '='
+    eventOwner: '=',
+    eventAdmin: '='
   },
   controller: 'likeCommentShareCtrl',
   controllerAs: 'vm',
@@ -132,7 +133,7 @@ class likeCommentShareCtrl {
   }
 
   editComment(comment) {
-    if (comment.content.trim().length > 0 && !comment.deleted && (comment.ownerId._id===this.authUser._id || this.eventOwner._id===this.authUser._id || this.authUser.role==='admin')) {
+    if (comment.content.trim().length > 0 && !comment.deleted && (comment.ownerId._id===this.authUser._id || this.eventAdmin._id===this.authUser._id || this.eventOwner._id===this.authUser._id || this.authUser.role==='admin')) {
       this.CommentService.update(comment._id, comment.content).then(() => {
         comment.isEdit = false;
       }).catch(() => {
@@ -145,7 +146,7 @@ class likeCommentShareCtrl {
 
   deleteComment(comment) {
     comment.showOption = false;
-    if (this.authUser._id===comment.ownerId._id || this.authUser._id===this.eventOwner._id || this.authUser._id===this.eventOwner || this.authUser.role==='admin') {
+    if (this.authUser._id===comment.ownerId._id || this.authUser._id===this.eventOwner._id || this.eventAdmin._id===this.authUser._id || this.authUser._id===this.eventOwner || this.authUser.role==='admin') {
       this.CommentService.delete(comment._id).then(() => {
         comment.deleted = true;
       }).catch(() => {
@@ -157,7 +158,7 @@ class likeCommentShareCtrl {
   }
 
   blockComment(comment) {
-    if (this.authUser._id===this.eventOwner._id || this.authUser.role==='admin') {
+    if (this.authUser._id===this.eventOwner._id || this.eventAdmin._id===this.authUser._id || this.authUser.role==='admin') {
       this.CommentService.block(comment._id).then(() => {
         comment.blocked = !comment.blocked;
       }).catch(() => {

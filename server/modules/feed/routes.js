@@ -172,6 +172,10 @@ module.exports = function(kernel) {
       }
 
       let availableUsers = [feed.ownerId.toString()];
+      if (feed.eventId && feed.eventId.adminId) {
+        availableUsers.push(feed.eventId.adminId.toString());
+      }
+
       if (feed.eventId && feed.eventId.ownerId) {
         availableUsers.push(feed.eventId.ownerId.toString());
       } else if (feed.userId && feed.userId._id) {

@@ -46,7 +46,7 @@ class EventAttendingCtrl {
 	  	}
 	  }, true);
 
-		this.isEventOwner = ($scope.eOwner && this.authUser._id===$scope.eOwner._id) ? true : false;
+		this.isEventOwner = ($scope.eOwner && (this.authUser._id===$scope.eOwner._id || this.authUser._id===$scope.eAdmin._id)) ? true : false;
 	}
 
 	banUser(user) {
@@ -97,7 +97,8 @@ angular.module('healthStarsApp').directive('hsEventAttending', () => {
 		scope: {
 			eId : '=',
 			eOwner: '=',
-			eAward: '='
+			eAward: '=',
+			eAdmin: '='
 		},
 		templateUrl: 'app/event/attending/attending.html',
 		controller: 'EventAttendingCtrl',

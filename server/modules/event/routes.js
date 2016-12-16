@@ -859,6 +859,10 @@ module.exports = function(kernel) {
       path: 'ownerId', select: '-password -salt',
       populate: {path: 'avatar', model: 'Photo'}
     })
+    .populate({
+      path: 'adminId', select: '-password -salt',
+      populate: {path: 'avatar', model: 'Photo'}
+    })
     .populate('categoryId')
     .populate('photosId')
     .populate('banner')
@@ -887,7 +891,7 @@ module.exports = function(kernel) {
       if (!event) {
        return res.status(404).json({type: 'EVENT_NOT_FOUND', message: 'Event not found'}); 
       }
-      if (event.ownerId.toString()===req.user._id.toString() || req.user.role==='admin') {
+      if (event.ownerId.toString()===req.user._id.toString() || req.user.role==='admin' || event.adminId.toString()===req.user._id.toString()) {
         let bannerName;
         let storage = multer.diskStorage({
           destination: (req, file, cb) => {
@@ -1399,6 +1403,9 @@ module.exports = function(kernel) {
               return callback(null);
             }
             user.friendStatus = relation.status;
+            if (user._id.toString()===event.ownerId.toString()) {
+              user.eventOwner = true;
+            }
             response.items.push(user);
             callback(null);
           }).catch(callback);
@@ -2004,7 +2011,7 @@ module.exports = function(kernel) {
       if (!event) {
         return res.status(404).end();
       }
-      if (event.ownerId.toString()===req.user._id.toString()) {
+      if (event.ownerId.toString()===req.user._id.toString() || event.adminId==req.user._id) {
         let index = event.participantsId.indexOf(req.body.userId);
         if (index !== -1) {
           event.participantsId.splice(index, 1);

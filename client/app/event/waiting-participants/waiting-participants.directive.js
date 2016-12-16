@@ -44,7 +44,7 @@ class EventWaitingParticipantsCtrl {
 	  	}
 	  }, true);
 
-		this.isEventOwner = ($scope.eOwner && this.authUser._id===$scope.eOwner._id) ? true : false;
+		this.isEventOwner = ($scope.eOwner && (this.authUser._id===$scope.eOwner._id || this.authUser._id===$scope.eAdmin._id)) ? true : false;
 	}
 
 	// banUser(user) {
@@ -101,7 +101,8 @@ angular.module('healthStarsApp').directive('hsEventWaitingParticipants', () => {
 		restrict: 'E',
 		scope: {
 			eId : '=',
-			eOwner: '='
+			eOwner: '=',
+			eAdmin: '='
 		},
 		templateUrl: 'app/event/waiting-participants/view.html',
 		controller: 'EventWaitingParticipantsCtrl',

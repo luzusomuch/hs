@@ -1,0 +1,25 @@
+<div class="modal-header">
+	<h3 class="modal-title" ng-bind-html="'SET_ADMIN_FOR_THIS_EVENT' | translate | html"></h3>
+</div>
+<div class="modal-body">
+	<form name="form">
+	    <div class="form-group">
+	    	<h4>{{'SET_ADMIN_FOR_THIS_EVENT' | translate}}</h4>
+	    </div>
+	    <div class="form-group">
+	    	<ul class="list-media list-friend list-friend-1">
+	        <li ng-repeat="user in SetAR.users" ng-class="{'no-online': !user.online}">
+            <div class="img-media">
+              <a ui-sref="profile.detail({id: user._id})"><img ng-src="{{user | avatarUrl}}"></a>
+            </div>
+            <h4><a ui-sref="profile.detail({id: user._id})">{{user.name}}</a></h4>
+            <a href="#" ng-show="user.isEventAdmin">{{'ADMIN_OF_THIS_EVENT' | translate}}</a>
+            <a href="#" ng-hide="user.isEventAdmin" ng-click="SetAR.setAdmin(user)">{{'SET_AS_ADMIN' | translate}}</a>
+	        </li>
+		    </ul>
+	    </div>
+		<div class="modal-footer">
+			<button ng-click="SetAR.close()" type="button" class="btn btn-warning btn-radius-20" ng-bind-html="'CLOSE' | translate | html"></button>
+		</div>    
+	</form>
+</div>

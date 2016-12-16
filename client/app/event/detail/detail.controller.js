@@ -1,8 +1,9 @@
 'use strict';
 
 class EventDetailCtrl {
-	constructor($scope, $state, event, $localStorage, liked, LikeService, Upload, $cookies, $stateParams, FeedService, PhotoViewer, APP_CONFIG, EventService, growl) {
+	constructor($scope, $state, event, $localStorage, liked, LikeService, Upload, $cookies, $stateParams, FeedService, PhotoViewer, APP_CONFIG, EventService, growl, $uibModal) {
 		this.growl = growl;
+		this.$uibModal = $uibModal;
 		if (event.blocked) {
 			this.growl.error(`<p>{{'THIS_EVENT_HAS_BLOCKED' | translate}}</p>`);
 			$state.go('home');
@@ -211,6 +212,33 @@ class EventDetailCtrl {
 		}).catch(() => {
 			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
+	}
+
+	setAdminRole() {
+		if (this.event.ownerId._id.toString()===this.authUser._id.toString()) {
+			this.$uibModal.open({
+				animation: true,
+				templateUrl: 'app/event/modal/set-admin-role/view.html',
+				controller: 'SetAdminRoleCtrl',
+				controllerAs: 'SetAR',
+				resolve: {
+					users: ['EventService', (EventService) => {
+						return EventService.getAllUsersOfEvent(this.event._id).then(resp => {
+							return resp.data.users;
+						}).catch(() => {
+							return this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);			
+						});
+					}],
+					eventId: () => {
+						return this.event._id;
+					}
+				}
+			}).result.then(resp => {
+				this.event.adminId = resp;
+			});
+		} else {
+			return this.growl.error(`<p>{{'NOT_ALLOW' | translate}}</p>`);			
+		}
 	}
 
 }

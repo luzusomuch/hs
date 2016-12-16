@@ -13,6 +13,7 @@
                     <!-- <h2 class="title-detail"><img ng-src="{{vm.event.categoryId | categoryImagePath}}" width="60"> {{vm.event.name}}</h2> -->
                     <div class="row ">
                         <div class="col-sm-8 col-lg-7">
+                            <a ng-show="vm.event.ownerId._id===vm.authUser._id" href="#" class="btn btn-default btn-block" ng-click="vm.setAdminRole()" ng-bind-html="'SET_ADMIN_FOR_THIS_EVENT' | translate | html"></a>
                             <!-- <div class="action-event">
                                 <span><i class="fa fa-user"></i> {{'BY' | translate}} {{vm.event.ownerId.name}}</span>
                                 <span><i class="fa fa-clock-o"></i> {{'FROM' | translate }} {{vm.event.startDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}} {{'TO' | translate}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}}</span>

@@ -388,7 +388,10 @@ let Language = {
 		POINT_CLUB: 'Point club',
 		JOB: 'Job',
 		YOU_HAVE_JOINED_THIS_EVENT: 'You have joined this event',
-		JOINED_EVENT_SUCCESSFULLY: 'Joined event successfully'
+		JOINED_EVENT_SUCCESSFULLY: 'Joined event successfully',
+		SET_ADMIN_FOR_THIS_EVENT: 'Set admin for this event',
+		SET_AS_ADMIN: 'Set as admin',
+		ADMIN_OF_THIS_EVENT: 'Admin of this event'
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -778,7 +781,10 @@ let Language = {
 		POINT_CLUB: 'Punkt verein',
 		JOB: 'Arbeit',
 		YOU_HAVE_JOINED_THIS_EVENT: 'Haben sie sich dieser veranstaltung angeschlossen',
-		JOINED_EVENT_SUCCESSFULLY: 'Beitritt Veranstaltung erfolgreich'
+		JOINED_EVENT_SUCCESSFULLY: 'Beitritt Veranstaltung erfolgreich',
+		SET_ADMIN_FOR_THIS_EVENT: 'Legen Sie für dieses Ereignis admin fest',
+		SET_AS_ADMIN: 'Als admin festlegen',
+		ADMIN_OF_THIS_EVENT: 'Admin dieser Veranstaltung'
 	}
 }
 

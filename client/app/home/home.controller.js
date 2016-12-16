@@ -206,8 +206,12 @@ class HomeCtrl {
   checkParticipants(participantsId, waitingParticipantIds, ownerId) {
     let data = (participantsId && participantsId.length > 0) ? angular.copy(participantsId) : [];
     data.push(ownerId._id);
-    data = _.unique(data, angular.copy(waitingParticipantIds));
-    return data.indexOf(this.authUser._id) !== -1;
+    data = _.union(data, waitingParticipantIds);
+
+    let index = _.findIndex(data, (id) => {
+      return id.toString()===this.authUser._id.toString();
+    });
+    return index !== -1
   }
 
   participate(event) {
@@ -218,6 +222,7 @@ class HomeCtrl {
     this.EventService.attendEvent(event._id).then(resp => {
       if (resp.data.isParticipant) {
         event.participantsId.push(this.authUser._id);
+        event.stats.totalParticipants++;
         this.growl.success(`<p>{{'JOINED_EVENT_SUCCESSFULLY' | translate}}</p>`);
       } else {
         this.growl.success(`<p>{{'EVENT_REACHED_LIMIT_NUMBER' | translate}}</p>`);

@@ -2217,4 +2217,69 @@ module.exports = function(kernel) {
       return res.status(500).json({type: 'SERVER_ERROR'});
     })
   });
+
+  // pass admin role to an event
+  kernel.app.put('/api/v1/events/:id/pass-admin-role', kernel.middleware.isAuthenticated(), (req, res) => {
+    if (!req.body.adminId) {
+      return res.status(422).json({message: 'Missing entity'});
+    }
+    kernel.model.Event.findById(req.params.id).then(event => {
+      if (!event) {
+        return res.status(404).end();
+      }
+      if (event.ownerId.toString()!==req.user._id.toString()) {
+        return res.status(403).end();
+      }
+      let availableUsers = _.union(event.participantsId, event.waitingParticipantIds);
+
+      let index = _.findIndex(availableUsers, userId => {
+        return userId.toString()===req.body.adminId.toString();
+      });
+
+      if (index !== -1) {
+        event.adminId = req.body.adminId;
+        event.save().then(() => {
+          return res.status(200).end();
+        }).catch(err => {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        });
+      } else {
+        return res.status(409).end();
+      }
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    })
+  });
+
+  // get all users of event with avatar to pass admin role
+  kernel.app.get('/api/v1/events/:id/all-users-of-event', kernel.middleware.isAuthenticated(), (req, res) => {
+    kernel.model.Event.findById(req.params.id).then(event => {
+      if (!event) {
+        return res.status(404).end();
+      }
+      if (event.ownerId.toString()!==req.user._id.toString()) {
+        return res.status(403).end();
+      }
+      let allUsers = _.union(event.participantsId, event.waitingParticipantIds);
+      let data = [];
+      async.each(allUsers, (id, callback) => {
+        kernel.model.User.findById(id, '-password -salt')
+        .populate('avatar').exec().then(user => {
+          if (event.adminId && event.adminId.toString()===user._id.toString()) {
+            user = user.toJSON();
+            user.isEventAdmin = true;
+          }
+          data.push(user);
+          callback();
+        }).catch(callback);
+      }, (err) => {
+        if (err) {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        }
+        return res.status(200).json({users: data});
+      });
+    }).catch(err => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    })
+  });
 };

@@ -80,6 +80,14 @@
 
       syncEvents(data) {
         return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/sync-events`, data);
+      },
+
+      getAllUsersOfEvent(id) {
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/all-users-of-event`);
+      },
+
+      passAdminRole(id, data) {
+        return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/pass-admin-role`, data);
       }
     };
   }

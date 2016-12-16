@@ -386,7 +386,9 @@ let Language = {
 		// Enter new translate text below
 		EDIT: 'Edit',
 		POINT_CLUB: 'Point club',
-		JOB: 'Job'
+		JOB: 'Job',
+		YOU_HAVE_JOINED_THIS_EVENT: 'You have joined this event',
+		JOINED_EVENT_SUCCESSFULLY: 'Joined event successfully'
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -774,7 +776,9 @@ let Language = {
 		// Enter new translate text below
 		EDIT: 'Bearbeiten',
 		POINT_CLUB: 'Punkt verein',
-		JOB: 'Arbeit'
+		JOB: 'Arbeit',
+		YOU_HAVE_JOINED_THIS_EVENT: 'Haben sie sich dieser veranstaltung angeschlossen',
+		JOINED_EVENT_SUCCESSFULLY: 'Beitritt Veranstaltung erfolgreich'
 	}
 }
 

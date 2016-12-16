@@ -203,10 +203,33 @@ class HomeCtrl {
     //return this.searchParams.categories.indexOf(category._id) !== -1;
   }
 
-  checkParticipants(participantsId, ownerId) {
+  checkParticipants(participantsId, waitingParticipantIds, ownerId) {
     let data = (participantsId && participantsId.length > 0) ? angular.copy(participantsId) : [];
     data.push(ownerId._id);
+    data = _.unique(data, angular.copy(waitingParticipantIds));
     return data.indexOf(this.authUser._id) !== -1;
+  }
+
+  participate(event) {
+    // check user joined or not
+    if (this.checkParticipants(event.participantsId, event.waitingParticipantIds, event.ownerId)) {
+      return this.growl.error(`<p>{{'YOU_HAVE_JOINED_THIS_EVENT' | translate}}</p>`);
+    }
+    this.EventService.attendEvent(event._id).then(resp => {
+      if (resp.data.isParticipant) {
+        event.participantsId.push(this.authUser._id);
+        this.growl.success(`<p>{{'JOINED_EVENT_SUCCESSFULLY' | translate}}</p>`);
+      } else {
+        this.growl.success(`<p>{{'EVENT_REACHED_LIMIT_NUMBER' | translate}}</p>`);
+        if (event.waitingParticipantIds && event.waitingParticipantIds.length > 0) {
+          event.waitingParticipantIds.push(this.authUser._id);
+        } else {
+          event.waitingParticipantIds = [this.authUser._id];
+        }
+      }
+    }).catch(() => {
+      this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+    });
   }
 }
 

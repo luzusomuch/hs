@@ -2011,7 +2011,7 @@ module.exports = function(kernel) {
       if (!event) {
         return res.status(404).end();
       }
-      if (event.ownerId.toString()===req.user._id.toString() || event.adminId==req.user._id) {
+      if (event.ownerId.toString()===req.user._id.toString() || event.adminId.toString()===req.user._id.toString()) {
         let index = event.participantsId.indexOf(req.body.userId);
         if (index !== -1) {
           event.participantsId.splice(index, 1);
@@ -2245,7 +2245,8 @@ module.exports = function(kernel) {
 
       if (index !== -1) {
         event.adminId = req.body.adminId;
-        event.save().then(() => {
+        event.save().then(saved => {
+          kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: saved}).save();
           return res.status(200).end();
         }).catch(err => {
           return res.status(500).json({type: 'SERVER_ERROR'});
@@ -2287,6 +2288,45 @@ module.exports = function(kernel) {
       });
     }).catch(err => {
       return res.status(500).json({type: 'SERVER_ERROR'});
-    })
+    });
+  });
+
+  // when decline whole repeating event we will push that user id to usersDeclineRepeatingEvent field
+  kernel.app.put('/api/v1/events/:id/decline-whole-repeating-event', kernel.middleware.isAuthenticated(), (req, res) => {
+    kernel.model.Event.findById(req.params.id).then(event => {
+      if (!event) {
+        return res.status(404).end();
+      }
+      if (event.parentId) {
+        kernel.model.Event.findById(event.parentId).then(parentEvent => {
+          if (!parentEvent) {
+            return res.status(404).end();     
+          }
+          let usersDeclineRepeatingEvent = (parentEvent.usersDeclineRepeatingEvent) ? parentEvent.usersDeclineRepeatingEvent : [];
+          let index = _.findIndex(usersDeclineRepeatingEvent, id => {
+            return id.toString()===req.user._id.toString();
+          });
+
+          if (index === -1) {
+            usersDeclineRepeatingEvent.push(req.user._id);
+            parentEvent.usersDeclineRepeatingEvent = usersDeclineRepeatingEvent;
+            parentEvent.save().then(saved => {
+              kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: saved}).save();
+              return res.status(200).end();
+            }).catch(err => {
+              return res.status(500).json({type: 'SERVER_ERROR'});    
+            });
+          } else {
+            return res.status(200).end();
+          }
+        }).catch(err => {
+          return res.status(500).json({type: 'SERVER_ERROR'});
+        });
+      } else {
+        return res.status(403).end();
+      }
+    }).catch(() => {
+      return res.status(500).json({type: 'SERVER_ERROR'});
+    });
   });
 };

@@ -391,7 +391,10 @@ let Language = {
 		JOINED_EVENT_SUCCESSFULLY: 'Joined event successfully',
 		SET_ADMIN_FOR_THIS_EVENT: 'Set admin for this event',
 		SET_AS_ADMIN: 'Set as admin',
-		ADMIN_OF_THIS_EVENT: 'Admin of this event'
+		ADMIN_OF_THIS_EVENT: 'Admin of this event',
+		DECLINE_REPEATING_EVENT: 'Decline repeating event',
+		ONLY_CURRENT_INSTANCE: 'Only current instance',
+		WHOLE_EVENTS: 'Whole events'
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -784,7 +787,10 @@ let Language = {
 		JOINED_EVENT_SUCCESSFULLY: 'Beitritt Veranstaltung erfolgreich',
 		SET_ADMIN_FOR_THIS_EVENT: 'Legen Sie für dieses Ereignis admin fest',
 		SET_AS_ADMIN: 'Als admin festlegen',
-		ADMIN_OF_THIS_EVENT: 'Admin dieser Veranstaltung'
+		ADMIN_OF_THIS_EVENT: 'Admin dieser Veranstaltung',
+		DECLINE_REPEATING_EVENT: 'Ablehnen des Wiederholungsereignisses',
+		ONLY_CURRENT_INSTANCE: 'Nur aktuelle Instanz',
+		WHOLE_EVENTS: 'Ganze Veranstaltungen'
 	}
 }
 

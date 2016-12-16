@@ -258,6 +258,15 @@ module.exports = (kernel, cb) => {
                 banner: event.banner,
                 createdFromRepeatEvent: true,
                 parentId: event._id,
+                
+                limitNumberOfParticipate: event.limitNumberOfParticipate,
+                numberParticipants: event.numberParticipants,
+                waitingParticipantIds: [],
+
+                costOfEvent: event.costOfEvent,
+                amount: event.amount,
+                currency: event.currency,
+
                 stats: {
                   totalParticipants: 0
                 }
@@ -292,22 +301,28 @@ module.exports = (kernel, cb) => {
                     console.log('new event created');
                     var url = kernel.config.baseUrl + 'event/'+saved._id;
                     async.each(saved.participantsId, (id, callback) => {
-                      kernel.model.User.findById(id).then(user => {
-                        if (!user) {return callback();}
-                        kernel.emit('SEND_MAIL', {
-                          template: 'event-created.html',
-                          subject: 'New Event Created Named ' + event.name,
-                          data: {
-                            user: user, 
-                            url: url,
-                            event: event
-                          },
-                          to: user.email
+                      if (event.usersDeclineRepeatingEvent && event.usersDeclineRepeatingEvent.length > 0 && _.findIndex(event.usersDeclineRepeatingEvent, userId => {
+                        return userId.toString()===id.toString();
+                      }) === -1) {
+                        kernel.model.User.findById(id).then(user => {
+                          if (!user) {return callback();}
+                          kernel.emit('SEND_MAIL', {
+                            template: 'event-created.html',
+                            subject: 'New Event Created Named ' + event.name,
+                            data: {
+                              user: user, 
+                              url: url,
+                              event: event
+                            },
+                            to: user.email
+                          });
+                          callback();
+                        }).catch(err => {
+                          callback(err);
                         });
+                      } else {
                         callback();
-                      }).catch(err => {
-                        callback(err);
-                      });
+                      }
                     }, () => {
                       async.waterfall([
                         (_cb) => {
@@ -340,13 +355,20 @@ module.exports = (kernel, cb) => {
                         }
                         console.log('send email to participantsId and liked user');
                         async.each(result, (userId, _callback) => {
-                          // Create new event invitation
-                          let invite = new kernel.model.InvitationRequest({
-                            fromUserId: saved.ownerId,
-                            toUserId: userId,
-                            objectId: saved._id
-                          });
-                          invite.save(_callback);
+                          if (event.usersDeclineRepeatingEvent && event.usersDeclineRepeatingEvent && _.findIndex(event.usersDeclineRepeatingEvent, id => {
+                            return id.toString()===userId.toString();
+                          }) === -1) {
+                            // Create new event invitation
+                            console.log('create invitation');
+                            let invite = new kernel.model.InvitationRequest({
+                              fromUserId: saved.ownerId,
+                              toUserId: userId,
+                              objectId: saved._id
+                            });
+                            invite.save(_callback);
+                          } else {
+                            _callback();
+                          }
                         }, () => {
                           console.log('invitation sent');
                           kernel.queue.create('TOTAL_EVENT_CREATED', {userId: saved.ownerId}).save();

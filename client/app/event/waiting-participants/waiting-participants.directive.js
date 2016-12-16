@@ -44,7 +44,7 @@ class EventWaitingParticipantsCtrl {
 	  	}
 	  }, true);
 
-		this.isEventOwner = ($scope.eOwner && (this.authUser._id===$scope.eOwner._id || this.authUser._id===$scope.eAdmin._id)) ? true : false;
+		this.isEventOwner = (($scope.eOwner && this.authUser._id===$scope.eOwner._id) || ($scope.eAdmin && this.authUser._id===$scope.eAdmin._id)) ? true : false;
 	}
 
 	// banUser(user) {

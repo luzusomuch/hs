@@ -56,7 +56,9 @@ module.exports = {
       amount: {type: Number},
       currency: {type: 'String'},
       // one event has one admin and admin can do every things in event as event owner
-      adminId: { type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User' }
+      adminId: { type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User' },
+      // when decline whole repeating event we will push that user id to usersDeclineRepeatingEvent field
+      usersDeclineRepeatingEvent: [String],
     });
     
     //import timestamp for auto create updatedAt, createdAt field manually

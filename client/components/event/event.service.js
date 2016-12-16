@@ -88,6 +88,10 @@
 
       passAdminRole(id, data) {
         return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/pass-admin-role`, data);
+      },
+
+      declineWholeRepeatingEvent(id) {
+        return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/events/${id}/decline-whole-repeating-event`);
       }
     };
   }

@@ -94,16 +94,28 @@ class MyHomeCtrl {
 
 	eventReject(item) {
 		if (item.itemType==='event-invited' || item.inviteId) {
-			this.Invite.rejectEventInvite(item.inviteId).then(() => {
-				let index = _.findIndex(this.dashboardItems.items, (data) => {
-					return item._id===data._id;
-				});
-				if (index !== -1) {
-					this.dashboardItems.items.splice(index, 1);
-					this.dashboardItems.totalItem -= 1;
+			this.$uibModal.open({
+				animation: true,
+				templateUrl: 'app/profile/modal/decline-whole-repeating-event/view.html',
+				controller: 'DeclineWholeRepeatingEventCtrl',
+				controllerAs: 'DeclineWRE',
+				resolve: {
+					eventId: () => {
+						return item._id;
+					}
 				}
-			}).catch(() => {
-				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+			}).result.then(() => {
+				this.Invite.rejectEventInvite(item.inviteId).then(() => {
+					let index = _.findIndex(this.dashboardItems.items, (data) => {
+						return item._id===data._id;
+					});
+					if (index !== -1) {
+						this.dashboardItems.items.splice(index, 1);
+						this.dashboardItems.totalItem -= 1;
+					}
+				}).catch(() => {
+					this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+				});
 			});
 		} else {
 			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);

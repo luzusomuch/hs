@@ -59,104 +59,109 @@ class MyCalendarCtrl {
 			this.localEvents = resp.data;
 			if (this.localEvents.items && this.localEvents.items.length > 0) {
 				_.each(this.localEvents.items, (event) => {
-					// find out repeating event and now is after event end date
-					if (event.repeat && event.repeat.type && event.repeat.type!=='none' && moment(moment()).isAfter(moment(event.endDateTime))) {
-						let newStartDateTime, newEndDateTime;
-		      	let eventTotalDays = moment(moment(event.endDateTime).format(dateFormat)).diff(moment(event.startDateTime).format(dateFormat), 'days');
-		      	let eventRepeat = {
-	        		startDate: event.repeat.startDate,
-		        	endDate: event.repeat.endDate
-		      	};
-		      	let totalRepeatedDays = moment(moment(eventRepeat.endDate).format(dateFormat)).diff(moment(eventRepeat.startDate).format(dateFormat), 'days');
+					// check if user has decline all repeating instance or not
+					if (!event.createdFromRepeatEvent && !event.parentId && event.usersDeclineRepeatingEvent && _.findIndex(event.usersDeclineRepeatingEvent, id => {
+						return id.toString()===this.authUser._id.toString();
+					}) === -1) {
+						// find out repeating event and now is after event end date
+						if (event.repeat && event.repeat.type && event.repeat.type!=='none' && moment(moment()).isAfter(moment(event.endDateTime))) {
+							let newStartDateTime, newEndDateTime;
+			      	let eventTotalDays = moment(moment(event.endDateTime).format(dateFormat)).diff(moment(event.startDateTime).format(dateFormat), 'days');
+			      	let eventRepeat = {
+		        		startDate: event.repeat.startDate,
+			        	endDate: event.repeat.endDate
+			      	};
+			      	let totalRepeatedDays = moment(moment(eventRepeat.endDate).format(dateFormat)).diff(moment(eventRepeat.startDate).format(dateFormat), 'days');
 
-						switch (event.repeat.type) {
-			        case 'daily': 
-		            	for (var i = 0; i < totalRepeatedDays; i++) {
-		            		let newStartDateTime = new Date(moment().add(i, 'days'));
-		            		let newEndDateTime = new Date(moment(newStartDateTime).add(eventTotalDays, 'days'));
+							switch (event.repeat.type) {
+				        case 'daily': 
+			            	for (var i = 0; i < totalRepeatedDays; i++) {
+			            		let newStartDateTime = new Date(moment().add(i, 'days'));
+			            		let newEndDateTime = new Date(moment(newStartDateTime).add(eventTotalDays, 'days'));
 
-		            		let newEvent = {
-		            			name: event.name,
-		            			startDateTime: newStartDateTime,
-		            			endDateTime: newEndDateTime,
-		            			ownerId: event.ownerId,
-		            			categoryId: event.categoryId,
-		            			_id: event._id,
-		            			type: 'local',
-		            			photosId: event.photosId,
-		            			repeatEvent: true
-		            		};
-		            		let index = _.findIndex(this.localEvents.items, (item) => {
-		            			return item.name===newEvent.name && moment(moment(newEvent.startDateTime).format(dateFormat)).isSame(moment(item.startDateTime).format(dateFormat)) && moment(moment(newEvent.endDateTime).format(dateFormat)).isSame(moment(item.endDateTime).format(dateFormat));
-		            		});
+			            		let newEvent = {
+			            			name: event.name,
+			            			startDateTime: newStartDateTime,
+			            			endDateTime: newEndDateTime,
+			            			ownerId: event.ownerId,
+			            			categoryId: event.categoryId,
+			            			_id: event._id,
+			            			type: 'local',
+			            			photosId: event.photosId,
+			            			repeatEvent: true
+			            		};
+			            		let index = _.findIndex(this.localEvents.items, (item) => {
+			            			return item.name===newEvent.name && moment(moment(newEvent.startDateTime).format(dateFormat)).isSame(moment(item.startDateTime).format(dateFormat)) && moment(moment(newEvent.endDateTime).format(dateFormat)).isSame(moment(item.endDateTime).format(dateFormat));
+			            		});
 
-		            		if (index === -1) {
-		            			this.localEvents.items.push(newEvent);
-		            		}
-		            	}
+			            		if (index === -1) {
+			            			this.localEvents.items.push(newEvent);
+			            		}
+			            	}
+				          	break;
+				        case 'weekly': 
+				        	for (var i = 0; i < totalRepeatedDays; i++) {
+				        		if (i%7 === 0 && i !== 0) {
+				        			newStartDateTime = new Date(moment().add(i, 'days'));
+			            		newEndDateTime = new Date(moment(newStartDateTime).add(eventTotalDays, 'days'));
+
+			            		let newEvent = {
+			            			name: event.name,
+			            			startDateTime: newStartDateTime,
+			            			endDateTime: newEndDateTime,
+			            			ownerId: event.ownerId,
+			            			categoryId: event.categoryId,
+			            			_id: event._id,
+			            			type: 'local',
+			            			photosId: event.photosId,
+			            			repeatEvent: true
+			            		};
+
+			            		let index = _.findIndex(this.localEvents.items, (item) => {
+			            			return item.name===newEvent.name && moment(moment(newEvent.startDateTime).format(dateFormat)).isSame(moment(item.startDateTime).format(dateFormat)) && moment(moment(newEvent.endDateTime).format(dateFormat)).isSame(moment(item.endDateTime).format(dateFormat));
+			            		});
+
+			            		if (index === -1) {
+			            			this.localEvents.items.push(newEvent);
+			            		}
+				        		}
+				        	}
 			          	break;
-			        case 'weekly': 
-			        	for (var i = 0; i < totalRepeatedDays; i++) {
-			        		if (i%7 === 0 && i !== 0) {
-			        			newStartDateTime = new Date(moment().add(i, 'days'));
-		            		newEndDateTime = new Date(moment(newStartDateTime).add(eventTotalDays, 'days'));
+				        case 'monthly': 
+				        	for (var i = 0; i < totalRepeatedDays; i++) {
+				        		let tmpDate = moment().add(i, 'days').format(dateFormat);
+				        		let diffDay = moment(tmpDate).diff(moment(eventRepeat.startDate).format(dateFormat), 'days');
+				        		let totalDaysInMonth = moment(tmpDate).daysInMonth();
+				        		if (diffDay !== 0 && diffDay % totalDaysInMonth === 0) {
+				        			newStartDateTime = new Date(moment().add(i, 'days'));
+			            		newEndDateTime = new Date(moment(newStartDateTime).add(eventTotalDays, 'days'));
 
-		            		let newEvent = {
-		            			name: event.name,
-		            			startDateTime: newStartDateTime,
-		            			endDateTime: newEndDateTime,
-		            			ownerId: event.ownerId,
-		            			categoryId: event.categoryId,
-		            			_id: event._id,
-		            			type: 'local',
-		            			photosId: event.photosId,
-		            			repeatEvent: true
-		            		};
+			            		let newEvent = {
+			            			name: event.name,
+			            			startDateTime: newStartDateTime,
+			            			endDateTime: newEndDateTime,
+			            			ownerId: event.ownerId,
+			            			categoryId: event.categoryId,
+			            			_id: event._id,
+			            			type: 'local',
+			            			photosId: event.photosId,
+			            			repeatEvent: true
+			            		};
 
-		            		let index = _.findIndex(this.localEvents.items, (item) => {
-		            			return item.name===newEvent.name && moment(moment(newEvent.startDateTime).format(dateFormat)).isSame(moment(item.startDateTime).format(dateFormat)) && moment(moment(newEvent.endDateTime).format(dateFormat)).isSame(moment(item.endDateTime).format(dateFormat));
-		            		});
+			            		let index = _.findIndex(this.localEvents.items, (item) => {
+			            			return item.name===newEvent.name && moment(moment(newEvent.startDateTime).format(dateFormat)).isSame(moment(item.startDateTime).format(dateFormat)) && moment(moment(newEvent.endDateTime).format(dateFormat)).isSame(moment(item.endDateTime).format(dateFormat));
+			            		});
 
-		            		if (index === -1) {
-		            			this.localEvents.items.push(newEvent);
-		            		}
-			        		}
-			        	}
-		          	break;
-			        case 'monthly': 
-			        	for (var i = 0; i < totalRepeatedDays; i++) {
-			        		let tmpDate = moment().add(i, 'days').format(dateFormat);
-			        		let diffDay = moment(tmpDate).diff(moment(eventRepeat.startDate).format(dateFormat), 'days');
-			        		let totalDaysInMonth = moment(tmpDate).daysInMonth();
-			        		if (diffDay !== 0 && diffDay % totalDaysInMonth === 0) {
-			        			newStartDateTime = new Date(moment().add(i, 'days'));
-		            		newEndDateTime = new Date(moment(newStartDateTime).add(eventTotalDays, 'days'));
-
-		            		let newEvent = {
-		            			name: event.name,
-		            			startDateTime: newStartDateTime,
-		            			endDateTime: newEndDateTime,
-		            			ownerId: event.ownerId,
-		            			categoryId: event.categoryId,
-		            			_id: event._id,
-		            			type: 'local',
-		            			photosId: event.photosId,
-		            			repeatEvent: true
-		            		};
-
-		            		let index = _.findIndex(this.localEvents.items, (item) => {
-		            			return item.name===newEvent.name && moment(moment(newEvent.startDateTime).format(dateFormat)).isSame(moment(item.startDateTime).format(dateFormat)) && moment(moment(newEvent.endDateTime).format(dateFormat)).isSame(moment(item.endDateTime).format(dateFormat));
-		            		});
-
-		            		if (index === -1) {
-		            			this.localEvents.items.push(newEvent);
-		            		}
-			        		}
-			        	}
-		          	break;
-			        default:
-		          	break;
-		      	}
+			            		if (index === -1) {
+			            			this.localEvents.items.push(newEvent);
+			            		}
+				        		}
+				        	}
+			          	break;
+				        default:
+			          	break;
+			      	}
+						}
 					}
 				});
 			}

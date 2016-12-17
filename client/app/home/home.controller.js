@@ -5,6 +5,7 @@ class HomeCtrl {
     this.growl = growl;
     this.$scope = $scope;
     this.categories = [];
+    this.imgWidth = {};
     // re-order category
     _.each(categories, (cat) => {
       switch (cat.type) {
@@ -212,6 +213,14 @@ class HomeCtrl {
       return id.toString()===this.authUser._id.toString();
     });
     return index !== -1
+  }
+
+  photoWidth(photoIds) {
+    if (photoIds && photoIds.length > 0) {
+      return this.imgWidth = {'width': '100%'};
+    } else {
+      return this.imgWidth = {'width': '100px'};
+    }
   }
 
   participate(event) {

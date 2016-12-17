@@ -1841,8 +1841,11 @@ label {
 .date-weather .prev-wea {
     right: 0px;
 }
-.liked {
+/*.liked {
     color: red;
+}*/
+.liked {
+    color: rgba(0,0,0,0.5);
 }
 .new-feed-error {
     position: absolute;

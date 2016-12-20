@@ -29,7 +29,7 @@
             </td> -->
             <td ng-repeat="dt in row" class="uib-day text-center" role="gridcell" id="{{::dt.uid}}" ng-class="::dt.customClass">
                 <button type="button" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active:    isActive(dt)}" ng-click="select(dt.date)" ng-disabled="::dt.disabled" tabindex="-1">
-                    <span ng-class="::{'text-muted': dt.secondary, 'text-info': dt.current}">{{::dt.label}}</span>
+                    <span ng-class="::{'text-muted': dt.secondary, 'text-info': dt.current, 'hide': dt.secondary}">{{::dt.label}}</span>
                 </button>
             </td>
         </tr>

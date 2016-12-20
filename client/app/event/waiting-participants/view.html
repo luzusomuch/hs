@@ -1,7 +1,7 @@
 <div class="box-blue p15">
     <div class="title-blue">{{'WAITING_LIST' | translate}}  ({{vm.waitingParticipants.totalItem || 0}}) <a ng-click="vm.showAllWaitingParticipants()" href="#" class="show-all-box">{{'SHOW_ALL' | translate}}</a></div>
     <ul class="list-media list-friend list-friend-1">
-        <li ng-repeat="user in vm.waitingParticipants.items" ng-class="{'no-online': !user.online}">
+        <li ng-repeat="user in vm.waitingParticipants.items | limitTo: 5 | orderBy: 'online'" ng-class="{'no-online': !user.online}">
             <div class="img-media">
                 <a ui-sref="profile.detail({id: user._id})"><img ng-src="{{user | avatarUrl}}"></a>
             </div>

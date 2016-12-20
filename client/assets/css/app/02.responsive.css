@@ -165,7 +165,7 @@
         display: block;
     }
     .box-event-li .img-eventbox img {
-        height: 110px;
+        /*height: 110px;*/
         object-fit: cover;
     }
     .box-event-li .text-li-event {

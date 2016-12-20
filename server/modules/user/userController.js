@@ -973,7 +973,7 @@ class UserController {
   }
 
   updateUserLocation(req, res) {
-    if (!req.body.location || !req.body.pointClub || !req.body.job) {
+    if (!req.body.location) {
       return res.status(422).json({message: 'Missing entities'});
     }
     this.kernel.model.User.findById(req.params.id).then(user => {

@@ -394,7 +394,8 @@ let Language = {
 		ADMIN_OF_THIS_EVENT: 'Admin of this event',
 		DECLINE_REPEATING_EVENT: 'Decline repeating event',
 		ONLY_CURRENT_INSTANCE: 'Only current instance',
-		WHOLE_EVENTS: 'Whole events'
+		WHOLE_EVENTS: 'Whole events',
+		IN_PROCESSING: 'In processing'
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -790,7 +791,8 @@ let Language = {
 		ADMIN_OF_THIS_EVENT: 'Admin dieser Veranstaltung',
 		DECLINE_REPEATING_EVENT: 'Ablehnen des Wiederholungsereignisses',
 		ONLY_CURRENT_INSTANCE: 'Nur aktuelle Instanz',
-		WHOLE_EVENTS: 'Ganze Veranstaltungen'
+		WHOLE_EVENTS: 'Ganze Veranstaltungen',
+		IN_PROCESSING: 'In bearbeitung'
 	}
 }
 

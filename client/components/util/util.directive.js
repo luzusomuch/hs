@@ -222,7 +222,8 @@ angular.module('healthStarsApp.util').directive('autoFrameHeight', ($) => ({
       show: '='
     },
     template: `
-      <div class="popup-animation" ng-show="show">
+      <div style="padding:15px; background: rgba(33,46,74,0.75)" class="popup-animation" ng-show="show">
+        <h3>{{'IN_PROCESSING' | translate}}</h3>
         <img src="/assets/images/animation.gif"></img>
       </div>
     `

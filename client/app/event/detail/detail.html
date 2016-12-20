@@ -74,7 +74,7 @@
                     </div>
                     <p>
                         <span ng-show="!vm.event.isSameDate"><i class="fa fa-clock-o"></i> {{'FROM' | translate }} {{vm.event.startDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}} {{'TO' | translate}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}}</span>
-                        <span ng-show="vm.event.isSameDate"><i class="fa fa-clock-o"></i> {{vm.event.startDateTime | hsDate: 'HH:mm a'}} {{'TO' | translate}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}}</span>
+                        <span ng-show="vm.event.isSameDate"><i class="fa fa-clock-o"></i> {{vm.event.startDateTime | hsDate: 'HH:mm'}}-{{vm.event.endDateTime | hsDate: 'HH:mm'}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY'}}</span>
                     </p>
                     
                 </div>

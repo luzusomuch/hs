@@ -18,9 +18,15 @@ class EditEventCtrl {
     this.awards = awards.data.items;
     this.growl = growl;
 		this.user = $localStorage.authUser;
-		if (event.ownerId._id!==this.user._id) {
+
+    let availableUserIds = [event.ownerId._id];
+    if (event.adminId && event.adminId._id) {
+      availableUserIds.push(event.adminId._id);
+    }
+		if (availableUserIds.indexOf(this.user._id)===-1) {
 			$state.go('home');
 		}
+    
     this.categories = categories;
     _.each(this.categories, (cat) => {
       switch (cat.type) {

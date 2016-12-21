@@ -214,6 +214,9 @@ class CreateEventCtrl {
           if (item.types[0]==='country') {
             $http.get('/api/v1/countries/currency', {params: {countryCode: item.short_name}}).then(resp => {
               this.currencies = resp.data.currencies;
+              if (this.currencies.length > 0) {
+                this.event.currency = this.currencies[0];
+              }
             });
           }
         });

@@ -241,6 +241,7 @@ img {
 .signup-page .container-fluid {
     width: 1100px;
     margin: auto;
+    background: rgba(33,46,74,.75);
 }
 .signup-page .logo-login {
     float: left;

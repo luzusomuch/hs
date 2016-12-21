@@ -920,6 +920,7 @@ label .note-form {
     height: 15px;
     display: inline-block;
     vertical-align: middle;
+    background-repeat: no-repeat;
 }
 .user-i {
     background-image: url('/assets/images/user.png');

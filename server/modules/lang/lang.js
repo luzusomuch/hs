@@ -397,7 +397,8 @@ let Language = {
 		ONLY_CURRENT_INSTANCE: 'Only current instance',
 		WHOLE_EVENTS: 'Whole events',
 		IN_PROCESSING: 'In processing',
-		HAS_PASSED_ADMIN_ROLE_OF_EVENT: 'has passed admin role of event'
+		HAS_PASSED_ADMIN_ROLE_OF_EVENT: 'has passed admin role of event',
+		STATUS: 'Status'
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -796,7 +797,8 @@ let Language = {
 		ONLY_CURRENT_INSTANCE: 'Nur aktuelle Instanz',
 		WHOLE_EVENTS: 'Ganze Veranstaltungen',
 		IN_PROCESSING: 'In bearbeitung',
-		HAS_PASSED_ADMIN_ROLE_OF_EVENT: 'hat admin rolle des ereignisses übergeben'
+		HAS_PASSED_ADMIN_ROLE_OF_EVENT: 'hat admin rolle des ereignisses übergeben',
+		STATUS: 'Status'
 	}
 }
 

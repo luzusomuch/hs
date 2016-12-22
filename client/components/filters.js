@@ -532,4 +532,20 @@ angular.module('healthStarsApp')
       return 0;
     }
   }
+})
+.filter('hsStatusStar', () => {
+  return post => {
+    post = Number(post);
+    let link;
+    if (post >=100 && post < 500) {
+      link = '/assets/images/fan_star.png';
+    } else if (post >= 500 && post < 2000) {
+      link = '/assets/images/bronze_star.png';
+    } else if (post >= 2000 && post < 5000) {
+      link = '/assets/images/silver_star.png';
+    } else if (post >= 5000) {
+      link = '/assets/images/gold_star.png';
+    }
+    return link;
+  }
 });

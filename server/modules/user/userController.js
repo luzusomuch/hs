@@ -545,7 +545,7 @@ class UserController {
             this.kernel.model.Award.findById(award.awardId)
             .populate('objectPhotoId')
             .exec().then(aw => {
-              if (!aw) {return callback({error: 'Award not found'});}
+              if (!aw) {return callback();}
               award.awardId = aw;
               callback();
             }).catch(callback);

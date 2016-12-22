@@ -57,6 +57,7 @@ module.exports = {
       currency: {type: 'String'},
       // one event has one admin and admin can do every things in event as event owner
       adminId: { type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User' },
+      passedDate: Date,
       // when decline whole repeating event we will push that user id to usersDeclineRepeatingEvent field
       usersDeclineRepeatingEvent: [String],
     });

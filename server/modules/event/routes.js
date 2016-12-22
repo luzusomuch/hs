@@ -2245,6 +2245,7 @@ module.exports = function(kernel) {
 
       if (index !== -1) {
         event.adminId = req.body.adminId;
+        event.passedDate = new Date();
         event.save().then(saved => {
           kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: saved}).save();
           return res.status(200).end();

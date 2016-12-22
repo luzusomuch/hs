@@ -960,6 +960,24 @@ class UserController {
           });
           cb();
         }).catch(cb);
+      },
+      cb => {
+        // find passed admin role of an event
+        this.kernel.model.Event.find({adminId: req.user._id})
+        .populate('photosId')
+        .populate('categoryId')
+        .populate({
+          path: 'ownerId', select: '-password -salt',
+          populate: {path: 'avatar', model: 'Photo'}
+        }).then(events => {
+          _.each(events, event => {
+            event = event.toJSON();
+            event.itemType = 'passed-admin-role';
+            event.createdAt = (event.passedDate) ? event.passedDate : event.updatedAt;
+            results.push(event);
+          });
+          cb();
+        }).catch(cb);
       }
     ], (err) => {
       if (err) {

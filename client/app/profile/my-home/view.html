@@ -73,6 +73,13 @@
                                 <a ng-click="vm.eventAccept(item)" ng-if="item.itemType==='event-invited'" href="#" class="btn btn-success btn-radius-20">{{'ACCEPT' | translate}}</a>
 
                                 <a ng-click="vm.eventReject(item)" ng-if="item.itemType==='event-invited'" href="#" class="btn btn-danger btn-radius-20">{{'DECLINE' | translate}}</a>
+
+                                <p ng-switch-when="passed-admin-role">
+                                    {{item.ownerId.name}} 
+                                    <span ng-bind-html="'HAS_PASSED_ADMIN_ROLE_OF_EVENT' | translate | html"></span> 
+                                    <a ui-sref="event.detail({id: item._id})">{{item.name}}</a>
+                                    {{'TO' | translate | lowercase}} {{'YOU' | translate | lowercase}}
+                                </p>
                             </div>
                         </div>
                     </div>

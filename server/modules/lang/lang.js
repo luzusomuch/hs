@@ -396,7 +396,8 @@ let Language = {
 		DECLINE_REPEATING_EVENT: 'Decline repeating event',
 		ONLY_CURRENT_INSTANCE: 'Only current instance',
 		WHOLE_EVENTS: 'Whole events',
-		IN_PROCESSING: 'In processing'
+		IN_PROCESSING: 'In processing',
+		HAS_PASSED_ADMIN_ROLE_OF_EVENT: 'has passed admin role of event'
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -794,7 +795,8 @@ let Language = {
 		DECLINE_REPEATING_EVENT: 'Ablehnen des Wiederholungsereignisses',
 		ONLY_CURRENT_INSTANCE: 'Nur aktuelle Instanz',
 		WHOLE_EVENTS: 'Ganze Veranstaltungen',
-		IN_PROCESSING: 'In bearbeitung'
+		IN_PROCESSING: 'In bearbeitung',
+		HAS_PASSED_ADMIN_ROLE_OF_EVENT: 'hat admin rolle des ereignisses übergeben'
 	}
 }
 

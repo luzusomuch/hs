@@ -377,6 +377,7 @@ module.exports = function(kernel) {
   });
 
   /*Get my upcoming events*/
+  // upcoming meant current user like or participate and the startDateTime of event greater than current time
   kernel.app.get('/api/v1/events/upcoming-event', kernel.middleware.isAuthenticated(), (req, res) => {
     async.parallel([
       (cb) => {
@@ -392,11 +393,6 @@ module.exports = function(kernel) {
             filtered: {
               query: {
                 bool: {
-                  should: []
-                }
-              },
-              filter: {
-                bool: {
                   must: [
                     { term: { blocked: false } }
                   ],
@@ -404,6 +400,12 @@ module.exports = function(kernel) {
                     { term: { participantsId: req.user._id}},
                     { term: { ownerId: req.user._id}},
                   ]
+                }
+              },
+              filter: {
+                bool: {
+                  must: [],
+                  should: []
                 }
               }
             }
@@ -500,7 +502,7 @@ module.exports = function(kernel) {
           { createdAt: 'desc' }
         ];
 
-        query.query.filtered.filter.bool.must.push({range : { startDateTime: { gte: moment().startOf('date').toISOString() }}});
+        query.query.filtered.filter.bool.must.push({range : { startDateTime: { gte: moment().toISOString() }}});
       }
 
       kernel.ES.search(query, kernel.config.ES.mapping.eventType, (err, result) => {

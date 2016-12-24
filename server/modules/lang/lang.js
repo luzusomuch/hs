@@ -398,7 +398,13 @@ let Language = {
 		WHOLE_EVENTS: 'Whole events',
 		IN_PROCESSING: 'In processing',
 		HAS_PASSED_ADMIN_ROLE_OF_EVENT: 'has passed admin role of event',
-		STATUS: 'Status'
+		STATUS: 'Status',
+		SPORTSTAR_CONTENT: 'Sport events, anytime, anywhere make you feel good.',
+		FOODSTAR_CONTENT: 'Learn to cook, cook healthy or organize regional and seasonal food.',
+		SOCIALSTAR_CONTENT: 'Ensure social health with these events.',
+		ECOSTAR_CONTENT: 'Green up your life. Events for being outdoor and helping our mother nature.',
+		ACTIONSTAR_CONTENT: 'Help, where it is needed the most. Go on international assignments  or organize voluntary jobs..',
+		DONT_SHOW_AGAIN: 'Don\'t show again',
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -798,7 +804,13 @@ let Language = {
 		WHOLE_EVENTS: 'Ganze Veranstaltungen',
 		IN_PROCESSING: 'In bearbeitung',
 		HAS_PASSED_ADMIN_ROLE_OF_EVENT: 'hat admin rolle des ereignisses übergeben',
-		STATUS: 'Status'
+		STATUS: 'Status',
+		SPORTSTAR_CONTENT: 'Sport zu jeder Zeit, auf jede Art. Er versetzt dich stets in Bewegung und es bewegt sich immer jemand in deiner Nähe.',
+		FOODSTAR_CONTENT: 'Du bist was du isst. Regionale und saisonale Lebensmittel sind gesund und entlasten zudem die Umwelt.',
+		SOCIALSTAR_CONTENT: 'Die Gesellschaft ist nur so stark wie ihr schwächstes Mitglied.',
+		ECOSTAR_CONTENT: 'Green up your life. Wenn die Natur und dessen Schutz Bestandteil deiner eigenen Persönlichkeit sind.',
+		ACTIONSTAR_CONTENT: 'Hilfe ist Grenzenlos. Abseits der eigenen Umgebung, abseits des Landes, ehrenamtliche Soforthilfe heisst Action.',
+		DONT_SHOW_AGAIN: 'Nicht mehr anzeigen',
 	}
 }
 

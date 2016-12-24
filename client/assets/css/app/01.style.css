@@ -2504,3 +2504,23 @@ a {
 .point-club-i {
     background-image: url('/assets/images/point_club.png');
 }
+.popup-star-info {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    padding: 10px;
+    background-color: #FFF;
+    width: 300px;
+}
+.popup-star-content {
+    padding: 0px 10px;
+    border: 1px solid #0080e5;
+}
+.popup-star-title > a {
+    font-size: 20px;
+    margin-top: 20px;
+}
+.popup-star-body > a {
+    color: #FFF;
+    margin-bottom: 5px;
+}

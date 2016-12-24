@@ -19,7 +19,7 @@
             <div class="col-sm-6  col-lg-8">
                 <div class="menu-home">
                     <ul>
-                        <li ng-class="{'active': vm.isActive(category)}" ng-repeat="category in vm.categories | orderBy: 'order'">
+                        <li ng-mouseover="vm.showPopover(category)" ng-class="{'active': vm.isActive(category)}" ng-repeat="category in vm.categories | orderBy: 'order'">
                             <a href ng-click="vm.selectCategory(category)" class="{{category | categoryClass: true}}"><img height="74" ng-src="{{category | categoryImagePath}}">
                                 <span>{{category.menuName.toUpperCase()}}</span>
                             </a>
@@ -108,5 +108,21 @@
             <hs-joined-events></hs-joined-events>
         </div>
 
+    </div>
+</div>
+
+<div ng-show="vm.showPopup" class="popup-star-info">
+    <div class="popup-star-content">
+        <div class="popup-star-title row">
+            <h3 class="col-xs-10">
+                <i class="fa fa-info-circle" aria-hidden="true" style="color: #0080e5"></i>
+                <span style="color: #000">{{vm.currentPopupContent.name | uppercase | translate}}</span>
+            </h3>
+            <a class="col-xs-2" href="#" ng-click="vm.showPopup = false">X</a>
+        </div>
+        <div class="popup-star-body">
+            <p style="color: #000" ng-bind-html="vm.currentPopupContent.content | translate | html"></p>
+            <a class="btn btn-primary" href="#" ng-click="vm.$rootScope.hidePopup = true; vm.showPopup = false">{{'DONT_SHOW_AGAIN' | translate}}</a>
+        </div>
     </div>
 </div>

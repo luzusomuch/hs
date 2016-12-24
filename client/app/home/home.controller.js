@@ -4,6 +4,7 @@ class HomeCtrl {
 	constructor($rootScope, $scope, EventService, LikeService, authUser, CategoryService, SearchParams, socket, $state, $timeout, categories, growl) {
     this.growl = growl;
     this.$scope = $scope;
+    this.$rootScope = $rootScope;
     this.categories = [];
     // re-order category
     _.each(categories, (cat) => {
@@ -122,6 +123,54 @@ class HomeCtrl {
       });
     } else {
       $scope.geoLocation = true;
+    }
+
+    // show popup when hover category star
+    this.showPopup = false;
+    this.currentPopupContent = {};
+
+  }
+
+  showPopover(category) {
+    this.showPopup = true;
+    switch (category.type) {
+      case 'food': 
+        this.currentPopupContent = {
+          name: category.menuName,
+          content: 'FOODSTAR_CONTENT',
+        };
+        break;
+      case 'action':
+        this.currentPopupContent = {
+          name: category.menuName,
+          content: 'ACTIONSTAR_CONTENT',
+        };
+        break;
+      case 'eco':
+        this.currentPopupContent = {
+          name: category.menuName,
+          content: 'ECOSTAR_CONTENT',
+        };
+        break;
+      case 'social': 
+        this.currentPopupContent = {
+          name: category.menuName,
+          content: 'SOCIALSTAR_CONTENT',
+        };
+        break;
+      case 'internation':
+        this.currentPopupContent = {
+          name: category.menuName,
+          content: 'SPORTSTAR_CONTENT',
+        };
+        break;
+      default:
+        this.currentPopupContent = {};
+        break;
+    }
+    if (this.$rootScope.hidePopup) {
+      this.currentPopupContent = {};
+      this.showPopup = false;
     }
   }
 

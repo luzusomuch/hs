@@ -107,7 +107,9 @@ img {
 }
 .container {
     position:relative;
-    width:1400px;
+    /*width:1400px;*/
+    width: auto;
+    padding: 0px 40px;
 }
 .login-page {
     padding: 40px 0px;
@@ -572,7 +574,7 @@ label .note-form {
     color: rgba(255,255,255,0.5);
 }
 .line-menu-home .create-event {
-    margin-top: 65px;
+    margin-top: 74px;
 }
 .content-home {
     /*padding: 20px 0px;*/

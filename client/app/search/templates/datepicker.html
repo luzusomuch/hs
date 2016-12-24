@@ -1,6 +1,6 @@
 <div>
     <div class="m20 calendar-home date-picker">
-        <button style="width: 100%" class="btn btn-success" ng-click="clear()" ng-bind-html="'CLEAR_SEARCH_DATE' | translate | html"></button>
+        <a href="#" style="text-align: center" class="create-event" ng-click="clear()" ng-bind-html="'CLEAR_SEARCH_DATE' | translate | html"></a>
         <uib-datepicker ng-model='uibDt' multi-select='selectedDates' template-url='app/search/templates/multi-datepicker.tpl.html'></uib-datepicker>
         <!-- <div class='input-group date'>
             <input type="text" class="form-control" uib-datepicker-popup ng-model="uibDt" is-open="opened" datepicker-options="options" ng-required="true" close-text="Close" value="{{dt.join(', ')}}" />

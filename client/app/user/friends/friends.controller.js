@@ -25,6 +25,7 @@ class UserFriendCtrl {
 		});
 
 	  $scope.$watchGroup(['onlineUsers', 'friends.items'], (nv) => {
+	  	console.log(nv);
 	  	if (nv[0] && nv[1]) {
 	  		_.each(nv[1], (friend) => {
 	  			let index = _.findIndex(nv[0], (onlineId) => {

@@ -15,6 +15,7 @@ exports.routes = (kernel) => {
   kernel.app.put('/api/v1/users/:id/password', kernel.middleware.isAuthenticated(), userController.changePassword);
   kernel.app.put('/api/v1/users/:id/block', kernel.middleware.hasRole('admin'), userController.blockUser);
   kernel.app.put('/api/v1/users/:id/update-user-location', kernel.middleware.isAuthenticated(), userController.updateUserLocation);
+  kernel.app.put('/api/v1/users/:id/update-user-popup-star-info-status', kernel.middleware.isAuthenticated(), userController.updateUserPopupStarInfoStatus);
 
   kernel.app.post('/api/v1/users', userController.create);
   kernel.app.post('/api/v1/users/verify-account', userController.verifyAccount);

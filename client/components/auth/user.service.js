@@ -59,6 +59,10 @@
 
       updateUserLocation: (id, data) => {
         return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/${id}/update-user-location`, data);
+      },
+
+      updateUserPopupStarInfoStatus: (id, data) => {
+        return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/${id}/update-user-popup-star-info-status`, data);
       }
     };
   }

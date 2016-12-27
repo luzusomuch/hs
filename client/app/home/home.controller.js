@@ -1,10 +1,12 @@
 'use strict';
 
 class HomeCtrl {
-	constructor($rootScope, $scope, EventService, LikeService, authUser, CategoryService, SearchParams, socket, $state, $timeout, categories, growl) {
+	constructor($rootScope, $scope, EventService, LikeService, authUser, CategoryService, SearchParams, socket, $state, $timeout, categories, growl, User, Auth) {
     this.growl = growl;
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+    this.Auth = Auth;
+    this.User = User;
     this.categories = [];
     // re-order category
     _.each(categories, (cat) => {
@@ -128,7 +130,15 @@ class HomeCtrl {
     // show popup when hover category star
     this.showPopup = false;
     this.currentPopupContent = {};
+  }
 
+  dontShowAgain() {
+    this.User.updateUserPopupStarInfoStatus(this.authUser._id, {status: true}).then(resp => {
+      this.Auth.setAuthUser(resp.data.hidePopupStarInfo, 'hidePopupStarInfo');
+      this.showPopup = false;
+    }).catch(() => {
+      this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+    });
   }
 
   showPopover(category) {
@@ -168,7 +178,7 @@ class HomeCtrl {
         this.currentPopupContent = {};
         break;
     }
-    if (this.$rootScope.hidePopup) {
+    if (this.authUser.hidePopupStarInfo) {
       this.currentPopupContent = {};
       this.showPopup = false;
     }

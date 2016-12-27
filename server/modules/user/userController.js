@@ -47,6 +47,7 @@ class UserController {
     this.myDashboard = this.myDashboard.bind(this);
     this.hotmailContacts = this.hotmailContacts.bind(this);
     this.updateUserLocation = this.updateUserLocation.bind(this);
+    this.updateUserPopupStarInfoStatus = this.updateUserPopupStarInfoStatus.bind(this);
   }
 
   hotmailContacts(req, res) {
@@ -1004,6 +1005,29 @@ class UserController {
         user.job = req.body.job;
         user.save().then(saved => {
           return res.status(200).json({location: saved.location, job: saved.job, pointClub: saved.pointClub});
+        }).catch(err => {
+          return res.status(500).json(err);    
+        });
+      } else {
+        return res.status(403).end();
+      }
+    }).catch(err => {
+      return res.status(500).json(err);
+    });
+  }
+
+  updateUserPopupStarInfoStatus(req, res) {
+    if (!req.body.status) {
+      return res.status(422).json({message: 'Missing entities'});
+    }
+    this.kernel.model.User.findById(req.params.id).then(user => {
+      if (!user) {
+        return res.status(404).end();
+      }
+      if (user._id.toString()===req.user._id.toString()) {
+        user.hidePopupStarInfo = req.body.status;
+        user.save().then(saved => {
+          return res.status(200).json({hidePopupStarInfo: saved.hidePopupStarInfo});
         }).catch(err => {
           return res.status(500).json(err);    
         });

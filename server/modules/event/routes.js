@@ -388,35 +388,48 @@ module.exports = function(kernel) {
       },
       (cb) => {
         // get joined events id
-        let q = {
-          query: {
-            filtered: {
-              query: {
-                bool: {
-                  must: [
-                    { term: { blocked: false } }
-                  ],
-                  should: [
-                    { term: { participantsId: req.user._id}},
-                    { term: { ownerId: req.user._id}},
-                  ]
-                }
-              },
-              filter: {
-                bool: {
-                  must: [],
-                  should: []
-                }
-              }
-            }
-          }
-        };
-        kernel.ES.search(q, kernel.config.ES.mapping.eventType, (err, result) => {
-          if (err) {
-            return cb(err);
-          }
-          return cb(null, _.map(result.items, '_id'));
-        });
+        kernel.model.Event.find({
+          blocked: false, 
+          $or: [{
+            participantsId: req.user._id
+          }, {
+            waitingParticipantIds: req.user._id
+          }, {
+            ownerId: req.user._id
+          }]
+        }).then(events => {
+          return cb(null, _.map(events, '_id'));
+        }).catch(cb);
+
+        // let q = {
+        //   query: {
+        //     filtered: {
+        //       query: {
+        //         bool: {
+        //           must: [
+        //             { term: { blocked: false } }
+        //           ],
+        //           should: [
+        //             { term: { participantsId: req.user._id}},
+        //             { term: { ownerId: req.user._id}},
+        //           ]
+        //         }
+        //       },
+        //       filter: {
+        //         bool: {
+        //           must: [],
+        //           should: []
+        //         }
+        //       }
+        //     }
+        //   }
+        // };
+        // kernel.ES.search(q, kernel.config.ES.mapping.eventType, (err, result) => {
+        //   if (err) {
+        //     return cb(err);
+        //   }
+        //   return cb(null, _.map(result.items, '_id'));
+        // });
       }
     ], (err, result) => {
       if (err) {

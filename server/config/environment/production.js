@@ -5,7 +5,10 @@ import path from 'path';
 // Development specific configuration
 // ==================================
 var baseUrl = 'http://ec2-35-163-48-227.us-west-2.compute.amazonaws.com/';
-var socketUrl = 'http://35.163.48.227:9000/';
+// testing
+var socketUrl = 'http://ec2-35-163-48-227.us-west-2.compute.amazonaws.com:9000/';
+// real
+// var socketUrl = 'http://35.163.48.227:9000/';
 module.exports = {
   baseUrl: baseUrl,
   socketUrl: socketUrl,

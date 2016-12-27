@@ -6,7 +6,8 @@ module.exports = {
       ownerId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
       metadata: {},
       blocked: {type: Boolean, default: false},
-      blockedBy: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'}
+      blockedBy: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
+      type: {type: String}
     });
 
     //import timestamp for auto create updatedAt, createdAt field manually

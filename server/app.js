@@ -33,6 +33,7 @@ kernel.loadModule(require('./modules/about'));
 kernel.loadModule(require('./modules/attend-event'));
 kernel.loadModule(require('./modules/company-account-request'));
 kernel.loadModule(require('./modules/country'));
+kernel.loadModule(require('./modules/notification'));
 //compose then start server
 kernel.compose();
 

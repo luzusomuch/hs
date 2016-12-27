@@ -226,6 +226,15 @@ module.exports = function(kernel) {
           model.save().then(event => {
             // send event invitation request to participants (new request 10/04/2016)
             async.each(participantsId, (userId, callback) => {
+              // create notification
+              kernel.queue.create('CREATE_NOTIFICATION', {
+                ownerId: userId,
+                toUserId: userId,
+                fromUserId: req.user._id,
+                type: 'event-invitation',
+                element: event
+              }).save();
+
               kernel.model.InvitationRequest({
                 fromUserId: req.user._id,
                 toUserId: userId,
@@ -1203,6 +1212,15 @@ module.exports = function(kernel) {
               event.stats.totalParticipants = event.participantsId.length;
               event.save().then(() => {
                 async.each(newParticipantIds, (userId, callback) => {
+                  // create notification
+                  kernel.queue.create('CREATE_NOTIFICATION', {
+                    ownerId: userId,
+                    toUserId: userId,
+                    fromUserId: req.user._id,
+                    type: 'event-invitation',
+                    element: event
+                  }).save();
+                  
                   kernel.model.InvitationRequest({
                     fromUserId: req.user._id,
                     toUserId: userId,
@@ -2215,6 +2233,15 @@ module.exports = function(kernel) {
           kernel.queue.create('GRANT_AWARD_FOR_USER', {event: event, user: req.user}).save();
           kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: saved}).save();
 
+          // create new notification
+          kernel.queue.create('CREATE_NOTIFICATION', {
+            ownerId: saved.ownerId,
+            toUserId: saved.ownerId,
+            fromUserId: req.user._id,
+            type: 'attend-event',
+            element: saved
+          }).save();
+
           if (event.participantsId.indexOf(req.user._id) !== -1) {
             // if current user has added to participants list
             kernel.model.AttendEvent({
@@ -2263,6 +2290,16 @@ module.exports = function(kernel) {
         event.passedDate = new Date();
         event.save().then(saved => {
           kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: saved}).save();
+
+          // create new notification
+          kernel.queue.create('CREATE_NOTIFICATION', {
+            ownerId: saved.adminId,
+            toUserId: saved.adminId,
+            fromUserId: req.user._id,
+            type: 'pass-admin-role',
+            element: saved
+          }).save();
+
           return res.status(200).end();
         }).catch(err => {
           return res.status(500).json({type: 'SERVER_ERROR'});

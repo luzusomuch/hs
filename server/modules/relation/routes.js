@@ -132,6 +132,16 @@ module.exports = function(kernel) {
             }).save().then(saved => {
               // this queue use to send mail for friend request
               kernel.queue.create('INVITE_FRIEND', saved._id).save();
+
+              // create new notification
+              kernel.queue.create('CREATE_NOTIFICATION', {
+                ownerId: saved.toUserId,
+                toUserId: saved.toUserId,
+                fromUserId: saved.fromUserId,
+                type: 'friend-request',
+                element: saved
+              }).save();
+              
               return res.status(200).json({type: saved.status});
             }).catch(err => {
               return res.status(500).json({type: 'SERVER_ERROR'});    

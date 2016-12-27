@@ -743,252 +743,291 @@ class UserController {
 
   /*Get my dashboard*/
   myDashboard(req, res) {
-    let user = req.user;
-    let page = req.query.page || 1;
-    let pageSize = req.query.pageSize || 5;
-    let skip = pageSize * (page-1);
-    let results = [];
-    let totalItem = 0;
-    async.parallel([
-      (cb) => {
-        // Display feeds from friends
-        this.kernel.model.Relation.find({
-          status: 'completed',
-          type: 'friend',
-          $or: [{toUserId: req.user._id}, {fromUserId: req.user._id}]
-        }).then(relations => {
-          async.each(relations, (relation, callback) => {
-            let id = (relation.fromUserId.toString()===req.user._id.toString()) ? relation.toUserId : relation.fromUserId;
-            this.kernel.model.User.findById(id, '-password -salt').populate('avatar').then(user => {
-              if (!user) {
-                return callback(null);
-              }
-              this.kernel.model.Like.find({ownerId: id, objectName: 'Event'}).then(likes => {
-                async.each(likes, (like, _callback) => {
-                  like = like.toJSON();
-                  like.itemType = 'liked';
-                  like.ownerId = user;
-                  this.kernel.model[like.objectName].findById(like.objectId)
-                  .populate('photosId')
-                  .populate('categoryId')
-                  .exec().then(data => {
-                    like.event = data;
-                    results.push(like);
-                    _callback(null);
-                  }).catch(_callback);
-                }, callback);                  
-              }).catch(callback);
-            }).catch(callback);
-          }, cb);
-        }).catch(cb);
-      },
-      (cb) => {
-        // Invited friends list
-        this.kernel.model.Relation.find({
-          type: 'friend', 
-          status: 'pending', 
-          toUserId: user._id
-        })
-        .populate({
-          path: 'fromUserId', 
-          select: '-password -salt',
-          populate: {path: 'avatar', model: 'Photo'}
-        })
-        .exec().then(relations => {
-          _.each(relations, (relation) => {
-            relation = relation.toJSON();
-            relation.itemType = 'relation';
-            results.push(relation);
+    // we have some types like: friend-request, attend-event, pass-admin-role, liked-event, event-invitation
+    let items = [];
+    this.kernel.model.Notification.find({ownerId: req.user._id})
+    .populate({
+      path: 'ownerId', 
+      select: '-password -salt',
+      populate: {path: 'avatar', model: 'Photo'}
+    })
+    .sort({createdAt: '-1'}).then(notifications => {
+      _.each(notifications, notification => {
+        notification = notification.toJSON();
+        notification.subItems = [];
+        if (notification.type==='friend-request' || notification.type==='event-invitation') {
+          items.push(notification);
+        } else {
+          let index = _.findIndex(items, item => {
+            return item.element._id && notification.element._id && item.element._id.toString()===notification.element._id.toString();
           });
-          cb(null);
-        }).catch(cb);
-      },
-      (cb) => {
-        // Get friends
-        this.kernel.model.Relation.find({
-          status: 'completed',
-          type: 'friend',
-          $or: [{toUserId: req.user._id}, {fromUserId: req.user._id}]
-        }).then(relations => {
-          async.each(relations, (relation, _callback) => {
-            let id = (relation.fromUserId.toString()===req.user._id.toString()) ? relation.toUserId : relation.fromUserId;
-            let query = {
-              query: {
-                filtered: {
-                  query: {
-                    bool: {
-                      should: []
-                    }
-                  },
-                  filter: {
-                    bool: {
-                      must: [
-                        { term: { blocked: false } },
-                        { term: { private: false } },
-                      ],
-                      should: [
-                        { term: { attendedIds: id}}
-                      ]
-                    }
-                  }
-                }
-              } 
-            };
-            this.kernel.ES.search(query, this.kernel.config.ES.mapping.eventType, (err, result) => {
-              if (err) {
-                return _callback(err);
-              }
-              this.kernel.model.User.findById(id, '-password -salt')
-              .populate('avatar').exec().then(user => {
-                async.each(result.items, (item, callback) => {
-                  this.kernel.model.Event.findById(item._id)
-                  .populate('photosId')
-                  .populate('categoryId')
-                  .exec().then(event => {
-                    if (!event) {
-                      callback(null);
-                    } else {
-                      event = event.toJSON();
-                      event.ownerId = user;
-                      event.itemType = 'upcoming-event';
-                      results.push(event);
-                      callback(null);
-                    }
-                  }).catch(callback);
-                }, _callback);
-              }).catch(_callback);
-            });
-          }, cb);
-        }).catch(cb);
-      },
-      (cb) => {
-        // Events invited list
-        this.kernel.model.InvitationRequest.find({toUserId: user._id})
-        .sort({createdAt: -1})
-        .limit(pageSize)
-        .skip(skip).exec().then(data => {
-          async.each(data, (item, callback) => {
-            this.kernel.model.Event.findById(item.objectId)
-            .populate({
-              path: 'ownerId', 
-              select: '-password -salt',
-              populate: {path: 'avatar', model: 'Photo'}
-            })
-            .populate('photosId')
-            .populate('categoryId')
-            .exec().then(event => {
-              if (!event) {
-                callback(null);
-              } else {
-                event = event.toJSON();
-                event.itemType = 'event-invited';
-                event.createdAt = item.createdAt;
-                event.inviteId = item._id;
-                results.push(event);
-                callback(null);
-              }
-            }).catch(callback);
-          }, cb);
-        }).catch(cb);
-      },
-      (cb) => {
-        //get user has attend event's current user that created
-        this.kernel.model.Event.find({ownerId: req.user._id})
-        .populate('photosId')
-        .populate('categoryId')
-        .then(events => {
-          async.each(events, (event, callback) => {
-            this.kernel.model.AttendEvent.findOne({eventId: event._id})
-            .populate({
-              path: 'ownerId', 
-              select: '-password -salt',
-              populate: {
-                path: 'avatar', model: 'Photo'
-              }
-            }).exec().then(attend => {
-              if (!attend) {
-                return callback();
-              }
-              attend = attend.toJSON();
-              attend.itemType = 'attend-event';
-              attend.event = event;
-              results.push(attend);
-              callback();
-            }).catch(callback);
-          }, cb);
-        }).catch(cb);
-      }, 
-      (cb) => {
-        this.kernel.model.Event.find({participantsId: req.user._id})
-        .populate('photosId')
-        .populate('categoryId')
-        .populate({
-          path: 'ownerId',
-          select: '-password -salt',
-          populate: {path: 'avatar', model: 'Photo'}
-        }).then(events => {
-          async.each(events, (event, callback) => {
-            if (_.findIndex(event.participantsId, (id) => {
-              return id.toString()===req.user._id.toString();
-            }) !== -1 && _.findIndex(event.attendedIds, (id) => {
-              if (id) {
-                return id.toString()===req.user._id.toString();
-              }
-            }) === -1) {
-              event = event.toJSON();
-              event.itemType = 'inviting-event';
-              results.push(event);
-              callback();
-            } else {
-              callback();
-            }
-          }, cb);
-        }).catch(cb);
-      }, 
-      (cb) => {
-        // show event when current in waiting list
-        this.kernel.model.Event.find({waitingParticipantIds: req.user._id})
-        .populate('photosId')
-        .populate('categoryId')
-        .populate({
-          path: 'ownerId', select: '-password -salt',
-          populate: {path: 'avatar', model: 'Photo'}
-        }).then(events => {
-          _.each(events, (event) => {
-            event = event.toJSON();
-            event.itemType = 'waiting-acceptance';
-            results.push(event);
-          });
-          cb();
-        }).catch(cb);
-      },
-      cb => {
-        // find passed admin role of an event
-        this.kernel.model.Event.find({adminId: req.user._id})
-        .populate('photosId')
-        .populate('categoryId')
-        .populate({
-          path: 'ownerId', select: '-password -salt',
-          populate: {path: 'avatar', model: 'Photo'}
-        }).then(events => {
-          _.each(events, event => {
-            event = event.toJSON();
-            event.itemType = 'passed-admin-role';
-            event.createdAt = (event.passedDate) ? event.passedDate : event.updatedAt;
-            results.push(event);
-          });
-          cb();
-        }).catch(cb);
-      }
-    ], (err) => {
-      if (err) {
-        return res.status(500).json({type: 'SERVER_ERROR'});
-      }
-      results = _.sortBy(results, (item) => {
-        return item.createdAt;
+          if (index === -1) {
+            items.push(notification);
+          }
+        }
       });
-      return res.status(200).json({items: results.reverse(), totalItem: results.length});
+
+      let results = items.splice(0, 3);
+      // filter again to get subItems
+      _.each(notifications, notification => {
+        let idx = _.findIndex(results, item => {
+          return item.element._id && notification.element._id && item.element._id.toString()===notification.element._id.toString();
+        });
+        if (idx !== -1) {
+          results[idx].subItems.push(notification);
+        }
+      });
+      return res.status(200).json({items: results});
+    }).catch(err => {
+      return res.status(500).json(err);
     });
+
+    // let user = req.user;
+    // let page = req.query.page || 1;
+    // let pageSize = req.query.pageSize || 5;
+    // let skip = pageSize * (page-1);
+    // let results = [];
+    // let totalItem = 0;
+    // async.parallel([
+    //   (cb) => {
+    //     // Display feeds from friends
+    //     this.kernel.model.Relation.find({
+    //       status: 'completed',
+    //       type: 'friend',
+    //       $or: [{toUserId: req.user._id}, {fromUserId: req.user._id}]
+    //     }).then(relations => {
+    //       async.each(relations, (relation, callback) => {
+    //         let id = (relation.fromUserId.toString()===req.user._id.toString()) ? relation.toUserId : relation.fromUserId;
+    //         this.kernel.model.User.findById(id, '-password -salt').populate('avatar').then(user => {
+    //           if (!user) {
+    //             return callback(null);
+    //           }
+    //           this.kernel.model.Like.find({ownerId: id, objectName: 'Event'}).then(likes => {
+    //             async.each(likes, (like, _callback) => {
+    //               like = like.toJSON();
+    //               like.itemType = 'liked';
+    //               like.ownerId = user;
+    //               this.kernel.model[like.objectName].findById(like.objectId)
+    //               .populate('photosId')
+    //               .populate('categoryId')
+    //               .exec().then(data => {
+    //                 like.event = data;
+    //                 results.push(like);
+    //                 _callback(null);
+    //               }).catch(_callback);
+    //             }, callback);                  
+    //           }).catch(callback);
+    //         }).catch(callback);
+    //       }, cb);
+    //     }).catch(cb);
+    //   },
+    //   (cb) => {
+    //     // Invited friends list
+    //     this.kernel.model.Relation.find({
+    //       type: 'friend', 
+    //       status: 'pending', 
+    //       toUserId: user._id
+    //     })
+    //     .populate({
+    //       path: 'fromUserId', 
+    //       select: '-password -salt',
+    //       populate: {path: 'avatar', model: 'Photo'}
+    //     })
+    //     .exec().then(relations => {
+    //       _.each(relations, (relation) => {
+    //         relation = relation.toJSON();
+    //         relation.itemType = 'relation';
+    //         results.push(relation);
+    //       });
+    //       cb(null);
+    //     }).catch(cb);
+    //   },
+    //   (cb) => {
+    //     // Get friends
+    //     this.kernel.model.Relation.find({
+    //       status: 'completed',
+    //       type: 'friend',
+    //       $or: [{toUserId: req.user._id}, {fromUserId: req.user._id}]
+    //     }).then(relations => {
+    //       async.each(relations, (relation, _callback) => {
+    //         let id = (relation.fromUserId.toString()===req.user._id.toString()) ? relation.toUserId : relation.fromUserId;
+    //         let query = {
+    //           query: {
+    //             filtered: {
+    //               query: {
+    //                 bool: {
+    //                   should: []
+    //                 }
+    //               },
+    //               filter: {
+    //                 bool: {
+    //                   must: [
+    //                     { term: { blocked: false } },
+    //                     { term: { private: false } },
+    //                   ],
+    //                   should: [
+    //                     { term: { attendedIds: id}}
+    //                   ]
+    //                 }
+    //               }
+    //             }
+    //           } 
+    //         };
+    //         this.kernel.ES.search(query, this.kernel.config.ES.mapping.eventType, (err, result) => {
+    //           if (err) {
+    //             return _callback(err);
+    //           }
+    //           this.kernel.model.User.findById(id, '-password -salt')
+    //           .populate('avatar').exec().then(user => {
+    //             async.each(result.items, (item, callback) => {
+    //               this.kernel.model.Event.findById(item._id)
+    //               .populate('photosId')
+    //               .populate('categoryId')
+    //               .exec().then(event => {
+    //                 if (!event) {
+    //                   callback(null);
+    //                 } else {
+    //                   event = event.toJSON();
+    //                   event.ownerId = user;
+    //                   event.itemType = 'upcoming-event';
+    //                   results.push(event);
+    //                   callback(null);
+    //                 }
+    //               }).catch(callback);
+    //             }, _callback);
+    //           }).catch(_callback);
+    //         });
+    //       }, cb);
+    //     }).catch(cb);
+    //   },
+    //   (cb) => {
+    //     // Events invited list
+    //     this.kernel.model.InvitationRequest.find({toUserId: user._id})
+    //     .sort({createdAt: -1})
+    //     .limit(pageSize)
+    //     .skip(skip).exec().then(data => {
+    //       async.each(data, (item, callback) => {
+    //         this.kernel.model.Event.findById(item.objectId)
+    //         .populate({
+    //           path: 'ownerId', 
+    //           select: '-password -salt',
+    //           populate: {path: 'avatar', model: 'Photo'}
+    //         })
+    //         .populate('photosId')
+    //         .populate('categoryId')
+    //         .exec().then(event => {
+    //           if (!event) {
+    //             callback(null);
+    //           } else {
+    //             event = event.toJSON();
+    //             event.itemType = 'event-invited';
+    //             event.createdAt = item.createdAt;
+    //             event.inviteId = item._id;
+    //             results.push(event);
+    //             callback(null);
+    //           }
+    //         }).catch(callback);
+    //       }, cb);
+    //     }).catch(cb);
+    //   },
+    //   (cb) => {
+    //     //get user has attend event's current user that created
+    //     this.kernel.model.Event.find({ownerId: req.user._id})
+    //     .populate('photosId')
+    //     .populate('categoryId')
+    //     .then(events => {
+    //       async.each(events, (event, callback) => {
+    //         this.kernel.model.AttendEvent.findOne({eventId: event._id})
+    //         .populate({
+    //           path: 'ownerId', 
+    //           select: '-password -salt',
+    //           populate: {
+    //             path: 'avatar', model: 'Photo'
+    //           }
+    //         }).exec().then(attend => {
+    //           if (!attend) {
+    //             return callback();
+    //           }
+    //           attend = attend.toJSON();
+    //           attend.itemType = 'attend-event';
+    //           attend.event = event;
+    //           results.push(attend);
+    //           callback();
+    //         }).catch(callback);
+    //       }, cb);
+    //     }).catch(cb);
+    //   }, 
+    //   (cb) => {
+    //     this.kernel.model.Event.find({participantsId: req.user._id})
+    //     .populate('photosId')
+    //     .populate('categoryId')
+    //     .populate({
+    //       path: 'ownerId',
+    //       select: '-password -salt',
+    //       populate: {path: 'avatar', model: 'Photo'}
+    //     }).then(events => {
+    //       async.each(events, (event, callback) => {
+    //         if (_.findIndex(event.participantsId, (id) => {
+    //           return id.toString()===req.user._id.toString();
+    //         }) !== -1 && _.findIndex(event.attendedIds, (id) => {
+    //           if (id) {
+    //             return id.toString()===req.user._id.toString();
+    //           }
+    //         }) === -1) {
+    //           event = event.toJSON();
+    //           event.itemType = 'inviting-event';
+    //           results.push(event);
+    //           callback();
+    //         } else {
+    //           callback();
+    //         }
+    //       }, cb);
+    //     }).catch(cb);
+    //   }, 
+    //   (cb) => {
+    //     // show event when current in waiting list
+    //     this.kernel.model.Event.find({waitingParticipantIds: req.user._id})
+    //     .populate('photosId')
+    //     .populate('categoryId')
+    //     .populate({
+    //       path: 'ownerId', select: '-password -salt',
+    //       populate: {path: 'avatar', model: 'Photo'}
+    //     }).then(events => {
+    //       _.each(events, (event) => {
+    //         event = event.toJSON();
+    //         event.itemType = 'waiting-acceptance';
+    //         results.push(event);
+    //       });
+    //       cb();
+    //     }).catch(cb);
+    //   },
+    //   cb => {
+    //     // find passed admin role of an event
+    //     this.kernel.model.Event.find({adminId: req.user._id})
+    //     .populate('photosId')
+    //     .populate('categoryId')
+    //     .populate({
+    //       path: 'ownerId', select: '-password -salt',
+    //       populate: {path: 'avatar', model: 'Photo'}
+    //     }).then(events => {
+    //       _.each(events, event => {
+    //         event = event.toJSON();
+    //         event.itemType = 'passed-admin-role';
+    //         event.createdAt = (event.passedDate) ? event.passedDate : event.updatedAt;
+    //         results.push(event);
+    //       });
+    //       cb();
+    //     }).catch(cb);
+    //   }
+    // ], (err) => {
+    //   if (err) {
+    //     return res.status(500).json({type: 'SERVER_ERROR'});
+    //   }
+    //   results = _.sortBy(results, (item) => {
+    //     return item.createdAt;
+    //   });
+    //   return res.status(200).json({items: results.reverse(), totalItem: results.length});
+    // });
   }
 
   updateUserLocation(req, res) {

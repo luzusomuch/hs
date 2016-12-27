@@ -358,6 +358,15 @@ module.exports = (kernel, cb) => {
                           if (event.usersDeclineRepeatingEvent && event.usersDeclineRepeatingEvent && _.findIndex(event.usersDeclineRepeatingEvent, id => {
                             return id.toString()===userId.toString();
                           }) === -1) {
+                            // create notification
+                            kernel.queue.create('CREATE_NOTIFICATION', {
+                              ownerId: userId,
+                              toUserId: userId,
+                              fromUserId: saved.ownerId,
+                              type: 'event-invitation',
+                              element: saved
+                            }).save();
+
                             // Create new event invitation
                             console.log('create invitation');
                             let invite = new kernel.model.InvitationRequest({

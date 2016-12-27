@@ -2524,3 +2524,16 @@ a {
     color: #FFF;
     margin-bottom: 5px;
 }
+span.total-notification {
+    position: absolute;
+    top: 0px;
+    right: 2px;
+    background: #FFF;
+    color: #000;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 17px;
+    font-size: 11px;
+}

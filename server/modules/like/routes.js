@@ -38,10 +38,9 @@ module.exports = function(kernel) {
           	obj.set('totalLike', totalLike);
           	obj.save().then(newObj => {
           		kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: newObj._id.toString(), data: newObj}).save();
-        			res.status(200).json({ liked: false });
+        			return res.status(200).json({ liked: false });
           	}).catch(err => {
-          		console.log(err);
-          		res.status(200).json({ liked: false });
+          		return res.status(200).json({ liked: false });
           	})
           });
         }
@@ -52,7 +51,17 @@ module.exports = function(kernel) {
           ownerId: req.user._id
         });
         model.save().then(() => {
-          res.status(200).json({ liked: true });
+          if (req.body.objectName==='Event') {
+            // create notification
+            kernel.queue.create('CREATE_NOTIFICATION', {
+              ownerId: obj.ownerId,
+              toUserId: obj.ownerId,
+              fromUserId: req.user._id,
+              type: 'liked-event',
+              element: obj
+            }).save();
+          }
+          return res.status(200).json({ liked: true });
         });
       });
     }).catch(err => {

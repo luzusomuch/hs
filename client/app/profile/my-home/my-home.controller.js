@@ -1,7 +1,7 @@
 'use strict';
 
 class MyHomeCtrl {
-	constructor($scope, $localStorage, APP_CONFIG, PhotoViewer, User, RelationService, Invite, $http, growl, $uibModal) {
+	constructor($scope, $rootScope, $localStorage, APP_CONFIG, PhotoViewer, User, RelationService, Invite, $http, growl, $uibModal, NotificationService) {
 		this.$uibModal = $uibModal;
 		this.growl = growl;
 		this.$http = $http;
@@ -21,11 +21,17 @@ class MyHomeCtrl {
 			this.photos = resp.data;
 		});
 
+		// mark all notifications as read
+		NotificationService.markAllAsRead().then(() => {
+			$rootScope.$emit('mark-all-notification-as-read');
+		});
+
 		this.loadItems();
 	}
 
 	loadItems() {
 		this.User.myDashboard({page: this.dashboardItems.page}).then(resp => {
+			console.log(resp);
 			this.dashboardItems.items = (this.dashboardItems.items) ? this.dashboardItems.items.concat(resp.data.items) : resp.data.items;
 			this.dashboardItems.totalItem = resp.data.totalItem;
 			this.dashboardItems.page +=1;

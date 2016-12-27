@@ -1,5 +1,5 @@
 'use strict';
-import {S3, GM} from './../../components';
+import {S3, GM, EventBus} from './../../components';
 import fs from 'fs';
 import path from 'path';
 import async from 'async';
@@ -557,6 +557,28 @@ exports.core = (kernel) => {
           user: user
         },
         to: user.email
+      });
+      return done();
+    }).catch(done);
+  });
+
+  /*create notification queue*/
+  kernel.queue.process('CREATE_NOTIFICATION', (job, done) => {
+    let data = job.data;
+    let notification = {
+      ownerId: data.ownerId,
+      toUserId: data.toUserId,
+      fromUserId: data.fromUserId,
+      type: data.type,
+      element: data.element
+    };
+    let model = new kernel.model.Notification(notification);
+    model.save().then(saved => {
+      // TODO populate data?
+      EventBus.emit('socket:emit', {
+        event: 'notification:new',
+        room: saved.ownerId,
+        data: saved
       });
       return done();
     }).catch(done);

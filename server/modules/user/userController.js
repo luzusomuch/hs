@@ -760,6 +760,7 @@ class UserController {
     .sort({createdAt: '-1'}).then(notifications => {
       _.each(notifications, notification => {
         notification = notification.toJSON();
+        notification.limit = 3;
         notification.subItems = [];
         if (notification.type==='friend-request' || notification.type==='event-invitation') {
           items.push(notification);

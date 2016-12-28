@@ -30,6 +30,15 @@ module.exports = function(kernel) {
 			});
 			invite.save().then(
 				saved => {
+					// create notification
+          kernel.queue.create('CREATE_NOTIFICATION', {
+            ownerId: saved.toUserId,
+            toUserId: saved.toUserId,
+            fromUserId: saved.fromUserId,
+            type: 'event-invitation',
+            element: result.event
+          }).save();
+
 					let url = `${kernel.config.baseUrl}event/detail/${result.event._id}`;
 		      kernel.emit('SEND_MAIL', {
 		        template: 'inviteToEvent.html',

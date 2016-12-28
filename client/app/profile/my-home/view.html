@@ -78,14 +78,14 @@
                                 <img width="100%" height="auto" src="{{item.element | eventThumbnail}}">
                             </div>
                             <div class="col-sm-8">
-                                <div ng-repeat="sub in item.subItems" class="content-post-li">
+                                <div ng-repeat="sub in item.subItems | limitTo: item.limit" class="content-post-li">
                                     <p ng-show="sub.type==='attend-event'">
                                         <a ui-sref="profile.detail({id: sub.fromUserId._id})">{{sub.fromUserId.name}}</a> {{'HAS_ATTEND_EVENT' | translate}}
                                         <a ui-sref="event.detail({id: sub.element._id})">{{sub.element.name}}</a>
                                     </p>
 
                                     <p ng-show="sub.type==='pass-admin-role'">
-                                        {{sub.fromUserId.name}} 
+                                        <a ui-sref="profile.detail({id: sub.fromUserId._id})">{{sub.fromUserId.name}}</a> 
                                         <span ng-bind-html="'HAS_PASSED_ADMIN_ROLE_OF_EVENT' | translate | html"></span> 
                                         <a ui-sref="event.detail({id: sub.element._id})">{{sub.element.name}}</a>
                                         {{'TO' | translate | lowercase}} {{'YOU' | translate | lowercase}}
@@ -94,6 +94,9 @@
                                     <p ng-show="sub.type==='liked-event'">
                                         <a ui-sref="profile.detail({id: sub.fromUserId._id})">{{sub.fromUserId.name}}</a> {{'HAS_LIKED_EVENT' | translate}} <a ui-sref="event.detail({id: sub.element._id})">{{sub.element.name}}</a>
                                     </p>
+                                </div>
+                                <div>
+                                    <a style="color: #fff" class="btn btn-primary" href="#" ng-click="item.limit=item.limit+10" ng-show="item.limit < item.subItems.length">{{'LOAD_MORE' | translate}}</a>
                                 </div>
                             </div>
                         </div>

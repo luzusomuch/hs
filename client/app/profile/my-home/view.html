@@ -29,6 +29,13 @@
             <div class="box-blue">
                 <div class="my-home-item" ng-repeat="item in vm.dashboardItems.items">
                     <div class="my-home-top-li-event">
+                        
+                    </div>
+                    <div class="my-home-content-post-li row">
+                        
+                    </div>
+
+                    <!-- <div class="my-home-top-li-event">
                         <a ui-sref="profile.detail({id: (item.itemType==='relation' ? item.fromUserId._id : item.ownerId._id)})">
                             <img src="{{(item.itemType==='relation') ? item.fromUserId : item.ownerId | avatarUrl}}">
                         </a>
@@ -82,7 +89,7 @@
                                 </p>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- <div class="img-post-li">
                         <a ng-if="item.itemType==='relation'" ui-sref="profile.detail({id: item.fromUserId._id})">
                             <img src="{{item.fromUserId | avatarUrl}}">

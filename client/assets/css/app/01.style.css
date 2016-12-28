@@ -891,7 +891,7 @@ label .note-form {
 }
 .img-timline {
     height: 350px;
-    opacity: 0.5;
+    /*opacity: 0.5;*/
 }
 .bg-cover {
     background-repeat: no-repeat;

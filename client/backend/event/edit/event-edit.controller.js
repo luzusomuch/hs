@@ -264,7 +264,7 @@ class BackendEventEditCtrl {
             return 'rectangle';
           },
           imageSize: () => {
-            return {width: $files[0].$ngfWidth};
+            return {width: $files[0].$ngfWidth, height: $files[0].$ngfHeight};
           },
           isBanner: () => {
             return true;

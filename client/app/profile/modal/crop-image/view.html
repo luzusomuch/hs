@@ -3,7 +3,6 @@
 </div>
 <div class="modal-body">
 	<div class="cropArea">
-		{{CropImage.aspectRatio}}
 		<img-crop image="CropImage.file | ngfDataUrl" area-type="{{CropImage.cropType}}" area-coords="CropImage.coords" result-image-size="CropImage.imageSize" result-image="CropImage.myCroppedImage" ng-init="CropImage.myCroppedImage=''" aspect-ratio="CropImage.aspectRatio" init-max-area="true"></img-crop>
 	</div>
 	<div class="modal-footer">

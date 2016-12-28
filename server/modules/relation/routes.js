@@ -275,8 +275,20 @@ module.exports = function(kernel) {
         return res.status(404).end();
       }
       relation.status = req.body.status;
-      relation.save().then(() => {
-        return res.status(200).end();
+      relation.save().then(saved => {
+        // We need to remove notification for easy to query
+        kernel.model.Notification.findOne({'element._id': saved._id.toString(), type: 'friend-request'}).then(notification => {
+          if (!notification) {
+            return res.status(200).end();   
+          }
+          notification.remove().then(() => {
+            return res.status(200).end(); 
+          }).catch(err => {
+            return res.status(500).json({type: 'SERVER_ERROR'});      
+          });
+        }).catch(err => {
+          return res.status(500).json({type: 'SERVER_ERROR'});    
+        });
       }).catch(err => {
         return res.status(500).json({type: 'SERVER_ERROR'});  
       });
@@ -293,8 +305,20 @@ module.exports = function(kernel) {
       }
       let availableUser = [relation.fromUserId.toString(), relation.toUserId.toString()];
       if (availableUser.indexOf(req.user._id.toString()) !== -1) {
-        relation.remove().then(() => {
-          return res.status(200).end();
+        // We need to remove notification for easy to query
+        kernel.model.Notification.findOne({'element._id': relation._id.toString(), type: 'friend-request'}).then(notification => {
+          if (!notification) {
+            return res.status(200).end();   
+          }
+          notification.remove().then(() => {
+            relation.remove().then(() => {
+              return res.status(200).end();
+            }).catch(err => {
+              return res.status(500).json({type: 'SERVER_ERROR'});    
+            });
+          }).catch(err => {
+            return res.status(500).json({type: 'SERVER_ERROR'});      
+          });
         }).catch(err => {
           return res.status(500).json({type: 'SERVER_ERROR'});    
         });

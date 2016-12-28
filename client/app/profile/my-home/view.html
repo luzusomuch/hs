@@ -29,10 +29,74 @@
             <div class="box-blue">
                 <div class="my-home-item" ng-repeat="item in vm.dashboardItems.items">
                     <div class="my-home-top-li-event">
-                        
+                        <div ng-show="item.type==='event-invitation'">
+                            <h4><a ui-sref="event.detail({id: item.element._id})">{{item.element.name}}</a></h4>
+                        </div>
+
+                        <div ng-show="vm.eventTypes.indexOf(item.type)!==-1">
+                            <h4><a ui-sref="event.detail({id: item.element._id})">{{item.element.name}}</a></h4>
+                        </div>
+
+                        <div ng-show="item.type==='friend-request'">
+                            <a ui-sref="profile.detail({id: item.fromUserId._id})">
+                                <img src="{{item.fromUserId | avatarUrl}}">
+                            </a>
+                            <h4>
+                                <a ui-sref="profile.detail({id: item.fromUserId._id})">{{item.fromUserId.name}}</a> <span ng-bind-html="'INVITE_BECOME_FRIEND' | translate | html"></span>
+                            </h4>
+                        </div>
+
+                        <i class="fa fa-clock-o"></i> <span>{{item.createdAt | fromNow | fromNowNumber}} {{item.createdAt | fromNow | fromNowTranslate | translate}}</span>
                     </div>
-                    <div class="my-home-content-post-li row">
-                        
+                    <div class="my-home-content-post-li">
+                        <div class="row" ng-show="item.type==='event-invitation'">
+                            <div class="col-sm-4">
+                                <img width="100%" height="auto" src="{{item.element | eventThumbnail}}">
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="content-post-li">
+                                    <p>
+                                        <a ui-sref="profile.detail({id: item.fromUserId._id})">{{item.fromUserId.name}}</a> {{(item.element.createdFromRepeatEvent) ? 'A_NEW_INSTANCE_OF_EVENT' : 'INVITE_TO_EVENT' | translate}}: 
+                                        <a ui-sref="event.detail({id: item.element._id})">{{item.element.name}}</a>
+                                        <span ng-show="item.element.createdFromRepeatEvent">{{'IS_SCHEDULED_FOR' | translate}} {{item.element.startDateTime | date: 'medium'}} - {{item.element.endDateTime | date: 'medium'}}. <span ng-bind-html="'WOULD_YOU_LIKE_TO_JOIN' | translate | html"></span></span>
+                                    </p>
+
+                                    <a ng-click="vm.eventAccept(item)" href="#" class="btn btn-success btn-radius-20">{{'ACCEPT' | translate}}</a>
+
+                                    <a ng-click="vm.eventReject(item)" href="#" class="btn btn-danger btn-radius-20">{{'DECLINE' | translate}}</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-show="item.type==='friend-request'">
+                            <a ng-click="vm.friendAccept(item.element)" href="#" class="btn btn-success btn-radius-20">{{'ACCEPT' | translate}}</a>
+                            <a ng-click="vm.friendReject(item.element)" class="btn btn-danger btn-radius-20">{{'DECLINE' | translate}}</a>
+                        </div>
+
+                        <div class="row" ng-show="vm.eventTypes.indexOf(item.type)!==-1">
+                            <div class="col-sm-4">
+                                <img width="100%" height="auto" src="{{item.element | eventThumbnail}}">
+                            </div>
+                            <div class="col-sm-8">
+                                <div ng-repeat="sub in item.subItems" class="content-post-li">
+                                    <p ng-show="sub.type==='attend-event'">
+                                        <a ui-sref="profile.detail({id: sub.fromUserId._id})">{{sub.fromUserId.name}}</a> {{'HAS_ATTEND_EVENT' | translate}}
+                                        <a ui-sref="event.detail({id: sub.element._id})">{{sub.element.name}}</a>
+                                    </p>
+
+                                    <p ng-show="sub.type==='pass-admin-role'">
+                                        {{sub.fromUserId.name}} 
+                                        <span ng-bind-html="'HAS_PASSED_ADMIN_ROLE_OF_EVENT' | translate | html"></span> 
+                                        <a ui-sref="event.detail({id: sub.element._id})">{{sub.element.name}}</a>
+                                        {{'TO' | translate | lowercase}} {{'YOU' | translate | lowercase}}
+                                    </p>
+
+                                    <p ng-show="sub.type==='liked-event'">
+                                        <a ui-sref="profile.detail({id: sub.fromUserId._id})">{{sub.fromUserId.name}}</a> {{'HAS_LIKED_EVENT' | translate}} <a ui-sref="event.detail({id: sub.element._id})">{{sub.element.name}}</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- <div class="my-home-top-li-event">

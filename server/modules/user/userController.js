@@ -751,6 +751,11 @@ class UserController {
       select: '-password -salt',
       populate: {path: 'avatar', model: 'Photo'}
     })
+    .populate({
+      path: 'fromUserId', 
+      select: '-password -salt',
+      populate: {path: 'avatar', model: 'Photo'}
+    })
     .sort({createdAt: '-1'}).then(notifications => {
       _.each(notifications, notification => {
         notification = notification.toJSON();
@@ -767,7 +772,7 @@ class UserController {
         }
       });
 
-      let results = items.splice(0, 3);
+      let results = items;
       // filter again to get subItems
       _.each(notifications, notification => {
         let idx = _.findIndex(results, item => {

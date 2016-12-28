@@ -405,6 +405,7 @@ let Language = {
 		ECOSTAR_CONTENT: 'Green up your life. Events for being outdoor and helping our mother nature.',
 		ACTIONSTAR_CONTENT: 'Help, where it is needed the most. Go on international assignments  or organize voluntary jobs..',
 		DONT_SHOW_AGAIN: 'Don\'t show again',
+		AND_YOU_WAS_FRIEND: 'and you was friend',
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -811,6 +812,7 @@ let Language = {
 		ECOSTAR_CONTENT: 'Green up your life. Wenn die Natur und dessen Schutz Bestandteil deiner eigenen Persönlichkeit sind.',
 		ACTIONSTAR_CONTENT: 'Hilfe ist Grenzenlos. Abseits der eigenen Umgebung, abseits des Landes, ehrenamtliche Soforthilfe heisst Action.',
 		DONT_SHOW_AGAIN: 'Nicht mehr anzeigen',
+		AND_YOU_WAS_FRIEND: 'Und du warst ein Freund'
 	}
 }
 

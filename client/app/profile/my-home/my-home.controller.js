@@ -26,12 +26,14 @@ class MyHomeCtrl {
 			$rootScope.$emit('mark-all-notification-as-read');
 		});
 
+		this.eventTypes = ['attend-event', 'pass-admin-role', 'liked-event'];
+
 		this.loadItems();
 	}
 
 	loadItems() {
 		this.User.myDashboard({page: this.dashboardItems.page}).then(resp => {
-			console.log(resp);
+			console.log(resp.data);
 			this.dashboardItems.items = (this.dashboardItems.items) ? this.dashboardItems.items.concat(resp.data.items) : resp.data.items;
 			this.dashboardItems.totalItem = resp.data.totalItem;
 			this.dashboardItems.page +=1;
@@ -44,28 +46,54 @@ class MyHomeCtrl {
 	}
 
 	friendAccept(item) {
-		if (item.itemType==='relation') {
-			this.RelationService.update(item._id, {status: 'completed'}).then(() => {
-				let index = _.findIndex(this.dashboardItems.items, (data) => {
-					return item._id===data._id;
-				});
-				if (index !== -1) {
-					this.dashboardItems.items.splice(index, 1);
-					this.dashboardItems.totalItem -= 1;
-				}
-			}).catch(() => {
-				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+		// if (item.itemType==='relation') {
+		// 	this.RelationService.update(item._id, {status: 'completed'}).then(() => {
+		// 		let index = _.findIndex(this.dashboardItems.items, (data) => {
+		// 			return item._id===data._id;
+		// 		});
+		// 		if (index !== -1) {
+		// 			this.dashboardItems.items.splice(index, 1);
+		// 			this.dashboardItems.totalItem -= 1;
+		// 		}
+		// 	}).catch(() => {
+		// 		this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+		// 	});
+		// } else {
+		// 	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+		// }
+
+		this.RelationService.update(item._id, {status: 'completed'}).then(() => {
+			let index = _.findIndex(this.dashboardItems.items, (data) => {
+				return item._id===data.element._id;
 			});
-		} else {
+			if (index !== -1) {
+				this.dashboardItems.items.splice(index, 1);
+			}
+		}).catch(() => {
 			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
-		}
+		});
 	}
 
 	friendReject(item) {
-		if (item.itemType==='relation') {
-			this.RelationService.delete(item._id).then(() => {
+		// if (item.itemType==='relation') {
+		// 	this.RelationService.delete(item._id).then(() => {
+		// 		let index = _.findIndex(this.dashboardItems.items, (data) => {
+		// 			return item._id===data._id;
+		// 		});
+		// 		if (index !== -1) {
+		// 			this.dashboardItems.items.splice(index, 1);
+		// 			this.dashboardItems.totalItem -= 1;
+		// 		}
+		// 	}).catch(() => {
+		// 		this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+		// 	});
+		// } else {
+		// 	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+		// }
+
+		this.RelationService.delete(item._id).then(() => {
 				let index = _.findIndex(this.dashboardItems.items, (data) => {
-					return item._id===data._id;
+					return item._id===data.element._id;
 				});
 				if (index !== -1) {
 					this.dashboardItems.items.splice(index, 1);
@@ -74,9 +102,6 @@ class MyHomeCtrl {
 			}).catch(() => {
 				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
-		} else {
-			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
-		}
 	}
 
 	eventAccept(item) {

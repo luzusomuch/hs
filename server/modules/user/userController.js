@@ -9,6 +9,7 @@ import _ from 'lodash';
 import async from 'async';
 import multer from 'multer';
 import {Strategy as TwitterStrategy} from 'passport-twitter';
+import mongoose from 'mongoose';
 
 function validationError(res, statusCode) {
   statusCode = statusCode || 422;
@@ -782,7 +783,45 @@ class UserController {
           results[idx].subItems.push(notification);
         }
       });
-      return res.status(200).json({items: results});
+
+      async.each(results, (item, callback) => {
+        async.waterfall([
+          cb => {
+            // we query again to find out inviteId in InvitationRequest model
+            if (item.type==='event-invitation') {
+              this.kernel.model.InvitationRequest.findOne({
+                fromUserId: item.fromUserId, 
+                toUserId: item.toUserId, 
+                objectId: mongoose.Types.ObjectId(item.element._id)
+              }).then(invitationRequest => {
+                item.inviteId = invitationRequest._id;
+                cb(null, item);
+              }).catch(cb);
+            } else {
+              cb(null, item);
+            }
+          }, 
+          (item, cb) => {
+            if (item.type==='friend-request') {
+              cb();
+            } else {
+              // update event detail to notification element
+              this.kernel.model.Event.findById(mongoose.Types.ObjectId(item.element._id))
+              .populate('photosId')
+              .populate('categoryId')
+              .exec().then(event => {
+                item.element = event || item.element;
+                cb();
+              }).catch(cb);
+            }
+          }
+        ], callback);
+      }, (err) => {
+        if (err) {
+          return res.status(500).json(err);    
+        }
+        return res.status(200).json({items: results});
+      });
     }).catch(err => {
       return res.status(500).json(err);
     });

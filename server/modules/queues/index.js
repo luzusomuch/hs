@@ -583,4 +583,16 @@ exports.core = (kernel) => {
       return done();
     }).catch(done);
   });
+
+  /*remove notification queue*/
+  kernel.queue.process('REMOVE_NOTIFICATION', (job, done) => {
+    kernel.model.Notification.findById(job.data).then(notification => {
+      if (!notification) {
+        return done();
+      }
+      notification.remove().then(() => {
+        return done();
+      }).catch(done);
+    }).catch(done);
+  });
 };

@@ -1,6 +1,7 @@
 import Joi from 'joi';
 import async from 'async';
 import _ from 'lodash';
+import mongoose from 'mongoose';
 
 module.exports = function(kernel) {
 	/*Create new event invite request*/
@@ -54,116 +55,129 @@ module.exports = function(kernel) {
 			if (!invite) {
 				return res.status(404).end();
 			}
-			if (invite.toUserId.toString()===req.user._id.toString()) {
-				kernel.model.Event.findById(invite.objectId).then(event => {
-					if (!event) {
-						return res.status(404).end();
-					}
+			// find out notification of this invitation request
+			kernel.model.Notification.findOne({
+				fromUserId: invite.fromUserId,
+				toUserId: invite.toUserId,
+				'element._id': invite.objectId.toString()
+			}).then(notification => {
+				
+				if (invite.toUserId.toString()===req.user._id.toString()) {
+					kernel.model.Event.findById(invite.objectId).then(event => {
+						if (!event) {
+							return res.status(404).end();
+						}
 
-					// when total parcipants has reached the top then check waiting list
-		      if (event.participantsId.length >= event.numberParticipants && event.waitingParticipantIds.indexOf(req.user._id) !== -1) {
-		        // the current user was already joined or an owner of that event
-  					invite.remove().then(() => {
-							return res.status(200).end();
-						}).catch(err => {
-							return res.status(500).json({type: 'SERVER_ERROR'});
-						});
-		      }
-					
-					let availableUser = _.clone(event.participantsId);
-  				availableUser.push(event.ownerId);
+						// when total parcipants has reached the top then check waiting list
+			      if (event.participantsId.length >= event.numberParticipants && event.waitingParticipantIds.indexOf(req.user._id) !== -1) {
+			        // the current user was already joined or an owner of that event
+	  					invite.remove().then(() => {
+	  						kernel.queue.create('REMOVE_NOTIFICATION', notification._id).save();
+								return res.status(200).end();
+							}).catch(err => {
+								return res.status(500).json({type: 'SERVER_ERROR'});
+							});
+			      }
+						
+						let availableUser = _.clone(event.participantsId);
+	  				availableUser.push(event.ownerId);
 
-  				if (_.findIndex(availableUser, (userId) => {
-  					return userId.toString()===req.user._id.toString();
-  				}) !== -1) {
-  					// the current user was already joined or an owner of that event
-  					invite.remove().then(() => {
-							return res.status(200).end();
-						}).catch(err => {
-							return res.status(500).json({type: 'SERVER_ERROR'});
-						});
-  				} else {
-    				// If current user wasn't join this event then add him to participants list
-    				if (event.limitNumberOfParticipate && event.numberParticipants > 0 && event.participantsId.length >= event.numberParticipants) {
-		          if (event.waitingParticipantIds && event.waitingParticipantIds.length > 0) {
-		            event.waitingParticipantIds.push(req.user._id);
-		          } else {
-		            event.waitingParticipantIds = [req.user._id];
-		          }
-		        } else {
-		          event.participantsId.push(req.user._id);
-		          event.stats.totalParticipants = event.participantsId.length;
-		        }
-						// add current user to attended ids list
-		        if (event.attendedIds) {
-		          event.attendedIds.push(req.user._id);
-		        } else {
-		          event.attendedIds = [req.user._id]
-		        }
-						event.save().then(event => {
-							kernel.queue.create(kernel.config.ES.events.UPDATE, {
-								type: kernel.config.ES.mapping.eventType, 
-								id: event._id.toString(), data: event
-							}).save();
-							// grant award for current user
-							kernel.model.Award.findById(event.awardId).then(award => {
-								if (!award) {
-									// remove invite request when not found award
-									invite.remove().then(() => {
-										return res.status(200).end();
-									}).catch(err => {
-										return res.status(500).json({type: 'SERVER_ERROR'});
-									});
-								}
-								async.parallel([
-									(cb) => {
-										if (award.type==='gps' && req.user.accessViaApp) {
-			                kernel.model.GrantAward({
-		                  	ownerId: req.user._id,
-		                  	awardId: award._id,
-		                  	eventId: event._id
-			                }).save().then(data => {
-		                  	kernel.queue.create('EMAIL_GRANTED_AWARD', data).save();
-		                  	cb(null);
-			                }).catch(cb);
-		              	} else if (award.type==="accepted") {
-			                kernel.model.GrantAward({
-		                  	ownerId: req.user._id,
-		                  	awardId: award._id,
-		                  	eventId: event._id
-			                }).save().then(data => {
-		                  	kernel.queue.create('EMAIL_GRANTED_AWARD', data).save();
-		                  	cb(null);
-			                }).catch(cb);
-		              	} else {
-			                cb();
-		              	}
+	  				if (_.findIndex(availableUser, (userId) => {
+	  					return userId.toString()===req.user._id.toString();
+	  				}) !== -1) {
+	  					// the current user was already joined or an owner of that event
+	  					invite.remove().then(() => {
+	  						kernel.queue.create('REMOVE_NOTIFICATION', notification._id).save();
+								return res.status(200).end();
+							}).catch(err => {
+								return res.status(500).json({type: 'SERVER_ERROR'});
+							});
+	  				} else {
+	    				// If current user wasn't join this event then add him to participants list
+	    				if (event.limitNumberOfParticipate && event.numberParticipants > 0 && event.participantsId.length >= event.numberParticipants) {
+			          if (event.waitingParticipantIds && event.waitingParticipantIds.length > 0) {
+			            event.waitingParticipantIds.push(req.user._id);
+			          } else {
+			            event.waitingParticipantIds = [req.user._id];
+			          }
+			        } else {
+			          event.participantsId.push(req.user._id);
+			          event.stats.totalParticipants = event.participantsId.length;
+			        }
+							// add current user to attended ids list
+			        if (event.attendedIds) {
+			          event.attendedIds.push(req.user._id);
+			        } else {
+			          event.attendedIds = [req.user._id]
+			        }
+							event.save().then(event => {
+								kernel.queue.create(kernel.config.ES.events.UPDATE, {
+									type: kernel.config.ES.mapping.eventType, 
+									id: event._id.toString(), data: event
+								}).save();
+								// grant award for current user
+								kernel.model.Award.findById(event.awardId).then(award => {
+									if (!award) {
+										// remove invite request when not found award
+										invite.remove().then(() => {
+											kernel.queue.create('REMOVE_NOTIFICATION', notification._id).save();
+											return res.status(200).end();
+										}).catch(err => {
+											return res.status(500).json({type: 'SERVER_ERROR'});
+										});
 									}
-								], (err) => {
-									if (err) {
-										return res.status(500).json({type: 'SERVER_ERROR'});
-									}
-									// after granted award completed then remove invite request
-									invite.remove().then(() => {
-										return res.status(200).end();
-									}).catch(err => {
-										return res.status(500).json({type: 'SERVER_ERROR'});
+									async.parallel([
+										(cb) => {
+											if (award.type==='gps' && req.user.accessViaApp) {
+				                kernel.model.GrantAward({
+			                  	ownerId: req.user._id,
+			                  	awardId: award._id,
+			                  	eventId: event._id
+				                }).save().then(data => {
+			                  	kernel.queue.create('EMAIL_GRANTED_AWARD', data).save();
+			                  	cb(null);
+				                }).catch(cb);
+			              	} else if (award.type==="accepted") {
+				                kernel.model.GrantAward({
+			                  	ownerId: req.user._id,
+			                  	awardId: award._id,
+			                  	eventId: event._id
+				                }).save().then(data => {
+			                  	kernel.queue.create('EMAIL_GRANTED_AWARD', data).save();
+			                  	cb(null);
+				                }).catch(cb);
+			              	} else {
+				                cb();
+			              	}
+										}
+									], (err) => {
+										if (err) {
+											return res.status(500).json({type: 'SERVER_ERROR'});
+										}
+										// after granted award completed then remove invite request
+										invite.remove().then(() => {
+											kernel.queue.create('REMOVE_NOTIFICATION', notification._id).save();
+											return res.status(200).end();
+										}).catch(err => {
+											return res.status(500).json({type: 'SERVER_ERROR'});
+										});
 									});
+								}).catch(err => {
+									return res.status(500).json({type: 'SERVER_ERROR'});		
 								});
 							}).catch(err => {
-								return res.status(500).json({type: 'SERVER_ERROR'});		
+								return res.status(500).json({type: 'SERVER_ERROR'});			
 							});
-						}).catch(err => {
-							console.log(err);
-							return res.status(500).json({type: 'SERVER_ERROR'});			
-						});
-  				}
-				}).catch(err => {
-					return res.status(500).json({type: 'SERVER_ERROR'});		
-				});
-			} else {
-				return res.status(403).end();
-			}
+	  				}
+					}).catch(err => {
+						return res.status(500).json({type: 'SERVER_ERROR'});		
+					});
+				} else {
+					return res.status(403).end();
+				}
+			}).catch(err => {
+				return res.status(500).json({type: 'SERVER_ERROR'})
+			});
 		}).catch(err => {
 			return res.status(500).json({type: 'SERVER_ERROR'});
 		});
@@ -176,8 +190,18 @@ module.exports = function(kernel) {
 				return res.status(404).end();
 			}
 			if (invite.toUserId.toString()===req.user._id.toString()) {
-				invite.remove().then(() => {
-					return res.status(200).end();
+				// find out and remove notification
+				kernel.model.Notification.findOne({
+					fromUserId: invite.fromUserId,
+					toUserId: invite.toUserId,
+					'element._id': invite.objectId.toString()
+				}).then(notification => {
+					kernel.queue.create('REMOVE_NOTIFICATION', notification._id).save();
+					invite.remove().then(() => {
+						return res.status(200).end();
+					}).catch(err => {
+						return res.status(500).json({type: 'SERVER_ERROR'});
+					});
 				}).catch(err => {
 					return res.status(500).json({type: 'SERVER_ERROR'});
 				});

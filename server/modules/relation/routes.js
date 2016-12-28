@@ -281,11 +281,8 @@ module.exports = function(kernel) {
           if (!notification) {
             return res.status(200).end();   
           }
-          notification.remove().then(() => {
-            return res.status(200).end(); 
-          }).catch(err => {
-            return res.status(500).json({type: 'SERVER_ERROR'});      
-          });
+          kernel.queue.create('REMOVE_NOTIFICATION', notification._id).save();
+          return res.status(200).end(); 
         }).catch(err => {
           return res.status(500).json({type: 'SERVER_ERROR'});    
         });
@@ -310,15 +307,8 @@ module.exports = function(kernel) {
           if (!notification) {
             return res.status(200).end();   
           }
-          notification.remove().then(() => {
-            relation.remove().then(() => {
-              return res.status(200).end();
-            }).catch(err => {
-              return res.status(500).json({type: 'SERVER_ERROR'});    
-            });
-          }).catch(err => {
-            return res.status(500).json({type: 'SERVER_ERROR'});      
-          });
+          kernel.queue.create('REMOVE_NOTIFICATION', notification._id).save();
+          return res.status(200).end();
         }).catch(err => {
           return res.status(500).json({type: 'SERVER_ERROR'});    
         });

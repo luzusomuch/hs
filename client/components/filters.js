@@ -548,4 +548,20 @@ angular.module('healthStarsApp')
     }
     return link;
   }
+})
+.filter('hsStatus', () => {
+  return post => {
+    post = Number(post);
+    let text;
+    if (post >=100 && post < 500) {
+      text = 'Fan';
+    } else if (post >= 500 && post < 2000) {
+      text = 'Bronze';
+    } else if (post >= 2000 && post < 5000) {
+      text = 'Silver';
+    } else if (post >= 5000) {
+      text = 'Gold';
+    }
+    return text;
+  }
 });

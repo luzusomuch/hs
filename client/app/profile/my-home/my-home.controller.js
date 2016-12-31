@@ -33,7 +33,6 @@ class MyHomeCtrl {
 
 	loadItems() {
 		this.User.myDashboard({page: this.dashboardItems.page}).then(resp => {
-			console.log(resp.data);
 			this.dashboardItems.items = (this.dashboardItems.items) ? this.dashboardItems.items.concat(resp.data.items) : resp.data.items;
 			this.dashboardItems.totalItem = resp.data.totalItem;
 			this.dashboardItems.page +=1;

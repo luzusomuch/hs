@@ -508,6 +508,7 @@ label .note-form {
     display: block;
     color: #fff !important;
     border-radius: 5px;
+    text-align: center;
 }
 .create-event i {
     font-size: 18px;
@@ -2536,4 +2537,14 @@ span.total-notification {
     text-align: center;
     line-height: 17px;
     font-size: 11px;
+}
+.dashboard-item {
+    overflow: hidden;
+}
+.dashboard-left-item {
+    float: left;
+}
+.dashboard-right-item {
+    float: right;
+    margin-right: 10px;
 }

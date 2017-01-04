@@ -28,26 +28,33 @@
         <div class="col-sm-6">
             <div class="box-blue">
                 <div class="my-home-item" ng-repeat="item in vm.dashboardItems.items">
-                    <div class="my-home-top-li-event">
-                        <div ng-show="item.type==='event-invitation'">
-                            <h4><a ui-sref="event.detail({id: item.element._id})">{{item.element.name}}</a></h4>
-                        </div>
+                    <div class="dashboard-item">
+                        <div class="dashboard-left-item">
+                            <div class="my-home-top-li-event">
+                                <div ng-show="vm.eventTypes.indexOf(item.type)!==-1 || item.type==='event-invitation'">
+                                    <a ui-sref="profile.detail({id: item.element.ownerId._id})">
+                                        <img src="{{item.element.ownerId | avatarUrl}}">
+                                    </a>
+                                    <h4><a ui-sref="profile.detail({id: item.element.ownerId._id})">{{item.element.ownerId.name}}</a></h4>
+                                </div>
 
-                        <div ng-show="vm.eventTypes.indexOf(item.type)!==-1">
-                            <h4><a ui-sref="event.detail({id: item.element._id})">{{item.element.name}}</a></h4>
-                        </div>
+                                <div ng-show="item.type==='friend-request'">
+                                    <a ui-sref="profile.detail({id: item.fromUserId._id})">
+                                        <img src="{{item.fromUserId | avatarUrl}}">
+                                    </a>
+                                    <h4>
+                                        <a ui-sref="profile.detail({id: item.fromUserId._id})">{{item.fromUserId.name}}</a> <span ng-bind-html="'INVITE_BECOME_FRIEND' | translate | html"></span>
+                                    </h4>
+                                </div>
 
-                        <div ng-show="item.type==='friend-request'">
-                            <a ui-sref="profile.detail({id: item.fromUserId._id})">
-                                <img src="{{item.fromUserId | avatarUrl}}">
-                            </a>
-                            <h4>
-                                <a ui-sref="profile.detail({id: item.fromUserId._id})">{{item.fromUserId.name}}</a> <span ng-bind-html="'INVITE_BECOME_FRIEND' | translate | html"></span>
-                            </h4>
+                                <i class="fa fa-clock-o"></i> <span>{{item.createdAt | fromNow | fromNowNumber}} {{item.createdAt | fromNow | fromNowTranslate | translate}}</span>
+                            </div>
                         </div>
-
-                        <i class="fa fa-clock-o"></i> <span>{{item.createdAt | fromNow | fromNowNumber}} {{item.createdAt | fromNow | fromNowTranslate | translate}}</span>
+                        <div class="dashboard-right-item">
+                            <h3><a class="white-color" ui-sref="event.detail({id: item.element._id})">{{item.element.name}}</a></h3>
+                        </div>
                     </div>
+
                     <div class="my-home-content-post-li">
                         <div class="row" ng-show="item.type==='event-invitation'">
                             <div class="col-sm-4">

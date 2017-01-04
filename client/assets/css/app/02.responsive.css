@@ -360,6 +360,12 @@
     .popup-animation img {
         width: 100%;
     }
+    .dashboard-left-item {
+        float: none;
+    }
+    .dashboard-right-item {
+        float: none;
+    }
 }
 
 @media all and (min-width: 768px) and (max-width: 1024px) {

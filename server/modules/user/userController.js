@@ -760,7 +760,7 @@ class UserController {
     .sort({createdAt: '-1'}).then(notifications => {
       _.each(notifications, notification => {
         notification = notification.toJSON();
-        notification.limit = 3;
+        notification.limit = 10;
         notification.subItems = [];
         if (notification.type==='friend-request' || notification.type==='event-invitation') {
           items.push(notification);
@@ -808,6 +808,11 @@ class UserController {
             } else {
               // update event detail to notification element
               this.kernel.model.Event.findById(mongoose.Types.ObjectId(item.element._id))
+              .populate({
+                path: 'ownerId', 
+                select: '-password -salt',
+                populate: {path: 'avatar', model: 'Photo'}
+              })
               .populate('photosId')
               .populate('categoryId')
               .exec().then(event => {

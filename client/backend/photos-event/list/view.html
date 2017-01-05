@@ -1,0 +1,33 @@
+<div class="page-content">
+	<div>
+		<h4 ng-bind-html="'PHOTOS_LIST' | translate"></h4>
+		<a ui-sref="backend.photosEvent.create"><i class="fa fa-plus"></i> <span ng-bind-html="'CREATE_PHOTO_EVENT' | translate"></span></a>
+	</div>
+
+	<div>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<td><strong>{{'PREVIEW_IMAGE' | translate}}</strong></td>
+					<td><strong>{{'PHOTO_EVENT_TYPE' | translate}}</strong></td>
+					<td><strong>{{'CREATED_AT' | translate}}</strong></td>
+					<td><strong>{{'ACTION' | translate}}</strong></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="photo in vm.photos.items | orderBy: vm.sortType: vm.sortReverse">
+					<td><img width="150" src="{{photo | imageUrl: 'small'}}"></td>
+					<td>{{photo.type}}</td>
+					<td>{{photo.createdAt | date: 'HH:mm'}} {{photo.createdAt | date: 'dd-MMMM-yyyy'}}</td>
+					<td>
+						<!-- <a uib-tooltip="{{(!photo.blocked) ? 'BLOCK_PHOTO' : 'UNBLOCK_PHOTO' | translate}}" href="#" ng-click="vm.block(photo)"><i class="fa" ng-class="{'fa-eye': !photo.blocked, 'fa-eye-slash': photo.blocked}"></i></a> -->
+						<a ui-sref="backend.photosEvent.edit({id: photo._id})" uib-tooltip="{{'EDIT_PHOTO' | translate}}"><i class="fa fa-pencil"></i></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div ng-show="vm.photos.items.length < vm.photos.totalItem && !vm.searching">
+		<a ng-click="vm.loadMore()" href="#">{{'LOAD_MORE_PHOTOS' | translate}}</a>
+	</div>
+</div>

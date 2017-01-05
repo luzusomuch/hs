@@ -17,15 +17,15 @@ class BackendCreateCategoryCtrl {
 			$scope.submitted = true;
 			if (form.$valid) {
 				Upload.upload({
-		      		url: '/api/v1/categories/',
-		      		arrayKey: '',
-		      		data: {file: $scope.file, category: $scope.category},
-		      		headers: {'Authorization': `Bearer ${$cookies.get('token')}`}
-		    	}).then(resp =>{
-					$uibModalInstance.close(resp.data);
-			    }, () => {
-			    	growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
-			    });
+      		url: '/api/v1/categories/',
+      		arrayKey: '',
+      		data: {file: $scope.file, category: $scope.category},
+      		headers: {'Authorization': `Bearer ${$cookies.get('token')}`}
+	    	}).then(resp =>{
+				$uibModalInstance.close(resp.data);
+		    }, () => {
+		    	growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+		    });
 			} else {
 				growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
 			}

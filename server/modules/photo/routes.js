@@ -27,13 +27,16 @@ module.exports = function(kernel) {
     	if (err) {
     		return res.status(500).json(err);
     	}
-    	
+    	if (!req.file) {
+    		return res.status(422).json({message: 'File required'});
+    	}
     	let newPhoto = {
     		ownerId: req.user._id,
     		filename: req.file.filename,
         metadata: {
           tmp: req.file.filename
-        }
+        },
+        type: req.body.type
     	};
     	kernel.model.Photo(newPhoto).save().then(saved => {
     		kernel.queue.create('PROCESS_AWS', saved).save();
@@ -74,65 +77,90 @@ module.exports = function(kernel) {
 		let page = req.query.page || 1;
 		let pageSize = req.query.pageSize || 10;
 		kernel.model.Photo.find({blocked: false})
-	    .limit(Number(pageSize))
-	    .skip(pageSize * (page-1))
-	    .populate('ownerId', '-password -salt')
-	    .exec().then(photos => {
-    		let results = [];
-	    	// get photo's project info
-	    	async.each(photos, (photo, callback) => {
-	    		async.waterfall([
-	    			(cb) => {
-	    				kernel.model.Feed.findOne({photosId: photo._id}).then(feed => {
-	    					if (!feed) {
-	    						cb(null, {eventId: null});
-	    					} else {
-	    						cb(null, {eventId: feed.eventId});
-	    					}
-	    				}).catch(cb);
-	    			},
-	    			(result, cb) => {
-	    				if (result.eventId) {
-	    					cb(null, result);
-	    				} else {
-	    					kernel.model.Event.findOne({photosId: photo._id}).then(event => {
-	    						if (!event) {
-	    							cb({error: 'Event not found', code: 404});
-	    						} else {
-	    							cb(null, {eventId: event._id});
-	    						}
-	    					}).catch(cb);
-	    				}
-	    			}
-	  			], (err, result) => {
-	  				photo = photo.toJSON();
-	  				if (err) {
-	  					photo.event = null;
+    .limit(Number(pageSize))
+    .skip(pageSize * (page-1))
+    .populate('ownerId', '-password -salt')
+    .exec().then(photos => {
+  		let results = [];
+    	// get photo's project info
+    	async.each(photos, (photo, callback) => {
+    		async.waterfall([
+    			(cb) => {
+    				kernel.model.Feed.findOne({photosId: photo._id}).then(feed => {
+    					if (!feed) {
+    						cb(null, {eventId: null});
+    					} else {
+    						cb(null, {eventId: feed.eventId});
+    					}
+    				}).catch(cb);
+    			},
+    			(result, cb) => {
+    				if (result.eventId) {
+    					cb(null, result);
+    				} else {
+    					kernel.model.Event.findOne({photosId: photo._id}).then(event => {
+    						if (!event) {
+    							cb({error: 'Event not found', code: 404});
+    						} else {
+    							cb(null, {eventId: event._id});
+    						}
+    					}).catch(cb);
+    				}
+    			}
+  			], (err, result) => {
+  				photo = photo.toJSON();
+  				if (err) {
+  					photo.event = null;
+  					results.push(photo);
+  					callback();
+  				} else {
+	  				kernel.model.Event.findById(result.eventId).then(event => {
+	  					photo.event = event;
 	  					results.push(photo);
 	  					callback();
-	  				} else {
-		  				kernel.model.Event.findById(result.eventId).then(event => {
-		  					photo.event = event;
-		  					results.push(photo);
-		  					callback();
-		  				}).catch(err => {
-		  					callback(err);
-		  				});
-	  				}
-	  			});
-	    	}, (err) => {
-	    		if (err) {
-	    			return res.status(500).json({type: 'SERVER_ERROR'});
-	    		}
-		      	kernel.model.Photo.count({blocked: false}).then(count => {
-		      		return res.status(200).json({items: results, totalItem: count});
-		      	}).catch(err => {
-		      		return res.status(500).json({type: 'SERVER_ERROR'});	
-		      	});
-	    	});
-	    }).catch(err => {
-	      	return res.status(500).json({type: 'SERVER_ERROR'});
-	    });
+	  				}).catch(err => {
+	  					callback(err);
+	  				});
+  				}
+  			});
+    	}, (err) => {
+    		if (err) {
+    			return res.status(500).json({type: 'SERVER_ERROR'});
+    		}
+      	kernel.model.Photo.count({blocked: false}).then(count => {
+      		return res.status(200).json({items: results, totalItem: count});
+      	}).catch(err => {
+      		return res.status(500).json({type: 'SERVER_ERROR'});	
+      	});
+    	});
+    }).catch(err => {
+    	return res.status(500).json({type: 'SERVER_ERROR'});
+    });
+	});
+
+	/*Get all photos event*/
+	kernel.app.get('/api/v1/photos/photo-events', kernel.middleware.isAuthenticated(), (req, res) => {
+		let types = [
+			'Sport picture', 
+			'Sport banner', 
+			'Food picture', 
+			'Food banner', 
+			'Social picture', 
+			'Social banner', 
+			'Eco picture', 
+			'Eco banner',
+			'Action picture',
+			'Action banner'
+		];
+		let query = {type: {$in: types}};
+		if (req.query.type) {
+
+		}
+		kernel.model.Photo.find(query).then(photos => {
+			return res.status(200).json({items: photos});
+		}).catch(err => {
+			return res.status(500).json({type: 'SERVER_ERROR'});
+		});
 	});
 
 	/*Search photos*/
@@ -315,6 +343,59 @@ module.exports = function(kernel) {
 		});
 	});
 
+	/*Update photo*/
+	kernel.app.put('/api/v1/photos/:id', kernel.middleware.isAuthenticated(), (req, res) => {
+		kernel.model.Photo.findById(req.params.id).then(photo => {
+			if (!photo) {
+				return res.status(404).end();
+			}
+			let photoName;
+			let storage = multer.diskStorage({
+	      destination: (req, file, cb) => {
+	        cb(null, kernel.config.tmpPhotoFolder)
+	      },
+	      filename: (req, file, cb) => {
+	        if (file.originalname && file.originalname==='blob') {
+	          photoName = req.user._id+'_'+ StringHelper.randomString(10) +'_'+file.originalname+'.jpg';
+	        }
+	        return cb(null, (photoName) ? photoName : file.originalname);
+	      }
+	    });
+	    let upload = multer({
+	      storage: storage
+	    }).single('file');
+
+	    upload(req, res, (err) => {
+	    	if (err) {
+	    		return res.status(500).json(err);
+	    	}
+
+	    	if (req.file) {
+	    		// remove old file in s3
+	    		kernel.queue.create('DELETE_PHOTO', photo).save();
+	    		// apply new file
+	    		photo.filename = req.file.filename;
+	    		photo.metadata = {
+	    			tmp: req.file.filename
+	    		};
+	    	} 
+
+	    	photo.type = req.body.type;
+
+	    	photo.save().then(saved => {
+	    		if (req.file) {
+	    			kernel.queue.create('PROCESS_AWS', saved).save();
+	    		}
+	    		return res.status(200).json(saved);
+	    	}).catch(err => {
+	    		return res.status(500).json(err);
+	    	});
+	    });
+		}).catch(err => {
+			return res.status(500).json({type: 'SERVER_ERROR'});
+		});
+	});
+
 	kernel.app.put('/api/v1/photos/:id/block', kernel.middleware.isAuthenticated(), (req, res) => {
 		async.parallel([
 			(cb) => {
@@ -380,6 +461,7 @@ module.exports = function(kernel) {
 			}
 			if (photo.ownerId.toString()===req.user._id.toString()) {
 				photo.remove().then(() => {
+					kernel.queue.create('DELETE_PHOTO', photo).save();
 					return res.status(200).end();
 				}).catch(err => {
 					return res.status(500).json({type: 'SERVER_ERROR'});

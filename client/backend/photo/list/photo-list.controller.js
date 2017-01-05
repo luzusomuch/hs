@@ -61,15 +61,21 @@ class BackendPhotoListCtrl {
 
 function PhotoService($http, APP_CONFIG) {
   	return {
-      	block(id) {
-        	return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/photos/${id}/block`);
-      	},
+    	block(id) {
+      	return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/photos/${id}/block`);
+    	},
   		getPhotos: (params) => {
   			return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/photos`, {params: params});
   		},
-		search(params) {
-			return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/photos/search`, {params: params});	
-		}
+			search(params) {
+				return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/photos/search`, {params: params});	
+			},
+			getPhotosEvent(params) {
+				return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/photos/photo-events`, {params: params});	
+			},
+			getPhotoDetail(params) {
+				return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/photos/view`, {params: params});	
+			}
   	};
   }
 

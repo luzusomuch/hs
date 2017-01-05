@@ -62,6 +62,7 @@ exports.core = (kernel) => {
 		let folder = 'photos';
 		let result = {
       metadata: {},
+      keyUrls: {},
       processDone: true //result after process successfully
     };
 
@@ -83,6 +84,7 @@ exports.core = (kernel) => {
       (data, cb) => {
         //finish small size
         result.metadata.small = data.s3Url;
+        result.keyUrls.small = data.key;
 
         let options = {
           gmOptions: { width: 940, height: 640 }, //medium
@@ -99,6 +101,7 @@ exports.core = (kernel) => {
       (data, cb) => {
         //finish small size
         result.metadata.medium = data.s3Url;
+        result.keyUrls.medium = data.key;
 
         let options = {
           gmOptions: { width: 2000, height: 2000 }, //large
@@ -115,6 +118,7 @@ exports.core = (kernel) => {
       (data, cb) => {
         //finish large size
         result.metadata.large = data.s3Url;
+        result.keyUrls.large = data.key;
         cb();
       }
     ], (err) => {
@@ -124,6 +128,7 @@ exports.core = (kernel) => {
         // DB update
         kernel.model.Photo.findById(job.data._id).then(photo => {
           photo.metadata = result.metadata;
+          photo.keyUrls = result.keyUrls;
           photo.markModified('metadata');
           photo.save().then(() => {
             setTimeout(() => {
@@ -139,6 +144,25 @@ exports.core = (kernel) => {
     	}
     });
 	});
+
+  /*remove photo in s3*/
+  kernel.queue.process('DELETE_PHOTO', (job, done) => {
+    let data = job.data;
+    if (data.keyUrls) {
+      let keys = [
+        data.keyUrls.large,
+        data.keyUrls.medium,
+        data.keyUrls.small,
+      ];
+
+      S3.deleteFile(keys, (err) => {
+        if (err) {console.log(err); return done(); }
+        done();
+      });
+    } else {
+      done();
+    }
+  });
 
   /*Grant award to specific user*/
   kernel.queue.process('GRANT_AWARD_FOR_USER', (job, done) => {

@@ -5,6 +5,7 @@ module.exports = {
       filename: String,
       ownerId: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
       metadata: {},
+      keyUrls: {},
       blocked: {type: Boolean, default: false},
       blockedBy: {type: kernel.mongoose.Schema.Types.ObjectId, ref: 'User'},
       type: {type: String}

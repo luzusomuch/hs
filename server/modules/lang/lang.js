@@ -407,6 +407,11 @@ let Language = {
 		DONT_SHOW_AGAIN: 'Don\'t show again',
 		AND_YOU_WAS_FRIEND: 'and you was friend',
 		LOAD_MORE: 'Load more',
+		PHOTOS_EVENT: 'Photos event',
+		CREATE_PHOTO_EVENT: 'Create photo event',
+		CREATE_PHOTO_EVENT_SUCCESSFULLY: 'Create photo event successfully',
+		EDIT_PHOTO: 'Edit photo',
+		PHOTO_EVENT_TYPE: 'Photo event type'
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -815,6 +820,11 @@ let Language = {
 		DONT_SHOW_AGAIN: 'Nicht mehr anzeigen',
 		AND_YOU_WAS_FRIEND: 'Und du warst ein Freund',
 		LOAD_MORE: 'Laden Sie mehr',
+		PHOTOS_EVENT: 'Fotos Ereignis',
+		CREATE_PHOTO_EVENT: 'Erstellen Sie Fotoereignis',
+		CREATE_PHOTO_EVENT_SUCCESSFULLY: 'Fotoereignis erfolgreich erstellen',
+		EDIT_PHOTO: 'Foto bearbeiten',
+		PHOTO_EVENT_TYPE: 'Fotoereignisart'
 	}
 }
 

@@ -102,7 +102,10 @@ angular.module('healthStarsApp.photoViewer', ['healthStarsApp.constants', 'healt
 		},
 		deleteList(data) {
 			return $http.post(`${config.baseUrl}api/${config.apiVer}/photos/delete-photos-list`, data);
-		}
+		},
+		getPhotosEvent(params) {
+			return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/photos/photo-events`, {params: params});	
+		},
 	};
 })
 .controller('PhotoViewerCtrl', PhotoViewerCtrl);

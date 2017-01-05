@@ -8,6 +8,7 @@ class CreateEventCtrl {
         PhotoViewer.deleteList({filesId: _.map(this.files, '_id')});
       }
     });
+    this.PhotoViewer = PhotoViewer;
     this.isCreatingEvent = false;
 		this.APP_CONFIG = APP_CONFIG;
     this.growl = growl;
@@ -44,6 +45,8 @@ class CreateEventCtrl {
     this.selectedCategory = {};
     this.awards = awards.data.items;
     this.imageStyle = {};
+    this.defaultPicture = [];
+    this.defaultBanner = [];
 
     this.newDate = new Date();
     $scope.$on('$destroy', function() {
@@ -114,26 +117,36 @@ class CreateEventCtrl {
         if (idx !== -1) {
           this.selectedCategory = this.categories[idx];
           if (this.selectedCategory && this.awards && this.awards.length > 0 && !this.showAddAwards()) {
-            let selectedAwardName;
+            let selectedAwardName, starName;
             switch (this.selectedCategory.type) {
               case 'food':
                 selectedAwardName = 'Foodstar Point';
+                starName = 'Food';
                 break;
               case 'action':
                 selectedAwardName = 'Actionstar Point';
+                starName = 'Action';
                 break;
               case 'eco':
                 selectedAwardName = 'Ecostar Point';
+                starName = 'Eco';
                 break;
               case 'social':
                 selectedAwardName = 'Socialstar Point';
+                starName = 'Social';
                 break;
               case 'internation':
                 selectedAwardName = 'Sportstar Point';
+                starName = 'Sport';
                 break;
               default:
                 break;
             }
+
+            // find default banner/picture
+            this.findEventPictureOrBanner('banner', starName);
+            this.findEventPictureOrBanner('picture', starName);
+
             if (selectedAwardName) {
               let index = _.findIndex(this.awards, (award) => {
                 return award.objectName===selectedAwardName;
@@ -221,6 +234,22 @@ class CreateEventCtrl {
           }
         });
       }
+    });
+  }
+
+  // find event picture/ banner base on selected star
+  findEventPictureOrBanner(type, star) {
+    // type is picture/banner
+    // star is sport/action/eco/food/social
+    let photoType = star + ' ' + type;
+    this.PhotoViewer.getPhotosEvent({type: photoType}).then(resp => {
+      if (type==='banner') {
+        this.defaultBanner = resp.data.items;
+      } else {
+        this.defaultPicture = resp.data.items;
+      }
+      console.log(this.defaultPicture);
+      console.log(this.defaultBanner);
     });
   }
 

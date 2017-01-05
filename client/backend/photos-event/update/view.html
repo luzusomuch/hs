@@ -13,7 +13,7 @@
 						<option ng-repeat="type in vm.types" value="{{type}}">{{type}}</option>
 					</select>
 
-					<p ng-show="vm.submitted && form.selectedType.$error.required" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
+					<p class="error" ng-show="vm.submitted && form.selectedType.$error.required" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
 				</div>
 			</div>
 		</div>

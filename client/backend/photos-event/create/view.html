@@ -13,7 +13,7 @@
 						<option ng-repeat="type in vm.types" value="{{type}}">{{type}}</option>
 					</select>
 
-					<p ng-show="vm.submitted && form.selectedType.$error.required" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
+					<p class="error" ng-show="vm.submitted && form.selectedType.$error.required" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
 				</div>
 			</div>
 		</div>
@@ -25,6 +25,8 @@
 	      <div class="col-xs-9 text-center ng-binding">
 	        <p><a href="#" class="btn btn-danger" ngf-select="vm.select($file)" ngf-multiple="false" accept="image/*"><span ng-bind-html="'UPLOAD_PICTURE' | translate"></span></a></p>
 	        <span ng-bind-html="'FILE_REQUIREMENT' | translate | html"></span>
+
+	        <p class="error" ng-show="vm.submitted && !vm.file.name" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
 	      </div>
 	    </div>
 	  </div>

@@ -47,6 +47,8 @@ class CreateEventCtrl {
     this.imageStyle = {};
     this.defaultPicture = [];
     this.defaultBanner = [];
+    this.selectedDefaultBannerId;
+    this.selectedDefaultPictureId = 'default';
 
     this.newDate = new Date();
     $scope.$on('$destroy', function() {
@@ -245,11 +247,12 @@ class CreateEventCtrl {
     this.PhotoViewer.getPhotosEvent({type: photoType}).then(resp => {
       if (type==='banner') {
         this.defaultBanner = resp.data.items;
+        if (this.defaultBanner.length > 0) {
+          this.selectedDefaultBannerId = this.defaultBanner[0]._id;
+        }
       } else {
         this.defaultPicture = resp.data.items;
       }
-      console.log(this.defaultPicture);
-      console.log(this.defaultBanner);
     });
   }
 
@@ -453,8 +456,19 @@ class CreateEventCtrl {
       // this.files = _.union(this.files, this.newBanner);
       // get uploaded event photos
       this.event.uploadedPhotoIds = _.map(this.files, '_id');
+      this.event.defaultBannerId = this.selectedDefaultBannerId;
+      this.event.defaultPictureId = this.selectedDefaultPictureId;
+
       this.isCreatingEvent = true;
-      
+
+      // make a check for selected default picture
+      if (this.event.uploadedPhotoIds.length > 0) {
+        delete this.event.defaultBannerId;
+      }
+      if (this.newBanner && this.newBanner.length > 0) {
+        delete this.event.defaultBannerId;
+      }
+
   		this.Upload.upload({
 	      url: '/api/v1/events',
 	      arrayKey: '',

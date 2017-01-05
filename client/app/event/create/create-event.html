@@ -156,24 +156,14 @@
                 <div class="upload-img-event">
                   <div class="banner-preview">
                     <img ngf-src="vm.newBanner[0]" width="{{vm.newBanner[0].coords.w}}" height="{{vm.newBanner[0].coords.h}}" ng-show="vm.newBanner.length > 0" ng-style="vm.imageStyle">
-                    <img style="width: 30%" ng-show="!vm.newBanner || vm.newBanner.length===0" src="{{banner.metadata.small}}" ng-repeat="banner in vm.defaultBanner | limitTo: 3">
+                    <!-- default banner -->
+                    <img ng-class="{'selected-default-image': vm.selectedDefaultBannerId===banner._id}" ng-click="vm.selectedDefaultBannerId=banner._id" style="width: 30%" ng-show="!vm.newBanner || vm.newBanner.length===0" src="{{banner.metadata.small}}" ng-repeat="banner in vm.defaultBanner | limitTo: 3">
+                    <!-- default banner -->
                   </div>
                   <div class="text-center mt-10">
                     <p><a href="#" class="btn btn-danger btn-sm" ngf-select="vm.select($files, 'banner')" ngf-multiple="false" accept="image/*" ngf-min-height="1" or ngf-min-width="1"><span ng-bind-html="'UPLOAD_PICTURE' | translate"></span></a></p>
                         <span ng-bind-html="'FILE_REQUIREMENT' | translate | html"></span>
                   </div>
-                  <!-- <table class="table-upload">
-                    <tr>
-                      <td width="20%">
-                        <img ngf-src="vm.newBanner[0]" width="{{vm.newBanner[0].coords.w}}" height="{{vm.newBanner[0].coords.h}}" ng-show="vm.newBanner.length > 0">
-                      </td>
-                      <td  class="text-center">
-                        <p><a href="#" class="btn btn-danger btn-sm" ngf-select="vm.select($files, 'banner')" ngf-multiple="false" accept="image/*"><span ng-bind-html="'UPLOAD_PICTURE' | translate"></span></a></p>
-                        <span ng-bind-html="'FILE_REQUIREMENT' | translate | html"></span>
-                      </td>
-                    </tr>
-                  </table> -->
-                  
                 </div>
               </div>
 
@@ -182,8 +172,10 @@
                 <div class="upload-img-event">
                   <div class="row">
                     <div class="col-xs-3">
-                      <img ng-show="vm.files.length === 0" src="{{vm.selectedCategory | categoryImagePath}}" style="width: 100%">
-                      <img ng-show="vm.files.length === 0" src="{{picture.metadata.small}}" ng-repeat="picture in vm.defaultPicture | limitTo: 2" style="width: 100%">
+                      <img ng-class="{'selected-default-image': vm.selectedDefaultPictureId==='default'}" ng-click="vm.selectedDefaultPictureId='default'" ng-show="vm.files.length === 0" src="{{vm.selectedCategory | categoryImagePath}}" style="width: 100%">
+                      <!-- default picture -->
+                      <img ng-class="{'selected-default-image': vm.selectedDefaultPictureId===picture._id}" ng-click="vm.selectedDefaultPictureId=picture._id" ng-show="vm.files.length === 0" src="{{picture.metadata.small}}" ng-repeat="picture in vm.defaultPicture | limitTo: 2" style="width: 100%">
+                      <!-- default picture -->
                       <img ng-show="vm.files.length > 0" style="margin-bottom:5px" ng-repeat="file in vm.files" src="{{file | imageUrl: 'small'}}" width="100%">
                     </div>
                     <div class="col-xs-9 text-center">

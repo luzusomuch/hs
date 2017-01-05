@@ -94,6 +94,15 @@ module.exports = function(kernel) {
             uploadedPhotoIds = [req.body.event.uploadedPhotoIds];
           }
         }
+        // check for default picture
+        if (req.body.event.defaultPictureId && req.body.event.defaultPictureId!=='default') {
+          uploadedPhotoIds.push(req.body.event.defaultPictureId);
+        }
+        // check for default banner
+        if (req.body.event.defaultBannerId) {
+          bannerName = req.body.event.defaultBannerId;
+          newBannerId = req.body.event.defaultBannerId;
+        }
 
         let participantsId = [];
         if (req.body.event.participants) {

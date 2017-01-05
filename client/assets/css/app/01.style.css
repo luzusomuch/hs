@@ -2551,3 +2551,6 @@ span.total-notification {
 .mt-10 {
     margin-top: 10px;
 }
+.selected-default-image {
+    border: 1px solid #489cdf;
+}

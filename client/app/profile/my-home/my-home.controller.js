@@ -10,7 +10,8 @@ class MyHomeCtrl {
 		this.Invite = Invite;
 		this.User = User;
 		this.dashboardItems = {
-			page: 1
+			page: 1,
+			limitTo: 10
 		};
 		this.authUser = $localStorage.authUser;
 		this.authUser.link = APP_CONFIG.baseUrl + 'profile/' + this.authUser._id +'/detail';
@@ -27,6 +28,8 @@ class MyHomeCtrl {
 		});
 
 		this.eventTypes = ['attend-event', 'pass-admin-role', 'liked-event'];
+
+
 
 		this.loadItems();
 	}
@@ -241,6 +244,10 @@ class MyHomeCtrl {
 		}).result.then(data => {
 			console.log(data);
 		});
+	}
+
+	loadMore() {
+		this.dashboardItems.limitTo+=10;
 	}
 }
 

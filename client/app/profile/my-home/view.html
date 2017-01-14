@@ -27,7 +27,7 @@
         </div>
         <div class="col-sm-6">
             <div class="box-blue">
-                <div class="my-home-item" ng-repeat="item in vm.dashboardItems.items">
+                <div class="my-home-item" ng-repeat="item in vm.dashboardItems.items | limitTo: vm.dashboardItems.limitTo">
                     <div class="dashboard-item">
                         <div class="dashboard-left-item">
                             <div class="my-home-top-li-event">
@@ -224,9 +224,9 @@
                         </div>
                     </div> -->
                 </div>
-                <!-- <div class="post-li" ng-show="vm.dashboardItems.items < vm.dashboardItems.totalItem">
-                    <a href="#" ng-click="vm.loadItems()">{{'LOAD_MORE_FEEDS' | translate}}</a>
-                </div> -->
+                <div class="post-li" ng-show="vm.dashboardItems.limitTo < vm.dashboardItems.items.length">
+                    <a href="#" ng-click="vm.loadMore()">{{'LOAD_MORE_FEEDS' | translate}}</a>
+                </div>
             </div>
         </div>
         <div class="col-sm-3">

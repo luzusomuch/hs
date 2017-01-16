@@ -224,8 +224,8 @@
                         </div>
                     </div> -->
                 </div>
-                <div class="post-li" ng-show="vm.dashboardItems.limitTo < vm.dashboardItems.items.length">
-                    <a href="#" ng-click="vm.loadMore()">{{'LOAD_MORE_FEEDS' | translate}}</a>
+                <div class="post-li user-action-post " ng-show="vm.dashboardItems.limitTo < vm.dashboardItems.items.length">
+                    <a class="btn btn-primary" href="#" ng-click="vm.loadMore()">{{'LOAD_MORE_FEEDS' | translate}}</a>
                 </div>
             </div>
         </div>

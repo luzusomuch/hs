@@ -5,7 +5,7 @@
 			<input type="text" ng-model="vm.text" />
 			<button ng-click="search()"><i class="fa fa-search"></i></button>
 			<ul class="dropdown-menu" ng-show="suggests.length" style="right: 0;left: 100px;display: block;width: auto">
-		    <li ng-repeat="suggest in suggests">
+		    <li ng-repeat="suggest in suggests track by $index">
 		    	<a title="{{suggest}}" href>{{suggest}}</a>
 		    </li>
 			</ul>

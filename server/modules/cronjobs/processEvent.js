@@ -334,19 +334,24 @@ module.exports = (kernel, cb) => {
                         (result, _cb) => {
                           // join event participants and user whose liked this event
                           let userIds = _.union(result, event.participantsId);
+
+                          // add owner of event to receive invitation for repeating instance
+                          userIds.push(event.ownerId);
+
                           // get uniq userIds
                           userIds = _.map(_.groupBy(userIds, (doc) => {
                             return doc;
                           }), (grouped) => {
                             return grouped[0];
                           });
+
                           // if event owner liked his event then remove his' _id from userIds list
-                          let index = _.findIndex(userIds, (id) => {
-                            return id.toString()===event.ownerId.toString();
-                          });
-                          if (index !== -1) {
-                            userIds.splice(index, 1);
-                          }
+                          // let index = _.findIndex(userIds, (id) => {
+                          //   return id.toString()===event.ownerId.toString();
+                          // });
+                          // if (index !== -1) {
+                          //   userIds.splice(index, 1);
+                          // }
                           _cb(null, userIds);
                         }
                       ], (err, result) => {

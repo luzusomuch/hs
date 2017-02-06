@@ -381,7 +381,24 @@ module.exports = function(kernel) {
           console.log(err);
           return res.status(500).json({type: 'SERVER_ERROR'});
         }
-        return res.status(200).json({items: result, totalItem: result.length});
+        // get unique awards
+        let uniqueAwards = [];
+        if (result.length > 0) {
+          _.each(result, item => {
+            if (item && item.awardId && item.awardId._id) {
+              let index = _.findIndex(uniqueAwards, award => {
+                if (award && award.awardId && award.awardId._id) {
+                  return item.awardId._id.toString()===award.awardId._id.toString();
+                }
+              });
+              if (index === -1) {
+                uniqueAwards.push(item);
+              }
+            }
+          });
+        }
+        
+        return res.status(200).json({items: uniqueAwards, totalItem: result.length});
       });
     }).catch(err => {
       console.log(err);

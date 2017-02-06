@@ -154,7 +154,7 @@ class MySettingCtrl {
 			  					type: 'facebook'
 			  				};
 			  				this.User.addSocialAccount(data).then(() => {
-			  					this.growl.success(`<p>{{'ADD_SOCIAL_ACCOUNT_SUCCESSFULLY' | translate}}</p>`);
+			  					this.growl.success(`<p>{{'ADD_SOCIAL_FACEBOOK_ACCOUNT_SUCCESSFULLY' | translate}}</p>`);
 			  				}).catch(() => {
 			  					this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			  				});
@@ -173,7 +173,7 @@ class MySettingCtrl {
   					type: 'google'
   				};
 				this.User.addSocialAccount(data).then(() => {
-					this.growl.success(`<p>{{'ADD_SOCIAL_ACCOUNT_SUCCESSFULLY' | translate}}</p>`);
+					this.growl.success(`<p>{{'ADD_SOCIAL_GOOGLE_ACCOUNT_SUCCESSFULLY' | translate}}</p>`);
   				}).catch(() => {
   					this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
   				});
@@ -199,7 +199,7 @@ class MySettingCtrl {
   	}
 
   	deleteAccount() {
-  		let confirmText = (this.$localStorage.language==='en') ? 'Do you want to delete your account?' : 'Wollen Sie Ihr Konto löschen?';
+  		let confirmText = (this.$localStorage.language==='en') ? 'Do you want to delete your account?' : 'Willst du wirklich dein Account löschen?';
   		let confirm = window.confirm(confirmText);
   		if (confirm) {
 	  		this.User.deleteAccount(this.authUser._id).then(() => {

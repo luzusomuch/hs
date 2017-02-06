@@ -41,7 +41,7 @@
                     </li>
                 </ul>
 
-                <uib-pagination previous-text="{{(vm.$localStorage.language==='en') ? 'Previous' : 'Früher'}}" next-text="{{(vm.$localStorage.language==='en') ? 'Next' : 'Nächster'}}" ng-show="!vm.searchQuery.search" class="pagination-sm" items-per-page="vm.threads.pageSize" total-items="vm.threads.totalItem" ng-model="vm.threads.page" ng-change="vm.getItems()"></uib-pagination>
+                <uib-pagination previous-text="{{(vm.$localStorage.language==='en') ? 'Previous' : 'Zurück'}}" next-text="{{(vm.$localStorage.language==='en') ? 'Next' : 'Weiter'}}" ng-show="!vm.searchQuery.search" class="pagination-sm" items-per-page="vm.threads.pageSize" total-items="vm.threads.totalItem" ng-model="vm.threads.page" ng-change="vm.getItems()"></uib-pagination>
             </div>
 		</div>
 	</div>

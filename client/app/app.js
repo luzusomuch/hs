@@ -105,6 +105,13 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
     });
     $rootScope.$on('$stateChangeSuccess', (event, state) => {
       $rootScope.currentState = state.name;
+      if ($localStorage.language==='de') {
+        if (state.name==='register') {
+          AppSettings.set('pageTitle', 'HealthStars | Registrierung');
+        } else if (state.name==='forgotPw') {
+          AppSettings.set('pageTitle', 'HealthStars | Passwort vergessen');
+        }
+      }
     });
 
     $rootScope.pageWidth = $window.innerWidth;

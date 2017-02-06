@@ -31,7 +31,7 @@ class MyPhotosCtrl {
 		if (this.language==='en') {
 			confirm = 'Do you want to delete this photo?';
 		} else {
-			confirm = 'Möchtest du dieses foto löschen?'
+			confirm = 'Möchtest du dieses Foto wirklich löschen?';
 		}
 		if (window.confirm(confirm)) {
 			if (photo.ownerId===this.authUser._id) {

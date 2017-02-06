@@ -90,7 +90,7 @@
         <div class="logo-login">
           <a href="/"><img src="/assets/images/logo-login.png"></a>
         </div>
-        <h1>{{'SIGN_UP' | translate}}</h1>
+        <!-- <h1>{{'SIGN_UP' | translate}}</h1> -->
         <div class="clear"></div>
         <div class="form-signup">
             <form ng-submit="vm.register(form)" name="form" novalidate>
@@ -177,7 +177,7 @@
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group relative-div">
                             <label>{{'PHONE' | translate}}</label>
-                            <input id="phone" type="text" class="form-control" ng-model="vm.user.phoneNumber" name="phoneNumber" international-phone-number ng-class="{'error-input': form.phoneNumber.$invalid && vm.submitted}">
+                            <input id="phone" type="text" class="form-control" ng-model="vm.user.phoneNumber" name="phoneNumber" international-phone-number preferred-countries="de" ng-class="{'error-input': form.phoneNumber.$invalid && vm.submitted}">
 
                             <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.phoneNumber.$invalid">
                               <i class="fa fa-circle fa-stack-2x fa-cicle-input"></i>
@@ -200,7 +200,7 @@
                     </div>
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group relative-div">
-                            <label>{{'PASSWORD' | translate}} * <span class="note-form">6 symbols min</span></label>
+                            <label>{{'PASSWORD' | translate}} * <span class="note-form">{{'MIN' | translate}} 6 {{'SYMBOLS' | translate}}</span></label>
                             <input type="password" class="form-control" ng-model="vm.user.password" name="password" required ng-minlength="6" pattern="^\w*(?=\w*\d)(?=\w*[A-Za-z])\w*$" ng-class="{'error-input': (form.password.$error.minlength || form.password.$error.required) && vm.submitted}">
 
                             <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.password.$error.pattern && !form.password.$error.minlength && !form.password.$error.required">

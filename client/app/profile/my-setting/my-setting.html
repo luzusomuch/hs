@@ -190,7 +190,7 @@
 	                                    </td>
 	                                </tr>
 	                                <tr>
-	                                    <td>{{'NOTIFICATION_FOR_NEW_POST' | translate}}</td>
+	                                    <td ng-bind-html="'NOTIFICATION_FOR_NEW_POST' | translate | html"></td>
 	                                    <td  class="text-right">
 	                                        <div class="checkbox-l">
 	                                            <input ng-click="vm.notificationSetting('newPost')" id="checkbox3" type="checkbox" name="checkbox" value="checkbox3" ng-model="vm.authUser.notificationSetting.newPost">
@@ -199,7 +199,7 @@
 	                                    </td>
 	                                </tr>
 	                                <tr>
-	                                    <td>{{'VISIBLE_FRIENDS_LIST' | translate}}</td>
+	                                    <td ng-bind-html="'VISIBLE_FRIENDS_LIST' | translate | html"></td>
 	                                    <td  class="text-right">
 	                                        <div class="checkbox-l">
 	                                            <input ng-click="vm.notificationSetting('isVisibleFriendsList')" id="checkbox4" type="checkbox" name="checkbox" value="checkbox4" ng-model="vm.authUser.notificationSetting.isVisibleFriendsList">

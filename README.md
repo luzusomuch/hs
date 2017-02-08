@@ -10,8 +10,7 @@
 - [Ruby](https://www.ruby-lang.org) and then `gem install sass`
 - [Gulp](http://gulpjs.com/) (`npm install --global gulp`)
 - [MongoDB](https://www.mongodb.org/) - Keep a running daemon with `mongod`
-- [Elasticsearch](https://www.elasticsearch.com/) - run elasticsearch
-- [Redis](http://www.redis.io/) - Keep a running daemon with `redis-server`
+- [Elasticsearch](https://www.elasticsearch.com/) - version 1.7 - run elasticsearch
 - [GraphicMagick](http://www.graphicsmagick.org/) - keep in the path
 
 ### Developing
@@ -37,3 +36,6 @@ open use mongo cmd then switch to use currently database
 after that type 
 db.users.createIndex({location: "2dsphere"})
 db.events.createIndex({location: "2dsphere"})
+
+##Running server
+Please use ./build.sh to run our server.

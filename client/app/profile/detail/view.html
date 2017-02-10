@@ -42,7 +42,7 @@
                 <hs-user-widget hide-award-exhibit="true" current-user="vm.authUser" u-id="vm.user._id"></hs-user-widget>
 
                 <div class="box-blue p15">
-                    <div class="title-blue">{{vm.user.name}} {{'AWARDS' | translate}}</div>
+                    <div class="title-blue">{{'AWARDS_OF' | translate}} {{vm.user.name}} </div>
                     <ul class="row" ng-show="vm.user.awardsExhibits.length > 0">
                         <li class="col-xs-4" ng-repeat="award in vm.user.awardsExhibits">
                             <div class="exhibit-user">
@@ -69,7 +69,7 @@
                     </div>
                 </div>
                 <div class="box-blue p15">
-                    <div class="title-blue">{{vm.user.name}} {{'PHOTOS' | translate}} <a ui-sref="profile.photos({id: vm.user._id})" class="show-all-box">{{'SHOW_ALL' | translate}}</a></div>
+                    <div class="title-blue">{{'PHOTOS_OF' | translate}} {{vm.user.name}} <a ui-sref="profile.photos({id: vm.user._id})" class="show-all-box">{{'SHOW_ALL' | translate}}</a></div>
                     <ul class="row row-small list-photo">
                     	<li class="col-xs-6" ng-repeat="photo in vm.photos.items">
 	                    	<a href="#" ng-click="vm.viewPhoto(photo)"><div class="bg-cover" style="background-image: url('{{photo | imageUrl:'small'}}')"></div></a>
@@ -149,7 +149,7 @@
                 </div>
 
                 <div class="box-blue p15">
-                    <div class="title-blue">{{vm.user.name}} {{'EVENTS' | translate}} <a ng-click="vm.showAllEvents()" href="#" class="show-all-box">{{'SHOW_ALL' | translate}}</a></div>
+                    <div class="title-blue">{{'EVENTS_OF' | translate}} {{vm.user.name}}  <a ng-click="vm.showAllEvents()" href="#" class="show-all-box">{{'SHOW_ALL' | translate}}</a></div>
                     <ul class="list-my-event">
                         <li ng-repeat="event in vm.events.items">
                             <p><a ui-sref="event.detail({id: event._id})">{{event.name}}</a></p>

@@ -11,7 +11,7 @@
 - [Gulp](http://gulpjs.com/) (`npm install --global gulp`)
 - [MongoDB](https://www.mongodb.org/) - Keep a running daemon with `mongod`
 - [Elasticsearch](https://www.elasticsearch.com/) - version 1.7 - run elasticsearch
-- [GraphicMagick](http://www.graphicsmagick.org/) - keep in the path
+- [GraphicMagick](http://www.graphicsmagick.org/) - keep in the path - sudo apt-get install graphicsmagick
 
 ### Developing
 

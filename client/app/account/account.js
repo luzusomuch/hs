@@ -8,7 +8,7 @@ angular.module('healthStarsApp')
         controller: 'LoginCtrl',
         controllerAs: 'vm',
         settings: {
-          footer: false,
+          footer: true,
           header: false,
           pageTitle: 'HealthStars | Login'
         }
@@ -29,7 +29,7 @@ angular.module('healthStarsApp')
         controller: 'RegisterCtrl',
         controllerAs: 'vm',
         settings: {
-          footer: false,
+          footer: true,
           header: false,
           pageTitle: 'HealthStars | Register'
         }

@@ -2,6 +2,7 @@ class MessageModalCtrl {
 	constructor($scope, $uibModalInstance, EventService, user, $localStorage, ThreadService, growl) {
 		$scope.submitted = false;
 		$scope.authUser = $localStorage.authUser;
+		$scope.$localStorage = $localStorage;
 		$scope.user = user;
 		$scope.message = {};
 

@@ -1,5 +1,5 @@
 <div class="modal-header">
-	<h3 class="modal-title">{{'SEND_MESSAGE_TO' | translate}} {{user.name}}</h3>
+	<h3 class="modal-title">{{'SEND_MESSAGE_TO' | translate}} {{user.name}} <span ng-show="$localStorage.language==='de'">{{'SEND' | translate}}</span></h3>
 </div>
 
 <div class="modal-body">
@@ -12,7 +12,7 @@
 
         <div class="modal-footer">
             <button type="button" ng-click="close()" class="btn btn-default btn-radius-20" ng-bind-html="'CLOSE' | translate | html"></button>
-        	<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>
+        	<button type="submit" class="btn btn-success btn-radius-20" ng-bind-html="'SEND' | translate | html"></button>
         </div>
     </form>
 </div>

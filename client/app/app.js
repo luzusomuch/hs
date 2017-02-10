@@ -15,7 +15,6 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
     growlProvider.globalTimeToLive(3000);
     growlProvider.globalDisableCountDown(true);
 
-    // ignore template required error
     $provide.decorator('$templateRequest', ['$delegate', function($delegate) {
       var fn = $delegate;
       $delegate = function(tpl) {
@@ -110,6 +109,18 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
           AppSettings.set('pageTitle', 'HealthStars | Registrierung');
         } else if (state.name==='forgotPw') {
           AppSettings.set('pageTitle', 'HealthStars | Passwort vergessen');
+        } else if (state.name==='profile.myCalendar') {
+          AppSettings.set('pageTitle', 'HealthStars | Mein Kalender');
+        } else if (state.name==='profile.home') {
+          AppSettings.set('pageTitle', 'HealthStars | Mein Profil');
+        } else if (state.name==='profile.myAward') {
+          AppSettings.set('pageTitle', 'HealthStars | Meine Awards');
+        } else if (state.name==='profile.myMessages') {
+          AppSettings.set('pageTitle', 'HealthStars | Meine Nachrichten');
+        } else if (state.name==='profile.detail') {
+          AppSettings.set('pageTitle', 'HealthStars | Gesundheitsprofil');
+        } else if (state.name==='profile.mySetting') {
+          AppSettings.set('pageTitle', 'HealthStars | Einstellungen');
         }
       }
     });
@@ -126,6 +137,7 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
         parent.prepend(div1);
       }
     });
+
   });
 
 angular.module('ui.timepicker').value('uiTimepickerConfig',{

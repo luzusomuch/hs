@@ -295,6 +295,14 @@ class HomeCtrl {
       this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
     });
   }
+
+  // check if you interested in an event
+  isInterested(event) {
+    let index = _.findIndex(this.events.items, item => {
+      return item._id===event._id && event.liked;
+    });
+    return index !== -1;
+  }
 }
 
 angular.module('healthStarsApp').controller('HomeCtrl', HomeCtrl);

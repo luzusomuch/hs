@@ -87,11 +87,12 @@
                             <div class="row">
                                 <div class="col-xs-6">
                                     <div class="text-bottom-big cursor-pointer" ng-click="vm.like(event)"><i class="fa fa-heart" ng-class="{liked: event.liked}"></i> {{event.totalLike || 0}}</div>
-                                    {{'INTERESTED' | translate}}
+                                    {{(vm.isInterested(event)) ? 'INTERESTED' : 'INTEREST' | translate}}
                                 </div>
                                 <div class="col-xs-6">
                                     <div class="text-bottom-big cursor-pointer" ng-click="vm.participate(event)"><i class="fa fa-user-plus" ng-class="{liked: vm.checkParticipants(event.participantsId, event.waitingParticipantIds, event.ownerId)}"></i> {{event.stats.totalParticipants+1 || 1}}</div>
-                                    {{(event.stats.totalParticipants && event.stats.totalParticipants > 1) ? 'PARTICIPATINGS' : 'PARTICIPATING' | translate}}
+                                    <span ng-show="!vm.checkParticipants(event.participantsId, event.waitingParticipantIds, event.ownerId)">{{(event.stats.totalParticipants && event.stats.totalParticipants > 1) ? 'PARTICIPATINGS' : 'PARTICIPATING' | translate}}</span>
+                                    <span ng-show="vm.checkParticipants(event.participantsId, event.waitingParticipantIds, event.ownerId)">{{'PARTICIPATED' | translate}}</span>
                                 </div>
                             </div>
                         </div>

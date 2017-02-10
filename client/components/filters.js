@@ -564,4 +564,169 @@ angular.module('healthStarsApp')
     }
     return text;
   }
+})
+.filter('datePickerFilter', ($localStorage) => {
+  return text => {
+    let splitted = text.split(' ');
+    let item = splitted[0];
+    let result = '';
+    
+    if (item && $localStorage.language==='en') {
+      switch (item.toLowerCase()) {
+        // for month
+        case 'january':
+          result = 'January';
+          break;
+        case 'february':
+          result = 'february';
+          break;
+        case 'march':
+          result = 'March';
+          break;
+        case 'april':
+          result = 'April';
+          break;
+        case 'may':
+          result = 'May';
+          break;
+        case 'june':
+          result = 'June';
+          break;
+        case 'july':
+          result = 'July';
+          break;
+        case 'august':
+          result = 'August';
+          break;
+        case 'september':
+          result = 'September';
+          break;
+        case 'october':
+          result = 'Obtober';
+          break;
+        case 'november':
+          result = 'November';
+          break;
+        case 'december':
+          result = 'December';
+          break;
+
+        // for day
+        case 'sun':
+          result = 'Sun';
+          break;
+        case 'mon':
+          result = 'Mon';
+          break;
+        case 'tue':
+          result = 'Tue';
+          break;
+        case 'wed':
+          result = 'Wed';
+          break;
+        case 'thu':
+          result = 'Thu';
+          break;
+        case 'fri':
+          result = 'Fri';
+          break;
+        case 'sat':
+          result = 'Sat';
+          break;
+
+        // other
+        case 'today':
+          result = 'Today';
+          break;
+        case 'clear':
+          result = 'Clear';
+          break;
+        case 'done':
+          result = 'Done';
+          break;
+        default:
+          break
+      }
+    } else if (item && $localStorage.language==='de') {
+      switch (item.toLowerCase()) {
+        // Month
+        case 'january':
+          result = 'Januar';
+          break;
+        case 'february':
+          result = 'Februar';
+          break;
+        case 'march':
+          result = 'März';
+          break;
+        case 'april':
+          result = 'April';
+          break;
+        case 'may':
+          result = 'Mai';
+          break;
+        case 'june':
+          result = 'Juni';
+          break;
+        case 'july':
+          result = 'Juli';
+          break;
+        case 'august':
+          result = 'August';
+          break;
+        case 'september':
+          result = 'September';
+          break;
+        case 'october':
+          result = 'Oktober';
+          break;
+        case 'november':
+          result = 'November';
+          break;
+        case 'december':
+          result = 'Dezember';
+          break;
+
+        // for day
+        case 'sun':
+          result = 'So';
+          break;
+        case 'mon':
+          result = 'Mo';
+          break;
+        case 'tue':
+          result = 'Di';
+          break;
+        case 'wed':
+          result = 'Mi';
+          break;
+        case 'thu':
+          result = 'Do';
+          break;
+        case 'fri':
+          result = 'Fr';
+          break;
+        case 'sat':
+          result = 'Sa';
+          break;
+
+        // other
+        case 'today':
+          result = 'Heute';
+          break;
+        case 'clear':
+          result = 'Löschen';
+          break;
+        case 'done':
+          result = 'übernehmen';
+          break;
+        default:
+          break
+      }
+    }
+    if (splitted[1]) {
+      result += ' ' + splitted[1];
+    }
+    return result;
+  };
 });

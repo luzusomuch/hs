@@ -393,7 +393,7 @@ label .note-form {
     display: block;
     padding: 7px 15px;
     color: #fff;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
 }
 .menu li.active a {
     color: #f26522;
@@ -579,7 +579,7 @@ label .note-form {
 }
 .content-home {
     /*padding: 20px 0px;*/
-    min-height: 650px;
+    min-height: 710px;
 }
 .box-1 {
     background: #2d3747;
@@ -588,7 +588,7 @@ label .note-form {
 .title-box-1 {
     padding: 10px 15px;
     border-bottom: 1px solid #606874;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
 }
 .m20 {
     margin-bottom: 20px;
@@ -2553,4 +2553,7 @@ span.total-notification {
 }
 .selected-default-image {
     border: 3px solid #489cdf;
+}
+.color-white {
+    color: #FFF !important;
 }

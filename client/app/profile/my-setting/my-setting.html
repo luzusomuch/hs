@@ -2,12 +2,10 @@
 	<hs-profile-menu-header></hs-profile-menu-header>
 	<div class="row">
         <div class="col-sm-4 col-lg-3">
-            <div class="box-blue p15 pc-show">
+            <!-- <div class="box-blue p15 pc-show">
                 <div class="img-user-main">
                     <img src="{{vm.authUser | avatarUrl}}" width="100%;">
                     <div class="code-qc">
-                        <!-- <img src="images/code.jpg"> -->
-                        <!-- <qrcode version="20" error-correction-level="H" data="{{vm.authUser.link}}" href="{{vm.authUser.link}}" size="50"></qrcode> -->
                     </div>
                 </div>
                 <div class="bottom-user-main">
@@ -15,7 +13,8 @@
                   	<qrcode class="col-sm-3" version="20" error-correction-level="H" data="{{vm.authUser.link}}" href="{{vm.authUser.link}}" size="50"></qrcode>
                     <div class="clear"></div>
                 </div>
-            </div>
+            </div> -->
+            <hs-user-widget u-id="vm.authUser._id"></hs-user-widget>
         </div>
         <div class="col-sm-8 col-lg-9">
             <div class="box-blue">
@@ -106,7 +105,7 @@
 
 	                                                <div class="col-md-6">
 	                                                    <div class="form-group">
-	                                                        <button type="submit" class="btn btn-block btn-success" style="margin-top: 20px;">{{'UPDATE_ACCOUNT' | translate}}</button>
+	                                                        <button type="submit" class="btn btn-block btn-success" style="margin-top: 20px; text-transform: none">{{'UPDATE_ACCOUNT' | translate}}</button>
 	                                                    </div>
 	                                                </div>
 	                                            </div>
@@ -161,7 +160,7 @@
                             					<p ng-show="(!changePassForm.repassword.$error.compareTo && changePassForm.password.$error.required) && vm.submitted" class="error-text" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
 	                                        </div>
 	                                        <div class="form-group">
-	                                            <button class="btn btn-block btn-success">{{'SUBMIT' | translate}}</button>
+	                                            <button class="btn btn-block btn-success" ng-bind-html="'SUBMIT' | translate | html"></button>
 	                                        </div>
 	                                    </div>
 	                                </div>

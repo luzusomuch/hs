@@ -24,6 +24,7 @@ class MyCalendarCtrl {
         	month: ($localStorage.language==='en') ? 'Month' : 'Monat',
         	week: ($localStorage.language==='en') ? 'Week' : 'Woche'
         },
+        monthNames: $localStorage.language==='en' ? ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] : ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
         eventRender: (event, element) => {
         	let photoUrl = 'assets/images/img.jpg';
         	if (event.photo) {

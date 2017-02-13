@@ -7,7 +7,7 @@
         <a href="#">{{'TERMS' | translate}}</a>
         <a href="#"><span ng-bind-html="'PRIVACY' | translate | html"></span></a>
         <a href="#"><span ng-bind-html="'CONTACT' | translate | html"></span></a>
-        <ul class="list-social">
+        <ul class="list-social" ng-hide="currentState==='login' || currentState==='register'">
             <li><a href="#"><i class="fa fa-twitter"></i></a></li>
             <li><a href="#"><i class="fa fa-facebook"></i></a></li>
             <li><a href="#"><i class="fa fa-google-plus"></i></a></li>

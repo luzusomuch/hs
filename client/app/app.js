@@ -141,5 +141,7 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
   });
 
 angular.module('ui.timepicker').value('uiTimepickerConfig',{
-  step: 5
+  step: 5,
+  show2400: true,
+  timeFormat: 'H:i'
 });

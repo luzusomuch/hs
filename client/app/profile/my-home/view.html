@@ -2,11 +2,10 @@
 	<hs-profile-menu-header></hs-profile-menu-header>
 	<div class="row">
 		<div class="col-sm-3 pc-show">
-            <div class="box-blue p15">
+            <!-- <div class="box-blue p15">
                 <div class="img-user-main">
                     <img src="{{vm.authUser | avatarUrl}}" width="100%;">
                     <div class="code-qc">
-                        <!-- <qrcode version="20" error-correction-level="H" data="{{vm.authUser.link}}" href="{{vm.authUser.link}}" size="50"></qrcode> -->
                     </div>
                 </div>
                 <div class="bottom-user-main">
@@ -14,7 +13,8 @@
                     <qrcode class="col-sm-3" version="20" error-correction-level="H" data="{{vm.authUser.link}}" href="{{vm.authUser.link}}" size="50"></qrcode>
                     <div class="clear"></div>
                 </div>
-            </div>
+            </div> -->
+            <hs-user-widget u-id="vm.authUser._id"></hs-user-widget>
 
             <div class="box-blue p15">
                 <div class="title-blue">{{'PHOTOS' | translate}} <a ui-sref="profile.photos({id: vm.authUser._id})" class="show-all-box">{{'SHOW_ALL' | translate}}</a></div>
@@ -99,7 +99,7 @@
                                     </p>
 
                                     <p ng-show="sub.type==='liked-event'">
-                                        <a ui-sref="profile.detail({id: sub.fromUserId._id})">{{sub.fromUserId.name}}</a> {{'HAS_LIKED_EVENT' | translate}} 
+                                        <a ui-sref="profile.detail({id: sub.fromUserId._id})">{{sub.fromUserId.name}}</a> <span ng-bind-html="'HAS_LIKED_EVENT' | translate | html"></span> 
                                         <!-- <a ui-sref="event.detail({id: sub.element._id})">{{sub.element.name}}</a> -->
                                     </p>
                                 </div>

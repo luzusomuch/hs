@@ -1,4 +1,4 @@
-<div class="box-blue p15 box-user-event">
+<div class="box-blue p15" ng-class="{'box-user-event': currentState==!'profile.home' && currentState!=='profile.mySetting'}">
     <div class="img-user-main">
         <img ui-sref="profile.detail({id: vm.user._id})" src="{{vm.user | avatarUrl}}" width="100%;">
 

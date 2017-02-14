@@ -26,7 +26,7 @@
     <div class="form-group">
       <label>{{'END' | translate}}:</label>
       <div class="input-group date">
-        <input type="text" class="form-control" placeholder="Date" ng-model="vm.repeat.endDate" required name="endDate" uib-datepicker-popup="{{'dd-MMMM-yyyy'}}" is-open="vm.isOpenEndDate" datepicker-options="vm.options" required>
+        <input type="text" class="form-control" placeholder="Date" ng-model="vm.repeat.endDate" required name="endDate" uib-datepicker-popup="{{'dd-MMMM-yyyy'}}" is-open="vm.isOpenEndDate" datepicker-options="vm.options" required datepicker-popup-template-url="app/event/create/datepicker-popup-customize.html" datepicker-template-url='app/search/templates/multi-datepicker.tpl.html'>
         <span class="input-group-addon" ng-click="vm.isOpenEndDate=!vm.isOpenEndDate">
             <span class="glyphicon glyphicon-calendar"></span>
         </span>
@@ -36,7 +36,7 @@
       <p class="error-text" ng-show="form.endDate.$error.required && vm.submitted" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
     </div>
 		<div class="modal-footer">
-			<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>
+			<button type="submit" class="btn btn-success btn-radius-20" ng-bind-html="'SUBMIT' | translate | html"></button>
 		</div>    
   </form>
 </div>

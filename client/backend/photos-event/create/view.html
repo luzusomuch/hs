@@ -31,7 +31,7 @@
 	    </div>
 	  </div>
 	  <div class="form-group">
-	  	<button type="submit" class="btn btn-primary">{{'SUBMIT' | translate}}</button>
+	  	<button type="submit" class="btn btn-primary" ng-bind-html="'SUBMIT' | translate | html"></button>
 	  	<a ui-sref="backend.photosEvent.list" class="btn btn-warning">{{'CANCEL' | translate}}</a>
 	  </div>
 	</form>

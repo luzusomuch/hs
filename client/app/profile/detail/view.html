@@ -11,8 +11,15 @@
                     <h2 class="title-detail">{{vm.user.name}}</h2>
                     <div class="row ">
                         <div class="col-sm-4 col-lg-7">
-                            <div class="last-online">{{'LAST_ONLINE' | translate}} <i class="fa fa-clock-o"></i>  
-                            {{vm.user.lastAccess | fromNow | fromNowNumber}} {{vm.user.lastAccess | fromNow | fromNowTranslate | translate}}</div>
+                            <div class="last-online">
+                                {{'LAST_ONLINE' | translate}} <i class="fa fa-clock-o"></i> 
+                                <span ng-show="vm.$localStorage.language==='en'">
+                                    {{vm.user.lastAccess | fromNow | fromNowNumber}} {{vm.user.lastAccess | fromNow | fromNowTranslate | translate}}
+                                </span>
+                                <span ng-show="vm.$localStorage.language==='de'">
+                                    <span ng-show="vm.user.lastAccess | showAgoTextInDeLanguage">{{'AGO' | translate}}</span> {{vm.user.lastAccess | fromNow | fromNowNumber}} {{vm.user.lastAccess | fromNow | fromNowTranslate | translate}}
+                                </span>
+                            </div>
                         </div>
                         <div class="col-sm-8 col-lg-5">
                             <div class="row row-small action-user-detail" ng-show="vm.authUser._id!==vm.user._id">

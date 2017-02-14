@@ -10,7 +10,7 @@
       <p ng-show="form.description.$error.required && vm.submitted" class="error-text" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
     </div>
 		<div class="modal-footer">
-			<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>
+			<button type="submit" class="btn btn-success btn-radius-20" ng-bind-html="'SUBMIT' | translate | html"></button>
 		</div>    
   </form>
 </div>

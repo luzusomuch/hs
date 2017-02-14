@@ -51,7 +51,7 @@
     </div>
   </div>
 	<div class="modal-footer">
-		<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>
+		<button type="submit" class="btn btn-success btn-radius-20"  ng-bind-html="'SUBMIT' | translate | html"></button>
 		<button ng-click="closeModal()" type="button" class="btn btn-default btn-radius-20">{{'CANCEL' | translate}}</button>
 	</div>    
 </form>

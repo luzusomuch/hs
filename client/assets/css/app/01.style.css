@@ -2557,3 +2557,7 @@ span.total-notification {
 .color-white {
     color: #FFF !important;
 }
+.uib-datepicker-popup .uib-daypicker .btn-default {
+    border: none;
+    padding: 0px 15px;
+}

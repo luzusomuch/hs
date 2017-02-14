@@ -17,7 +17,7 @@
 	    	<a ng-click="AddTagsToThread.addNewTags(AddTagsToThread.newTag)" href="#"><i class="fa fa-plus"></i> <span ng-bind-html="'ADD_NEW_TAG' | translate | html"></span></a>
 	    </div>
 		<div class="modal-footer">
-      		<button type="submit" class="btn btn-success btn-radius-20">{{'SUBMIT' | translate}}</button>
+      		<button type="submit" class="btn btn-success btn-radius-20" ng-bind-html="'SUBMIT' | translate | html"></button>
 			<button ng-click="AddTagsToThread.close()" type="button" class="btn btn-warning btn-radius-20" ng-bind-html="'CLOSE' | translate | html"></button>
 		</div>    
   	</form>

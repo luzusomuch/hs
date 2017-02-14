@@ -17,6 +17,7 @@ class ProfileDetailCtrl {
 		this.RelationService = RelationService;
 		this.$cookies = $cookies;
 		this.authUser = $localStorage.authUser;
+		this.$localStorage = $localStorage;
 		this.user = user;
 		this.user.link = APP_CONFIG.baseUrl + 'profile/' + this.user._id;
 		this.PhotoViewer = PhotoViewer;

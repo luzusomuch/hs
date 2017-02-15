@@ -2561,3 +2561,8 @@ span.total-notification {
     border: none;
     padding: 0px 15px;
 }
+.all-right-reserved-text {
+    position: absolute;
+    right: 10px;
+    top: 25px;
+}

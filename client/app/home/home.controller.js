@@ -242,6 +242,7 @@ class HomeCtrl {
       } else {
         event.totalLike = event.totalLike -1;
       }
+      this.$scope.$emit('refreshMyUpcomingEvents');
     }).catch(() => {
       this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
     });
@@ -292,6 +293,7 @@ class HomeCtrl {
           event.waitingParticipantIds = [this.authUser._id];
         }
       }
+      this.$scope.$emit('refreshMyUpcomingEvents');
     }).catch(() => {
       this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
     });

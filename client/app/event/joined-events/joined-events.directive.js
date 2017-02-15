@@ -1,7 +1,7 @@
 'use strict';
 
 class JoinedEventsCtrl {
-	constructor($scope, EventService, SearchParams, $state, $localStorage) {
+	constructor($scope, $rootScope, EventService, SearchParams, $state, $localStorage) {
 		$scope.authUser = $localStorage.authUser;
 		$scope.SearchParams = SearchParams.params;
 		$scope.friendsEvents = {};
@@ -9,6 +9,17 @@ class JoinedEventsCtrl {
 		$scope.page = 1;
 		$scope.searchPage = 1;
 		$scope.search = false;
+		$scope.refresh = false;
+
+		let refreshMyUpcomingEvents = $rootScope.$on('refreshMyUpcomingEvents', () => {
+			$scope.page = 1;
+			$scope.refresh = true;
+			$scope.loadMore();
+		});
+
+		$scope.$on('$destroy', function () {
+      refreshMyUpcomingEvents();
+    });
 
 		$scope.$watch('SearchParams', (nv) => {
 			if (nv && nv.dates.length > 0) {
@@ -30,6 +41,9 @@ class JoinedEventsCtrl {
 				params.page = $scope.page;
 			}
 			EventService.myUpcomingEvents(params).then(resp => {
+				if ($scope.refresh) {
+					$scope.search = false;
+				}
 				if ($scope.search) {
 					$scope.searchItems.items = resp.data.items;
 					$scope.searchItems.totalItem = resp.data.totalItem;
@@ -37,10 +51,15 @@ class JoinedEventsCtrl {
 						$scope.searchPage += 1;
 					}
 				} else {
-					$scope.page +=1;
-					$scope.friendsEvents.items = ($scope.friendsEvents.items) ? $scope.friendsEvents.items.concat(resp.data.items) : resp.data.items;
+					if ($scope.page === 1) {
+						$scope.friendsEvents.items = resp.data.items;
+					} else {
+						$scope.friendsEvents.items = $scope.friendsEvents.items.concat(resp.data.items);
+					}
 					$scope.friendsEvents.totalItem = resp.data.totalItem;
+					$scope.page +=1;
 				}
+				$scope.refresh = false;
 			});
 		};
 

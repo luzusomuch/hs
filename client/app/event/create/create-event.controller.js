@@ -118,7 +118,7 @@ class CreateEventCtrl {
         });
         if (idx !== -1) {
           this.selectedCategory = this.categories[idx];
-          if (this.selectedCategory && this.awards && this.awards.length > 0 && !this.showAddAwards()) {
+          if (this.selectedCategory && this.awards && this.awards.length > 0) {
             let selectedAwardName, starName;
             switch (this.selectedCategory.type) {
               case 'food':
@@ -144,7 +144,6 @@ class CreateEventCtrl {
               default:
                 break;
             }
-
             // find default banner/picture
             this.findEventPictureOrBanner('banner', starName);
             this.findEventPictureOrBanner('picture', starName);

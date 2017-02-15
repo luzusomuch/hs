@@ -639,7 +639,7 @@ class UserController {
 
       (friendIds, cb) => {
         if(!friendIds.length) {
-          return cb(null, []);
+          return cb(null, {totalItem: 0, items: []});
         }
         let query;
         // We use get all query when create new thread message on my messages page

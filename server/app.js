@@ -3,7 +3,7 @@
 import KernelFactory from './kernel';
 import path from 'path';
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 let config = require('./config/environment');
 let kernel = new KernelFactory(config);
 
@@ -40,17 +40,23 @@ kernel.compose();
 //custom app path
 //TODO - can move to kernel?
 // All undefined asset or api routes should return a 404
-kernel.app.route('/:url(api|auth|components|app|bower_components|assets|lib|styles)/*')
+kernel.app.route('/:url(api|auth|components|bower_components|app|assets|lib|styles)/*')
  .get((req, res) => { res.status(404).send('Not found!'); });
 
 // All other routes should redirect to the index.html
 kernel.app.route('/*')
   .get((req, res) => {
-    //TODO - get app path base on env
-    if(/^\/backend.*/.test(req.url)) {
-    	return res.sendFile(path.resolve('client/backend.html'));
+    if (env==='development') {
+	    if(/^\/backend.*/.test(req.url)) {
+	    	return res.sendFile(path.resolve('client/backend.html'));
+	    }
+	    return res.sendFile(path.resolve('client/index.html'));
+    } else if (env==='production') {
+			if(/^\/backend.*/.test(req.url)) {
+	    	return res.sendFile(config.root + '/client/backend.html');
+	    }
+	    return res.sendFile(config.root + '/client/index.html');
     }
-    return res.sendFile(path.resolve('client/index.html'));
   });
 
 kernel.startHttpServer();

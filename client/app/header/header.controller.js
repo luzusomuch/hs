@@ -27,7 +27,7 @@ class HsHeaderCtrl {
 			$rootScope.onlineUsers = _.uniq(data);
 		});
 
-		socket.socket.on('notification:new', data => {
+		socket.socket.on('notification:new', () => {
 			this.totalNotifications ++;
 		});
 	}

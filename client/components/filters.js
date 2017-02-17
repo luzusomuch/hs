@@ -299,7 +299,6 @@ angular.module('healthStarsApp')
 .filter('imageMyAwardUrl', () => {
   return (award, type) => {
     let imagePath;
-    console.log(image);
     let image  = award.objectPhotoId;
     if (image) {
       switch (type) {
@@ -565,7 +564,7 @@ angular.module('healthStarsApp')
     } else {
       return 0;
     }
-  }
+  };
 })
 .filter('hsStatusStar', () => {
   return post => {
@@ -581,7 +580,7 @@ angular.module('healthStarsApp')
       link = '/assets/images/gold_star.png';
     }
     return link;
-  }
+  };
 })
 .filter('hsStatus', () => {
   return post => {
@@ -597,7 +596,7 @@ angular.module('healthStarsApp')
       text = 'Gold';
     }
     return text;
-  }
+  };
 })
 .filter('datePickerFilter', ($localStorage) => {
   return text => {
@@ -679,8 +678,8 @@ angular.module('healthStarsApp')
           result = 'Done';
           break;
         default:
-          break
-      }
+          break;
+      };
     } else if (item && $localStorage.language==='de') {
       switch (item.toLowerCase()) {
         // Month
@@ -755,8 +754,8 @@ angular.module('healthStarsApp')
           result = 'übernehmen';
           break;
         default:
-          break
-      }
+          break;
+      };
     }
     if (splitted[1]) {
       result += ' ' + splitted[1];

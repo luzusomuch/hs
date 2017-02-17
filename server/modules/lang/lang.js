@@ -426,6 +426,7 @@ let Language = {
 		PHOTOS_OF: 'Photos of',
 		YOUR_USERNAME: 'Your username',
 		YOUR_PASSWORD: 'Your password',
+		PERMISSION_DENIED: 'Permission denied',
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -564,7 +565,7 @@ let Language = {
 		REPLY: 'wiederholen',
 		EXHIBIT: 'Exhibit',
 		GRANTED_AWARDS: 'Alle Awards',
-		OWN_AWARDS: 'Eigene Auszeichnungne',
+		OWN_AWARDS: 'Alle Awards',
 		AWARD_DETAIL: 'Award',
 		MISSING_RANK_OR_AWARD: 'Missing rank or award',
 		EDIT_AWARD: 'Auszeichnung hinzufügen',
@@ -637,8 +638,8 @@ let Language = {
 		APPLY: 'übernehmen',
 		REJECT: 'absagen',
 		ACCEPTED: 'Für jeden User der diesem Event beitritt',
-		GPS: 'For every users who has signal from Healthstars Apps',
-		ORGANIZER: 'This award will be granted by organizer',
+		GPS: 'Für jeden User, der sich mit dem QR Code registriert hat.',
+		ORGANIZER: 'Für jeden User, der mit seinem Mobil Telefon zum Event erscheint.',
 		OFFLINE: 'This award will be granted offline',
 		ACCOUNT_INFORMATION: 'Account Information',
 		ADD_OTHER_ACCOUNTS: 'Neue Accounts hinzufügen',
@@ -662,7 +663,7 @@ let Language = {
 		MISSING_USER_ID: 'Missing user id',
 		USER_NOT_FOUND: 'Nutzer nicht gefunden',
 		PENDING_FRIEND_REQUEST: 'Freundschaftseinladung gesendet',
-		FRIEND: 'Freund',
+		FRIEND: 'Freunde',
 		CLOSE: 'Schließen',
 		FRIEND_SHIP_REQUEST: 'Freundschaftsanfrage',
 		INVITE_BECOME_FRIEND: 'Freundschaftsanfrage bestätigen',
@@ -739,7 +740,7 @@ let Language = {
 		PARTICIPATINGS: 'Teilnehmer',
 		PARTICIPATING: 'Teilnehmer',
 		OWNER: 'Verantwortlicher',
-		ALL: 'All',
+		ALL: 'Alle',
 		BLOCK_FEED: 'Block feed',
 		UNBLOCK_FEED: 'Unblock feed',
 		THIS_FEED_HAS_BLOCKED: 'This feed has blocked',
@@ -852,6 +853,7 @@ let Language = {
 		PHOTOS_OF: 'Fotos von',
 		YOUR_USERNAME: 'dein Username',
 		YOUR_PASSWORD: 'dein Passwort',
+		PERMISSION_DENIED: 'Erlaubnis verweigert',
 	}
 }
 

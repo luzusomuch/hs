@@ -66,7 +66,7 @@ class RegisterCtrl {
           phoneNumber: this.user.phoneNumber,
           location: this.user.location,
           isCompanyAccount: this.user.isCompanyAccount
-        }, (err, resp) => {
+        }, (err) => {
           if (err) {
             this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
             this.errors = {};

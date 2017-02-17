@@ -15,7 +15,7 @@ class SetAdminRoleCtrl {
 						return onlineId.toString()===user._id.toString();
 					});
 					if (index !== -1) {
-						user.online = true
+						user.online = true;
 					}
 				});
 			}

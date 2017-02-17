@@ -429,7 +429,7 @@ class CreateEventCtrl {
     if (this.event.costOfEvent) {
       if (this.currencies && this.currencies.length > 0 && this.event.currency && this.currencies.indexOf(this.event.currency)===-1) {
         this.errors.currency = true;
-        this.growl.error(`<p>{{'AVAILABLE_CURRENCIES' | translate}} ${this.currencies.toString()}</p>`)
+        this.growl.error(`<p>{{'AVAILABLE_CURRENCIES' | translate}} ${this.currencies.toString()}</p>`);
       }
     }
 

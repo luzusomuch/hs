@@ -90,8 +90,12 @@ class MyAwardCtrl {
 						this.ownAwardLoaded = true;
 					});
 				}
-			}).catch(() => {
-				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+			}).catch(err => {
+				if (err.status===403) {
+					this.growl.error(`<p>{{'PERMISSION_DENIED' | translate}}</p>`);
+				} else {
+					this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+				}
 			});
 		} else {
 			this.$http.delete(this.APP_CONFIG.baseUrl+'api/'+this.APP_CONFIG.apiVer+'/grantAwards/'+award._id).then(() => {

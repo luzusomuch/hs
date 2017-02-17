@@ -4,7 +4,7 @@
 
   function NotificationService($http, APP_CONFIG) {
     return {
-      getTotalNotifications(id) {
+      getTotalNotifications() {
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/notifications/get-total-notifications`);
       },
 

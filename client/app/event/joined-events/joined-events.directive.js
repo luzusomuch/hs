@@ -78,7 +78,7 @@ class JoinedEventsCtrl {
 			let data = (participants && participants.length > 0) ? angular.copy(participants) : [];
 	    data.push(owner);
 	    return _.findIndex(data, (item) => {
-	    	item._id.toString()===$scope.authUser._id.toString();
+	    	return item._id.toString()===$scope.authUser._id.toString();
 	    }) !== -1;
 		};
 	}

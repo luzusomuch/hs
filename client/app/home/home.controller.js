@@ -272,7 +272,7 @@ class HomeCtrl {
     let index = _.findIndex(data, (id) => {
       return id.toString()===this.authUser._id.toString();
     });
-    return index !== -1
+    return index !== -1;
   }
 
   participate(event) {

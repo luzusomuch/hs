@@ -33,11 +33,11 @@ class BackendPhotosEventCreateCtrl {
     		arrayKey: '',
     		data: {file: this.file, type: this.selectedType},
     		headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
-    	}).then(resp =>{
+    	}).then(() =>{
 				this.file = {};
 				this.selectedType = null;
 				this.submitted = false;
-				this.growl.success(`<p>{{'CREATE_PHOTO_EVENT_SUCCESSFULLY' | translate}}</p>`)
+				this.growl.success(`<p>{{'CREATE_PHOTO_EVENT_SUCCESSFULLY' | translate}}</p>`);
 	    }, () => {
 	    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 	    });

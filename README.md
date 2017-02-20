@@ -37,5 +37,7 @@ after that type
 db.users.createIndex({location: "2dsphere"})
 db.events.createIndex({location: "2dsphere"})
 
+#jquery 2.1.4 version is required
+
 ##Running server
 Please use ./build.sh to run our server.

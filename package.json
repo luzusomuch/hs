@@ -43,7 +43,8 @@
     "url": "^0.11.0",
     "multer": "^1.1.0",
     "moment": "^2.13.0",
-    "countryjs": "latest"
+    "countryjs": "latest",
+    "session-memory-store": "^0.2.2"
   },
   "devDependencies": {
     "autoprefixer": "^6.0.0",

@@ -13,7 +13,7 @@ class MySettingCtrl {
 			this.authUser.link = APP_CONFIG.baseUrl + 'profile/' + this.authUser._id + '/detail';
 			this.authUser.firstName = this.authUser.name.substr(0,this.authUser.name.indexOf(' '));
 			this.authUser.lastName = this.authUser.name.substr(this.authUser.name.indexOf(' ')+1);
-			if (this.authUser.location) {
+			if (this.authUser.location && this.authUser.location.coordinates) {
 				let params =  {
 					latlng: this.authUser.location.coordinates[1]+','+this.authUser.location.coordinates[0],
 					sensor: false

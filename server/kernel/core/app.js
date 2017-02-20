@@ -9,6 +9,7 @@ import bodyParser from 'body-parser';
 import methodOverride from 'method-override';
 import cookieParser from 'cookie-parser';
 import path from 'path';
+import sessionMemoryStore from 'session-memory-store';
 
 exports.name = 'kernel-app';
 
@@ -27,11 +28,14 @@ exports.core = (kernel) => {
   kernel.app.use(bodyParser.json());
   kernel.app.use(methodOverride());
   kernel.app.use(cookieParser());
+  
+  let MemoryStore = sessionMemoryStore(session);
 
   kernel.app.use(session({
     secret: kernel.config.SECRETS.session,
     saveUninitialized: false,
-    resave: false
+    resave: false,
+    store: new MemoryStore()
   }));
 
   // Add headers

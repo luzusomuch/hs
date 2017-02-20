@@ -46,17 +46,10 @@ kernel.app.route('/:url(api|auth|components|bower_components|app|assets|lib|styl
 // All other routes should redirect to the index.html
 kernel.app.route('/*')
   .get((req, res) => {
-    if (env==='development') {
-	    if(/^\/backend.*/.test(req.url)) {
-	    	return res.sendFile(path.resolve('client/backend.html'));
-	    }
-	    return res.sendFile(path.resolve('client/index.html'));
-    } else if (env==='production') {
-			if(/^\/backend.*/.test(req.url)) {
-	    	return res.sendFile(config.root + '/client/backend.html');
-	    }
-	    return res.sendFile(config.root + '/client/index.html');
+    if(/^\/backend.*/.test(req.url)) {
+    	return res.sendFile(path.resolve('client/backend.html'));
     }
+    return res.sendFile(path.resolve('client/index.html'));
   });
 
 kernel.startHttpServer();

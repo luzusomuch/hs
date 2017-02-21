@@ -252,19 +252,19 @@ angular.module('healthStarsApp')
       } else {
         switch (award.objectName) {
           case 'Foodstar Point': 
-            url = '/assets/images/star1.png';
+            url = '/assets/images/star1_banner.png';
             break;
           case 'Sportstar Point':
-            url = '/assets/images/star.png';
+            url = '/assets/images/star_banner.png';
             break;
           case 'Socialstar Point':
-            url = '/assets/images/star2.png';
+            url = '/assets/images/star2_banner.png';
             break;
           case 'Actionstar Point':
-            url = '/assets/images/star4.png';
+            url = '/assets/images/star4_banner.png';
             break;
           case 'Ecostar Point':
-            url = '/assets/images/star3.png';
+            url = '/assets/images/star3_banner.png';
             break;
           default:
             break;
@@ -761,5 +761,40 @@ angular.module('healthStarsApp')
       result += ' ' + splitted[1];
     }
     return result;
+  };
+})
+.filter('weatherDayFilter', ($localStorage) => {
+  return day => {
+    if ($localStorage.language==='en') {
+      return day;
+    } else {
+      let text;
+      switch (day.toLowerCase()) {
+        case 'monday':
+          text = 'Montag';
+          break;
+        case 'tuesday':
+          text = 'Dienstag';
+          break;
+        case 'wednesday':
+          text = 'Mittwoch';
+          break;
+        case 'thursday':
+          text = 'Donnerstag';
+          break;
+        case 'friday':
+          text = 'Freitag';
+          break;
+        case 'saturday':
+          text = 'Samstag';
+          break;
+        case 'sunday':
+          text = 'Sonntag';
+          break;
+        default:
+          break;
+      }
+      return text;
+    }
   };
 });

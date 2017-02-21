@@ -6,7 +6,7 @@
             <div class="do-weather">{{data.list[$index].temp.day | number: 0}}<sup>o</sup></div>
             <div class="date-weather">
                 <span class="next-wea" ng-click="previous()"><i class="fa fa-angle-left"></i></span>
-                {{moment(data.list[$index].dt*1000).format('dddd')}}
+                {{moment(data.list[$index].dt*1000).format('dddd') | weatherDayFilter}}
                 <span class="prev-wea" ng-click="next()"><i class="fa fa-angle-right"></i></span>
             </div>
         </div>

@@ -10,6 +10,17 @@ class ReportCtrl {
   	this.id = id;
   	this.type = type;
   	this.submitted = false;
+    this.placeholderText;
+
+    let placeHoldersTranslate = [{
+      value: 'REPORT_EVENT', text: ($localStorage.language==='en') ? 'Please describe why this Event is not appropriated' : 'Bitte beschreib möglichst genau, warum dieses Event gegen unsere Ricktlinien verstößt...'
+    }, {
+      value: 'REPORT_USER', text: ($localStorage.language==='en') ? 'Please describe why this User is not appropriated' : 'Bitte beschreib möglichst genau, warum dieses User gegen unsere Ricktlinien verstößt...'
+    }, {
+      value: 'REPORT_PHOTO', text: ($localStorage.language==='en') ? 'Please describe why this Photo is not appropriated' : 'Bitte beschreib möglichst genau, warum dieses Foto gegen unsere Ricktlinien verstößt...'
+    }, {
+      value: 'REPORT_COMMENT', text: ($localStorage.language==='en') ? 'Please describe why this Comment is not appropriated' : 'Bitte beschreib möglichst genau, warum dieses Kommentare gegen unsere Ricktlinien verstößt...'
+    }]
 
   	switch (this.type) {
   		case 'Event':
@@ -27,6 +38,13 @@ class ReportCtrl {
   		default: 
   			break;
   	}
+
+    let index = _.findIndex(placeHoldersTranslate, item => {
+      return item.value===this.modalName;
+    });
+    if (index !== -1) {
+      this.placeholderText = placeHoldersTranslate[index].text;
+    }
   }
 
   submit(form) {

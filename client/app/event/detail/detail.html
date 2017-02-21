@@ -1,8 +1,8 @@
  <div class="top-detail">
     <div drag-me old-top="100" class="img-timline bg-cover" style="background-image: url('{{vm.event | eventBanner}}')"></div>
-    <div class="event-edit-button" ng-show="vm.event.ownerId._id==vm.authUser._id || vm.event.adminId._id==vm.authUser._id">
+    <!-- <div class="event-edit-button" ng-show="vm.event.ownerId._id==vm.authUser._id || vm.event.adminId._id==vm.authUser._id">
         <a class="btn btn-default btn-block" ui-sref="event.edit({id: vm.$stateParams.id})" ng-bind-html="'EDIT_EVENT' | translate"></a>
-    </div>
+    </div> -->
     <div class="event-share-button" share-tool-box data="vm.event" type="Event" photo="vm.event.photosId[0]" title="vm.event.name" description="vm.event.description" url="vm.event.url" start-date="vm.event.startDateTime" end-date="vm.event.endDateTime" location="vm.event.location.fullAddress" fb="true" tw="true" gg="true" allow-show="true">
     </div>
     <div class="text-top-detail">
@@ -15,6 +15,9 @@
                         <div class="col-sm-8 col-lg-7">
                             <div class="col-xs-6">
                                 <a ng-show="vm.event.ownerId._id===vm.authUser._id" href="#" class="btn btn-default btn-block" ng-click="vm.setAdminRole()" ng-bind-html="'SET_ADMIN_FOR_THIS_EVENT' | translate | html"></a>
+                            </div>
+                            <div class="col-xs-6" ng-show="vm.event.ownerId._id==vm.authUser._id || vm.event.adminId._id==vm.authUser._id">
+                                <a class="btn btn-default btn-block" ui-sref="event.edit({id: vm.$stateParams.id})" ng-bind-html="'EDIT_EVENT' | translate"></a>
                             </div>
                             <!-- <div class="action-event">
                                 <span><i class="fa fa-user"></i> {{'BY' | translate}} {{vm.event.ownerId.name}}</span>
@@ -75,8 +78,8 @@
                         </div>
                     </div>
                     <p>
-                        <span ng-show="!vm.event.isSameDate"><i class="fa fa-clock-o"></i> {{'FROM' | translate }} {{vm.event.startDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}} {{'TO' | translate}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}}</span>
-                        <span ng-show="vm.event.isSameDate"><i class="fa fa-clock-o"></i> {{vm.event.startDateTime | hsDate: 'HH:mm'}}-{{vm.event.endDateTime | hsDate: 'HH:mm'}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY'}}</span>
+                        <span ng-show="!vm.event.isSameDate"><i class="fa fa-clock-o"></i> {{'FROM' | translate }} {{vm.event.startDateTime | hsDate: 'MMMM DD, YYYY HH:mm a' | datePickerFilter}} {{'TO' | translate}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY HH:mm a' | datePickerFilter}}</span>
+                        <span ng-show="vm.event.isSameDate"><i class="fa fa-clock-o"></i> {{vm.event.startDateTime | hsDate: 'HH:mm'}}-{{vm.event.endDateTime | hsDate: 'HH:mm'}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY' | datePickerFilter}}</span>
                     </p>
                     
                 </div>

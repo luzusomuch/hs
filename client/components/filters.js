@@ -169,6 +169,13 @@ angular.module('healthStarsApp')
     return moment(date).format(format);
   };
 })
+.filter('multipleLanguageDate', ($localStorage) => {
+  return (date) => {
+    console.log(date);
+    console.log(date.split(' '));
+
+  };
+})
 .filter('categoryName', () => {
   return (category) => {
     let name = category.name;
@@ -759,6 +766,15 @@ angular.module('healthStarsApp')
     }
     if (splitted[1]) {
       result += ' ' + splitted[1];
+    }
+    if (splitted[2]) {
+      result += ' ' + splitted[2];
+    }
+    if (splitted[3]) {
+      result += ' ' + splitted[3];
+    }
+    if (splitted[4]) {
+      result += ' ' + splitted[4];
     }
     return result;
   };

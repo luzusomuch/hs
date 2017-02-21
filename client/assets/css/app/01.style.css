@@ -88,7 +88,7 @@ strong {
 }
 a, a:hover, a:visited, a:active, a:focus {
     text-decoration: none;
-    color: #0080e5;
+    /*color: #0080e5;*/
 }
 a:hover {
     opacity: 0.7;

@@ -427,6 +427,7 @@ let Language = {
 		YOUR_USERNAME: 'Your username',
 		YOUR_PASSWORD: 'Your password',
 		PERMISSION_DENIED: 'Permission denied',
+		SEND_REPORT: 'Send report',
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -517,7 +518,7 @@ let Language = {
 		EVENT_LOCATION_REQUIRED: 'Ort des Events erforderlich',
 		EVENT_REPEATING_MISSING_ENTITIES: 'Event repeat is missing some entities',
 		EVENT_REPEATING_ENTITY_NOT_VALID: 'Event repeat entity is not valid',
-		CREATE_AWARD: 'Event hinzufügen',
+		CREATE_AWARD: 'Award hinzufügen',
 		AWARD_TITLE: 'Auszeichnung',
 		AWARD_TYPE: 'Auszeichnungstyp',
 		ADD_MORE_AWARD: 'Weitere Auszeichnung hinzufügen',
@@ -552,7 +553,7 @@ let Language = {
 		BLOCK_PHOTO: 'Foto blockieren',
 		UNBLOCK_PHOTO: 'Foto entblocken',
 		NOT_VALID_FIELD: 'Eintrag nicht gültig',
-		REPORT_EVENT: 'Event Beschreibung',
+		REPORT_EVENT: 'Event melden',
 		EMAIL_ALREADY_USED: 'Diese Email-Adresse wird bereits genutzt',
 		LOAD_MORE_FEED: 'Mehr',
 		AWARD_GRANTED_ERROR: 'This event award was granted to this user',
@@ -673,7 +674,7 @@ let Language = {
 		INTERESTED_EVENT: 'interessierte Events',
 		EVENT_INVITES: 'zum Event einladen',
 		INVITE_TO_EVENT: 'invited you to join event',
-		LOAD_MORE_FEEDS: 'Load more feeds',
+		LOAD_MORE_FEEDS: 'mehr laden',
 		FRIENDS: 'Freunde',
 		YOU: 'Du',
 		SEND_MESSAGE_TO: 'Nachricht an',
@@ -743,7 +744,7 @@ let Language = {
 		ALL: 'Alle',
 		BLOCK_FEED: 'Block feed',
 		UNBLOCK_FEED: 'Unblock feed',
-		THIS_FEED_HAS_BLOCKED: 'This feed has blocked',
+		THIS_FEED_HAS_BLOCKED: 'Nachrichten blockieren',
 		INVITE_VIA_EMAILS: 'Einladen via Emails',
 		ENTER_NEW_EMAIL: 'Email eingeben',
 		ADD_NEW_EMAIL: 'Email hinzufügen',
@@ -854,6 +855,7 @@ let Language = {
 		YOUR_USERNAME: 'dein Username',
 		YOUR_PASSWORD: 'dein Passwort',
 		PERMISSION_DENIED: 'Erlaubnis verweigert',
+		SEND_REPORT: 'absenden'
 	}
 }
 

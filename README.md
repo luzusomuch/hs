@@ -39,5 +39,9 @@ db.events.createIndex({location: "2dsphere"})
 
 #jquery 2.1.4 version is required
 
+#For Lee's server please use these following cmds:
+export baseUrl=http://ec2-35-163-48-227.us-west-2.compute.amazonaws.com/
+export socketUrl=http://ec2-35-163-48-227.us-west-2.compute.amazonaws.com:9000/
+
 ##Running server
 Please use ./build.sh to run our server.

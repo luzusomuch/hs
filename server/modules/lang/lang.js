@@ -428,6 +428,8 @@ let Language = {
 		YOUR_PASSWORD: 'Your password',
 		PERMISSION_DENIED: 'Permission denied',
 		SEND_REPORT: 'Send report',
+		INVITE_ALL: 'Invite all',
+		INVITED_ALL_FRIENDS_SUCCESSFULLY: 'Invited all friends successfully',
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -855,7 +857,9 @@ let Language = {
 		YOUR_USERNAME: 'dein Username',
 		YOUR_PASSWORD: 'dein Passwort',
 		PERMISSION_DENIED: 'Erlaubnis verweigert',
-		SEND_REPORT: 'absenden'
+		SEND_REPORT: 'absenden',
+		INVITE_ALL: 'Lade alle ein',
+		INVITED_ALL_FRIENDS_SUCCESSFULLY: 'Laden Sie alle Freunde erfolgreich ein',
 	}
 }
 

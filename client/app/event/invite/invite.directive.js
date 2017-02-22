@@ -1,12 +1,13 @@
 'use strict';
 
 class EventInviteCtrl {
-	constructor($uibModalInstance,  User, Invite, event, userId, socket) {
+	constructor($uibModalInstance,  User, Invite, event, userId, socket, growl) {
 		this.User = User;
 		this.Invite = Invite;
 		this.event = event;
 		this.userId = userId;
 		this.socket = socket;
+		this.growl = growl;
 		this.users = [];
 		this.loading = true;
 		this.$uibModalInstance = $uibModalInstance;
@@ -16,6 +17,7 @@ class EventInviteCtrl {
 		};
 
 		this.getFriends(this.page.friend);
+		this.invitedAllFriends = false;
 	}
 
 	getFriends(page) {
@@ -59,6 +61,14 @@ class EventInviteCtrl {
 		this.Invite.intiveToEvent(user._id, this.event._id).then(() =>  {
 			user.invited = true;
 		});
+	}
+
+	inviteAll() {
+		this.invitedAllFriends = true;
+		_.each(this.users, user => {
+			this.invite(user);
+		});
+		this.growl.success(`<p>{{'INVITED_ALL_FRIENDS_SUCCESSFULLY' | translate}}</p>`)
 	}
 
 	close() {

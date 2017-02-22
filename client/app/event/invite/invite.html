@@ -24,5 +24,6 @@
     <hs-loading size="32" ng-show="vm.loading"></hs-loading>
     </div>
     <div class="modal-footer">
-    <button class="btn btn-primary ng-binding" ng-click="vm.close()" ng-bind-html="'CLOSE' | translate | html"></button>
+        <button class="btn btn-success" ng-disabled="vm.invitedAllFriends" type="button" ng-click="vm.inviteAll()">{{'INVITE_ALL' | translate}}</button>
+        <button class="btn btn-primary ng-binding" ng-click="vm.close()" ng-bind-html="'CLOSE' | translate | html"></button>
     </div>

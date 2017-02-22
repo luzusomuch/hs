@@ -29,6 +29,7 @@ class EventDetailCtrl {
 		this.liked = liked;
 		this.feeds = [];
 		this.authUser = $localStorage.authUser;
+		this.$localStorage = $localStorage;
 
 		this.LikeService = LikeService;
 		this.Upload = Upload;

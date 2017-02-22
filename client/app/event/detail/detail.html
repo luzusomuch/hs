@@ -112,9 +112,15 @@
                     <div class="content-post-li">
                         <div class="title-post-li">
                             <h4 class="title-generated-home">{{feed.ownerId.name}}
-                                <span class="date-post">{{feed.createdAt | fromNow | fromNowNumber}} {{feed.createdAt | fromNow | fromNowTranslate | translate}}</span> 
+                                <span ng-show="vm.$localStorage.language==='en'" class="date-post">{{feed.createdAt | fromNow | fromNowNumber}} {{feed.createdAt | fromNow | fromNowTranslate | translate}}</span> 
+
+                                <span ng-show="vm.$localStorage.language==='de'" class="date-post">
+                                    <span ng-show="feed.createdAt | showAgoTextInDeLanguage">{{'AGO' | translate}}</span>{{feed.createdAt | fromNow | fromNowNumber}} {{feed.createdAt | fromNow | fromNowTranslate | translate}}
+                                </span>
+
                                 <div class="action-comment">
-                                    <span ng-click="feed.showOption=!feed.showOption" class="comment-option-button"><i class="fa fa-ellipsis-v"></i></span>
+                                    <span ng-show="vm.authUser.role==='admin' || vm.authUser._id===vm.event.ownerId._id || vm.authUser._id===vm.event.adminId._id" ng-click="feed.showOption=!feed.showOption" class="comment-option-button"><i class="fa fa-ellipsis-v"></i></span>
+
                                     <ul ng-mouseleave="feed.showOption = false" class="comment-option" ng-show="feed.showOption">
                                         <li ng-show="vm.authUser.role=='admin' || vm.authUser._id==vm.event.ownerId._id || vm.authUser._id==vm.event.adminId._id" ng-click="vm.blockFeed(feed)">
                                             <span>{{(feed.blocked) ? 'UNBLOCK_FEED' : 'BLOCK_FEED' | translate}}</span>

@@ -28,6 +28,7 @@ class likeCommentShareCtrl {
     });
   	this.comment = {};
   	this.authUser = $localStorage.authUser;
+    this.$localStorage = $localStorage;
     this.$q = $q;
 
     if (this.type==='Photo') {

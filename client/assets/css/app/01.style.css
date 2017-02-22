@@ -2566,3 +2566,6 @@ span.total-notification {
     right: 10px;
     top: 25px;
 }
+.weather-icon {
+    width: 150px;
+}

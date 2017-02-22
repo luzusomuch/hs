@@ -473,4 +473,72 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 	  return icon;
 	};
 })
+.filter('weatherIconWithPng', () => {
+	return (weather) => {
+		if (!weather) {
+			return '';
+		}
+		let icon = weather[0].icon;
+		let link;
+		switch (icon) {
+			case '02d':
+				link = 'http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-clouds-icon.png';
+				break;
+			case '01d':
+				link = 'http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-clear-icon.png';
+				break;
+			case '03d':
+				link = 'http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-many-clouds-icon.png';
+				break;
+			case '04d':
+				link = 'http://icons.iconarchive.com/icons/icons-land/weather/128/Overcast-icon.png';
+				break;
+			case '09d':
+				link = 'http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-showers-scattered-icon.png';
+				break;
+			case '10d':
+				link = 'http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-showers-scattered-day-icon.png';
+				break;
+			case '11d':
+				link = 'assets/images/day-thunderstorm.png';
+				break;
+			case '13d':
+				link = 'assets/images/snow.png';
+				break;
+			case '50d':
+				link = 'https://cdn.iconscout.com/public/images/icon/free/png-512/haze-air-mist-weather-wind-372afcd950ff168e-512x512.png';
+				break;
+			case '01n':
+				link = 'http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/256/Status-weather-clear-night-icon.png';
+				break;
+			case '02n':
+				link = 'http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-clouds-night-icon.png';
+				break;
+			case '03n':
+				link = 'http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-many-clouds-icon.png';
+				break;
+			case '04n':
+				link = 'http://icons.iconarchive.com/icons/icons-land/weather/128/Overcast-icon.png';
+				break;
+			case '09n':
+				link = 'http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-showers-scattered-icon.png';
+				break;
+			case '10n':
+				link = 'http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-storm-night-icon.png';
+				break;
+			case '11n':
+				link = 'assets/images/day-thunderstorm.png';
+				break;
+			case '13n':
+				link = 'assets/images/snow.png';
+				break;
+			case '13n':
+				link = 'https://cdn.iconscout.com/public/images/icon/free/png-512/haze-air-mist-weather-wind-372afcd950ff168e-512x512.png';
+				break;
+			default:
+				break;
+		}
+		return link;
+	};
+})
 .controller('EventWeatherCtrl', EventWeatherCtrl);

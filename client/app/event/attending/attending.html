@@ -10,6 +10,9 @@
             <span class="text-mo" ng-if="user._id===vm.authUser._id">
                 {{'YOU' | translate}}
             </span>
+            <p class="text-mo margin-0" ng-if="user.isEventAdmin">
+                {{'ADMIN_OF_THIS_EVENT' | translate}}
+            </p>
             <span class="text-mo" ng-if="user._id!==vm.authUser._id">
                 <span ng-show="user.friendStatus==='completed'">{{'YOUR_FRIEND' | translate}}</span>
                 <span ng-show="user.friendStatus==='pending'">{{'PENDING_FRIEND_REQUEST' | translate}}</span>

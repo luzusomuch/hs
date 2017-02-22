@@ -1431,6 +1431,9 @@ module.exports = function(kernel) {
       kernel.model.User.find({_id: {$in: ids}}, '-password -salt').populate('avatar').exec().then(users => {
         async.each(users, (user, callback) => {
           user = user.toJSON();
+          if (event.adminId && user._id.toString()===event.adminId.toString()) {
+            user.isEventAdmin = true;
+          }
           kernel.model.Relation.findOne({
             type: 'friend',
             $or: [{

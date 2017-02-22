@@ -2191,6 +2191,11 @@ module.exports = function(kernel) {
           
         event.stats.totalParticipants = event.participantsId.length;
 
+        // if current leave user is admin of event then update adminId to null
+        if (event.adminId && event.adminId.toString()===req.user._id.toString()) {
+          event.adminId = null;
+        }
+
         event.save().then(saved => {
           kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: saved}).save();
           return res.status(200).end();
@@ -2288,36 +2293,37 @@ module.exports = function(kernel) {
       if (!event) {
         return res.status(404).end();
       }
-      if (event.ownerId.toString()!==req.user._id.toString()) {
-        return res.status(403).end();
-      }
-      let availableUsers = _.union(event.participantsId, event.waitingParticipantIds);
+      if (event.ownerId.toString()===req.user._id.toString() || (event.adminId && event.adminId.toString()===req.user._id.toString())) {
+        let availableUsers = _.union(event.participantsId, event.waitingParticipantIds);
 
-      let index = _.findIndex(availableUsers, userId => {
-        return userId.toString()===req.body.adminId.toString();
-      });
-
-      if (index !== -1) {
-        event.adminId = req.body.adminId;
-        event.passedDate = new Date();
-        event.save().then(saved => {
-          kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: saved}).save();
-
-          // create new notification
-          kernel.queue.create('CREATE_NOTIFICATION', {
-            ownerId: saved.adminId,
-            toUserId: saved.adminId,
-            fromUserId: req.user._id,
-            type: 'pass-admin-role',
-            element: saved
-          }).save();
-
-          return res.status(200).end();
-        }).catch(err => {
-          return res.status(500).json({type: 'SERVER_ERROR'});
+        let index = _.findIndex(availableUsers, userId => {
+          return userId.toString()===req.body.adminId.toString();
         });
+
+        if (index !== -1) {
+          event.adminId = req.body.adminId;
+          event.passedDate = new Date();
+          event.save().then(saved => {
+            kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: saved}).save();
+
+            // create new notification
+            kernel.queue.create('CREATE_NOTIFICATION', {
+              ownerId: saved.adminId,
+              toUserId: saved.adminId,
+              fromUserId: req.user._id,
+              type: 'pass-admin-role',
+              element: saved
+            }).save();
+
+            return res.status(200).end();
+          }).catch(err => {
+            return res.status(500).json({type: 'SERVER_ERROR'});
+          });
+        } else {
+          return res.status(409).end();
+        }
       } else {
-        return res.status(409).end();
+        return res.status(403).end();
       }
     }).catch(err => {
       return res.status(500).json({type: 'SERVER_ERROR'});
@@ -2330,27 +2336,28 @@ module.exports = function(kernel) {
       if (!event) {
         return res.status(404).end();
       }
-      if (event.ownerId.toString()!==req.user._id.toString()) {
+      if (event.ownerId.toString()===req.user._id.toString() || (event.adminId && event.adminId.toString()===req.user._id.toString())) {
+        let allUsers = _.union(event.participantsId, event.waitingParticipantIds);
+        let data = [];
+        async.each(allUsers, (id, callback) => {
+          kernel.model.User.findById(id, '-password -salt')
+          .populate('avatar').exec().then(user => {
+            if (event.adminId && event.adminId.toString()===user._id.toString()) {
+              user = user.toJSON();
+              user.isEventAdmin = true;
+            }
+            data.push(user);
+            callback();
+          }).catch(callback);
+        }, (err) => {
+          if (err) {
+            return res.status(500).json({type: 'SERVER_ERROR'});
+          }
+          return res.status(200).json({users: data});
+        });
+      } else {
         return res.status(403).end();
       }
-      let allUsers = _.union(event.participantsId, event.waitingParticipantIds);
-      let data = [];
-      async.each(allUsers, (id, callback) => {
-        kernel.model.User.findById(id, '-password -salt')
-        .populate('avatar').exec().then(user => {
-          if (event.adminId && event.adminId.toString()===user._id.toString()) {
-            user = user.toJSON();
-            user.isEventAdmin = true;
-          }
-          data.push(user);
-          callback();
-        }).catch(callback);
-      }, (err) => {
-        if (err) {
-          return res.status(500).json({type: 'SERVER_ERROR'});
-        }
-        return res.status(200).json({users: data});
-      });
     }).catch(err => {
       return res.status(500).json({type: 'SERVER_ERROR'});
     });

@@ -430,6 +430,9 @@ let Language = {
 		SEND_REPORT: 'Send report',
 		INVITE_ALL: 'Invite all',
 		INVITED_ALL_FRIENDS_SUCCESSFULLY: 'Invited all friends successfully',
+		ADMIN_LEAVE_EVENT_CONFIRMATION: 'Admin leave event confirmation',
+		JUST_LEAVE_THIS_EVENT: 'Just leave this event',
+		ASSIGN_ADMIN_ROLE_TO_ANOTHER_USER: 'Assign admin role to another user',
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -860,6 +863,9 @@ let Language = {
 		SEND_REPORT: 'absenden',
 		INVITE_ALL: 'Lade alle ein',
 		INVITED_ALL_FRIENDS_SUCCESSFULLY: 'Laden Sie alle Freunde erfolgreich ein',
+		ADMIN_LEAVE_EVENT_CONFIRMATION: 'Admin Urlaubsbestätigung bestätigen',
+		JUST_LEAVE_THIS_EVENT: 'Verlassen Sie einfach diese Veranstaltung',
+		ASSIGN_ADMIN_ROLE_TO_ANOTHER_USER: 'Admin rolle einem anderen Benutzer zuordnen',
 	}
 }
 

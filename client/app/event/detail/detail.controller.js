@@ -193,6 +193,47 @@ class EventDetailCtrl {
 	}
 
 	leaveEvent() {
+		if (this.event.adminId && this.event.adminId._id && this.event.adminId._id===this.authUser._id) {
+			this.$uibModal.open({
+				animation: true, 
+				template: `
+					<div class="modal-header">
+						<h3 class="modal-title" ng-bind-html="'ADMIN_LEAVE_EVENT_CONFIRMATION' | translate | html"></h3>
+					</div>
+					<div class="modal-body">
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="leaveEvent()" ng-bind-html="'JUST_LEAVE_THIS_EVENT' | translate | html"></button>
+						<button class="btn btn-success" ng-click="assignAdminRoleToAnotherUser()" ng-bind-html="'ASSIGN_ADMIN_ROLE_TO_ANOTHER_USER' | translate | html"></button>
+						<button class="btn btn-warning" ng-click="cancel()" ng-bind-html="'CANCEL' | translate | html"></button>
+					</div>
+				`,
+				controller: ['$scope', '$uibModalInstance', ($scope, $uibModalInstance) => {
+					$scope.leaveEvent = () => {
+						$uibModalInstance.close('leave');
+					}
+
+					$scope.assignAdminRoleToAnotherUser = () => {
+						$uibModalInstance.close('assign');
+					}
+
+					$scope.cancel = () => {
+						$uibModalInstance.dismiss();
+					}
+				}],
+			}).result.then(resp => {
+				if (resp==='leave') {
+					this.leaveEventFunction();
+				} else if (resp==='assign') {
+					this.setAdminRole(true);
+				}
+			});
+		} else {
+			this.leaveEventFunction();
+		}
+	}
+
+	leaveEventFunction() {
 		this.EventService.leaveEvent(this.event._id).then(() => {
 			let index = _.findIndex(this.event.participantsId, (participant) => {
 				return participant._id.toString()===this.authUser._id;
@@ -214,8 +255,8 @@ class EventDetailCtrl {
 		});
 	}
 
-	setAdminRole() {
-		if (this.event.ownerId._id.toString()===this.authUser._id.toString()) {
+	setAdminRole(leaveEvent) {
+		if (this.event.ownerId._id.toString()===this.authUser._id.toString() || (this.event.adminId && this.event.adminId._id && this.event.adminId._id===this.authUser._id)) {
 			this.$uibModal.open({
 				animation: true,
 				templateUrl: 'app/event/modal/set-admin-role/view.html',
@@ -235,6 +276,10 @@ class EventDetailCtrl {
 				}
 			}).result.then(resp => {
 				this.event.adminId = resp;
+
+				if (leaveEvent) {
+					this.leaveEventFunction();
+				}
 			});
 		} else {
 			return this.growl.error(`<p>{{'NOT_ALLOW' | translate}}</p>`);			

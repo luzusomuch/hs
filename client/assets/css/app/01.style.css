@@ -2572,3 +2572,9 @@ span.total-notification {
 .margin-0 {
     margin: 0px;
 }
+.event-detail-header-button {
+    text-align: right;
+}
+.text-to-lowercase {
+    text-transform: lowercase;
+}

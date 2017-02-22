@@ -99,7 +99,7 @@
 	                        &nbsp;
 	                        <p class="new-feed-error" ng-show="vm.errors.content && vm.submitted">{{'FEED_CONTENT_REQUIRED' | translate}}</p>
 	                        <p class="new-feed-error" ng-show="vm.errors.file && vm.submitted">{{'NUDE_FOUND' | translate}}</p>
-	                        <button class="btn btn-primary" ng-click="vm.createNewFeed(vm.feed)">{{'POST' | translate}}</button>
+	                        <button class="btn btn-primary text-to-lowercase" ng-click="vm.createNewFeed(vm.feed)">{{'POST' | translate}}</button>
                         </div>
                     </div>
                 </div>

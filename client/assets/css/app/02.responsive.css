@@ -6,6 +6,12 @@
     }
 }
 @media all and (min-width: 320px) and (max-width: 767px) {
+    .event-detail-header-button {
+        text-align: left;
+    }
+    .event-detail-header-button a {
+        margin-bottom: 5px;
+    }
     .container-fluid {
         padding: 0px 10px;
     }
@@ -121,7 +127,7 @@
         height: 300px;
     }
     .text-top-detail {
-        bottom: 100px;
+        bottom: 10px;
     }
     .title-detail {
         font-size: 20px;

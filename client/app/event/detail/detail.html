@@ -11,7 +11,16 @@
                 <div class="col-sm-3"></div>
                 <div class="col-sm-9">
                     <!-- <h2 class="title-detail"><img ng-src="{{vm.event.categoryId | categoryImagePath}}" width="60"> {{vm.event.name}}</h2> -->
-                    <div class="row ">
+
+                    <div class="event-detail-header-button">
+                        <a ng-show="vm.event.ownerId._id===vm.authUser._id" href="#" class="btn btn-default" ng-click="vm.setAdminRole()" ng-bind-html="'SET_ADMIN_FOR_THIS_EVENT' | translate | html"></a>
+                        <a class="btn btn-default" ui-sref="event.edit({id: vm.$stateParams.id})" ng-bind-html="'EDIT_EVENT' | translate"></a>
+                        <span ng-if="vm.isNotParticipant() && vm.event.public"><a ng-click="vm.attendEvent()" href="#" class="btn btn-default"><i class="fa fa-user"></i> {{(vm.isInWaitingList()) ? 'WAITING_FOR_ACCEPTANCE' : 'ATTEND' | translate}}</a></span>
+                        <span ng-if="!vm.isNotParticipant() && vm.event.ownerId._id!==vm.authUser._id"><a ng-click="vm.leaveEvent()" href="#" class="btn btn-default"><i class="fa fa-sign-out"></i> {{'LEAVE' | translate}}</a></span>
+                        <span ><a href="#" class="btn btn-default" ng-click="vm.like()"><i ng-class="{liked: vm.liked}" class="fa fa-heart"></i> <span ng-bind-html="(vm.liked) ? 'UNLIKE' : 'LIKE' | translate | html"></span></a></span>
+                    </div>
+
+                    <!-- <div class="row ">
                         <div class="col-sm-8 col-lg-7">
                             <div class="col-xs-6">
                                 <a ng-show="vm.event.ownerId._id===vm.authUser._id" href="#" class="btn btn-default btn-block" ng-click="vm.setAdminRole()" ng-bind-html="'SET_ADMIN_FOR_THIS_EVENT' | translate | html"></a>
@@ -19,14 +28,6 @@
                             <div class="col-xs-6" ng-show="vm.event.ownerId._id==vm.authUser._id || vm.event.adminId._id==vm.authUser._id">
                                 <a class="btn btn-default btn-block" ui-sref="event.edit({id: vm.$stateParams.id})" ng-bind-html="'EDIT_EVENT' | translate"></a>
                             </div>
-                            <!-- <div class="action-event">
-                                <span><i class="fa fa-user"></i> {{'BY' | translate}} {{vm.event.ownerId.name}}</span>
-                                <span><i class="fa fa-clock-o"></i> {{'FROM' | translate }} {{vm.event.startDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}} {{'TO' | translate}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY HH:mm a'}}</span>
-                                <span ng-click="vm.like()"><i class="fa fa-heart" ng-class="{liked: vm.liked}"></i> {{vm.event.totalLike || 0}}</span>
-                                <span><i class="fa fa-comment"></i> {{vm.event.totalComment || 0}}</span>
-                                <span ng-if="!vm.event.private"><i class="fa fa-unlock"></i> <span ng-bind-html="'PUBLIC_EVENT' | translate | html"></span></span>
-                                <span ng-if="vm.event.private"><i class="fa fa-lock"></i> {{'PRIVATE_EVENT' | translate}}</span>
-                            </div> -->
                         </div>
                         <div class="col-sm-4 col-lg-5">
                             <div class="row row-small">
@@ -35,7 +36,7 @@
                                 <div class="col-xs-6"><a href="#" class="btn btn-default btn-block" ng-click="vm.like()"><i ng-class="{liked: vm.liked}" class="fa fa-heart"></i> <span ng-bind-html="(vm.liked) ? 'UNLIKE' : 'LIKE' | translate | html"></span></a></div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -100,7 +101,7 @@
                         &nbsp;
                         <p class="new-feed-error" ng-show="vm.errors.content && vm.submitted">{{'FEED_CONTENT_REQUIRED' | translate}}</p>
                         <p class="new-feed-error" ng-show="vm.errors.file && vm.submitted">{{'NUDE_FOUND' | translate}}</p>
-                        <button class="btn btn-primary" ng-click="vm.createNewFeed(vm.feed)">{{'POST' | translate}}</button>
+                        <button class="btn btn-primary text-to-lowercase" ng-click="vm.createNewFeed(vm.feed)">{{'POST' | translate}}</button>
                     </div>
                 </div>
             </div>

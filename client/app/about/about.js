@@ -17,8 +17,7 @@ angular.module('healthStarsApp').config(function($stateProvider) {
 	    	}
 	    },
 	    settings: {
-	    	footer: false,
-	      	pageTitle: 'HealthStars | About'
+      	pageTitle: 'HealthStars | About'
 	    }
   	});
 });

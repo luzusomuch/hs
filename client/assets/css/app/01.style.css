@@ -2578,3 +2578,6 @@ span.total-notification {
 .text-to-lowercase {
     text-transform: lowercase;
 }
+.padding0-20 {
+    padding: 0px 20px;
+}

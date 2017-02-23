@@ -9,6 +9,11 @@ class EventDetailCtrl {
 			$state.go('home');
 		}
 		this.$scope = $scope;
+
+		if (event.repeat && event.repeat.type) {
+			event.repeat.type = event.repeat.type.toUpperCase();
+		}
+
 		this.event = event;
 		// check start and end date is the same or not
 		if (moment(moment(this.event.startDateTime).format('YYYY-MM-DD')).isSame(moment(this.event.endDateTime).format('YYYY-MM-DD'))) {

@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import _ from 'lodash';
 import path from 'path';
+import mg from 'nodemailer-mailgun-transport';
 
 var viewsPath = './templates/',
   SwigEngine = require('swig').Swig,
@@ -12,7 +13,7 @@ var viewsPath = './templates/',
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 function Mailer(options) {
-  this.transport = nodemailer.createTransport(options);
+  this.transport = nodemailer.createTransport(mg(options));
 }
 
 Mailer.prototype.render = function(template, options, callback) {
@@ -40,6 +41,7 @@ Mailer.prototype.sendMail = function(template, emails, options, callback) {
 
     if (err) { return callback(err); }
     self.send({
+      from: 'postmaster@mg.healthstars.online',
       to : emails,
       subject : options.subject,
       html : output
@@ -54,16 +56,26 @@ Mailer.prototype.close = function() {
 let mailer = null;
 
 exports.config = {
+  // MAILER: {
+  //   host: 'smtp.gmail.com',
+  //   port: 587,
+  //   secure: false, // use SSL
+  //   auth: {
+  //     user: 'suportcontest@gmail.com',
+  //         pass: 'vqdfloyvrvvxihdu'
+  //   }
+  // },
+  // EMAIL_FROM: 'admin@app.com'
+
+
   MAILER: {
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // use SSL
+    service: 'mailgun',
     auth: {
-      user: 'suportcontest@gmail.com',
-          pass: 'vqdfloyvrvvxihdu'
+      api_key: 'key-88d40ded66fc7b48da72f695711c6dd5',
+      domain: 'mg.healthstars.online'
     }
   },
-  EMAIL_FROM: 'admin@app.com'
+  EMAIL_FROM: 'postmaster@mg.healthstars.online'
 };
 
 exports.core = (kernel) => {

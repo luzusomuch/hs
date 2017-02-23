@@ -278,25 +278,45 @@ class HomeCtrl {
   participate(event) {
     // check user joined or not
     if (this.checkParticipants(event.participantsId, event.waitingParticipantIds, event.ownerId)) {
-      return this.growl.error(`<p>{{'YOU_HAVE_JOINED_THIS_EVENT' | translate}}</p>`);
-    }
-    this.EventService.attendEvent(event._id).then(resp => {
-      if (resp.data.isParticipant) {
-        event.participantsId.push(this.authUser._id);
-        event.stats.totalParticipants++;
-        this.growl.success(`<p>{{'JOINED_EVENT_SUCCESSFULLY' | translate}}</p>`);
-      } else {
-        this.growl.success(`<p>{{'EVENT_REACHED_LIMIT_NUMBER' | translate}}</p>`);
-        if (event.waitingParticipantIds && event.waitingParticipantIds.length > 0) {
-          event.waitingParticipantIds.push(this.authUser._id);
-        } else {
-          event.waitingParticipantIds = [this.authUser._id];
-        }
+      // If current user is admin of this event
+      if (event.adminId && event.adminId.toString()===this.authUser._id.toString()) {
+        return this.growl.error(`<p>{{'PLEASE_ASSIGN_ADMIN_ROLE_TO_ANOTHER_PERSION_BEFORE_YOU_LEAVE' | translate}}</p>`);  
       }
-      this.$scope.$emit('refreshMyUpcomingEvents');
-    }).catch(() => {
-      this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
-    });
+
+      if (event.ownerId && event.ownerId._id.toString()===this.authUser._id.toString()) {
+        return this.growl.error(`<p>{{'YOU_CANNOT_LEAVE_THIS_EVENT' | translate}}</p>`);
+      }
+
+      this.EventService.leaveEvent(event._id).then(() => {
+        let index = _.findIndex(event.participantsId, (participant) => {
+          return participant.toString()===this.authUser._id.toString();
+        });
+        if (index !== -1) {
+          event.participantsId.splice(index, 1);
+          event.stats.totalParticipants--;
+        }
+      }).catch(() => {
+        this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+      });
+    } else {
+      this.EventService.attendEvent(event._id).then(resp => {
+        if (resp.data.isParticipant) {
+          event.participantsId.push(this.authUser._id);
+          event.stats.totalParticipants++;
+          this.growl.success(`<p>{{'JOINED_EVENT_SUCCESSFULLY' | translate}}</p>`);
+        } else {
+          this.growl.success(`<p>{{'EVENT_REACHED_LIMIT_NUMBER' | translate}}</p>`);
+          if (event.waitingParticipantIds && event.waitingParticipantIds.length > 0) {
+            event.waitingParticipantIds.push(this.authUser._id);
+          } else {
+            event.waitingParticipantIds = [this.authUser._id];
+          }
+        }
+        this.$scope.$emit('refreshMyUpcomingEvents');
+      }).catch(() => {
+        this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+      });  
+    }
   }
 
   // check if you interested in an event

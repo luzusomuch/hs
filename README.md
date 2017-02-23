@@ -2,6 +2,9 @@
 
 ## Getting Started
 
+### Please run ./install.sh to install required things
+### Run ./elasticsearch.sh 1.7 to install elasticsearch which specific version 1.7
+
 ### Prerequisites
 
 - [Git](https://git-scm.com/)

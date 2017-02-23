@@ -75,7 +75,7 @@
                         </div>
                         <div class="col-md-3">
                             <p ng-show="vm.event.costOfEvent" style="margin-bottom: 0px"><i class="fa fa-money"></i> {{vm.event.amount}} {{vm.event.currency}}</p>
-                            <p ng-show="vm.event.repeat.type && vm.event.repeat.type!=='none'"><i class="fa fa-refresh"></i> {{vm.event.repeat.type}} {{'REPEATING' | translate}}</p>
+                            <p ng-show="vm.event.repeat.type && vm.event.repeat.type!=='none'"><i class="fa fa-refresh"></i> <span ng-bind-html="vm.event.repeat.type + '_REPEATING' | translate | html"></span></p>
                         </div>
                     </div>
                     <p>

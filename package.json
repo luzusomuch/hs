@@ -44,7 +44,8 @@
     "multer": "^1.1.0",
     "moment": "^2.13.0",
     "countryjs": "latest",
-    "session-memory-store": "^0.2.2"
+    "session-memory-store": "^0.2.2",
+    "nodemailer-mailgun-transport": "git+https://github.com/orliesaurus/nodemailer-mailgun-transport.git"
   },
   "devDependencies": {
     "autoprefixer": "^6.0.0",

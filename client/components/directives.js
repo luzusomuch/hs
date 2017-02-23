@@ -54,7 +54,7 @@ angular.module('healthStarsApp')
     }
   };
 })
-.directive('shareToolBox', ['$timeout', 'ShareService', '$state', 'APP_CONFIG', function($timeout, ShareService, $state, APP_CONFIG, growl) {
+.directive('shareToolBox', ['$timeout', 'ShareService', '$state', 'APP_CONFIG', 'growl', function($timeout, ShareService, $state, APP_CONFIG, growl) {
   return {
     restrict : 'A',
     replace : true,

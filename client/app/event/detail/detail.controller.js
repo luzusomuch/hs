@@ -4,6 +4,7 @@ class EventDetailCtrl {
 	constructor($scope, $state, event, $localStorage, liked, LikeService, Upload, $cookies, $stateParams, FeedService, PhotoViewer, APP_CONFIG, EventService, growl, $uibModal) {
 		this.growl = growl;
 		this.$uibModal = $uibModal;
+		this.$state = $state;
 		if (event.blocked) {
 			this.growl.error(`<p>{{'THIS_EVENT_HAS_BLOCKED' | translate}}</p>`);
 			$state.go('home');
@@ -233,6 +234,13 @@ class EventDetailCtrl {
 				} else if (resp==='assign') {
 					this.setAdminRole(true);
 				}
+			});
+		} else if (this.event.ownerId && this.event.ownerId._id && this.event.ownerId._id===this.authUser._id && this.event.participantsId.length===0) {
+			// if user is owner of this event and no one join this event then remove this event from DB
+			this.EventService.delete(this.event._id).then(() => {
+				this.$state.go('home');
+			}).catch(() => {
+				this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			});
 		} else {
 			this.leaveEventFunction();

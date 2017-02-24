@@ -81,7 +81,7 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 .factory('WeatherAPI', function($http) {
 	return {
 		get: (query) => {
-			return $http.get(`https://api.openweathermap.org/data/2.5/forecast/daily?${query}`);
+			return $http.get(`http://api.openweathermap.org/data/2.5/forecast/daily?${query}`);
 		}
 	};
 })

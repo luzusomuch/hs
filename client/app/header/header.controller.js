@@ -11,11 +11,14 @@ class HsHeaderCtrl {
 		}, nv => {
 			if(nv) {
 				this.user = nv;
-				socket.socket.emit('join', nv._id);
 
-				NotificationService.getTotalNotifications().then(resp => {
-					this.totalNotifications = resp.data.items.length;
-				});
+				if (nv._id) {
+					socket.socket.emit('join', nv._id);
+
+					NotificationService.getTotalNotifications().then(resp => {
+						this.totalNotifications = resp.data.items.length;
+					});
+				}
 			}
 		});
 

@@ -122,7 +122,7 @@ angular.module('healthStarsApp')
       }
       $scope.share = function(type) {
         if (type === 'fb') {
-          let photo = 'http://fbrell.com/f8.jpg';
+          let photo = 'https://fbrell.com/f8.jpg';
           if ($scope.photo && $scope.photo.metadata) {
             if ($scope.photo.metadata.large) {
               photo = $scope.photo.metadata.large;

@@ -13,7 +13,7 @@ class EditUserLocationCtrl {
 				latlng: this.user.location.coordinates[1]+','+this.user.location.coordinates[0],
 				sensor: false
 			};
-			$http.get('http://maps.googleapis.com/maps/api/geocode/json', {params: params})
+			$http.get('https://maps.googleapis.com/maps/api/geocode/json', {params: params})
 			.then( res => {
 				this.address.selected = res.data.results[0];
   		});
@@ -27,7 +27,7 @@ class EditUserLocationCtrl {
     if (address.trim().length > 0) {
     	var params = {address: address, sensor: false};
     	return this.$http.get(
-      	'http://maps.googleapis.com/maps/api/geocode/json',
+      	'https://maps.googleapis.com/maps/api/geocode/json',
       	{params: params}
     	).then( (response) => {
       	this.addresses = response.data.results;

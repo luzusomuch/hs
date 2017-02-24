@@ -116,7 +116,7 @@ angular.module('healthStarsApp')
 
 			scope.$watch('params.address.geometry', (nv) => {
 				if (nv && nv.location) {
-					$http.get('http://maps.googleapis.com/maps/api/geocode/json?latlng='+nv.location.lat+','+nv.location.lng)
+					$http.get('https://maps.googleapis.com/maps/api/geocode/json?latlng='+nv.location.lat+','+nv.location.lng)
 					.then( res => {
 						scope.address = res.data.results[0];
 						if (scope.address.formatted_address && scope.address.formatted_address.length > 20) {
@@ -156,7 +156,7 @@ angular.module('healthStarsApp')
 
 			var autocomplete  = (value) => {
 				var params = {address: value, sensor: false};
-				$http.get('http://maps.googleapis.com/maps/api/geocode/json', { params: params })
+				$http.get('https://maps.googleapis.com/maps/api/geocode/json', { params: params })
 				.then( res => {
 					scope.addresses = res.data.results;
 	      		});

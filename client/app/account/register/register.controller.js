@@ -24,7 +24,7 @@ class RegisterCtrl {
     if (address.trim().length > 0) {
       var params = {address: address, sensor: false};
       return this.$http.get(
-        'http://maps.googleapis.com/maps/api/geocode/json',
+        'https://maps.googleapis.com/maps/api/geocode/json',
         {params: params}
       ).then( (response) => {
         _.each(response.data.results, (address) => {

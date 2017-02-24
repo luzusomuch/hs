@@ -46,8 +46,16 @@ db.events.createIndex({location: "2dsphere"})
 export baseUrl=http://ec2-35-163-48-227.us-west-2.compute.amazonaws.com/
 export socketUrl=http://ec2-35-163-48-227.us-west-2.compute.amazonaws.com:9000/
 
+#For real server
 export baseUrl=https://healthstars.eu/
-export socketUrl=https://healthstars.eu:9000/
+export socketUrl=https://healthstars.eu/
 
 ##Running server
 Please use ./build.sh to run our server.
+
+#### Setup cron tabs to backup our DB
+crontab -e
+
+###run job every 4 hours
+0 */4 * * * sudo chmod +x /home/ubuntu/healthstars-backend/mongodb_backup.sh && /bin/sh /home/ubuntu/healthstars-backend/mongodb_backup.sh
+

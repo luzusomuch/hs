@@ -11,7 +11,7 @@ exports = module.exports = {
   apiKey: {
   	// google: 'AIzaSyCLpMBiJ3YEMigY0dRLHlS3oH85vRdwXLQ',
     google: 'AIzaSyCdqpWKP40L13Nzi_dt_iNiXYCsZ98Rp38',
-  	weather: 'd6ce4efe26d8a70511337db70401d39c',
+  	weather: config.weather,
   	fbAppId: config.FACEBOOK.clientID,
     twAppId: config.TWITTER.clientID,
     ggAppId: config.GOOGLE.clientID,

@@ -1,9 +1,8 @@
 <div class="box-1 m20">
     <div class="title-box-1">{{'WEATHER' | translate}}</div>
-    <div class="body-box-1" ng-if="valid">
+    <!-- <div class="body-box-1" ng-if="valid">
         <div class="box-weather">
             <div class="icon-weather">
-                <!-- <i class="{{data.list[$index].weather | weatherIcon}}"></i> -->
                 <img class="weather-icon" src="{{ data.list[$index].weather | weatherIconWithPng }}">
             </div>
             <div class="do-weather">{{data.list[$index].temp.day | number: 0}}<sup>o</sup></div>
@@ -13,7 +12,22 @@
                 <span class="prev-wea" ng-click="next()"><i class="fa fa-angle-right"></i></span>
             </div>
         </div>
+    </div> -->
+
+    <div class="body-box-1" ng-if="valid">
+        <div class="box-weather">
+            <div class="icon-weather">
+                <img class="weather-icon" src="{{ weathers.data[$weatherIndex] | weatherIconDarkSkyWithPng }}">
+            </div>
+            <div class="do-weather">{{weathers.data[$weatherIndex].temperatureMax | weatherTemperatureConverter}}<sup>o</sup></div>
+            <div class="date-weather">
+                <span class="next-wea" ng-click="previous()"><i class="fa fa-angle-left"></i></span>
+                {{moment(weathers.data[$weatherIndex].time*1000).format('dddd') | weatherDayFilter}}
+                <span class="prev-wea" ng-click="next()"><i class="fa fa-angle-right"></i></span>
+            </div>
+        </div>
     </div>
+
     <div class="body-box-1" ng-if="!valid">
         <div class="box-weather" style="text-align: left">
             {{'CANNOT_GET_LOCATION' | translate}}

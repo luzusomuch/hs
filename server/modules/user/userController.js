@@ -10,6 +10,7 @@ import async from 'async';
 import multer from 'multer';
 import {Strategy as TwitterStrategy} from 'passport-twitter';
 import mongoose from 'mongoose';
+import https from 'https';
 
 function validationError(res, statusCode) {
   statusCode = statusCode || 422;
@@ -49,6 +50,7 @@ class UserController {
     this.hotmailContacts = this.hotmailContacts.bind(this);
     this.updateUserLocation = this.updateUserLocation.bind(this);
     this.updateUserPopupStarInfoStatus = this.updateUserPopupStarInfoStatus.bind(this);
+    this.getUserLocationWeather = this.getUserLocationWeather.bind(this);
   }
 
   hotmailContacts(req, res) {
@@ -1126,6 +1128,28 @@ class UserController {
     }).catch(err => {
       return res.status(500).json(err);
     });
+  }
+
+  getUserLocationWeather(req, res) {
+    if (!req.query.latlng) {
+      return res.status(422).json({'message': 'Missing latlng'});
+    }
+    https.get('https://api.darksky.net/forecast/'+config.weather+'/'+req.query.latlng, resp => {
+      let body;
+      resp.on('data', d => {
+        body += d;
+      });
+      resp.on('end', () => {
+        // remove undefined value
+        let undefinedString = body.substring(0, 9);
+        let result = body;
+        if (undefinedString==='undefined') {
+          result = body.substring(9, body.length);
+        }
+        let parsed = JSON.parse(result);
+        return res.status(200).json(parsed);
+      })
+    })
   }
 
   /**

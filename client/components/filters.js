@@ -779,6 +779,11 @@ angular.module('healthStarsApp')
     return result;
   };
 })
+.filter('weatherTemperatureConverter', () => {
+  return temperature => {
+    return Math.round((temperature - 32) / 1.8);
+  };
+})
 .filter('weatherDayFilter', ($localStorage) => {
   return day => {
     if ($localStorage.language==='en') {

@@ -76,5 +76,7 @@ module.exports = {
     clientID: process.env.HOTMAIL_ID || 'f6f1fb5a-0120-4336-9a00-a0f210e5b125',
     // callbackURL: baseUrl + 'api/v1/users/hotmail-contacts'
     callbackURL: baseUrl + 'profile/'
-  }
+  },
+
+  weather: '94d68bfa4200b08d42fd600cf0e3ca86',
 };

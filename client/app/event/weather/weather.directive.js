@@ -17,24 +17,29 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 		link: function(scope) {
 			var settings = AppSettings.getDefaultSettings();
 			var params = {
-				appid: settings.apiKey.weather,
+				// appid: settings.apiKey.weather,
+				appid: 'd6ce4efe26d8a70511337db70401d39c',
 				cnt: 7,
 				units: 'metric'
 			};
-			scope.data = [];
+			// scope.data = [];
+			scope.weathers = [];
 			scope.moment = moment;
-			scope.$index = -1;
+			// scope.$index = -1;
+			scope.$weatherIndex = -1;
 			scope.previous = function() {
-				if(scope.$index <=0) {
+				if(scope.$weatherIndex <=0) {
 					return false;
 				}
-				scope.$index--;
+				// scope.$index--;
+				scope.$weatherIndex--;
 			};
 			scope.next = function() {
-				if(scope.$index >= 6) {
+				if(scope.$weatherIndex >= 6) {
 					return false;
 				}
-				scope.$index++;
+				// scope.$index++;
+				scope.$weatherIndex++;
 			};
 			scope.$watch('location', function(nv) {
 				scope.valid = false;
@@ -50,41 +55,63 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 
 				if (params.lon && params.lat) {
 					var query = Util.obToquery(params);
-					WeatherAPI.get(query).then(function(res) {
-						if(res.data.cod === '200') {
-							scope.data = res.data;
-							$rootScope.$index = scope.$index = _.findIndex(scope.data.list, function(item) {
-								return moment(item.dt * 1000).days() === moment().days();
-							});
-							scope.valid = true;
-						}
+					// WeatherAPI.get(query).then(function(res) {
+					// 	if(res.data.cod === '200') {
+					// 		console.log(res.data);
+					// 		scope.data = res.data;
+					// 		$rootScope.$index = scope.$index = _.findIndex(scope.data.list, function(item) {
+					// 			return moment(item.dt * 1000).days() === moment().days();
+					// 		});
+					// 		scope.valid = true;
+					// 	}
+					// });
+					WeatherAPI.getUserLocationWeather([params.lat, params.lon].toString()).then(resp => {
+						scope.weathers = resp.data.daily;
+						$rootScope.$weatherIndex = scope.$weatherIndex = _.findIndex(scope.weathers.data, function(item) {
+							return moment(item.time * 1000).days() === moment().days();
+						});
+						scope.valid = true;
 					});
 				}
 			});
 
 			scope.searchParams = SearchParams.params;
 			scope.$watch('searchParams.dates', (nv) => {
+				// if (nv && nv.length > 0) {
+				// 	let date = nv[nv.length-1];
+				// 	if (scope.data) {
+				// 		scope.$index = _.findIndex(scope.data.list, (item) => {
+				// 			return moment(date).days()===moment(item.dt*1000).days();
+				// 		});
+				// 	}
+				// } else {
+				// 	scope.$index = $rootScope.$index;
+				// }
+
 				if (nv && nv.length > 0) {
 					let date = nv[nv.length-1];
-					if (scope.data) {
-						scope.$index = _.findIndex(scope.data.list, (item) => {
-							return moment(date).days()===moment(item.dt*1000).days();
+					if (scope.weathers) {
+						scope.$weatherIndex = _.findIndex(scope.weathers.data, (item) => {
+							return moment(date).days()===moment(item.time*1000).days();
 						});
 					}
 				} else {
-					scope.$index = $rootScope.$index;
+					scope.$weatherIndex = $rootScope.$weatherIndex;
 				}
 			});
 		}
 	};
 })
-.factory('WeatherAPI', function($http) {
+.factory('WeatherAPI', ['$http', 'User', function($http, User) {
 	return {
 		get: (query) => {
 			return $http.get(`http://api.openweathermap.org/data/2.5/forecast/daily?${query}`);
+		},
+		getUserLocationWeather: (latlng) => {
+			return User.getUserLocationWeather({latlng: latlng});
 		}
 	};
-})
+}])
 .factory('weatherIcons', function(){
 	return {
 	  '200': {
@@ -471,6 +498,58 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 	  // Finally tack on the prefix.
 	  icon = prefix + icon;
 	  return icon;
+	};
+})
+.filter('weatherIconDarkSkyWithPng', () => {
+	return weather => {
+		if (!weather) {
+			return;
+		}
+		let link;
+		switch (weather.icon) {
+			case 'clear-day':
+				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-clear-icon.png';
+				break;
+			case 'clear-night':
+				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/256/Status-weather-clear-night-icon.png';
+				break;
+			case 'rain':
+				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-showers-scattered-icon.png';
+				break;
+			case 'snow':
+				link = 'assets/images/snow.png';
+				break;
+			case 'sleet':
+				link = 'assets/images/snow.png';
+				break;
+			case 'wind':
+				link = 'https://cdn2.iconfinder.com/data/icons/lovely-weather-icons/32/wind1-512.png';
+				break;
+			case 'fog':
+				link = 'https://cdn.iconscout.com/public/images/icon/free/png-512/haze-air-mist-weather-wind-372afcd950ff168e-512x512.png';
+				break;
+			case 'cloudy':
+				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-many-clouds-icon.png';
+				break;
+			case 'partly-cloudy-day':
+				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-clouds-icon.png';
+				break;
+			case 'partly-cloudy-night':
+				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-clouds-night-icon.png';
+				break;
+			case 'hail':
+				link = 'https://cdn2.iconfinder.com/data/icons/weather-24/256/Hailstorm-512.png';
+				break;
+			case 'thunderstorm':
+				link = 'assets/images/day-thunderstorm.png';
+				break;
+			case 'tornado':
+				link = 'https://cdn1.iconfinder.com/data/icons/weather-elements/512/Weather_TornadoGradient.png';
+				break;
+			default:
+				break;
+		}
+		return link;
 	};
 })
 .filter('weatherIconWithPng', () => {

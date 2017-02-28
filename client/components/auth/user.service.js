@@ -63,6 +63,10 @@
 
       updateUserPopupStarInfoStatus: (id, data) => {
         return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/${id}/update-user-popup-star-info-status`, data);
+      },
+
+      getUserLocationWeather: (params) => {
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/user-location-weather`, {params: params});
       }
     };
   }

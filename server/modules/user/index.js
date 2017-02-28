@@ -5,6 +5,7 @@ exports.routes = (kernel) => {
   let userController = new UserController(kernel);
   
   kernel.app.get('/api/v1/users/hotmail-contacts', userController.hotmailContacts);
+  kernel.app.get('/api/v1/users/user-location-weather', userController.getUserLocationWeather);
   kernel.app.get('/api/v1/users/me', kernel.middleware.isAuthenticated(), userController.me);
   kernel.app.get('/api/v1/users/my-dashboard', kernel.middleware.isAuthenticated(), userController.myDashboard);
   

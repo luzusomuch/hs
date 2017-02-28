@@ -80,7 +80,7 @@
                         </div>
                     </div>
                     <p>
-                        <span ng-show="!vm.event.isSameDate"><i class="fa fa-clock-o"></i> {{'FROM' | translate }} {{vm.event.startDateTime | hsDate: 'MMMM DD, YYYY HH:mm a' | datePickerFilter}} {{'TO' | translate}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY HH:mm a' | datePickerFilter}}</span>
+                        <span ng-show="!vm.event.isSameDate"><i class="fa fa-clock-o"></i> {{'FROM' | translate }} {{vm.event.startDateTime | hsDate: 'MMMM DD, YYYY HH:mm' | datePickerFilter}} {{'TO' | translate}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY HH:mm' | datePickerFilter}}</span>
                         <span ng-show="vm.event.isSameDate"><i class="fa fa-clock-o"></i> {{vm.event.startDateTime | hsDate: 'HH:mm'}}-{{vm.event.endDateTime | hsDate: 'HH:mm'}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY' | datePickerFilter}}</span>
                     </p>
                     

@@ -2,7 +2,23 @@
 
 ## Getting Started
 
-### Please run ./install.sh to install required things
+#install git
+sudo apt-get update
+sudo apt-get install -y git
+
+#install nodejs and npm
+sudo apt-get install nodejs
+sudo apt-get install npm
+
+#install mongodb
+https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04
+
+#install Nginx
+sudo apt-get install nginx -y
+
+#install pm2
+sudo npm install pm2 -g
+
 ### Run ./elasticsearch.sh 1.7 to install elasticsearch which specific version 1.7
 
 ### Prerequisites
@@ -26,9 +42,6 @@
 
 4. Run `gulp serve` to start the development server. It should automatically open the client in your browser when ready.
 
-## Build & development
-
-Run `grunt build` for building and `grunt serve` for preview.
 
 ## Testing
 

@@ -438,6 +438,7 @@ let Language = {
 		MONTHLY_REPEATING: 'Monthly repeating',
 		PLEASE_ASSIGN_ADMIN_ROLE_TO_ANOTHER_PERSION_BEFORE_YOU_LEAVE: 'Please assign admin role to another person before you leave',
 		YOU_CANNOT_LEAVE_THIS_EVENT: 'You cannot leave this event',
+		COMPOSE_TO: 'to',
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -744,7 +745,7 @@ let Language = {
 		DELETED_ITEM_SUCCESSFULLY: 'Deleted item successfully',
 		BLOCKED_ITEM_SUCCESSFULLY: 'Blocked item successfully',
 		RESET_SEARCH: 'Suche löschen',
-		FRIENDS_ACTIVITIES: 'Aktivitäten deiner Freunde',
+		FRIENDS_ACTIVITIES: 'Events deiner Freunde',
 		NEW_EVENTS: 'neues Event',
 		INTEREST: 'Interessierte',
 		INTERESTED: 'Interessiert',
@@ -800,7 +801,7 @@ let Language = {
 		ACCEPT_REQUEST: 'Anfrage annehmen',
 		REJECT_REQUEST: 'Ablehnen Anfrage',
 		ALLOWANCE_TO_GRANT_THE_AWARD: 'Berechtigung die Auszeichnung zu gewähren',
-		CO_OPERATION_EVENTS: 'Partnerveranstaltungen',
+		CO_OPERATION_EVENTS: 'Events von Unternehmen',
 		MORE_FILTER: 'Mehr Filter',
 		LIMIT_NUMBER_OF_PARTICIPANTS: 'Teilnehmerzahl begrenzen',
 		NUMBER: 'Anzahl',
@@ -876,6 +877,7 @@ let Language = {
 		MONTHLY_REPEATING: 'Monatliche Wiederholung',
 		PLEASE_ASSIGN_ADMIN_ROLE_TO_ANOTHER_PERSION_BEFORE_YOU_LEAVE: 'Bitte weisen Sie einer anderen Person eine Admin-Rolle zu, bevor Sie gehen',
 		YOU_CANNOT_LEAVE_THIS_EVENT: 'Du kannst diese Veranstaltung nicht verlassen',
+		COMPOSE_TO: 'an',
 	}
 }
 

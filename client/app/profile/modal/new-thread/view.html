@@ -5,8 +5,8 @@
 <div class="modal-body">
 	<form ng-submit="NewThread.submit(form)" name="form" novalidate>
 	    <div class="form-group">
-	    	<ui-select multiple tagging tagging-label="false" ng-model="NewThread.toUsers" theme="bootstrap" title="{{'COMPOSE_TO' | translate}}...">
-				<ui-select-match placeholder="{{'TO' | translate}}">{{$item.name}}</ui-select-match>
+	    	<ui-select multiple tagging tagging-label="false" ng-model="NewThread.toUsers" theme="bootstrap" title="{{'COMPOSE_TO' | translate}}">
+				<ui-select-match placeholder="{{'COMPOSE_TO' | translate}}">{{$item.name}}</ui-select-match>
 				<ui-select-choices repeat="user in NewThread.friends">
 					{{user.name}}
 				</ui-select-choices>

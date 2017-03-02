@@ -80,8 +80,23 @@
                         </div>
                     </div>
                     <p>
-                        <span ng-show="!vm.event.isSameDate"><i class="fa fa-clock-o"></i> {{'FROM' | translate }} {{vm.event.startDateTime | hsDate: 'MMMM DD, YYYY HH:mm' | datePickerFilter}} {{'TO' | translate}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY HH:mm' | datePickerFilter}}</span>
-                        <span ng-show="vm.event.isSameDate"><i class="fa fa-clock-o"></i> {{vm.event.startDateTime | hsDate: 'HH:mm'}}-{{vm.event.endDateTime | hsDate: 'HH:mm'}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY' | datePickerFilter}}</span>
+                        <span ng-show="!vm.event.isSameDate"><i class="fa fa-clock-o"></i> 
+                            <span ng-show="vm.$localStorage.language==='en'">
+                                {{'FROM' | translate }} {{vm.event.startDateTime | hsDate: 'MMMM DD, YYYY HH:mm' | datePickerFilter}} {{'TO' | translate}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY HH:mm' | datePickerFilter}}
+                            </span>
+                            <span ng-show="vm.$localStorage.language==='de'">
+                                {{vm.event.startDateTime | hsDate: 'HH:mm'}} Uhr {{'TO' | translate}} {{vm.event.endDateTime | hsDate: 'HH:mm'}} Uhr vom {{vm.event.startDateTime | hsDate: 'DD'}}. {{vm.event.startDateTime | hsDate: 'MMMM' | datePickerFilter}} {{'TO' | translate}} zum {{vm.event.endDateTime | hsDate: 'DD'}}. {{vm.event.endDateTime | hsDate: 'MMMM' | datePickerFilter}}
+                            </span>
+                        </span>
+
+                        <span ng-show="vm.event.isSameDate"><i class="fa fa-clock-o"></i> 
+                            <span ng-show="vm.$localStorage.language==='en'">
+                                {{vm.event.startDateTime | hsDate: 'HH:mm'}}-{{vm.event.endDateTime | hsDate: 'HH:mm'}} {{vm.event.endDateTime | hsDate: 'MMMM DD, YYYY' | datePickerFilter}}
+                            </span>
+                            <span ng-show="vm.$localStorage.language==='de'">
+                                {{vm.event.startDateTime | hsDate: 'HH:mm'}} Uhr {{'TO' | translate}} {{vm.event.endDateTime | hsDate: 'HH:mm'}} Uhr am {{vm.event.endDateTime | hsDate: 'DD'}} {{vm.event.endDateTime | hsDate: 'MMMM' | datePickerFilter}}, {{vm.event.endDateTime | hsDate: 'YYYY'}}
+                            </span>
+                        </span>
                     </p>
                     
                 </div>

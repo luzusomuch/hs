@@ -877,7 +877,7 @@ let Language = {
 		MONTHLY_REPEATING: 'Monatliche Wiederholung',
 		PLEASE_ASSIGN_ADMIN_ROLE_TO_ANOTHER_PERSION_BEFORE_YOU_LEAVE: 'Bitte weisen Sie einer anderen Person eine Admin-Rolle zu, bevor Sie gehen',
 		YOU_CANNOT_LEAVE_THIS_EVENT: 'Du kannst diese Veranstaltung nicht verlassen',
-		COMPOSE_TO: 'an',
+		COMPOSE_TO: 'Freund aussuchen',
 	}
 }
 

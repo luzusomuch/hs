@@ -8,6 +8,7 @@ sudo apt-get install -y git
 
 #install nodejs and npm
 sudo apt-get install nodejs
+sudo apt install nodejs-legacy
 sudo apt-get install npm
 
 #install mongodb
@@ -18,6 +19,9 @@ sudo apt-get install nginx -y
 
 #install pm2
 sudo npm install pm2 -g
+
+#install Ruby
+sudo apt-get install ruby-full
 
 ### Run ./elasticsearch.sh 1.7 to install elasticsearch which specific version 1.7
 
@@ -54,6 +58,7 @@ db.users.createIndex({location: "2dsphere"})
 db.events.createIndex({location: "2dsphere"})
 
 #jquery 2.1.4 version is required
+#bootstrap 3.3.7 is required
 
 #For Lee's server please use these following cmds:
 export baseUrl=http://ec2-35-163-48-227.us-west-2.compute.amazonaws.com/

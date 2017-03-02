@@ -14,6 +14,9 @@ sudo apt-get install npm
 #install mongodb
 https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04
 
+#install redis
+https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-redis-on-ubuntu-16-04
+
 #install Nginx
 sudo apt-get install nginx -y
 

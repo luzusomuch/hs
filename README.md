@@ -80,4 +80,5 @@ crontab -e
 
 ####Nginx config
 Please read nginx-config.txt file
+After config nginx please restart nginx service
 

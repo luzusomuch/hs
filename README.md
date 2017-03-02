@@ -77,3 +77,7 @@ crontab -e
 ###run job every 4 hours
 0 */4 * * * sudo chmod +x /home/ubuntu/healthstars-backend/mongodb_backup.sh && /bin/sh /home/ubuntu/healthstars-backend/mongodb_backup.sh
 
+
+####Nginx config
+Please read nginx-config.txt file
+

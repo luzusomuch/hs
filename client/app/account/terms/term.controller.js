@@ -2,14 +2,17 @@
 
 class TermsCtrlCtrl {
 
-  constructor($scope, $uibModalInstance) {
-  	$scope.apply = () => {
-  		$uibModalInstance.close();
-  	};
+  constructor($uibModalInstance, $localStorage) {
+  	this.$uibModalInstance = $uibModalInstance;
+  	this.$localStorage = $localStorage;
+  }
 
-  	$scope.reject = () => {
-  		$uibModalInstance.dismiss();
-  	};
+  apply() {
+  	this.$uibModalInstance.close();
+  }
+
+  reject() {
+  	this.$uibModalInstance.dismiss();
   }
 }
 

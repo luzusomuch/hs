@@ -702,7 +702,7 @@ let Language = {
 		ADD_TAGS: 'Add tags',
 		BLOCK_THIS_CONVERSATION: 'diese Konversation blockieren',
 		UNBLOCK_THIS_CONVERSATION: 'diese Konversation entblocken',
-		NON_RECEIVE_EMAIL_WHEN_HAVE_NEW_MESSAGE: 'Non-receive email when have new message',
+		NON_RECEIVE_EMAIL_WHEN_HAVE_NEW_MESSAGE: 'per Email über neue Nachrichten informiert werden',
 		ADD_NEW_TAG: 'Add new tag',
 		ENTER_NEW_TAG: 'Enter new tag',
 		CURRENT_TAGS_LIST: 'Current tags list',

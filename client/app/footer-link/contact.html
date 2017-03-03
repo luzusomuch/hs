@@ -1,5 +1,61 @@
 <div class="container">
 	<div class="box-blue padding20">
 		<h3 ng-bind-html="'CONTACT' | translate | html"></h3>
+
+		<div ng-if="$localStorage.language==='en'">
+			<h4>Questions:</h4>
+
+			<p>If you have any questions or needs any support, please send them to:</p>
+
+			<p><a href="mailto:support@healthstars.de">support@healthstars.de</a></p>
+
+			<h4>Feedback:</h4>
+
+			<p>If you want to give us any feedback, please sent it to:</p>
+
+			<p><a href="mailto:feedback@healthstars.online">feedback@healthstars.online</a></p>
+
+			<h4>Details:</h4>
+			<p>HEALTHSTARS GMBH</p>
+			<p>Friesenstrasse 13</p>
+			<p>31134 Hildesheim</p>
+			<p>Germany</p>
+
+			<p>FOUNDER/CEO</p>
+			<p>Dawid Puzik</p>
+
+			<p>Sitz der Gesellschaft</p>
+			<p>Hildesheim</p>
+			<p>Amtsgericht Hildesheim,</p>
+			<p>HRB-Nr: 204932</p>
+		</div>
+
+		<div ng-if="$localStorage.language==='de'">
+			<h4>Fragen:</h4>
+
+			<p>Falls Du irgendwelche Fragen haben solltest, bitte schreibe uns gern an:</p>
+
+			<p><a href="mailto:support@healthstars.de">support@healthstars.de</a></p>
+
+			<h4>Feedback:</h4>
+
+			<p>Wir sind gespannt auf dein Feedback. Bitte schicke es zu uns über:</p>
+
+			<p><a href="mailto:feedback@healthstars.online">feedback@healthstars.online</a></p>
+
+			<h4>Details:</h4>
+			<p>HEALTHSTARS GMBH</p>
+			<p>Friesenstrasse 13</p>
+			<p>31134 Hildesheim</p>
+			<p>Germany</p>
+
+			<p>FOUNDER/CEO</p>
+			<p>Dawid Puzik</p>
+
+			<p>Sitz der Gesellschaft</p>
+			<p>Hildesheim</p>
+			<p>Amtsgericht Hildesheim,</p>
+			<p>HRB-Nr: 204932</p>
+		</div>
 	</div>
 </div>

@@ -57,6 +57,7 @@ class RegisterCtrl {
         animation: true,
         templateUrl: 'app/account/terms/termModal.html',
         controller: 'TermsCtrlCtrl',
+        controllerAs: 'TCtrl'
       });
       modalInstance.result.then(() => {
         this.Auth.createUser({

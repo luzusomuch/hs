@@ -27,6 +27,8 @@ sudo npm install pm2 -g
 sudo apt-get install ruby-full
 
 ### Run ./elasticsearch.sh 1.7 to install elasticsearch which specific version 1.7
+##Then start elasticsearch service by 
+sudo service elasticsearch restart
 
 ### Prerequisites
 
@@ -82,6 +84,6 @@ crontab -e
 
 
 ####Nginx config
-Please read nginx-config.txt file
+Please read nginx-config.txt file then copy the content of it to /etc/nginx/sites-available/default
 After config nginx please restart nginx service
 

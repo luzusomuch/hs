@@ -10,5 +10,8 @@ angular.module('healthStarsApp').config(function($stateProvider) {
   }).state('contact', {
     url: '/contact',
     templateUrl: 'app/footer-link/contact.html',
+    controller: ['$scope', '$localStorage', ($scope, $localStorage) => {
+      $scope.$localStorage = $localStorage;
+    }]
   });
 });

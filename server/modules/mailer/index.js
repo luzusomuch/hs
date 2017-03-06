@@ -96,6 +96,8 @@ exports.core = (kernel) => {
 
   kernel.queue.process('SEND_MAIL', (job, done) => {
     mailer.sendMail(job.data.template, job.data.to, Object.assign({subject: job.data.subject}, job.data.data), (err) => {
+      console.log(err);
+      console.log('send mail success');
       done(err);
     });
   });

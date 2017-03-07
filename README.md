@@ -91,4 +91,3 @@ crontab -e
 ####Nginx config
 Please read nginx-config.txt file then copy the content of it to /etc/nginx/sites-available/default
 After config nginx please restart nginx service
-

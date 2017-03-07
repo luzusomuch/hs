@@ -73,6 +73,11 @@ export socketUrl=http://ec2-35-163-48-227.us-west-2.compute.amazonaws.com:9000/
 export baseUrl=https://healthstars.eu/
 export socketUrl=https://healthstars.eu/
 
+##Migrate simple data
+node dist\server\migrate.js
+node dist\server\syncData.js
+
+
 ##Running server
 Please use ./build.sh to run our server.
 

@@ -270,7 +270,7 @@ class HomeCtrl {
     data = _.union(data, waitingParticipantIds);
 
     let index = _.findIndex(data, (id) => {
-      return id.toString()===this.authUser._id.toString();
+      return id && id.toString()===this.authUser._id.toString();
     });
     return index !== -1;
   }

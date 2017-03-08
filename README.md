@@ -74,6 +74,8 @@ export baseUrl=https://healthstars.eu/
 export socketUrl=https://healthstars.eu/
 
 ##Migrate simple data
+if the server is running please stop it by pm2 stop healthstars
+export NODE_ENV=production
 node dist\server\migrate.js
 node dist\server\syncData.js
 

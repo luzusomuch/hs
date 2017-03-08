@@ -76,8 +76,10 @@ export socketUrl=https://healthstars.eu/
 ##Migrate simple data
 if the server is running please stop it by pm2 stop healthstars
 export NODE_ENV=production
-node dist\server\migrate.js
-node dist\server\syncData.js
+cd to dist
+node server\migrate.js
+node server\syncData.js
+back to root then run ./build.sh
 
 
 ##Running server

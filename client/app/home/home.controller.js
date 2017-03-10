@@ -1,7 +1,7 @@
 'use strict';
 
 class HomeCtrl {
-	constructor($rootScope, $localStorage, $scope, EventService, LikeService, authUser, CategoryService, SearchParams, socket, $state, $timeout, categories, growl, User, Auth) {
+	constructor($rootScope, $localStorage, $scope, EventService, LikeService, authUser, CategoryService, SearchParams, socket, $state, $timeout, categories, growl, User, Auth, $http) {
     this.growl = growl;
     this.$scope = $scope;
     this.$rootScope = $rootScope;
@@ -52,6 +52,7 @@ class HomeCtrl {
     this.authUser = authUser;
     this.locations = [];
     this.$state = $state;
+    this.$http = $http;
 
     this.locations = [];
 
@@ -119,11 +120,12 @@ class HomeCtrl {
         this.searchParams.radius = 100;
         $scope.geoLocation = true;
         $scope.$$phase || $scope.$apply();
-      }, () => {
+      }, (err) => {
+        console.log(err);
         $scope.geoLocation = true;
         this.growl.error(`<p>{{'CANNOT_TRACKING_YOUR_LOCATION' | translate}}</p>`);
         $scope.$$phase || $scope.$apply();
-      });
+      }, {timeout: 10000});
     } else {
       $scope.geoLocation = true;
     }

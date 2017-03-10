@@ -38,7 +38,7 @@
           </div>
           <div class="content-post-li">
             <p ng-show="!comment.isEdit">
-              <span ng-show="comment.deleted && !comment.blocked" ng-bind-html="'THIS_COMMENT_HAS_DELETED' | nl2br | html"></span>
+              <span ng-show="comment.deleted && !comment.blocked" ng-bind-html="'THIS_COMMENT_HAS_DELETED' | translate | nl2br | html"></span>
               <span ng-show="comment.blocked && !comment.deleted">
                 <!-- show comment for event owner or admin -->
                 <span ng-show="vm.eventOwner._id==vm.authUser._id || vm.authUser._id==vm.eventAdmin._id || vm.authUser.role=='admin'" ng-bind-html="comment.content | nl2br | html"></span>
@@ -92,7 +92,7 @@
                       </div>
                       <div class="content-post-li">
                         <p ng-show="!subComment.isEdit">
-                          <span ng-show="subComment.deleted && !subComment.blocked" ng-bind-html="'THIS_COMMENT_HAS_DELETED' | nl2br | html"></span>
+                          <span ng-show="subComment.deleted && !subComment.blocked" ng-bind-html="'THIS_COMMENT_HAS_DELETED' | translate | nl2br | html"></span>
 
                           <span ng-show="subComment.blocked && !subComment.deleted">
                             <!-- show comment for event owner or admin -->

@@ -728,7 +728,7 @@ let Language = {
 		PLEASE_ACCEPT_OUR_TERMS_AND_CONDITIONS: 'Akzeptiere unsere AGBs und Nutzungsbedingungen',
 		THIS_EVENT_HAS_BLOCKED: 'Dieses Event ist blockiert',
 		THIS_COMMENT_HAS_BLOCKED: 'Dieser Kommentar ist blockiert',
-		THIS_COMMENT_HAS_DELETED: 'Dieser Kommentar ist gelöscht ',
+		THIS_COMMENT_HAS_DELETED: 'Dieser Kommentar wurde gelöscht ',
 		THIS_COMMENT_HAS_BLOCKED_OR_DELETED: 'Dieser Kommentar wurde blockiert oder gelöscht',
 		THIS_THREAD_HAS_BLOCKED: 'This thread was blocked',
 		THANK_YOU_FOR_YOUR_REPORT: 'Danke für deine Meldung',

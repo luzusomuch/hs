@@ -18,8 +18,8 @@ module.exports = (ES, UserModel, cb) => {
           password: 'test'
         }, {
           provider: 'local',
-          name: 'Trung Le',
-          email: 'htle1810@gmail.com',
+          name: 'Vinh Nguyen',
+          email: 'luzusomuch@gmail.com',
           password: '123456'
         }, {
           provider: 'local',

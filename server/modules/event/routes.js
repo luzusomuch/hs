@@ -1675,6 +1675,19 @@ module.exports = function(kernel) {
       }
     }
 
+    // handle to don't show events which end date smaller than current date
+    // only handle when user don't search for dates req.body.dates is empty
+    if (req.body.dates instanceof Array && req.body.dates.length===0) {
+      let date = moment(new Date());
+      q.query.filtered.filter.bool.must.push({
+        range: {
+          endDateTime: {
+            gte: date.toISOString()
+          }
+        }
+      });
+    }
+
     //process location
     let radius = parseInt(req.body.radius);
     let locationCheck = req.body.location && req.body.location.lat && req.body.location.lng && radius && radius !== 'NaN';

@@ -107,7 +107,8 @@ angular.module('healthStarsApp')
 		replace: true,
 		link: function(scope, element) {
 			scope.addresses = [];
-			scope.radius = SearchParams.params.radius = 100;
+			scope.radius = SearchParams.params.radius = '100 km';
+
 			scope.params = {
 				address: SearchParams.params.address,
 				postCode: '',
@@ -141,6 +142,13 @@ angular.module('healthStarsApp')
 			scope.search = () => {
 				var address = angular.copy(scope.address);
 				var radius = angular.copy(scope.radius);
+
+				// do check & convert radius with text KM to radius only
+				let temp = radius.split(' ');
+				if (temp[1] && temp[1]==='km') {
+					radius = temp[0];
+				}
+
 				SearchParams.params = _.assign(SearchParams.params, {address: address, radius: radius});
 				angular.element('body').trigger('click');
 				scope.style={'background-color': '#3598dc', color: '#fff'};
@@ -160,6 +168,10 @@ angular.module('healthStarsApp')
 				.then( res => {
 					scope.addresses = res.data.results;
 	      		});
+			};
+
+			scope.updateRadius = () => {
+				scope.radius = scope.radius + ' km';
 			};
 
 			var ttl;

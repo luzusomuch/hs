@@ -95,3 +95,5 @@ crontab -e
 ####Nginx config
 Please read nginx-config.txt file then copy the content of it to /etc/nginx/sites-available/default
 After config nginx please restart nginx service
+
+### For config max upload file size please read here https://easyengine.io/tutorials/php/increase-file-upload-size-limit/

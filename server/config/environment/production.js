@@ -65,8 +65,8 @@ module.exports = {
   },
 
   TWITTER: {
-    clientID:     process.env.TWITTER_ID || 'NBwHIfLe0uEq8X9DsZpXptAtT',
-    clientSecret: process.env.TWITTER_SECRET || '9k6YDexW81vfjR0IsUNK00QeMZdVSkplReZARS1X46dUFjeYuB',
+    clientID:     process.env.TWITTER_ID || 'gcSqXze6lyyyomv2j9dlUGI61',
+    clientSecret: process.env.TWITTER_SECRET || 'EPLNQE9OjevhCHK1Nw0cAwM3evtsSLrm0nUEo9yQit53Z0AmcP',
     callbackURL:  baseUrl + 'auth/twitter/callback'
   },
 

@@ -58,8 +58,15 @@ kernel.ES.index((err) => {
 							return cb(err);
 						}
 						console.log('removed old awards which in awards name list success');
+						console.log(awards);
 						async.each(awards, (award, callback) => {
-							kernel.model.Award(award).save().then(callback).catch(callback);
+							kernel.model.Award(award).save().then(success => {
+								console.log('saved award ' + award.objectName);
+								callback(null, award);
+							}).catch(err => {
+								console.log(err);
+								callback(err);
+							});
 						}, cb);
 					});
 				}).catch(cb);

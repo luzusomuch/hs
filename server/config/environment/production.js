@@ -51,12 +51,12 @@ module.exports = {
   tmpSoundFolder: path.resolve(__dirname, '../../..//client/assets/sound'),
   watermarkFile: path.resolve(__dirname, '../../assets/watermark.png'),
   AWS: {
-    accessKeyId: 'AKIAI7KKFT6PBJRLBZKQ',
-    secretAccessKey: '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',
-    region: 'us-west-2'
+    accessKeyId: 'AKIAIBDHH22MWJP5MZDQ',
+    secretAccessKey: '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',
+    region: 'eu-central-1'
   },
   S3: {
-    bucket: 'hvs3'
+    bucket: 'healthstars'
   },
   FACEBOOK: {
     clientID:     process.env.FACEBOOK_ID || '1564026697235598',

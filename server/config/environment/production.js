@@ -13,10 +13,13 @@ var socketUrl = process.env.socketUrl || 'http://ec2-35-157-136-123.eu-central-1
 // HOST for DB, redis, elasticsearch
 var HOST = process.env.HOST || '35.157.226.188';
 
+var APIConnection = process.env.APIConnection || '35.157.226.188/';
+
 module.exports = {
   baseUrl: baseUrl,
   socketUrl: socketUrl,
   HOST: HOST,
+  APIConnection: APIConnection,
   // MongoDB connection options
   MONGO_URL: 'mongodb://'+HOST+':27017/healthstars',
   MONGO_REPLICAS_NUMBER: null,

@@ -5,11 +5,11 @@
   function LikeService($http, APP_CONFIG) {
     return {
       checkLiked(objectId, objectName) {
-        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/likes/${objectId}/${objectName}/check`);
+        return $http.get(`${APP_CONFIG.APIConnection}api/${APP_CONFIG.apiVer}/likes/${objectId}/${objectName}/check`);
       },
 
       likeOrDislike(objectId, objectName) {
-      	return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/likes`, {objectId: objectId, objectName: objectName});
+      	return $http.post(`${APP_CONFIG.APIConnection}api/${APP_CONFIG.apiVer}/likes`, {objectId: objectId, objectName: objectName});
       }
     };
   }

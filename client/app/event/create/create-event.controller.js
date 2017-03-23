@@ -475,7 +475,7 @@ class CreateEventCtrl {
 	      headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
 	    }).then(resp =>{
         this.files = [];
-        this.event.url = `${this.APP_CONFIG.baseUrl}event/detail/${resp.data._id}`;
+        this.event.url = `${this.APP_CONFIG.APIConnection}event/detail/${resp.data._id}`;
 	    	this.$state.go('event.detail', {id: resp.data._id});
         this.submitted = false;
         this.event.allowShow = true;

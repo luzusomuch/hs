@@ -7,10 +7,12 @@ import path from 'path';
 var baseUrl = 'http://localhost:9000/';
 var socketUrl = 'http://localhost:9000/';
 var HOST = '127.0.0.1';
+var APIConnection = 'http://localhost:9000/';
 module.exports = {
   baseUrl: baseUrl,
   socketUrl: socketUrl,
   HOST: HOST,
+  APIConnection: APIConnection,
   // MongoDB connection options
   MONGO_URL: 'mongodb://'+HOST+'/healthstars-dev',
   MONGO_REPLICAS_NUMBER: null,

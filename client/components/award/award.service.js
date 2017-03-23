@@ -5,37 +5,37 @@
   function AwardService($http, APP_CONFIG) {
     return {
       get(id) {
-        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/awards/${id}`);
+        return $http.get(`${APP_CONFIG.APIConnection}api/${APP_CONFIG.apiVer}/awards/${id}`);
       },
 
       getAvailableAwards() {
-        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/awards/available-awards`);
+        return $http.get(`${APP_CONFIG.APIConnection}api/${APP_CONFIG.apiVer}/awards/available-awards`);
       },
 
       getAll(id, params) {
       	id = id || 'me';
-      	return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/awards/${id}/all`, {params: params});
+      	return $http.get(`${APP_CONFIG.APIConnection}api/${APP_CONFIG.apiVer}/awards/${id}/all`, {params: params});
       },
 
       getGrantedAwards(id) {
         id = id || 'me';
-        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/awards/${id}/grantedAwards`);
+        return $http.get(`${APP_CONFIG.APIConnection}api/${APP_CONFIG.apiVer}/awards/${id}/grantedAwards`);
       },
 
       create: (award) => {
-        return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/awards`, award);
+        return $http.post(`${APP_CONFIG.APIConnection}api/${APP_CONFIG.apiVer}/awards`, award);
       },
 
       update: (id, award) => {
-        return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/awards/${id}`, award);
+        return $http.put(`${APP_CONFIG.APIConnection}api/${APP_CONFIG.apiVer}/awards/${id}`, award);
       },
 
       delete: (id) => {
-      	return $http.delete(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/awards/${id}`);
+      	return $http.delete(`${APP_CONFIG.APIConnection}api/${APP_CONFIG.apiVer}/awards/${id}`);
       },
 
       search: (params) => {
-        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/awards/search`, {params: params});
+        return $http.get(`${APP_CONFIG.APIConnection}api/${APP_CONFIG.apiVer}/awards/search`, {params: params});
       }
     };
   }

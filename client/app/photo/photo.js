@@ -89,22 +89,22 @@ angular.module('healthStarsApp.photoViewer', ['healthStarsApp.constants', 'healt
 		},
 		getFromServer: () => {
 			var query = Util.obToquery(params);
-			return $http.get(`${config.baseUrl}api/${config.apiVer}/photos/view?${query}`);
+			return $http.get(`${config.APIConnection}api/${config.apiVer}/photos/view?${query}`);
 		},
 		blockPhoto(id, data) {
-			return $http.put(`${config.baseUrl}api/${config.apiVer}/photos/${id}/block`, data);
+			return $http.put(`${config.APIConnection}api/${config.apiVer}/photos/${id}/block`, data);
 		},
 		myPhotos(params) {
-			return $http.get(`${config.baseUrl}api/${config.apiVer}/photos/my-photos`, {params: params});	
+			return $http.get(`${config.APIConnection}api/${config.apiVer}/photos/my-photos`, {params: params});	
 		},
 		delete(id) {
-			return $http.delete(`${config.baseUrl}api/${config.apiVer}/photos/${id}`);	
+			return $http.delete(`${config.APIConnection}api/${config.apiVer}/photos/${id}`);	
 		},
 		deleteList(data) {
-			return $http.post(`${config.baseUrl}api/${config.apiVer}/photos/delete-photos-list`, data);
+			return $http.post(`${config.APIConnection}api/${config.apiVer}/photos/delete-photos-list`, data);
 		},
 		getPhotosEvent(params) {
-			return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/photos/photo-events`, {params: params});	
+			return $http.get(`${APP_CONFIG.APIConnection}api/${APP_CONFIG.apiVer}/photos/photo-events`, {params: params});	
 		},
 	};
 })

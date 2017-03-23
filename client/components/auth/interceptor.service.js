@@ -8,7 +8,7 @@
       // Add authorization token to headers
       request(config) {
         config.headers = config.headers || {};
-        var apiUrl = APP_CONFIG.baseUrl;
+        var apiUrl = APP_CONFIG.APIConnection;
         var origins = Util.urlParse(apiUrl);
         if ($cookies.get('token') && Util.isSameOrigin(config.url, origins)) {
           config.headers.Authorization = 'Bearer ' + $cookies.get('token');

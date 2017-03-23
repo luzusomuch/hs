@@ -7,6 +7,7 @@ exports = module.exports = {
   userRoles: ['user', 'admin'],
   baseUrl: config.baseUrl,
   socketUrl: config.socketUrl,
+  APIConnection: config.APIConnection,
   apiVer : 'v1',
   apiKey: {
   	// google: 'AIzaSyCLpMBiJ3YEMigY0dRLHlS3oH85vRdwXLQ',

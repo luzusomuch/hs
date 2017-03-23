@@ -4,9 +4,9 @@ import path from 'path';
 
 // Development specific configuration
 // ==================================
-var baseUrl = process.env.baseUrl || 'http://ec2-35-157-136-123.eu-central-1.compute.amazonaws.com/';
+var baseUrl = process.env.baseUrl || 'http://healthstars-production-lb-121192854.eu-central-1.elb.amazonaws.com/';
 // testing
-var socketUrl = process.env.socketUrl || 'http://ec2-35-157-136-123.eu-central-1.compute.amazonaws.com:9000/';
+var socketUrl = process.env.socketUrl || 'http://healthstars-production-lb-121192854.eu-central-1.elb.amazonaws.com:9000/';
 // real
 // var socketUrl = 'http://35.163.48.227:9000/';
 

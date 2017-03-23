@@ -340,7 +340,7 @@ class BackendEventEditCtrl {
     } else {
       ids = [id];
     }
-    this.$http.post(`${this.APP_CONFIG.APIConnection}api/${this.APP_CONFIG.apiVer}/photos/delete-photos-list`, {filesId: ids});
+    this.$http.post(`${this.APP_CONFIG.baseUrl}api/${this.APP_CONFIG.apiVer}/photos/delete-photos-list`, {filesId: ids});
   }
 
   edit(form) {

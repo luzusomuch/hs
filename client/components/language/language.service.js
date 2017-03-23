@@ -17,7 +17,7 @@ class Language {
 
 angular.module('healthStarsApp.language', ['healthStarsApp.constants', 'ngStorage', 'pascalprecht.translate'])
 .config((APP_CONFIG, $translateProvider) => {
-	$translateProvider.useUrlLoader(`${APP_CONFIG.APIConnection}api/${APP_CONFIG.apiVer}/langs`);
+	$translateProvider.useUrlLoader(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/langs`);
 	$translateProvider.useSanitizeValueStrategy('sanitize');
 })
 .factory('Language', function($http, APP_CONFIG, $localStorage, $translate) {

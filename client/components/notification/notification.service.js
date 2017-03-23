@@ -5,11 +5,11 @@
   function NotificationService($http, APP_CONFIG) {
     return {
       getTotalNotifications() {
-        return $http.get(`${APP_CONFIG.APIConnection}api/${APP_CONFIG.apiVer}/notifications/get-total-notifications`);
+        return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/notifications/get-total-notifications`);
       },
 
       markAllAsRead() {
-      	return $http.put(`${APP_CONFIG.APIConnection}api/${APP_CONFIG.apiVer}/notifications/mark-all-as-read`);
+      	return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/notifications/mark-all-as-read`);
       }
     };
   }

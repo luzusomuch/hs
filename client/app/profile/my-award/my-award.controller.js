@@ -98,7 +98,7 @@ class MyAwardCtrl {
 				}
 			});
 		} else {
-			this.$http.delete(this.APP_CONFIG.APIConnection+'api/'+this.APP_CONFIG.apiVer+'/grantAwards/'+award._id).then(() => {
+			this.$http.delete(this.APP_CONFIG.baseUrl+'api/'+this.APP_CONFIG.apiVer+'/grantAwards/'+award._id).then(() => {
 				this.grantedAwardLoaded = false;
 				let index = _.findIndex(this.grantedAwards.items, (item) => {
 					return item._id===award._id;

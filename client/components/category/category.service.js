@@ -5,7 +5,7 @@
   function CategoryService($http, APP_CONFIG) {
     return {
       getAll() {
-      	return $http.get(`${APP_CONFIG.APIConnection}api/${APP_CONFIG.apiVer}/categories`);
+      	return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/categories`);
       }
     };
   }

@@ -2,6 +2,7 @@
 import ES from './../../components/ES';
 import async from 'async';
 import Mapping from './mapping';
+import config from './../../config/environment';
 
 class HealthStarsES {
 	constructor(config, mapping) {
@@ -102,7 +103,7 @@ exports.HealthStarsES = HealthStarsES;
 exports.config = {
 	ES: {
 		options: {
-			host: 'localhost:9200'
+			host: config.HOST+':9200'
 		},
 		index: 'health-stars',
 		settings: { 

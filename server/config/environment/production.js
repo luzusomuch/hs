@@ -9,11 +9,16 @@ var baseUrl = process.env.baseUrl || 'http://ec2-35-157-136-123.eu-central-1.com
 var socketUrl = process.env.socketUrl || 'http://ec2-35-157-136-123.eu-central-1.compute.amazonaws.com:9000/';
 // real
 // var socketUrl = 'http://35.163.48.227:9000/';
+
+// HOST for DB, redis, elasticsearch
+var HOST = process.env.HOST || '35.157.226.188';
+
 module.exports = {
   baseUrl: baseUrl,
   socketUrl: socketUrl,
+  HOST: HOST,
   // MongoDB connection options
-  MONGO_URL: 'mongodb://localhost/healthstars',
+  MONGO_URL: 'mongodb://'+HOST+':27017/healthstars',
   MONGO_REPLICAS_NUMBER: null,
   HTTP_PORT: 9000,
   PUBLIC_PATHS: [
@@ -23,7 +28,7 @@ module.exports = {
 
   REDIS: {
     port: 6379,
-    host: '127.0.0.1',
+    host: HOST,
     db: 3, // if provided select a non-default redis db
     options: {
       // see https://github.com/mranney/node_redis#rediscreateclient
@@ -39,7 +44,7 @@ module.exports = {
   QUEUE_CONFIG: {
     prefix: 'q',
     redis: {
-      host: '127.0.0.1',
+      host: HOST,
       port: 6379,
       db: 0,
       options: {}
@@ -65,8 +70,8 @@ module.exports = {
   },
 
   TWITTER: {
-    clientID:     process.env.TWITTER_ID || 'gcSqXze6lyyyomv2j9dlUGI61',
-    clientSecret: process.env.TWITTER_SECRET || 'EPLNQE9OjevhCHK1Nw0cAwM3evtsSLrm0nUEo9yQit53Z0AmcP',
+    clientID:     process.env.TWITTER_ID || 'g6K7ctVjfY2ssDGaUYHTFZTmD',
+    clientSecret: process.env.TWITTER_SECRET || '7Q5lnV2tSRG3ZYEZsFFIYlqVek7IJARhN76aZyRTmeCKohXmIO',
     callbackURL:  baseUrl + 'auth/twitter/callback'
   },
 

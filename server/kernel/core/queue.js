@@ -1,11 +1,12 @@
 import kue from 'kue';
+import config from '../../config/environment';
 
 exports.config = {
   QUEUE_NAME: 'mean',
   QUEUE_CONFIG: {
     prefix: 'q',
     redis: {
-      host: '127.0.0.1',
+      host: config.HOST,
       port: 6379,
       db: 0,
       options: {}

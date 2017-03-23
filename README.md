@@ -97,3 +97,14 @@ Please read nginx-config.txt file then copy the content of it to /etc/nginx/site
 After config nginx please restart nginx service
 
 ### For config max upload file size please read here https://easyengine.io/tutorials/php/increase-file-upload-size-limit/
+
+
+
+####For DB server
+We need mongodb, redis, elasticsearch
+Open port 27017, 6379, 9200 by IPTABLE
+
+#### For websites
+We have 2 websites running the same time, so once update code we need rebuild code for them
+35.157.152.138
+35.157.36.144

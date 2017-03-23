@@ -13,7 +13,7 @@ var socketUrl = process.env.socketUrl || 'http://healthstars-production-lb-12119
 // HOST for DB, redis, elasticsearch
 var HOST = process.env.HOST || '35.157.226.188';
 
-var APIConnection = process.env.APIConnection || '35.157.226.188/';
+var APIConnection = process.env.APIConnection || 'http://35.157.226.188/';
 
 module.exports = {
   baseUrl: baseUrl,

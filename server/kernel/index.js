@@ -54,7 +54,8 @@ class Kernel extends EventEmitter {
     //TODO - load me from config
     this.app.meanStack = this.httpServer.listen(this.config.HTTP_PORT, null, () => {
       //TODO - load env from config
-      console.log('Express server listening on %d, in %s mode', this.config.HTTP_PORT, 'development');
+      console.log(this.config.HOST);
+      console.log('Express server listening on %d, in %s mode', this.config.HTTP_PORT, process.env.NODE_ENV);
     });
   }
 

@@ -68,6 +68,7 @@ db.events.createIndex({location: "2dsphere"})
 #For Lee's server please use these following cmds:
 export baseUrl=http://ec2-35-163-48-227.us-west-2.compute.amazonaws.com/
 export socketUrl=http://ec2-35-163-48-227.us-west-2.compute.amazonaws.com:9000/
+export HOST='127.0.0.1'
 
 #For real server
 export baseUrl=https://healthstars.eu/

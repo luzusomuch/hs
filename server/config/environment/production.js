@@ -73,8 +73,12 @@ module.exports = {
   },
 
   TWITTER: {
-    clientID:     process.env.TWITTER_ID || 'g6K7ctVjfY2ssDGaUYHTFZTmD',
-    clientSecret: process.env.TWITTER_SECRET || '7Q5lnV2tSRG3ZYEZsFFIYlqVek7IJARhN76aZyRTmeCKohXmIO',
+    // clientID:     process.env.TWITTER_ID || 'g6K7ctVjfY2ssDGaUYHTFZTmD',
+    // clientSecret: process.env.TWITTER_SECRET || '7Q5lnV2tSRG3ZYEZsFFIYlqVek7IJARhN76aZyRTmeCKohXmIO',
+    // callbackURL:  baseUrl + 'auth/twitter/callback'
+
+    clientID:     process.env.TWITTER_ID || 'gcSqXze6lyyyomv2j9dlUGI61',
+    clientSecret: process.env.TWITTER_SECRET || 'EPLNQE9OjevhCHK1Nw0cAwM3evtsSLrm0nUEo9yQit53Z0AmcP',
     callbackURL:  baseUrl + 'auth/twitter/callback'
   },
 

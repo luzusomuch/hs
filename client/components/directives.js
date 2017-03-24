@@ -127,7 +127,7 @@ angular.module('healthStarsApp')
             if ($scope.photo.metadata.large) {
               photo = $scope.photo.metadata.large;
             } else if ($scope.photo.metadata.tmp) {
-              photo = APP_CONFIG.baseUrl + 'assets/photos/' + $scope.photo.metadata.tmp;
+              photo = $scope.photo.metadata.original;
             }
           }
           let description = angular.copy($scope.description);

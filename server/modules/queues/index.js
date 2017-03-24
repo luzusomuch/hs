@@ -58,14 +58,14 @@ exports.core = (kernel) => {
 
 	// Process uploaded photo to s3
 	kernel.queue.process('PROCESS_AWS', (job, done) => {
+
 		let filePath = path.resolve(kernel.config.tmpPhotoFolder+'/'+job.data.metadata.tmp);
 		let folder = 'photos';
 		let result = {
-      metadata: {},
-      keyUrls: {},
+      metadata: job.data.metadata ? job.data.metadata : {},
+      keyUrls: job.data.keyUrls ? job.data.keyUrls : {},
       processDone: true //result after process successfully
     };
-
     async.waterfall([
       //create thumbnail url for public
       (cb) => {
@@ -153,6 +153,7 @@ exports.core = (kernel) => {
         data.keyUrls.large,
         data.keyUrls.medium,
         data.keyUrls.small,
+        data.keyUrls.original
       ];
 
       S3.deleteFile(keys, (err) => {

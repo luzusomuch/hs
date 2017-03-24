@@ -95,7 +95,7 @@ angular.module('healthStarsApp')
         break;
     }
     if (profile.avatar && profile.avatar.metadata) {
-      avatarUrl = (profile.avatar.metadata.tmp) ? '/assets/photos/'+profile.avatar.metadata.tmp : profile.avatar.metadata.small;
+      avatarUrl = (profile.avatar.metadata.small) ? profile.avatar.metadata.small : profile.avatar.metadata.original;
     }
     return avatarUrl;
   };
@@ -244,16 +244,16 @@ angular.module('healthStarsApp')
       if (photo && photo.metadata) {
         switch (type) {
           case 'small':
-            url = (photo.metadata.small) ? photo.metadata.small : '/assets/photos/'+photo.metadata.tmp;
+            url = (photo.metadata.small) ? photo.metadata.small : photo.metadata.original;
             break;
           case 'medium':
-            url = (photo.metadata.medium) ? photo.metadata.medium : '/assets/photos/'+photo.metadata.tmp;
+            url = (photo.metadata.medium) ? photo.metadata.medium : photo.metadata.original;
             break;
           case 'large':
-            url = (photo.metadata.large) ? photo.metadata.large : '/assets/photos/'+photo.metadata.tmp;
+            url = (photo.metadata.large) ? photo.metadata.large : photo.metadata.original;
             break;
           default:
-            url = '/assets/photos/'+photo.metadata.tmp;
+            url = photo.metadata.original;
             break;
         }
       } else {
@@ -287,16 +287,16 @@ angular.module('healthStarsApp')
     if (image) {
       switch (type) {
         case 'small':
-          imagePath = (image.metadata.small) ? image.metadata.small : '/assets/photos/'+image.metadata.tmp;
+          imagePath = (image.metadata.small) ? image.metadata.small : image.metadata.original;
           break;
         case 'medium':
-          imagePath = (image.metadata.medium) ? image.metadata.medium : '/assets/photos/'+image.metadata.tmp;
+          imagePath = (image.metadata.medium) ? image.metadata.medium : image.metadata.original;
           break;
         case 'large':
-          imagePath = (image.metadata.large) ? image.metadata.large : '/assets/photos/'+image.metadata.tmp;
+          imagePath = (image.metadata.large) ? image.metadata.large : image.metadata.original;
           break;
         default:
-          imagePath = '/assets/photos/'+image.metadata.tmp;
+          imagePath = image.metadata.original;
           break;
       }
     }
@@ -310,16 +310,16 @@ angular.module('healthStarsApp')
     if (image) {
       switch (type) {
         case 'small':
-          imagePath = (image.metadata.small) ? image.metadata.small : '/assets/photos/'+image.metadata.tmp;
+          imagePath = (image.metadata.small) ? image.metadata.small : image.metadata.original;
           break;
         case 'medium':
-          imagePath = (image.metadata.medium) ? image.metadata.medium : '/assets/photos/'+image.metadata.tmp;
+          imagePath = (image.metadata.medium) ? image.metadata.medium : image.metadata.original;
           break;
         case 'large':
-          imagePath = (image.metadata.large) ? image.metadata.large : '/assets/photos/'+image.metadata.tmp;
+          imagePath = (image.metadata.large) ? image.metadata.large : image.metadata.original;
           break;
         default:
-          imagePath = '/assets/photos/'+image.metadata.tmp;
+          imagePath = image.metadata.original;
           break;
       }
     } else {
@@ -372,7 +372,7 @@ angular.module('healthStarsApp')
         }
       });
       if (selectedImage && selectedImage._id) {
-        imageUrl = (selectedImage.metadata.small) ? selectedImage.metadata.small : '/assets/photos/'+selectedImage.metadata.tmp;
+        imageUrl = (selectedImage.metadata.small) ? selectedImage.metadata.small : selectedImage.metadata.original;
       }
     } else if (category && category.type && category.imagePath) {
       switch (category.type) {
@@ -405,7 +405,7 @@ angular.module('healthStarsApp')
     let category = event.categoryId;
     let image = 'assets/images/img-pro1.jpg';
     if (banner && banner.metadata) {
-      image = (banner.metadata.large) ? banner.metadata.large : 'assets/photos/'+banner.metadata.tmp;
+      image = (banner.metadata.large) ? banner.metadata.large : banner.metadata.original;
     } else if (category && category._id) {
       switch (category.type) {
         case 'food':
@@ -470,7 +470,7 @@ angular.module('healthStarsApp')
   return (user) => {
     let url = '/assets/images/img-pro.jpg';
     if (user && user.coverPhoto) {
-      url = (user.coverPhoto.metadata.large) ? user.coverPhoto.metadata.large : '/assets/photos/'+user.coverPhoto.metadata.tmp;
+      url = (user.coverPhoto.metadata.large) ? user.coverPhoto.metadata.large : user.coverPhoto.metadata.original;
     }
     return url;
   };

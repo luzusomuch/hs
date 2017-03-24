@@ -3,6 +3,7 @@
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import { StringHelper } from '../../kernel/helpers';
+import { PhotoHelper } from '../../helpers';
 import config from '../../config/environment';
 import Joi from 'joi';
 import _ from 'lodash';
@@ -11,6 +12,7 @@ import multer from 'multer';
 import {Strategy as TwitterStrategy} from 'passport-twitter';
 import mongoose from 'mongoose';
 import https from 'https';
+
 
 function validationError(res, statusCode) {
   statusCode = statusCode || 422;
@@ -252,17 +254,25 @@ class UserController {
         ownerId: req.user._id,
         metadata: {
           tmp: req.file.filename
-        }
+        },
       }).save().then(photo => {
-        this.kernel.queue.create('PROCESS_AWS', photo).save();
-        let user = req.user;
-        user[req.body.type] = photo._id;
-        user.save().then(() => {
-          return res.status(200).json({type: req.body.type, photo: photo});
-        }).catch(err => {
-          return res.status(500).json({type: 'SERVER_ERROR'});
+        PhotoHelper.UploadOriginPhoto(photo, (err, result) => {
+          if (err) {
+            return res.status(500).json(err);
+          }
+          photo.metadata.original = result.s3url;
+          photo.keyUrls = {original: result.key};
+          this.kernel.queue.create('PROCESS_AWS', photo).save();
+          let user = req.user;
+          user[req.body.type] = photo._id;
+          user.save().then(() => {
+            return res.status(200).json({type: req.body.type, photo: photo});
+          }).catch(err => {
+            return res.status(500).json({type: 'SERVER_ERROR'});
+          });
         });
       }).catch(err => {
+        console.log(err);
         return res.status(500).json({type: 'SERVER_ERROR'});
       });
     });

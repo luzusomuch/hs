@@ -2,6 +2,7 @@ import Joi from 'joi';
 import multer from 'multer';
 import async from 'async';
 import _ from 'lodash';
+import { PhotoHelper } from '../../helpers';
 
 module.exports = function(kernel) {
   /**
@@ -110,19 +111,27 @@ module.exports = function(kernel) {
       };
       let model = new kernel.model.Photo(photo);
       model.save().then(saved => {
-        // create a queue to resize and upload to s3
-        kernel.queue.create('PROCESS_AWS', saved).save();
-        award.objectPhotoId = saved._id;
-        let awardModel = new kernel.model.Award(award);
-        awardModel.save().then(result => {
-          result.objectPhotoId = saved;
-          return res.status(200).json(result);
-        }).catch(() => {
-          // remove upload photo when save award error
-          saved.remove().exec().then(() => {
-            return res.status(500).json({type: 'SERVER_ERROR'});
+        PhotoHelper.UploadOriginPhoto(saved, (err, result) => {
+          if (err) {
+            return res.status(500).json(err);
+          }
+          saved.metadata.original = result.s3url;
+          saved.keyUrls = {original: result.key};
+
+          // create a queue to resize and upload to s3
+          kernel.queue.create('PROCESS_AWS', saved).save();
+          award.objectPhotoId = saved._id;
+          let awardModel = new kernel.model.Award(award);
+          awardModel.save().then(result => {
+            result.objectPhotoId = saved;
+            return res.status(200).json(result);
           }).catch(() => {
-            return res.status(500).json({type: 'SERVER_ERROR'});
+            // remove upload photo when save award error
+            saved.remove().exec().then(() => {
+              return res.status(500).json({type: 'SERVER_ERROR'});
+            }).catch(() => {
+              return res.status(500).json({type: 'SERVER_ERROR'});
+            });
           });
         });
       }).catch(err => {
@@ -531,8 +540,16 @@ module.exports = function(kernel) {
                    tmp: req.file.filename 
                   };
                   photo.save().then(saved => {
-                    kernel.queue.create('PROCESS_AWS', saved).save();
-                    cb(null);
+                    PhotoHelper.UploadOriginPhoto(saved, (err, result) => {
+                      if (err) {
+                        return res.status(500).json(err);
+                      }
+                      saved.metadata.original = result.s3url;
+                      saved.keyUrls = {original: result.key};
+                      
+                      kernel.queue.create('PROCESS_AWS', saved).save();
+                      cb(null);
+                    });
                   }).catch(cb);
                 }).catch(cb);
               } else {

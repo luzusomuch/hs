@@ -8,7 +8,7 @@
 	],
 	"baseUrl": "http://localhost:9000/",
 	"socketUrl": "http://localhost:9000/",
-	"baseUrl": "http://localhost:9000/",
+	"APIConnection": "http://localhost:9000/",
 	"apiVer": "v1",
 	"apiKey": {
 		"google": "AIzaSyCdqpWKP40L13Nzi_dt_iNiXYCsZ98Rp38",

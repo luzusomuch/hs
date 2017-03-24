@@ -3,6 +3,7 @@ import async from 'async';
 import _ from 'lodash';
 import multer from 'multer';
 import { StringHelper } from '../../kernel/helpers';
+import { PhotoHelper } from '../../helpers';
 
 module.exports = function(kernel) {
 	/*post a photo*/
@@ -39,8 +40,17 @@ module.exports = function(kernel) {
         type: req.body.type
     	};
     	kernel.model.Photo(newPhoto).save().then(saved => {
-    		kernel.queue.create('PROCESS_AWS', saved).save();
-    		return res.status(200).json(saved);
+    		PhotoHelper.UploadOriginPhoto(saved, (err, result) => {
+              	if (err) {
+                	return res.status(500).json(err);
+              	}
+              	saved.metadata.original = result.s3url;
+              	saved.keyUrls = {original: result.key};
+
+	    		kernel.queue.create('PROCESS_AWS', saved).save();
+	    		return res.status(200).json(saved);
+          	})
+
     	}).catch(err => {
     		return res.status(500).json(err);
     	});
@@ -384,7 +394,15 @@ module.exports = function(kernel) {
 
 	    	photo.save().then(saved => {
 	    		if (req.file) {
-	    			kernel.queue.create('PROCESS_AWS', saved).save();
+	    			PhotoHelper.UploadOriginPhoto(saved, (err, result) => {
+		              	if (err) {
+		                	return res.status(500).json(err);
+		              	}
+		              	saved.metadata.original = result.s3url;
+		              	saved.keyUrls = {original: result.key};
+		              	
+	    				kernel.queue.create('PROCESS_AWS', saved).save();
+	    			});
 	    		}
 	    		return res.status(200).json(saved);
 	    	}).catch(err => {

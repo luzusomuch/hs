@@ -2,6 +2,7 @@ import Joi from 'joi';
 import _ from 'lodash';
 import async from 'async';
 import multer from 'multer';
+import { PhotoHelper } from '../../helpers';
 
 module.exports = function(kernel) {
 
@@ -130,8 +131,18 @@ module.exports = function(kernel) {
           let model = new kernel.model.Photo(photo);
           model.save().then(saved => {
             uploadedPhotoIds.push(saved._id);
-            kernel.queue.create('PROCESS_AWS', saved).save();
-            callback(null, uploadedPhotoIds);
+
+            PhotoHelper.UploadOriginPhoto(saved, (err, result) => {
+              if (err) {
+                return res.status(500).json(err);
+              }
+              saved.metadata.original = result.s3url;
+              saved.keyUrls = {original: result.key};
+                
+              kernel.queue.create('PROCESS_AWS', saved).save();
+              callback(null, uploadedPhotoIds);
+            });
+
           }).catch(err => {
             callback(err);
           });

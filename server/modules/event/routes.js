@@ -5,6 +5,7 @@ import multer from 'multer';
 import moment from 'moment';
 import {EventBus} from '../../components';
 import { StringHelper } from '../../kernel/helpers';
+import { PhotoHelper } from '../../helpers';
 
 module.exports = function(kernel) {
   kernel.app.post('/api/v1/events', kernel.middleware.isAuthenticated(), (req, res) => {
@@ -218,8 +219,17 @@ module.exports = function(kernel) {
             } else {
               uploadedPhotoIds.push(saved._id);
             }
-            kernel.queue.create('PROCESS_AWS', saved).save();
-            callback(null, uploadedPhotoIds);
+
+            PhotoHelper.UploadOriginPhoto(saved, (err, result) => {
+              if (err) {
+                return res.status(500).json(err);
+              }
+              saved.metadata.original = result.s3url;
+              saved.keyUrls = {original: result.key};
+
+              kernel.queue.create('PROCESS_AWS', saved).save();
+              callback(null, uploadedPhotoIds);
+            });
           }).catch(err => {
             callback(err);
           });
@@ -1101,8 +1111,17 @@ module.exports = function(kernel) {
                 } else {
                   event.photosId.push(saved._id);
                 }
-                kernel.queue.create('PROCESS_AWS', saved).save();
-                callback(null);
+
+                PhotoHelper.UploadOriginPhoto(saved, (err, result) => {
+                  if (err) {
+                    return res.status(500).json(err);
+                  }
+                  saved.metadata.original = result.s3url;
+                  saved.keyUrls = {original: result.key};
+                  
+                  kernel.queue.create('PROCESS_AWS', saved).save();
+                  callback(null);
+                });
               }).catch(err => {
                 callback(err);
               });

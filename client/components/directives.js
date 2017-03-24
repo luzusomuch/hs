@@ -161,7 +161,7 @@ angular.module('healthStarsApp')
                 growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
               });
             } else {
-              growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+              // growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
             }
           });
         } else if (type === 'tw') {

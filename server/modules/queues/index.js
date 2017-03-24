@@ -133,7 +133,7 @@ exports.core = (kernel) => {
           photo.save().then(() => {
             setTimeout(() => {
               fs.unlink(filePath);
-            }, 2000);
+            }, 60*1000);
 	      		done();
 	      	}).catch(err => {
 	      		done(err);

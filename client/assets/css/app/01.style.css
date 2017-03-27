@@ -580,6 +580,7 @@ label .note-form {
 .content-home {
     /*padding: 20px 0px;*/
     min-height: 710px;
+    padding-bottom: 80px;
 }
 .box-1 {
     background: #2d3747;

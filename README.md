@@ -86,11 +86,14 @@ back to root then run ./build.sh
 ##Running server
 Please use ./build.sh to run our server.
 
-#### Setup cron tabs to backup our DB
+#### Setup cron tabs 
 crontab -e
 
-###run job every 4 hours
+###run job every 4 hours for backup DB will be run at our DB server instance
 0 */4 * * * sudo chmod +x /home/ubuntu/healthstars-backend/mongodb_backup.sh && /bin/sh /home/ubuntu/healthstars-backend/mongodb_backup.sh
+
+###run job every 1 hour for create repeating events (only need to run in 1 instance not both)
+0 */1 * * * node /home/ubuntu/healthstars-backend/server/cron.js > /tmp/out.log 2> /tmp/err.log
 
 
 ####Nginx config

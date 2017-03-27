@@ -1178,6 +1178,9 @@ label {
     margin-bottom: 0px;
     text-transform: uppercase;
     text-align: center;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
 }
 .footer a {
     color: #fff;

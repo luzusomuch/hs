@@ -1902,6 +1902,7 @@ module.exports = function(kernel) {
         }).catch(callback);
       }, (err) => {
         if (err) {
+          console.log(err);
           return res.status(500).json({type: 'SERVER_ERROR'});
         }
         async.parallel([
@@ -1921,6 +1922,7 @@ module.exports = function(kernel) {
           }
         ], (err, result) => {
           if (err) {
+            console.log(err);
             return res.status(500).json({type: 'SERVER_ERROR'});
           }
           // find out the social category
@@ -1980,8 +1982,8 @@ module.exports = function(kernel) {
                 description: event.description,
                 categoryId: selectedCategory._id,
                 // awardId: selectedAward._id,
-                startDateTime: new Date(event.start.date),
-                endDateTime: new Date(event.end.date),
+                startDateTime: event.start.dateTime ? new Date(event.start.dateTime) : new Date(event.start.date),
+                endDateTime: event.end.dateTime ? new Date(event.end.dateTime) :  new Date(event.end.date),
                 public: false,
                 private: true,
                 type: req.body.type,
@@ -2000,6 +2002,7 @@ module.exports = function(kernel) {
             }).catch(callback);
           }, (err) => {
             if (err) {
+              console.log(err);
               return res.status(500).json({type: 'SERVER_ERROR'});
             }
             return res.status(200).end();
@@ -2007,6 +2010,7 @@ module.exports = function(kernel) {
         });
       });
     }).catch(err => {
+      console.log(err);
       return res.status(500).json({type: 'SERVER_ERROR'});
     });
   });

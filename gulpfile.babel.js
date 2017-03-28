@@ -43,6 +43,7 @@ const paths = {
   },
   server: {
     assets: `${serverPath}/assets/**/*`,
+    emailTemplate: `${serverPath}/modules/mailer/templates/**/*.html`,
     scripts: [
       `${serverPath}/**/!(*.spec|*.integration).js`,
       `!${serverPath}/config/local.env.sample.js`
@@ -592,6 +593,7 @@ gulp.task('build', cb => {
       'copy:assets',
       'copy:assetsServer',
       'copy:server',
+      'copy:serverEmailTemplate',
       'transpile:server',
       'build:client'
     ],
@@ -766,6 +768,11 @@ gulp.task('copy:server', () => {
     '.bowerrc'
   ], {cwdbase: true})
     .pipe(gulp.dest(paths.dist));
+});
+
+gulp.task('copy:serverEmailTemplate', () => {
+  return gulp.src([paths.server.emailTemplate])
+    .pipe(gulp.dest(`${paths.dist}/${serverPath}/modules/mailer/templates`));
 });
 
 gulp.task('coverage:pre', () => {

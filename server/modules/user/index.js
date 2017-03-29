@@ -19,6 +19,7 @@ exports.routes = (kernel) => {
   kernel.app.put('/api/v1/users/:id/update-user-popup-star-info-status', kernel.middleware.isAuthenticated(), userController.updateUserPopupStarInfoStatus);
 
   kernel.app.post('/api/v1/users', userController.create);
+  kernel.app.post('/api/v1/users/check-email-in-used', userController.checkEmailInUsed);
   kernel.app.post('/api/v1/users/verify-account', userController.verifyAccount);
   kernel.app.post('/api/v1/users/change-picture', kernel.middleware.isAuthenticated(), userController.changePictrue);
 

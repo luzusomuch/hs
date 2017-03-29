@@ -28,6 +28,11 @@ function localAuthenticate(User, email, password, done) {
             message: 'This user was deleted',
             error: 'USER_DELETED'
           });
+        } else if (!user.emailVerified) {
+          return done(null, false, {
+            message: 'Please verify your email address',
+            error: 'PLEASE_VERIFY_YOUR_EMAIL_ADDRESS'
+          });
         } else {
           return done(null, user);
         }

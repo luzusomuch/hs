@@ -3,9 +3,10 @@
 class RegisterCtrl {
   //end-non-standard
 
-  constructor(Auth, $state, $http, $scope, $uibModal, growl) {
+  constructor(Auth, $state, $http, $scope, $uibModal, growl, User) {
     this.growl = growl;
     this.Auth = Auth;
+    this.User = User;
     this.$state = $state;
     this.$http = $http;
     this.$uibModal = $uibModal;
@@ -17,8 +18,23 @@ class RegisterCtrl {
     
     this.address = {};
     this.addresses = [];
+    this.validEmail = false;
   }
   //start-non-standard
+
+  checkInUseEmail(form, email) {
+    if (email) {
+      this.User.checkEmailInUse(email).then(resp => {
+        if (!resp.data.valid) {
+          form['email'].$setValidity('mongoose', false);
+          this.validEmail = false;
+        } else {
+          form['email'].$setValidity('mongoose', true);
+          this.validEmail = true;
+        }
+      });
+    }
+  }
 
   refreshAddresses(address) {
     if (address.trim().length > 0) {
@@ -36,7 +52,9 @@ class RegisterCtrl {
   }
 
   register(form) {
-    form['email'].$setValidity('mongoose', true);
+    if (this.validEmail) {
+      form['email'].$setValidity('mongoose', true);
+    }
     this.submitted = true;
     if (!this.user.term) {
       this.growl.error(`<p>{{'PLEASE_ACCEPT_OUR_TERMS_AND_CONDITIONS' | translate}}</p>`);
@@ -89,7 +107,8 @@ class RegisterCtrl {
               this.errors[field] = error.message;
             });
           } else {
-            this.$state.go('home');
+            // this.$state.go('home');
+            this.growl.success(`<p>{{'SIGN_UP_SUCCESSFULLY_PLEASE_CONFIRM_YOUR_EMAIL_TO_CONTINUE' | translate}}</p>`)
           }
 //         }).then((err, resp) => {
 //           console.log(err);

@@ -53,6 +53,7 @@ class UserController {
     this.updateUserLocation = this.updateUserLocation.bind(this);
     this.updateUserPopupStarInfoStatus = this.updateUserPopupStarInfoStatus.bind(this);
     this.getUserLocationWeather = this.getUserLocationWeather.bind(this);
+    this.checkEmailInUsed = this.checkEmailInUsed.bind(this);
   }
 
   hotmailContacts(req, res) {
@@ -1160,6 +1161,21 @@ class UserController {
         return res.status(200).json(parsed);
       })
     })
+  }
+
+  // check email used email
+  checkEmailInUsed(req, res) {
+    if (!req.body.email) {
+      return res.status(404).end();
+    }
+    this.kernel.model.User.findOne({email: req.body.email}).then(user => {
+      if (!user) {
+        return res.status(200).json({valid: true});
+      }
+      return res.status(200).json({valid: false});
+    }).catch(err => {
+      return res.status(500).json(err);
+    });
   }
 
   /**

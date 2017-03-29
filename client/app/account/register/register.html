@@ -158,20 +158,20 @@
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group relative-div">
                             <label>{{'EMAIL' | translate}} *</label>
-                            <input type="email" class="form-control" ng-model="vm.user.email" name="email" required ng-class="{'error-input': (form.email.$error.pattern || form.email.$error.email || form.email.$error.required) && vm.submitted}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$">
+                            <input type="email" class="form-control" ng-model="vm.user.email" name="email" required ng-class="{'error-input': (form.email.$error.pattern || form.email.$error.email || form.email.$error.required) && vm.submitted}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$" ng-blur="vm.checkInUseEmail(form, vm.user.email)">
 
                             <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.email.$error.pattern && !form.email.$error.email && !form.email.$error.required">
                               <i class="fa fa-circle fa-stack-2x fa-cicle-input"></i>
                               <i class="fa fa-check fa-stack-1x fa-inverse fa-icon-input"></i>
                             </span>
 
-                            <span class="fa-stack fa-lg sign-up-error-validate" ng-show="(form.email.$error.mongoose || form.email.$error.pattern || form.email.$error.email || form.email.$error.required) && vm.submitted">
+                            <span class="fa-stack fa-lg sign-up-error-validate" ng-show="((form.email.$error.pattern || form.email.$error.email || form.email.$error.required) && vm.submitted) || form.email.$error.mongoose">
                               <i class="fa fa-circle fa-stack-2x fa-cicle-input"></i>
                               <i class="fa fa-times fa-stack-1x fa-inverse fa-icon-input"></i>
                             </span>
                             <p ng-show="form.email.$error.pattern || form.email.$error.email && vm.submitted" class="error-text" ng-bind-html="'EMAIL_TYPE_ERROR' | translate | html"></p>
                             <p ng-show="form.email.$error.required && vm.submitted" class="error-text" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
-                            <p ng-show="form.email.$error.mongoose && vm.submitted" class="error-text">{{'EMAIL_ALREADY_USED' | translate}}</p>
+                            <p ng-show="form.email.$error.mongoose" class="error-text">{{'EMAIL_ALREADY_USED' | translate}}</p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">

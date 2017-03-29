@@ -67,6 +67,10 @@
 
       getUserLocationWeather: (params) => {
         return $http.get(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/user-location-weather`, {params: params});
+      },
+
+      checkEmailInUse: (email) => {
+        return $http.post(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/check-email-in-used`, {email: email})
       }
     };
   }

@@ -439,6 +439,8 @@ let Language = {
 		PLEASE_ASSIGN_ADMIN_ROLE_TO_ANOTHER_PERSION_BEFORE_YOU_LEAVE: 'Please assign admin role to another person before you leave',
 		YOU_CANNOT_LEAVE_THIS_EVENT: 'You cannot leave this event',
 		COMPOSE_TO: 'to',
+		SIGN_UP_SUCCESSFULLY_PLEASE_CONFIRM_YOUR_EMAIL_TO_CONTINUE: 'Sign up successfully! Please confirm your email to continue',
+		PLEASE_VERIFY_YOUR_EMAIL_ADDRESS: 'Please verify your email address',
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -878,6 +880,8 @@ let Language = {
 		PLEASE_ASSIGN_ADMIN_ROLE_TO_ANOTHER_PERSION_BEFORE_YOU_LEAVE: 'Bitte weisen Sie einer anderen Person eine Admin-Rolle zu, bevor Sie gehen',
 		YOU_CANNOT_LEAVE_THIS_EVENT: 'Du kannst diese Veranstaltung nicht verlassen',
 		COMPOSE_TO: 'Freund aussuchen',
+		SIGN_UP_SUCCESSFULLY_PLEASE_CONFIRM_YOUR_EMAIL_TO_CONTINUE: 'Melden Sie sich erfolgreich an! Bitte bestätigen Sie Ihre Email, um fortzufahren',
+		PLEASE_VERIFY_YOUR_EMAIL_ADDRESS: 'Bitte bestätige deine Email Adresse',
 	}
 }
 

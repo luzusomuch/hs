@@ -62,9 +62,9 @@
        */
       createUser(user, callback) {
         return User.save(user).then(resp => {
-          $cookies.put('token', resp.data.token);
-          currentUser = User.get();
-          return safeCb(callback)(null, currentUser);
+          // $cookies.put('token', resp.data.token);
+          // currentUser = User.get();
+          return safeCb(callback)(null, user);
         }).catch(err => {
           Auth.logout();
           return safeCb(callback)(err);

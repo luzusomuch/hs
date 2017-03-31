@@ -441,6 +441,9 @@ let Language = {
 		COMPOSE_TO: 'to',
 		SIGN_UP_SUCCESSFULLY_PLEASE_CONFIRM_YOUR_EMAIL_TO_CONTINUE: 'Sign up successfully! Please confirm your email to continue',
 		PLEASE_VERIFY_YOUR_EMAIL_ADDRESS: 'Please verify your email address',
+		NO_FRIEND_WAS_FOUND: 'No friend was found',
+		SYNC_GOOGLE_CALENDAR_SUCCESSFULLY: 'Sync Google calendar successfully',
+		SYNC_FACEBOOK_CALENDAR_SUCCESSFULLY: 'Sync Facebook calendar successfully',
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -882,6 +885,9 @@ let Language = {
 		COMPOSE_TO: 'Freund aussuchen',
 		SIGN_UP_SUCCESSFULLY_PLEASE_CONFIRM_YOUR_EMAIL_TO_CONTINUE: 'Melden Sie sich erfolgreich an! Bitte bestätigen Sie Ihre Email, um fortzufahren',
 		PLEASE_VERIFY_YOUR_EMAIL_ADDRESS: 'Bitte bestätige deine Email Adresse',
+		NO_FRIEND_WAS_FOUND: 'Keine Freunde gefunden',
+		SYNC_GOOGLE_CALENDAR_SUCCESSFULLY: 'Google Kalender erfolgreich synchronisieren',
+		SYNC_FACEBOOK_CALENDAR_SUCCESSFULLY: 'Facebook Kalender erfolgreich synchronisieren',
 	}
 }
 

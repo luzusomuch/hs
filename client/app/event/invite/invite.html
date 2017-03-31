@@ -19,7 +19,7 @@
             <a href="#" ng-click="vm.invite(user)" class="btn-follow">{{!user.invited ? ('INVITE' | translate) : ('RESEND' | translate)}}</a>
 
         </li>
-        <li ng-if="!vm.users.length" style="padding-left: 0">No friend was found</li>
+        <li ng-if="!vm.users.length" style="padding-left: 0">{{'NO_FRIEND_WAS_FOUND' | translate}}</li>
     </ul>
     <hs-loading size="32" ng-show="vm.loading"></hs-loading>
     </div>

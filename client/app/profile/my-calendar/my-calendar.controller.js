@@ -264,18 +264,19 @@ class MyCalendarCtrl {
 			window.gapi.load('client', () => {
 				window.gapi.client.load('calendar', 'v3', () => {
 					window.gapi.client.calendar.events.list({
-          	'calendarId': 'primary',
-          	'showDeleted': false,
-	        }).execute(resp => {
-	        	// this.renderEvents(resp.items, 'google');
-	        	this.EventService.syncEvents({events: resp.items, type: 'google'}).then(() => {
-	        		this.$timeout(() => {
-	        			this.loadEvents('google');
-	        		}, 1500);
+			          	'calendarId': 'primary',
+			          	'showDeleted': false,
+			        }).execute(resp => {
+	        		// this.renderEvents(resp.items, 'google');
+	        			this.EventService.syncEvents({events: resp.items, type: 'google'}).then(() => {
+			        		this.$timeout(() => {
+			        			this.loadEvents('google');
+			        			this.growl.success(`<p>{{'SYNC_GOOGLE_CALENDAR_SUCCESSFULLY' | translate}}</p>`);
+			        		}, 1500);
 						}).catch(() => {
 							this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 						});
-	        });
+	        		});
 				});
 			});
 		});
@@ -289,8 +290,9 @@ class MyCalendarCtrl {
 						// this.renderEvents(data.data, 'facebook');
 						this.EventService.syncEvents({events: data.data, type: 'facebook'}).then(() => {
 							this.$timeout(() => {
-	        			this.loadEvents('facebook');
-	        		}, 1500);
+			        			this.loadEvents('facebook');
+			        			this.growl.success(`<p>{{'SYNC_FACEBOOK_CALENDAR_SUCCESSFULLY' | translate}}</p>`);
+			        		}, 1500);
 						}).catch(() => {
 							this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 						});

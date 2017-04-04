@@ -26,7 +26,8 @@ module.exports = (ES, UserModel, cb) => {
           role: 'admin',
           name: 'Admin',
           email: 'admin@example.com',
-          password: 'admin'
+          password: 'admin',
+          emailVerified: true
         }];
         async.each(users, (user, callback) => {
           UserModel.create(user).then(saved => {

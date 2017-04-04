@@ -226,9 +226,13 @@ module.exports = function(kernel) {
               }
               saved.metadata.original = result.s3url;
               saved.keyUrls = {original: result.key};
-
-              kernel.queue.create('PROCESS_AWS', saved).save();
-              callback(null, uploadedPhotoIds);
+              saved.markModified('metadata');
+              saved.save().then(saved => {
+                kernel.queue.create('PROCESS_AWS', saved).save();
+                callback(null, uploadedPhotoIds);
+              }).catch(err => {
+                callback(err);
+              });
             });
           }).catch(err => {
             callback(err);
@@ -1118,9 +1122,14 @@ module.exports = function(kernel) {
                   }
                   saved.metadata.original = result.s3url;
                   saved.keyUrls = {original: result.key};
-                  
-                  kernel.queue.create('PROCESS_AWS', saved).save();
-                  callback(null);
+
+                  saved.markModified('metadata');
+                  saved.save().then(saved => {
+                    kernel.queue.create('PROCESS_AWS', saved).save();
+                    callback(null);
+                  }).catch(err => {
+                    callback(err);
+                  });
                 });
               }).catch(err => {
                 callback(err);

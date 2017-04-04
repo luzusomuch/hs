@@ -6,7 +6,6 @@ angular.module('healthStarsApp').config(function($stateProvider) {
 	    templateUrl: 'app/about/view.html',
 	    controller: 'AboutCtrl',
 	    controllerAs: 'vm',
-	    authenticate: true,
 	    resolve: {
 	    	about: (AboutService, $location) => {
 	    		return AboutService.get().then(resp => {

@@ -91,20 +91,54 @@ class ProfileDetailCtrl {
 	}
 
 	upload(file, type) {
+		console.log(file);
 		if (this.user._id.toString()===this.authUser._id.toString()) {
-  		if (file && file.length > 0) {
-	  		this.Upload.upload({
-	      	url: '/api/v1/users/change-picture',
-	      	arrayKey: '',
-	      	data: {file: file, type: type},
-	      	headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
-		    }).then(resp =>{
-		    	this.user[resp.data.type] = resp.data.photo;
-		    	this.Auth.setAuthUser(this.user);
-		    }, () => {
-		    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
-		    });
-  		}
+	  		if (file && file.length > 0) {
+	  			this.$uibModal.open({
+					animation: true,
+					templateUrl: 'app/profile/modal/crop-image/view.html',
+					controller: 'CropImageCtrl',
+					controllerAs: 'CropImage',
+					resolve: {
+						file: () => {
+							return file;
+						},
+						cropType: () => {
+							return 'rectangle';
+						},
+						imageSize: () => {
+							return {width: file[0].$ngfWidth, height: file[0].$ngfHeight};
+						},
+          				isBanner: () => {
+	            			return true;
+	          			}
+					}
+				}).result.then(data => {
+					this.Upload.upload({
+				      	url: '/api/v1/users/change-picture',
+				      	arrayKey: '',
+				      	data: {file: data, type: type},
+				      	headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
+			    	}).then(resp =>{
+			    		this.user[resp.data.type] = resp.data.photo;
+			    		this.Auth.setAuthUser(this.user);
+			    	}, () => {
+			    		this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+			    	});
+				});
+
+		  		// this.Upload.upload({
+		    //   	url: '/api/v1/users/change-picture',
+		    //   	arrayKey: '',
+		    //   	data: {file: file, type: type},
+		    //   	headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
+			   //  }).then(resp =>{
+			   //  	this.user[resp.data.type] = resp.data.photo;
+			   //  	this.Auth.setAuthUser(this.user);
+			   //  }, () => {
+			   //  	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+			   //  });
+	  		}
 		} else {
 			this.growl.error(`<p>{{'NOT_ALLOW' | translate}}</p>`);
 		}

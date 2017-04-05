@@ -2588,3 +2588,7 @@ span.total-notification {
 .popover-title {
     color: #000;
 }
+.user-profile-bg-cover {
+    background-size: cover;
+    background-repeat: no-repeat;
+}

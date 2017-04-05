@@ -2,42 +2,49 @@
 
 {% block content %}
 
+<!-- english section -->
+{% if user.language==='en' %}
+<div>
+	<p>Welcome <%= user.name%></p>
+	<p>Healthstars is the community reaching out for the stars in order to bring people together, who feel the need to make the world a better place. The motto: Healthy living, for a healthy planet combines us!</p>
 
-<p>Welcome <%= user.name%></p>
-<p>Healthstars is the community reaching out for the stars in order to bring people together, who feel the need to make the world a better place. The motto: Healthy living, for a healthy planet combines us!</p>
+	<p>In order to finalize your registration, please use this <a href="<%= url %>">link</a></p>
 
-<p>In order to finalize your registration, please use this <a href="<%= url %>">link</a></p>
+	<p>After activiation you can login using your e-mail address and password defined in the sign up process.</p>
 
-<p>After activiation you can login using your e-mail address and password defined in the sign up process.</p>
+	<p>Together we can make the change, so let's start doing it!</p>
 
-<p>Together we can make the change, so let's start doing it!</p>
+	<p>Nice to have you with us and have fun.</p>
 
-<p>Nice to have you with us and have fun.</p>
+	<p>Your healthstarsteam</p>
 
-<p>Your healthstarsteam</p>
+	{% include './includes/english-footer.html' %}
+</div>
+{% endif %}
 
-{% include './includes/english-footer.html' %}
+
+<!-- german section -->
+{% if user.language==='de' %}
+<div>
+	<p>Herzlich Willkommen <%= user.name %></p>
+
+	<p>Healthstars ist die Community, die nach den Sternen greift um eine Brücke zwischen Menschen zu bauen, die die Welt durch sich positiv verändern wollen. Healthy living, for a healthy planet!</p>
+
+	<p>Um deine Registrierung abzuschließen, klicke bitte auf diesen <a href="<%= url %>">link</a></p>
+
+	<p>Nach der Freischaltung kannst du dich dann mit deiner E-Mail- Adresse  <a href="mailto:baki88@gmx.de">baki88@gmx.de</a> und deinem selbst gewählten Passwort einloggen.</p>
+
+	<p>Der größte Beitrag, ist der Beitrag eines jeden, also packen wir es an!</p>
+
+	<p>Schön das du dabei bist und Viel Spaß!</p>
+
+	<p>Besuche uns auf facebook: <a href="https://www.facebook.com/Healthstars">https://www.facebook.com/Healthstars</a></p>
+	<p>Besuche uns auf Twitter: <a href="https://twitter.com/Healthstars">https://twitter.com/Healthstars</a></p>
+
+	{% include './includes/german-footer.html' %}
+</div>
+{% endif %}
 
 
-<p>----------------------------------</p>
-
-<p>German version</p>
-
-<p>Herzlich Willkommen <%= user.name %></p>
-
-<p>Healthstars ist die Community, die nach den Sternen greift um eine Brücke zwischen Menschen zu bauen, die die Welt durch sich positiv verändern wollen. Healthy living, for a healthy planet!</p>
-
-<p>Um deine Registrierung abzuschließen, klicke bitte auf diesen <a href="<%= url %>">link</a></p>
-
-<p>Nach der Freischaltung kannst du dich dann mit deiner E-Mail- Adresse  <a href="mailto:baki88@gmx.de">baki88@gmx.de</a> und deinem selbst gewählten Passwort einloggen.</p>
-
-<p>Der größte Beitrag, ist der Beitrag eines jeden, also packen wir es an!</p>
-
-<p>Schön das du dabei bist und Viel Spaß!</p>
-
-<p>Besuche uns auf facebook: <a href="https://www.facebook.com/Healthstars">https://www.facebook.com/Healthstars</a></p>
-<p>Besuche uns auf Twitter: <a href="https://twitter.com/Healthstars">https://twitter.com/Healthstars</a></p>
-
-{% include './includes/german-footer.html' %}
 
 {% endblock %}

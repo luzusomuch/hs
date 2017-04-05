@@ -58,7 +58,8 @@ module.exports = exports = function(kernel) {
       isCompanyAccount: {type: Boolean, default: false},
       pointClub: {type: String, default: ''},
       job: {type: String, default: ''},
-      hidePopupStarInfo: {type: Boolean, default: false}
+      hidePopupStarInfo: {type: Boolean, default: false},
+      language: {type: String, default: 'en'}
     });
   };
 

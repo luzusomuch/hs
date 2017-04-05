@@ -3,13 +3,14 @@
 class RegisterCtrl {
   //end-non-standard
 
-  constructor(Auth, $state, $http, $scope, $uibModal, growl, User) {
+  constructor(Auth, $state, $http, $scope, $uibModal, growl, User, $localStorage) {
     this.growl = growl;
     this.Auth = Auth;
     this.User = User;
     this.$state = $state;
     this.$http = $http;
     this.$uibModal = $uibModal;
+    this.$localStorage = $localStorage;
     this.user = {
       isCompanyAccount: false,
       location: {},
@@ -84,7 +85,8 @@ class RegisterCtrl {
           password: this.user.password,
           phoneNumber: this.user.phoneNumber,
           location: this.user.location,
-          isCompanyAccount: this.user.isCompanyAccount
+          isCompanyAccount: this.user.isCompanyAccount,
+          language: this.$localStorage.language
         }, (err) => {
           if (err) {
             this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);

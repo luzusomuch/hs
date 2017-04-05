@@ -1,7 +1,7 @@
 <div class="top-detail">
-	<div class="img-timline bg-cover" style="background-image: url('{{vm.user | userBannerUrl}}')"></div>
+	<div class="img-timline user-profile-bg-cover" style="background-image: url('{{vm.user | userBannerUrl}}')"></div>
 
-    <button ng-show="vm.user._id==vm.authUser._id" type="button" class="uploadimg-a" data-toggle="tooltip" data-placement="top" title="Upload image" ngf-select="vm.upload($files, 'coverPhoto')" accept="image/*"><i class="fa fa-picture-o"></i></button>
+    <button ng-show="vm.user._id==vm.authUser._id" type="button" class="uploadimg-a" data-toggle="tooltip" data-placement="top" title="Upload image" ngf-select="vm.upload($files, 'coverPhoto')" ngf-min-height="1" or ngf-min-width="1" accept="image/*"><i class="fa fa-picture-o"></i></button>
 
 	<div class="text-top-detail">
 		<div class="container">

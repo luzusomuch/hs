@@ -62,9 +62,7 @@ module.exports = function(kernel) {
         if (category.type!=='action' && !req.body.event.location.fullAddress) {
           return res.status(422).json({type: 'EVENT_LOCATION_REQUIRED', path: 'location', message: 'Location is required'}); 
         } else if (category.type==='action') {
-          req.body.event.location = {
-            coordinates: [0, 0]
-          };
+          req.body.event.location = (req.body.event.location.fullAddress) ? req.body.event.location : {coordinates: [0,0]};
         }
 
         let data = {
@@ -991,10 +989,7 @@ module.exports = function(kernel) {
             if (category.type!=='action' && !req.body.event.location.fullAddress) {
               return res.status(422).json({type: 'EVENT_LOCATION_REQUIRED', path: 'location', message: 'Location is required'}); 
             } else if (category.type==='action') {
-              req.body.event.location = {
-                coordinates: [0, 0],
-                type: 'Point'
-              };
+              req.body.event.location = (req.body.event.location.fullAddress) ? req.body.event.location : {coordinates: [0,0], type: 'Point'};
             }
             var data = {
               name: req.body.event.name,

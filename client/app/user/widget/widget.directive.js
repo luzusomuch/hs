@@ -42,22 +42,22 @@ class UserWidgetCtrl {
 						imageSize: () => {
 							return {};
 						},
-	          isBanner: () => {
-	            return false;
-	          }
+          				isBanner: () => {
+	            			return false;
+	          			}
 					}
 				}).result.then(data => {
 					this.Upload.upload({
-		      	url: '/api/v1/users/change-picture',
-		      	arrayKey: '',
-		      	data: {file: data, type: type},
-		      	headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
-			    }).then(resp =>{
-			    	this.user[resp.data.type] = resp.data.photo;
-			    	this.Auth.setAuthUser(this.user);
-			    }, () => {
-			    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
-			    });
+				      	url: '/api/v1/users/change-picture',
+				      	arrayKey: '',
+				      	data: {file: data, type: type},
+				      	headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
+			    	}).then(resp =>{
+			    		this.user[resp.data.type] = resp.data.photo;
+			    		this.Auth.setAuthUser(this.user);
+			    	}, () => {
+			    		this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+			    	});
 				});
 			}
 		} else {

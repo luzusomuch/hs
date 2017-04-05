@@ -194,7 +194,6 @@ class UserController {
       newPost: true
     };
     newUser.isCompanyAccount = false;
-
     newUser.save()
     .then((user) => {
       var url = config.baseUrl + 'verify/'+user.emailVerifiedToken;

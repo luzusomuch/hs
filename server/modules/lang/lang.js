@@ -130,7 +130,7 @@ let Language = {
 		AWARD_GRANTED_ERROR: 'This event award was granted to this user',
 		LIKE: 'Interested',
 		UNLIKE: 'Uninterest',
-		COMPANY_ACCOUNT_TEXT_INFO: 'If you are creating this account for an corporation, institute or organisation, please use here the company account. It will bring additional features to your account.',
+		COMPANY_ACCOUNT_TEXT_INFO: 'If you are creating this account for a corporation, institution or organisation, please check mark the account as a company account. Once we have verified that the request is valid, we will upgrade your account to a company account. This upgrade will offer you additional features and does not create any liabilties.',
 		EDIT_EVENT: 'Edit event',
 		CANCEL: 'Cancel',
 		EVENT_BANNER: 'Event banner',
@@ -444,6 +444,9 @@ let Language = {
 		NO_FRIEND_WAS_FOUND: 'No friend was found',
 		SYNC_GOOGLE_CALENDAR_SUCCESSFULLY: 'Sync Google calendar successfully',
 		SYNC_FACEBOOK_CALENDAR_SUCCESSFULLY: 'Sync Facebook calendar successfully',
+		VERIFY_ACCOUNT_ERROR: 'Your token is not valid or has expired. You will be redirect to homepage after few seconds',
+		VERIFY_ACCOUNT_SUCCESSFULLY: 'Verify successfully! You will be redirect to homepage after few seconds',
+
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -575,7 +578,7 @@ let Language = {
 		AWARD_GRANTED_ERROR: 'This event award was granted to this user',
 		LIKE: 'Interessierte',
 		UNLIKE: 'Interessieren',
-		COMPANY_ACCOUNT_TEXT_INFO: 'Falls Sie einen Kooperationspartner, eine Institution oder eine Organisation repraesentieren, bitte benutzen Sie diese Option. Es gibt Ihnen mehr Moeglichkeiten als Standart-Accounts. Diese Accounts werden aber von Healthstars GmbH geprüft.',
+		COMPANY_ACCOUNT_TEXT_INFO: 'Wenn Sie dieses Konto für eine Körperschaft, Institution oder Organisation erstellen, markieren Sie bitte das Konto als Firmenkonto. Sobald wir überprüft haben, dass die Anfrage gültig ist, werden wir Ihr Konto auf ein Firmenkonto aktualisieren. Dieses Upgrade bietet Ihnen zusätzliche Funktionen und schafft keine Haftung.',
 		EDIT_EVENT: 'Event bearbeiten',
 		CANCEL: 'Abbrechen',
 		EVENT_BANNER: 'Event banner',
@@ -888,6 +891,8 @@ let Language = {
 		NO_FRIEND_WAS_FOUND: 'Keine Freunde gefunden',
 		SYNC_GOOGLE_CALENDAR_SUCCESSFULLY: 'Google Kalender erfolgreich synchronisieren',
 		SYNC_FACEBOOK_CALENDAR_SUCCESSFULLY: 'Facebook Kalender erfolgreich synchronisieren',
+		VERIFY_ACCOUNT_ERROR: 'Ihr Token ist nicht gültig oder ist abgelaufen. Sie werden nach wenigen Sekunden zur Startseite weitergeleitet',
+		VERIFY_ACCOUNT_SUCCESSFULLY: 'Überprüfen Sie erfolgreich! Du wirst nach wenigen Sekunden nach Hause zurückkehren',
 	}
 }
 

@@ -1,6 +1,6 @@
 <div class="verify-page">
 	<div class="verify-modal">
-		<p style="text-align:center" ng-show="vm.error">Your token is not valid or has expired. You will be redirect to home page after few minutes</p>
-		<p style="text-align:center" ng-show="vm.success">Verify Successfully! You will be redirect to home page after few minutes</p>
+		<p style="text-align:center" ng-show="vm.error" ng-bind-html="'VERIFY_ACCOUNT_ERROR' | translate | html"></p>
+		<p style="text-align:center" ng-show="vm.success" ng-bind-html="'VERIFY_ACCOUNT_SUCCESSFULLY' | translate | html"></p>
 	</div>
 </div>

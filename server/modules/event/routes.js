@@ -292,7 +292,16 @@ module.exports = function(kernel) {
                       data: event
                     });
                   });
-                  return res.status(200).json(event);
+                  // populate photo
+                  if (event.photosId.length === 0) {
+                    return res.status(200).json(event);
+                  }
+                  kernel.model.Event.populate(event, {path: 'photosId'}, (err, event) => {
+                    if (err) {
+                      return res.status(500).json(err);
+                    }
+                    return res.status(200).json(event);
+                  });
                 }).catch(err => {
                   return res.status(500).json({type: 'SERVER_ERROR'});
                 });
@@ -375,8 +384,21 @@ module.exports = function(kernel) {
         }
 
         let results = {items: [], totalItem: result.totalItem};
+
         if (likedEvents.length > 0) {
-          result.items = _.union(result.items, likedEvents);
+          let tmp = [];
+          result.items = result.items.concat(likedEvents);
+          
+          _.each(result.items, item => {
+            let dataIndex = _.findIndex(tmp, data => {
+              return item._id.toString()===data._id.toString();
+            });
+            
+            if (dataIndex === -1) {
+              tmp.push(item);
+            }
+          })
+          result.items = tmp;
         }
 
         async.each(result.items, (item, callback) => {

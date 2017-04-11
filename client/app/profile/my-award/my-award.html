@@ -43,7 +43,7 @@
 	</div>
 
 	<div class="box-blue p15" ng-if="vm.showOwnAwards()">
-    <div class="title-blue">{{'OWN_AWARDS' | translate}}: <a href="#" class="btn-create" ng-click="vm.showAddMoreAwardModal()"><i class="fa fa-plus"></i> <span ng-bind-html="'CREATE_AWARD' | translate"></span></a></div>
+    <div class="title-blue">{{'OWN_AWARDS' | translate}}: <a href="#" class="btn-create" ng-click="vm.showAddMoreAwardModal()"><i class="fa fa-plus"></i> <span ng-bind-html="'CREATE_AWARD' | translate | html"></span></a></div>
     <slick ng-if="vm.ownAwardLoaded" data="vm.ownAwardLoaded" infinite="true" slides-to-show="5" slides-to-scroll="5" class="listview" responsive="[{breakpoint: 1024, settings: {slidesToShow: 3, slidesToScroll: 3, infinite: true}}, {breakpoint: 600, settings: {slidesToShow: 2, slidesToScroll: 2}}, {breakpoint: 480, settings: {slidesToShow: 1, slidesToScroll: 1}}]">
     	<div ng-repeat="award in vm.ownAwards.items" ng-drag="true" ng-drag-data="award">
 	    	<div class="box-award">

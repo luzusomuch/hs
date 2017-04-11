@@ -474,12 +474,13 @@ class CreateEventCtrl {
 	      data: {file: this.newBanner, event: this.event},
 	      headers: {'Authorization': `Bearer ${this.$cookies.get('token')}`}
 	    }).then(resp =>{
-        this.files = [];
-        this.event.url = `${this.APP_CONFIG.baseUrl}event/detail/${resp.data._id}`;
-	    	this.$state.go('event.detail', {id: resp.data._id});
         this.submitted = false;
+        this.files = [];
+        this.event = resp.data;
+        this.event.url = `${this.APP_CONFIG.baseUrl}event/detail/${resp.data._id}`;
         this.event.allowShow = true;
         this.isCreatingEvent = false;
+        this.$state.go('event.detail', {id: resp.data._id});
 	    }, () => {
 	    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
         this.isCreatingEvent = false;

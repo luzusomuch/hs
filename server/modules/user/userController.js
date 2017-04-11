@@ -262,13 +262,18 @@ class UserController {
           }
           photo.metadata.original = result.s3url;
           photo.keyUrls = {original: result.key};
-          this.kernel.queue.create('PROCESS_AWS', photo).save();
-          let user = req.user;
-          user[req.body.type] = photo._id;
-          user.save().then(() => {
-            return res.status(200).json({type: req.body.type, photo: photo});
+          photo.markModified('metadata');
+          photo.save().then(photo => {
+            this.kernel.queue.create('PROCESS_AWS', photo).save();
+            let user = req.user;
+            user[req.body.type] = photo._id;
+            user.save().then(() => {
+              return res.status(200).json({type: req.body.type, photo: photo});
+            }).catch(err => {
+              return res.status(500).json({type: 'SERVER_ERROR'});
+            });
           }).catch(err => {
-            return res.status(500).json({type: 'SERVER_ERROR'});
+            return res.status(500).json(err);
           });
         });
       }).catch(err => {

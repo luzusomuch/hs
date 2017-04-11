@@ -1,7 +1,8 @@
 'use strict';
 
 class UserWidgetCtrl {
-	constructor($scope, User, APP_CONFIG, $cookies, Upload, $uibModal, growl, Auth) {
+	constructor($scope, $rootScope, User, APP_CONFIG, $cookies, Upload, $uibModal, growl, Auth) {
+		this.$rootScope = $rootScope;
 		this.$cookies = $cookies;
 		this.Upload = Upload;
 		this.$uibModal =$uibModal;
@@ -55,6 +56,7 @@ class UserWidgetCtrl {
 			    	}).then(resp =>{
 			    		this.user[resp.data.type] = resp.data.photo;
 			    		this.Auth.setAuthUser(this.user);
+			    		this.$rootScope.$broadcast('update-user-profile');
 			    	}, () => {
 			    		this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			    	});

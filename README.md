@@ -109,6 +109,7 @@ We need mongodb, redis, elasticsearch
 Open port 27017, 6379, 9200 by IPTABLE
 You need to bind IP to 0.0.0.0 for redis https://redis.io/topics/security
 You need to bind IP to 0.0.0.0 for mongodb http://stackoverflow.com/questions/34963522/unable-to-connect-to-mongo-on-remote-server
+Set timezone by using sudo timedatectl set-timezone Europe/Berlin
 
 #### For websites
 We have 2 websites running the same time, so once update code we need rebuild code for them

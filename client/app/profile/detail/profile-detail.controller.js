@@ -1,7 +1,7 @@
 'use strict';
 
 class ProfileDetailCtrl {
-	constructor(Auth, growl, $scope, $state, $uibModal, $localStorage, APP_CONFIG, PhotoViewer, user, $cookies, Upload, FeedService, EventService, RelationService) {
+	constructor(Auth, growl, $scope, $rootScope, $state, $uibModal, $localStorage, APP_CONFIG, PhotoViewer, user, $cookies, Upload, FeedService, EventService, RelationService) {
 		this.Auth = Auth;
 		this.growl = growl;
 		if ((user.deleted && user.deleted.status) || (user.blocked && user.blocked.status)) {
@@ -21,6 +21,7 @@ class ProfileDetailCtrl {
 		this.user = user;
 		this.user.link = APP_CONFIG.baseUrl + 'profile/' + this.user._id;
 		this.PhotoViewer = PhotoViewer;
+		this.$rootScope = $rootScope;
 
 		this.photos = {};
 		this.PhotoViewer.myPhotos({pageSize: 4, userId: user._id}).then(resp => {
@@ -91,7 +92,6 @@ class ProfileDetailCtrl {
 	}
 
 	upload(file, type) {
-		console.log(file);
 		if (this.user._id.toString()===this.authUser._id.toString()) {
 	  		if (file && file.length > 0) {
 	  			this.$uibModal.open({
@@ -122,6 +122,7 @@ class ProfileDetailCtrl {
 			    	}).then(resp =>{
 			    		this.user[resp.data.type] = resp.data.photo;
 			    		this.Auth.setAuthUser(this.user);
+		    			this.$rootScope.$emit('update-user-profile');
 			    	}, () => {
 			    		this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 			    	});

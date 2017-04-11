@@ -99,7 +99,7 @@ angular.module('healthStarsApp')
 		}
 	};
 })
-.directive('searchLocation', (SearchParams, $timeout, $http) => {
+.directive('searchLocation', (SearchParams, $timeout, $http, $rootScope) => {
 	return {
 		restrict: 'E',
 		scope: {},
@@ -107,7 +107,7 @@ angular.module('healthStarsApp')
 		replace: true,
 		link: function(scope, element) {
 			scope.addresses = [];
-			scope.radius = SearchParams.params.radius = '100 km';
+			scope.radius = SearchParams.params.radius = $rootScope.radius || '100 km';
 
 			scope.params = {
 				address: SearchParams.params.address,
@@ -172,6 +172,7 @@ angular.module('healthStarsApp')
 
 			scope.updateRadius = () => {
 				scope.radius = scope.radius + ' km';
+				$rootScope.radius = angular.copy(scope.radius);
 			};
 
 			var ttl;

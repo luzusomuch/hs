@@ -53,6 +53,7 @@ class BackendUsersListCtrl {
 	blockUser(user) {
 		this.User.blockUser(user._id).then(resp => {
 			user.blocked = resp.data.blocked;
+			this.growl.success(`<p>{{'BLOCKED_USER_SUCCESSFULLY' | translate}}</p>`);
 		}).catch(() => {
 			this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		});
@@ -74,7 +75,7 @@ class BackendUsersListCtrl {
 				data.location.coordinates = [0, 0];
 			}
 			this.User.updateProfile(data._id, data).then(() => {
-				this.growl.success(`<p>{{'BLOCKED_ITEM_SUCCESSFULLY' | translate}}</p>`);
+				this.growl.success(`<p>{{'UPDATE_ACCOUNT_SUCCESSFULLY' | translate}}</p>`);
 	      	}).catch(() => {
 	      		this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 	      	});

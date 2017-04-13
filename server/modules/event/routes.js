@@ -3,6 +3,7 @@ import _ from 'lodash';
 import async from 'async';
 import multer from 'multer';
 import moment from 'moment';
+import momentTz from 'moment-timezone';
 import {EventBus} from '../../components';
 import { StringHelper } from '../../kernel/helpers';
 import { PhotoHelper } from '../../helpers';
@@ -1683,13 +1684,15 @@ module.exports = function(kernel) {
       let should = [];
       _.each(req.body.dates, dateString => {
         let time = parseInt(dateString);
-        let date = moment(new Date(time));
+        // let date = moment(new Date(time));
+        let date = momentTz.tz(new Date(time), 'Europe/Berlin');
+
         if(date.isValid()) {
           should.push({
             range: {
               startDateTime: {
-                gte: date.startOf('date').toISOString(),
-                lte: date.endOf('date').toISOString()
+                gte: date.startOf('date').format(),
+                lte: date.endOf('date').format()
               }
             }
           });

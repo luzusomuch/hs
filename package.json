@@ -45,7 +45,8 @@
     "moment": "^2.13.0",
     "countryjs": "latest",
     "session-memory-store": "^0.2.2",
-    "nodemailer-mailgun-transport": "git+https://github.com/orliesaurus/nodemailer-mailgun-transport.git"
+    "nodemailer-mailgun-transport": "git+https://github.com/orliesaurus/nodemailer-mailgun-transport.git",
+    "moment-timezone": "^0.5.13"
   },
   "devDependencies": {
     "autoprefixer": "^6.0.0",

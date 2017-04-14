@@ -1,6 +1,6 @@
 @media all and (min-width: 2000px) and (max-width: 2400px) {
     .img-timline {
-        height: 650px;
+        height: 600px;
     }
 }
 @media all and (min-width: 1600px) and (max-width: 1999px) {
@@ -145,7 +145,7 @@
         margin-top: -100px;
     }
     .img-timline {
-        height: 300px;
+        height: 200px;
     }
     .text-top-detail {
         bottom: 10px;

@@ -130,19 +130,19 @@ angular.module('healthStarsApp')
 
             switch(category.type) {
               case 'food':
-                photo = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : '/assets/images/star1.png';
+                photo = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : 'http://healthstars.de/assets/images/star1.png';
                 break;
               case 'action':
-                photo = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : '/assets/images/star4.png';
+                photo = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : 'http://healthstars.de/assets/images/star4.png';
                 break;
               case 'eco':
-                photo = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : '/assets/images/star3.png';
+                photo = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : 'http://healthstars.de/assets/images/star3.png';
                 break;
               case 'social':
-                photo = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : '/assets/images/star2.png';
+                photo = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : 'http://healthstars.de/assets/images/star2.png';
                 break;
               case 'internation':
-                photo = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : '/assets/images/star.png';
+                photo = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : 'http://healthstars.de/assets/images/star.png';
                 break;
               default:
                 photo = category.imagePath;

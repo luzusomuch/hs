@@ -73,7 +73,8 @@ angular.module('healthStarsApp')
       allowShow: '=',
       startDate: '=',
       endDate: '=',
-      location: '='
+      location: '=',
+      category: '='
     },
     template : 
       `<div>
@@ -123,6 +124,32 @@ angular.module('healthStarsApp')
       $scope.share = function(type) {
         if (type === 'fb') {
           let photo = 'https://fbrell.com/f8.jpg';
+          
+          if ($scope.category && $scope.category._id) {
+            let category = angular.copy($scope.category);
+
+            switch(category.type) {
+              case 'food':
+                photo = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : '/assets/images/star1.png';
+                break;
+              case 'action':
+                photo = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : '/assets/images/star4.png';
+                break;
+              case 'eco':
+                photo = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : '/assets/images/star3.png';
+                break;
+              case 'social':
+                photo = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : '/assets/images/star2.png';
+                break;
+              case 'internation':
+                photo = (category.imagePath && category.imagePath !== 'pathToImage') ? category.imagePath : '/assets/images/star.png';
+                break;
+              default:
+                photo = category.imagePath;
+                break;
+            }
+          }
+
           if ($scope.photo && $scope.photo.metadata) {
             if ($scope.photo.metadata.large) {
               photo = $scope.photo.metadata.large;
@@ -130,6 +157,7 @@ angular.module('healthStarsApp')
               photo = $scope.photo.metadata.original;
             }
           }
+
           let description = angular.copy($scope.description);
           if ($scope.location) {
             description += '. Location: '+ $scope.location;

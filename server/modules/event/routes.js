@@ -293,15 +293,14 @@ module.exports = function(kernel) {
                       data: event
                     });
                   });
-                  // populate photo
-                  if (event.photosId.length === 0) {
+
+                  kernel.model.Event.findById(event._id)
+                  .populate('photosId')
+                  .populate('categoryId')
+                  .exec().then(event => {
                     return res.status(200).json(event);
-                  }
-                  kernel.model.Event.populate(event, {path: 'photosId'}, (err, event) => {
-                    if (err) {
-                      return res.status(500).json(err);
-                    }
-                    return res.status(200).json(event);
+                  }).catch(err => {
+                    return res.status(500).json({type: 'SERVER_ERROR'});
                   });
                 }).catch(err => {
                   return res.status(500).json({type: 'SERVER_ERROR'});

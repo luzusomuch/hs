@@ -1,3 +1,24 @@
+@media all and (min-width: 2000px) and (max-width: 2400px) {
+    .img-timline {
+        height: 650px;
+    }
+}
+@media all and (min-width: 1600px) and (max-width: 1999px) {
+    .img-timline {
+        height: 550px;
+    }
+}
+@media all and (min-width: 1300px) and (max-width: 1599px) {
+    .img-timline {
+        height: 400px;
+    }
+}
+@media all and (max-width: 1299px) {
+    .img-timline {
+        height: 300px;
+    }
+}
+
 
 @media all and (min-width: 320px) and (max-width: 1400px) {
     .container {

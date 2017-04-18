@@ -4,7 +4,7 @@ import path from 'path';
 
 // Development specific configuration
 // ==================================
-var baseUrl = process.env.baseUrl || 'http://healthstars.de/';
+var baseUrl = process.env.baseUrl || 'https://healthstars.de/';
 var socketUrl = process.env.socketUrl || 'http://35.157.152.138:9000/';
 
 // HOST for DB, redis, elasticsearch

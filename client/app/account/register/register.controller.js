@@ -61,15 +61,22 @@ class RegisterCtrl {
       this.growl.error(`<p>{{'PLEASE_ACCEPT_OUR_TERMS_AND_CONDITIONS' | translate}}</p>`);
       return;
     }
-    if (form.$valid && this.address.selected) {
+    if (form.$valid) {
+    // if (form.$valid && this.address.selected) {
       if (this.user.phoneNumber) {
         this.user.phoneNumber = $('#phone').intlTelInput('getNumber');
       }
       var selectedAddress = this.address.selected;
-      this.user.location.coordinates = [selectedAddress.geometry.location.lng, selectedAddress.geometry.location.lat];
-      this.user.location.country = selectedAddress.address_components[selectedAddress.address_components.length -1].long_name;
-      this.user.location.countryCode = selectedAddress.address_components[selectedAddress.address_components.length -1].short_name;
-      this.user.location.fullAddress = selectedAddress.formatted_address;
+
+      if (selectedAddress) {
+        this.user.location.coordinates = [selectedAddress.geometry.location.lng, selectedAddress.geometry.location.lat];
+        this.user.location.country = selectedAddress.address_components[selectedAddress.address_components.length -1].long_name;
+        this.user.location.countryCode = selectedAddress.address_components[selectedAddress.address_components.length -1].short_name;
+        this.user.location.fullAddress = selectedAddress.formatted_address;
+      } else {
+        this.user.location.coordinates = [0, 0];
+      }
+
       this.user.name = this.user.firstName +' '+ this.user.lastName;
 
       let modalInstance = this.$uibModal.open({

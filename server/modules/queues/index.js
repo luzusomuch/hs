@@ -269,26 +269,27 @@ exports.core = (kernel) => {
 
   // Email to user when he granted an award
   kernel.queue.process('EMAIL_GRANTED_AWARD', (job, done) => {
-    kernel.model.GrantAward.findById(job.data._id)
-    .populate('awardId')
-    .populate('ownerId').exec().then(data => {
-      if (!data) {
-        done({error: 'Granted award not found'});
-      } else {
-        kernel.emit('SEND_MAIL', {
-          template: 'granted-award.html',
-          subject: 'New Award Granted',
-          data: {
-            user: data.ownerId, 
-            award: data.awardId
-          },
-          to: data.ownerId.email
-        });
-        done();
-      }
-    }).catch(err => {
-      done(err);
-    });
+    done();
+    // kernel.model.GrantAward.findById(job.data._id)
+    // .populate('awardId')
+    // .populate('ownerId').exec().then(data => {
+    //   if (!data) {
+    //     done({error: 'Granted award not found'});
+    //   } else {
+    //     kernel.emit('SEND_MAIL', {
+    //       template: 'granted-award.html',
+    //       subject: 'New Award Granted',
+    //       data: {
+    //         user: data.ownerId, 
+    //         award: data.awardId
+    //       },
+    //       to: data.ownerId.email
+    //     });
+    //     done();
+    //   }
+    // }).catch(err => {
+    //   done(err);
+    // });
   });
 
   // Update count for participants

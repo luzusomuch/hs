@@ -7,8 +7,8 @@
       <form class="form-login" ng-submit="vm.login(form)" name="form" novalidate>
           <h2><span>{{'SIGN_IN' | translate}}</span></h2>
           <div class="form-group" ng-class="{'has-error': (form.email.$error.pattern || form.email.$error.email || form.email.$error.required) && vm.submitted}">
-              <label style="text-transform: none">{{'USERNAME_EMAIL' | translate}}</label>
-              <input type="email" ng-model="vm.user.email" class="form-control" placeholder="{{'YOUR_USERNAME' | translate}}" required name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$">
+              <label style="text-transform: none">{{'EMAIL' | translate}}</label>
+              <input type="email" ng-model="vm.user.email" class="form-control" placeholder="{{'EMAIL' | translate}}" required name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$">
 
               <label ng-show="(form.email.$error.pattern || form.email.$error.email) && vm.submitted" class="help-block" ng-bind-html="'EMAIL_TYPE_ERROR' | translate | html"></label>
               <label ng-show="form.email.$error.required && vm.submitted" class="help-block" ng-bind-html="'REQUIRED_ERROR' | translate | html"></label>

@@ -17,7 +17,7 @@
                         <a ng-show="vm.event.ownerId._id==vm.authUser._id || vm.event.adminId._id==vm.authUser._id" class="btn btn-default" ui-sref="event.edit({id: vm.$stateParams.id})" ng-bind-html="'EDIT_EVENT' | translate"></a>
                         <span ng-if="vm.isNotParticipant() && vm.event.public"><a ng-click="vm.attendEvent()" href="#" class="btn btn-default"><i class="fa fa-user"></i> {{(vm.isInWaitingList()) ? 'WAITING_FOR_ACCEPTANCE' : 'ATTEND' | translate}}</a></span>
                         <!-- we allow for owner leave event and remove it immediately -->
-                        <span ng-if="!vm.isNotParticipant() || ( vm.event.ownerId._id!==vm.authUser._id && vm.event.participantsId.length===0 )"><a ng-click="vm.leaveEvent()" href="#" class="btn btn-default"><i class="fa fa-sign-out"></i> {{'LEAVE' | translate}}</a></span>
+                        <span ng-if="!vm.isNotParticipant() || ( vm.event.ownerId._id===vm.authUser._id && vm.event.participantsId.length===0 )"><a ng-click="vm.leaveEvent()" href="#" class="btn btn-default"><i class="fa fa-sign-out"></i> {{'LEAVE' | translate}}</a></span>
                         <span ><a href="#" class="btn btn-default" ng-click="vm.like()"><i ng-class="{liked: vm.liked}" class="fa fa-heart"></i> <span ng-bind-html="(vm.liked) ? 'UNLIKE' : 'LIKE' | translate | html"></span></a></span>
                     </div>
 
@@ -100,7 +100,7 @@
                     </p>
                     
                 </div>
-                {{vm.event.description}}
+                <span ng-bind-html="vm.event.description | nl2br | html"></span>
             </div>
 
             <div class="box-blue">

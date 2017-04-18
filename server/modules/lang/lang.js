@@ -420,7 +420,7 @@ let Language = {
 		MIN: 'min',
 		AGO: 'ago',
 		PARTICIPATED: 'Participated',
-		CANNOT_GET_LOCATION: 'Cann\'t get location',
+		CANNOT_GET_LOCATION: 'Cann\'t find location',
 		RESEND: 'Resend',
 		AWARDS_OF: 'Awards of',
 		EVENTS_OF: 'Events of',

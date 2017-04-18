@@ -1,90 +1,3 @@
-  <!-- <div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <h1>Sign up</h1>
-    </div>
-    <div class="col-sm-12">
-      <form class="form" name="form" ng-submit="vm.register(form)" novalidate>
-
-        <div class="form-group" ng-class="{ 'has-success': form.name.$valid && vm.submitted,
-                                            'has-error': form.name.$invalid && vm.submitted }">
-          <label>Name</label>
-
-          <input type="text" name="name" class="form-control" ng-model="vm.user.name"
-                 required/>
-          <p class="help-block" ng-show="form.name.$error.required && vm.submitted">
-            A name is required
-          </p>
-        </div>
-
-        <div class="form-group" ng-class="{ 'has-success': form.email.$valid && vm.submitted,
-                                            'has-error': form.email.$invalid && vm.submitted }">
-          <label>Email</label>
-
-          <input type="email" name="email" class="form-control" ng-model="vm.user.email"
-                 required
-                 mongoose-error/>
-          <p class="help-block" ng-show="form.email.$error.email && vm.submitted">
-            Doesn't look like a valid email.
-          </p>
-          <p class="help-block" ng-show="form.email.$error.required && vm.submitted">
-            What's your email address?
-          </p>
-          <p class="help-block" ng-show="form.email.$error.mongoose">
-            {{ vm.errors.email }}
-          </p>
-        </div>
-
-        <div class="form-group" ng-class="{ 'has-success': form.password.$valid && vm.submitted,
-                                            'has-error': form.password.$invalid && vm.submitted }">
-          <label>Password</label>
-
-          <input type="password" name="password" class="form-control" ng-model="vm.user.password"
-                 ng-minlength="3"
-                 required
-                 mongoose-error/>
-          <p class="help-block"
-             ng-show="(form.password.$error.minlength || form.password.$error.required) && vm.submitted">
-            Password must be at least 3 characters.
-          </p>
-          <p class="help-block" ng-show="form.password.$error.mongoose">
-            {{ vm.errors.password }}
-          </p>
-        </div>
-
-        <div class="form-group" ng-class="{ 'has-success': form.confirmPassword.$valid && vm.submitted,
-                                            'has-error': form.confirmPassword.$invalid && vm.submitted }">
-          <label>Confirm Password</label>
-          <input type="password" name="confirmPassword" class="form-control" ng-model="vm.user.confirmPassword"
-                 match="vm.user.password"
-                 ng-minlength="3" required/>
-          <p class="help-block"
-             ng-show="form.confirmPassword.$error.match && vm.submitted">
-            Passwords must match.
-          </p>
-        </div>
-
-        <div>
-          <button class="btn btn-inverse btn-lg btn-register" type="submit">
-            Sign up
-          </button>
-          <a class="btn btn-default btn-lg btn-login" ui-sref="login">
-            Login
-          </a>
-        </div>
-
-        <hr/>
-        <div class="row">
-          <div class="col-sm-4 col-md-3">
-            <oauth-buttons classes="btn-block"></oauth-buttons>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-  <hr>
-</div>
- -->
  <div class="signup-page">
     <div class="container-fluid">
         <div class="logo-login">
@@ -132,7 +45,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-4">
-                        <div class="form-group relative-div">
+                        <!-- <div class="form-group relative-div">
                             <label>{{'LOCATION' | translate}} *</label>
                             <ui-select ng-model="vm.address.selected" theme="bootstrap" append-to-body="true" reset-search-input="false">
                               <ui-select-match placeholder="{{'SELECT_YOUR_LOCATION' | translate}}">{{$select.selected.formatted_short_address}}</ui-select-match>
@@ -152,10 +65,27 @@
                             </span>
 
                             <p ng-show="!vm.address.selected.formatted_address && vm.submitted" class="error-text" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
-                            <!-- <select class="form-control" ng-model="vm.user.location.country"><option>{{'SELECT_LOCATION' | translate}}</option></select> -->
+                        </div> -->
+                        <div class="form-group relative-div">
+                            <label>{{'EMAIL' | translate}} *</label>
+                            <input type="email" class="form-control" ng-model="vm.user.email" name="email" required ng-class="{'error-input': (form.email.$error.pattern || form.email.$error.email || form.email.$error.required) && vm.submitted}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$" ng-blur="vm.checkInUseEmail(form, vm.user.email)">
+
+                            <span class="fa-stack fa-lg sign-up-success-validate" ng-show="!form.email.$error.pattern && !form.email.$error.email && !form.email.$error.required">
+                              <i class="fa fa-circle fa-stack-2x fa-cicle-input"></i>
+                              <i class="fa fa-check fa-stack-1x fa-inverse fa-icon-input"></i>
+                            </span>
+
+                            <span class="fa-stack fa-lg sign-up-error-validate" ng-show="((form.email.$error.pattern || form.email.$error.email || form.email.$error.required) && vm.submitted) || form.email.$error.mongoose">
+                              <i class="fa fa-circle fa-stack-2x fa-cicle-input"></i>
+                              <i class="fa fa-times fa-stack-1x fa-inverse fa-icon-input"></i>
+                            </span>
+                            <p ng-show="form.email.$error.pattern || form.email.$error.email && vm.submitted" class="error-text" ng-bind-html="'EMAIL_TYPE_ERROR' | translate | html"></p>
+                            <p ng-show="form.email.$error.required && vm.submitted" class="error-text" ng-bind-html="'REQUIRED_ERROR' | translate | html"></p>
+                            <p ng-show="form.email.$error.mongoose" class="error-text">{{'EMAIL_ALREADY_USED' | translate}}</p>
                         </div>
+
                     </div>
-                    <div class="col-sm-6 col-lg-4">
+                    <!-- <div class="col-sm-6 col-lg-4">
                         <div class="form-group relative-div">
                             <label>{{'EMAIL' | translate}} *</label>
                             <input type="email" class="form-control" ng-model="vm.user.email" name="email" required ng-class="{'error-input': (form.email.$error.pattern || form.email.$error.email || form.email.$error.required) && vm.submitted}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$" ng-blur="vm.checkInUseEmail(form, vm.user.email)">
@@ -197,7 +127,7 @@
                             <label>{{'ZIP_CODE' | translate}}</label>
                             <input type="text" class="form-control" ng-model="vm.user.location.zipCode" name="zipCode">
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-sm-6 col-lg-4">
                         <div class="form-group relative-div">
                             <label>{{'PASSWORD' | translate}} * <span class="note-form">{{'MIN' | translate}} 6 {{'SYMBOLS' | translate}}</span></label>

@@ -17,6 +17,11 @@
 # Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
 ##
 
+upstream wsserver {
+    server 35.157.152.138:9000;
+}
+
+
 server {
 	listen 80 default_server;
 	listen [::]:80 default_server ipv6only=on;
@@ -65,6 +70,14 @@ server {
    	 	proxy_pass       http://localhost:9000/;
     	#proxy_redirect   http:// https://;
 	}
+
+	#config socket
+    location /socket.io-client {
+        proxy_pass http://wsserver;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
 
 	# Only for nginx-naxsi used with nginx-naxsi-ui : process denied requests
 	#location /RequestDenied {

@@ -6,7 +6,7 @@ import path from 'path';
 // ==================================
 var baseUrl = process.env.baseUrl || 'https://healthstars.de/';
 // var socketUrl = process.env.socketUrl || 'http://35.157.152.138:9000/';
-var socketUrl = process.env.socketUrl || 'https://healthstars.de/';
+var socketUrl = process.env.socketUrl || 'https://healthstars.de:9000/';
 
 // HOST for DB, redis, elasticsearch
 var HOST = process.env.HOST || '35.157.226.188';

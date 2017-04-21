@@ -118,20 +118,25 @@ module.exports = function(kernel) {
           saved.metadata.original = result.s3url;
           saved.keyUrls = {original: result.key};
 
-          // create a queue to resize and upload to s3
-          kernel.queue.create('PROCESS_AWS', saved).save();
-          award.objectPhotoId = saved._id;
-          let awardModel = new kernel.model.Award(award);
-          awardModel.save().then(result => {
-            result.objectPhotoId = saved;
-            return res.status(200).json(result);
-          }).catch(() => {
-            // remove upload photo when save award error
-            saved.remove().exec().then(() => {
-              return res.status(500).json({type: 'SERVER_ERROR'});
+          saved.markModified('metadata');
+          saved.save().then(saved => {
+            // create a queue to resize and upload to s3
+            kernel.queue.create('PROCESS_AWS', saved).save();
+            award.objectPhotoId = saved._id;
+            let awardModel = new kernel.model.Award(award);
+            awardModel.save().then(result => {
+              result.objectPhotoId = saved;
+              return res.status(200).json(result);
             }).catch(() => {
-              return res.status(500).json({type: 'SERVER_ERROR'});
+              // remove upload photo when save award error
+              saved.remove().exec().then(() => {
+                return res.status(500).json({type: 'SERVER_ERROR'});
+              }).catch(() => {
+                return res.status(500).json({type: 'SERVER_ERROR'});
+              });
             });
+          }).catch(err => {
+            return res.status(500).json(err);
           });
         });
       }).catch(err => {
@@ -546,9 +551,12 @@ module.exports = function(kernel) {
                       }
                       saved.metadata.original = result.s3url;
                       saved.keyUrls = {original: result.key};
-                      
-                      kernel.queue.create('PROCESS_AWS', saved).save();
-                      cb(null);
+
+                      saved.markModified('metadata');
+                      saved.save().then(saved => {
+                        kernel.queue.create('PROCESS_AWS', saved).save();
+                        cb(null);
+                      }).catch(cb);
                     });
                   }).catch(cb);
                 }).catch(cb);

@@ -34,10 +34,10 @@ module.exports = function(kernel) {
     	let newPhoto = {
     		ownerId: req.user._id,
     		filename: req.file.filename,
-        metadata: {
-          tmp: req.file.filename
-        },
-        type: req.body.type
+	        metadata: {
+	          tmp: req.file.filename
+	        },
+	        type: req.body.type
     	};
     	kernel.model.Photo(newPhoto).save().then(saved => {
     		PhotoHelper.UploadOriginPhoto(saved, (err, result) => {
@@ -47,10 +47,14 @@ module.exports = function(kernel) {
               	saved.metadata.original = result.s3url;
               	saved.keyUrls = {original: result.key};
 
-	    		kernel.queue.create('PROCESS_AWS', saved).save();
-	    		return res.status(200).json(saved);
-          	})
-
+              	saved.markModified('metadata');
+              	saved.save().then(saved => {
+		    		kernel.queue.create('PROCESS_AWS', saved).save();
+		    		return res.status(200).json(saved);
+              	}).catch(err => {
+              		return res.status(500).json(err);
+              	});
+          	});
     	}).catch(err => {
     		return res.status(500).json(err);
     	});
@@ -400,8 +404,13 @@ module.exports = function(kernel) {
 		              	}
 		              	saved.metadata.original = result.s3url;
 		              	saved.keyUrls = {original: result.key};
-		              	
-	    				kernel.queue.create('PROCESS_AWS', saved).save();
+
+		              	saved.markModified('metadata');
+		              	saved.save().then(saved => {
+	    					kernel.queue.create('PROCESS_AWS', saved).save();
+		              	}).catch(err => {
+		              		return res.status(500).json(err);
+		              	})
 	    			});
 	    		}
 	    		return res.status(200).json(saved);

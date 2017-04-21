@@ -508,13 +508,13 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 		let link;
 		switch (weather.icon) {
 			case 'clear-day':
-				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-clear-icon.png';
+				link = 'assets/images/Status-weather-clear-icon.png';
 				break;
 			case 'clear-night':
-				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/256/Status-weather-clear-night-icon.png';
+				link = 'assets/images/Status-weather-clear-night-icon.png';
 				break;
 			case 'rain':
-				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-showers-scattered-icon.png';
+				link = 'assets/images/Status-weather-showers-scattered-icon.png';
 				break;
 			case 'snow':
 				link = 'assets/images/snow.png';
@@ -529,13 +529,13 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 				link = 'https://cdn.iconscout.com/public/images/icon/free/png-512/haze-air-mist-weather-wind-372afcd950ff168e-512x512.png';
 				break;
 			case 'cloudy':
-				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-many-clouds-icon.png';
+				link = 'assets/images/Status-weather-many-clouds-icon.png';
 				break;
 			case 'partly-cloudy-day':
-				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-clouds-icon.png';
+				link = 'assets/images/Status-weather-clouds-icon.png';
 				break;
 			case 'partly-cloudy-night':
-				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-clouds-night-icon.png';
+				link = 'assets/images/Status-weather-clouds-night-icon.png';
 				break;
 			case 'hail':
 				link = 'https://cdn2.iconfinder.com/data/icons/weather-24/256/Hailstorm-512.png';
@@ -561,22 +561,22 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 		let link;
 		switch (icon) {
 			case '02d':
-				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-clouds-icon.png';
+				link = 'assets/images/Status-weather-clouds-icon.png';
 				break;
 			case '01d':
-				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-clear-icon.png';
+				link = 'assets/images/Status-weather-clear-icon.png';
 				break;
 			case '03d':
-				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-many-clouds-icon.png';
+				link = 'assets/images/Status-weather-many-clouds-icon.png';
 				break;
 			case '04d':
-				link = 'https://icons.iconarchive.com/icons/icons-land/weather/128/Overcast-icon.png';
+				link = 'assets/images/Overcast-icon.png';
 				break;
 			case '09d':
-				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-showers-scattered-icon.png';
+				link = 'assets/images/Status-weather-showers-scattered-icon.png';
 				break;
 			case '10d':
-				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-showers-scattered-day-icon.png';
+				link = 'assets/images/Status-weather-showers-scattered-day-icon.png';
 				break;
 			case '11d':
 				link = 'assets/images/day-thunderstorm.png';
@@ -588,22 +588,22 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 				link = 'https://cdn.iconscout.com/public/images/icon/free/png-512/haze-air-mist-weather-wind-372afcd950ff168e-512x512.png';
 				break;
 			case '01n':
-				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/256/Status-weather-clear-night-icon.png';
+				link = 'assets/images/Status-weather-clear-night-icon.png';
 				break;
 			case '02n':
-				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-clouds-night-icon.png';
+				link = 'assets/images/Status-weather-clouds-night-icon.png';
 				break;
 			case '03n':
-				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-many-clouds-icon.png';
+				link = 'assets/images/Status-weather-many-clouds-icon.png';
 				break;
 			case '04n':
-				link = 'https://icons.iconarchive.com/icons/icons-land/weather/128/Overcast-icon.png';
+				link = 'assets/images/Overcast-icon.png';
 				break;
 			case '09n':
-				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-showers-scattered-icon.png';
+				link = 'assets/images/Status-weather-showers-scattered-icon.png';
 				break;
 			case '10n':
-				link = 'https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Status-weather-storm-night-icon.png';
+				link = 'assets/images/Status-weather-storm-night-icon.png';
 				break;
 			case '11n':
 				link = 'assets/images/day-thunderstorm.png';

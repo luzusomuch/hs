@@ -257,7 +257,12 @@ module.exports = function(kernel) {
 		}
 		async.parallel({
 			photo: (cb) => {
-				return kernel.model.Photo.findById(req.query.id).populate('ownerId').exec(cb);
+				return kernel.model.Photo.findById(req.query.id).populate(
+					{
+				      	path: 'ownerId', select: '-password -salt',
+				      	populate: {path: 'avatar', model: 'Photo'}
+				    }
+				).exec(cb);
 			},
 			belongTo: (cb) => {
 				if(!req.query.tid || !kernel.mongoose.Types.ObjectId.isValid(req.query.tid)) {

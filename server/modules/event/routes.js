@@ -1855,8 +1855,11 @@ module.exports = function(kernel) {
               let populatedPhotos = [];
               async.each(item.photosId, (photoId, cb1) => {
                 kernel.model.Photo.findById(photoId).then(photo => {
-                  photoId = (photo && !photo.blocked) ? photo : photoId;
-                  populatedPhotos.push(photoId);
+                  if (photo && !photo.blocked) {
+                    populatedPhotos.push(photo);
+                  }
+                  // photoId = (photo && !photo.blocked) ? photo : photoId;
+                  // populatedPhotos.push(photoId);
                   cb1();
                 }).catch(cb1);
               }, () => {

@@ -6,7 +6,7 @@ var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 process.env.BLUEBIRD_W_FORGOTTEN_RETURN = 0;
 process.env.BLUEBIRD_WARNINGS = 0;
 
-if (env === 'development' || env === 'test') {
+if (env === 'development' || env === 'test' || env==='production') {
   // Register the Babel require hook
   require('babel-register');
 }

@@ -1709,7 +1709,7 @@ module.exports = function(kernel) {
     //process date
     if(req.body.startDate) {
       let time = parseInt(req.body.startDate);
-      let date = moment(new Date(time));
+      let date = momentTz.tz(new Date(time), 'Europe/Berlin');
       if(date.isValid()) {
         q.query.filtered.filter.bool.must.push({
           range: {
@@ -1725,7 +1725,7 @@ module.exports = function(kernel) {
     // handle to don't show events which end date smaller than current date
     // only handle when user don't search for dates req.body.dates is empty
     if (req.body.dates instanceof Array && req.body.dates.length===0) {
-      let date = moment(new Date());
+      let date = momentTz.tz(new Date(), 'Europe/Berlin');
       q.query.filtered.filter.bool.must.push({
         range: {
           endDateTime: {

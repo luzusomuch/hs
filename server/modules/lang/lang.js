@@ -449,7 +449,7 @@ let Language = {
 		VERIFY_ACCOUNT_SUCCESSFULLY: 'Verify successfully! You will be redirect to homepage after few seconds',
 		CITY: 'City',
 		RADIUS: 'Radius',
-
+		CLEAR: 'Clear',
 	},
 	de: {
 		MENU_ACCOUNT: 'Menü Account',
@@ -791,7 +791,7 @@ let Language = {
 		YEARS_AGO: 'Jahre zuvor',
 		A_FEW_SECONDS_AGO:' ein paar Sekunde vorher',
 		WRITE_A_REPLY: 'Etwas schreiben',
-		SEARCH: 'Suche',
+		SEARCH: 'Suchen',
 		TERMS: 'AGBs',
 		PRIVACY: 'Datenschutz',
 		CONTACT: 'Kontakt',
@@ -898,7 +898,8 @@ let Language = {
 		VERIFY_ACCOUNT_ERROR: 'Ihr Token ist nicht gültig oder ist abgelaufen. Sie werden nach wenigen Sekunden zur Startseite weitergeleitet',
 		VERIFY_ACCOUNT_SUCCESSFULLY: 'Überprüfen Sie erfolgreich! Du wirst nach wenigen Sekunden nach Hause zurückkehren',
 		CITY: 'Stadt',
-		RADIUS: 'Radius'
+		RADIUS: 'Radius',
+		CLEAR: 'löschen',
 	}
 }
 

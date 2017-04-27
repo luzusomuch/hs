@@ -447,6 +447,8 @@ let Language = {
 		SYNC_FACEBOOK_CALENDAR_SUCCESSFULLY: 'Sync Facebook calendar successfully',
 		VERIFY_ACCOUNT_ERROR: 'Your token is not valid or has expired. You will be redirect to homepage after few seconds',
 		VERIFY_ACCOUNT_SUCCESSFULLY: 'Verify successfully! You will be redirect to homepage after few seconds',
+		CITY: 'City',
+		RADIUS: 'Radius',
 
 	},
 	de: {
@@ -895,6 +897,8 @@ let Language = {
 		SYNC_FACEBOOK_CALENDAR_SUCCESSFULLY: 'Facebook Kalender erfolgreich synchronisieren',
 		VERIFY_ACCOUNT_ERROR: 'Ihr Token ist nicht gültig oder ist abgelaufen. Sie werden nach wenigen Sekunden zur Startseite weitergeleitet',
 		VERIFY_ACCOUNT_SUCCESSFULLY: 'Überprüfen Sie erfolgreich! Du wirst nach wenigen Sekunden nach Hause zurückkehren',
+		CITY: 'Stadt',
+		RADIUS: 'Radius'
 	}
 }
 

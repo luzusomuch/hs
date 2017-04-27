@@ -111,6 +111,8 @@ You need to bind IP to 0.0.0.0 for redis https://redis.io/topics/security
 You need to bind IP to 0.0.0.0 for mongodb http://stackoverflow.com/questions/34963522/unable-to-connect-to-mongo-on-remote-server
 Set timezone by using sudo timedatectl set-timezone Europe/Berlin
 
+###REMEBER TO CONFIG REDIS SERVER IN SERVER IP 35.157.152.138
+
 #### For websites
 We have 2 websites running the same time, so once update code we need rebuild code for them
 35.157.152.138

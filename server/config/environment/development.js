@@ -8,7 +8,7 @@ var baseUrl = 'http://localhost:9000/';
 var socketUrl = 'http://localhost:9000/';
 var HOST = '127.0.0.1';
 // redis host
-var redisHost = process.env.REDIS_HOST || '35.157.152.138';
+var redisHost = process.env.REDIS_HOST || '127.0.0.1';
 
 var APIConnection = 'http://localhost:9000/';
 module.exports = {

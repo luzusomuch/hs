@@ -43,6 +43,17 @@ kernel.compose();
 kernel.app.route('/:url(api|auth|components|bower_components|app|assets|lib|styles)/*')
  .get((req, res) => { res.status(404).send('Not found!'); });
 
+// redirect https
+kernel.app.use((req, res, next) => {
+	console.log(req.secure);
+	console.log(req.get('host'));
+	console.log(req.url);
+	if (!req.secure) {
+		return res.redirect('https://' + req.get('host') + req.url);
+	}
+	next();
+});
+
 // All other routes should redirect to the index.html
 kernel.app.route('/*')
   .get((req, res) => {

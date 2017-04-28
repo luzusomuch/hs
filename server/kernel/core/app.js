@@ -39,12 +39,12 @@ exports.core = (kernel) => {
   }));
 
   // redirect https
-  kernel.app.use(function(req, res, next) {
-    if (!req.secure && kernel.config.baseUrl!=='http://localhost:9000/') {
-      return res.redirect('https://healthstars.de' + req.url);
-    }
-    next();
-  });
+  // kernel.app.use(function(req, res, next) {
+  //   if (!req.secure && kernel.config.baseUrl!=='http://localhost:9000/') {
+  //     return res.redirect('https://healthstars.de' + req.url);
+  //   }
+  //   next();
+  // });
 
   // Add headers
   kernel.app.use(function (req, res, next) {

@@ -51,6 +51,15 @@ class Kernel extends EventEmitter {
   }
 
   startHttpServer() {
+    // redirect to https in production
+    if (this.config.baseUrl!=='http://localhost:9000/') {
+      this.httpServer.get('*',function(req,res){  
+        if (req.protocol==='http') {
+          res.redirect('https://healthstars.de'+req.url)
+        }
+      });
+    }
+
     //TODO - load me from config
     this.app.meanStack = this.httpServer.listen(this.config.HTTP_PORT, null, () => {
       //TODO - load env from config

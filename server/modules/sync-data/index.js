@@ -41,35 +41,36 @@ kernel.ES.index((err) => {
 			},
 			(cb) => {
 				// implement these standard awards
-				kernel.model.User.findOne({role: 'admin'}).then(user => {
-					if (!user) {
-						return cb();
-					}
-					let awards = [
-						{objectName: 'Foodstar Point', ownerId: user._id, type: 'accepted'},
-						{objectName: 'Sportstar Point', ownerId: user._id, type: 'accepted'},
-						{objectName: 'Socialstar Point', ownerId: user._id, type: 'accepted'},
-						{objectName: 'Actionstar Point', ownerId: user._id, type: 'accepted'},
-						{objectName: 'Ecostar Point', ownerId: user._id, type: 'accepted'},
-					];
-					let awardName = _.map(awards, 'objectName');
-					kernel.model.Award.remove({objectName: {$in: awardName}}, (err, data) => {
-						if (err) {
-							return cb(err);
-						}
-						console.log('removed old awards which in awards name list success');
-						console.log(awards);
-						async.each(awards, (award, callback) => {
-							kernel.model.Award(award).save().then(success => {
-								console.log('saved award ' + award.objectName);
-								callback(null, award);
-							}).catch(err => {
-								console.log(err);
-								callback(err);
-							});
-						}, cb);
-					});
-				}).catch(cb);
+				// kernel.model.User.findOne({role: 'admin'}).then(user => {
+				// 	if (!user) {
+				// 		return cb();
+				// 	}
+				// 	let awards = [
+				// 		{objectName: 'Foodstar Point', ownerId: user._id, type: 'accepted'},
+				// 		{objectName: 'Sportstar Point', ownerId: user._id, type: 'accepted'},
+				// 		{objectName: 'Socialstar Point', ownerId: user._id, type: 'accepted'},
+				// 		{objectName: 'Actionstar Point', ownerId: user._id, type: 'accepted'},
+				// 		{objectName: 'Ecostar Point', ownerId: user._id, type: 'accepted'},
+				// 	];
+				// 	let awardName = _.map(awards, 'objectName');
+				// 	kernel.model.Award.remove({objectName: {$in: awardName}}, (err, data) => {
+				// 		if (err) {
+				// 			return cb(err);
+				// 		}
+				// 		console.log('removed old awards which in awards name list success');
+				// 		console.log(awards);
+				// 		async.each(awards, (award, callback) => {
+				// 			kernel.model.Award(award).save().then(success => {
+				// 				console.log('saved award ' + award.objectName);
+				// 				callback(null, award);
+				// 			}).catch(err => {
+				// 				console.log(err);
+				// 				callback(err);
+				// 			});
+				// 		}, cb);
+				// 	});
+				// }).catch(cb);
+				cb();
 			}
 		], () => {
 			console.log("SYNC DATA DONE");

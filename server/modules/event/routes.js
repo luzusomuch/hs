@@ -305,7 +305,6 @@ module.exports = function(kernel) {
                 }).catch(err => {
                   return res.status(500).json({type: 'SERVER_ERROR'});
                 });
-                });
               });
             });
           }).catch(err => {

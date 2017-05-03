@@ -383,6 +383,7 @@ class UserController {
                 let parsed = JSON.parse(result);
                 
                 user.google.image.url = parsed.entry['gphoto$thumbnail']['$t'];
+                user.markModified('google');
                 cb();
               });
             });

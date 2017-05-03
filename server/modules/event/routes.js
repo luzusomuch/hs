@@ -281,19 +281,39 @@ module.exports = function(kernel) {
                   cb();
                 });
               }, () => {
-                kernel.queue.create(kernel.config.ES.events.CREATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
-                kernel.queue.create('GRANT_AWARD', event).save();
-                kernel.queue.create('TOTAL_EVENT_CREATED', {userId: req.user._id}).save();
-                // get all user then update real-time count update in home page
-                kernel.model.User.find({}).then(users => {
-                  users.forEach(user => {
-                    EventBus.emit('socket:emit', {
-                      event: 'tracking:count-new-event',
-                      room: user._id.toString(),
-                      data: event
+                async.parallel([
+                  (cb) => {
+                  // sync data to elasticsearch
+                    console.log('start sync data with elasticsearch');
+                    kernel.ES.create({type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}, err => {
+                      console.log('created ES item');
+                      if(err) {
+                        console.log(err)
+                      }
+                      cb();
                     });
-                  });
+                  },
+                  (cb) => {
+                    // get all user then update real-time count update in home page
+                    kernel.model.User.find({}).then(users => {
+                      users.forEach(user => {
+                        EventBus.emit('socket:emit', {
+                          event: 'tracking:count-new-event',
+                          room: user._id.toString(),
+                          data: event
+                        });
+                      });
+                      cb();
+                    }).catch(cb);
+                  }
+                ], (err) => {
+                  if (err) {
+                    console.log(err);
+                  }
 
+                  // kernel.queue.create(kernel.config.ES.events.CREATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
+                  kernel.queue.create('GRANT_AWARD', event).save();
+                  kernel.queue.create('TOTAL_EVENT_CREATED', {userId: req.user._id}).save();
                   kernel.model.Event.findById(event._id)
                   .populate('photosId')
                   .populate('categoryId')
@@ -302,8 +322,6 @@ module.exports = function(kernel) {
                   }).catch(err => {
                     return res.status(500).json({type: 'SERVER_ERROR'});
                   });
-                }).catch(err => {
-                  return res.status(500).json({type: 'SERVER_ERROR'});
                 });
               });
             });

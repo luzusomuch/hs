@@ -49,6 +49,7 @@ class HealthStarsES {
 	}
 
 	create(params, cb) {
+		console.log(params);
 		return this.es.create(this.indexName, {
 			type: params.type,
 			id: params.id,
@@ -162,8 +163,12 @@ exports.core = (kernel) => {
 		* ex: kernel.queue.create(kernel.config.ES.events.CREATE, {type: 'user', id: 'objectId', data: 'object attributes').save();
 		*/
 		kernel.queue.process(kernel.config.ES.events.CREATE, (job, done) => {
+			console.log('creating ES item');
 			kernel.ES.create(job.data, err => {
-				if(err) console.log(err);
+				console.log('created ES item');
+				if(err) {
+					console.log(err)
+				};
 				done();
 			});
 		});

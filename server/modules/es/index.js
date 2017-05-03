@@ -54,6 +54,10 @@ class HealthStarsES {
 			id: params.id,
 			data: params.data 
 		}, (err, data) => {
+			console.log('errrrr');
+			console.log(err);
+			console.log('success');
+			console.log(data);
 			if (err) {
 				console.log('errrr');
 				console.log(err);

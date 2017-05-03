@@ -6,7 +6,7 @@ exports.config = {
   QUEUE_CONFIG: {
     prefix: 'q',
     redis: {
-      host: config.redisHost,
+      host: config.HOST,
       port: 6379,
       db: 0,
       options: {}

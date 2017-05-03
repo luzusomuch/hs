@@ -7,15 +7,12 @@ import path from 'path';
 var baseUrl = 'http://localhost:9000/';
 var socketUrl = 'http://localhost:9000/';
 var HOST = '127.0.0.1';
-// redis host
-var redisHost = process.env.REDIS_HOST || '127.0.0.1';
-
 var APIConnection = 'http://localhost:9000/';
+
 module.exports = {
   baseUrl: baseUrl,
   socketUrl: socketUrl,
   HOST: HOST,
-  redisHost: redisHost,
   APIConnection: APIConnection,
   // MongoDB connection options
   MONGO_URL: 'mongodb://'+HOST+'/healthstars-dev',
@@ -28,7 +25,7 @@ module.exports = {
 
   REDIS: {
     port: 6379,
-    host: redisHost,
+    host: HOST,
     db: 3, // if provided select a non-default redis db
     options: {
       // see https://github.com/mranney/node_redis#rediscreateclient
@@ -43,7 +40,7 @@ module.exports = {
   QUEUE_CONFIG: {
     prefix: 'q',
     redis: {
-      host: redisHost,
+      host: HOST,
       port: 6379,
       db: 0,
       options: {}

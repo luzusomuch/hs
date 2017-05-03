@@ -11,16 +11,12 @@ var socketUrl = process.env.socketUrl || 'https://healthstars.de/';
 // HOST for DB, elasticsearch
 var HOST = process.env.HOST || '35.157.226.188';
 
-// REDIS HOST
-var redisHost = process.env.REDIS_HOST || '35.157.152.138';
-
 var APIConnection = process.env.APIConnection || 'http://35.157.226.188/';
 
 module.exports = {
   baseUrl: baseUrl,
   socketUrl: socketUrl,
   HOST: HOST,
-  redisHost: redisHost,
   APIConnection: APIConnection,
   // MongoDB connection options
   MONGO_URL: 'mongodb://'+HOST+':27017/healthstars',
@@ -33,7 +29,7 @@ module.exports = {
 
   REDIS: {
     port: 6379,
-    host: redisHost,
+    host: HOST,
     db: 3, // if provided select a non-default redis db
     options: {
       // see https://github.com/mranney/node_redis#rediscreateclient
@@ -49,7 +45,7 @@ module.exports = {
   QUEUE_CONFIG: {
     prefix: 'q',
     redis: {
-      host: redisHost,
+      host: HOST,
       port: 6379,
       db: 0,
       options: {}

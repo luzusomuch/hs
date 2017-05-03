@@ -95,13 +95,15 @@ class HealthStarsES {
 
 	populate(result) {
 		console.log(result);
-    return {
-      totalItem: result.hits.total,
-      items: result.hits.hits.map( hit => {
-        return hit._source;
-      })
-    };
-  }
+		console.log('failure items');
+		console.log(result.took._shards.failures);
+    	return {
+      		totalItem: result.hits.total,
+      		items: result.hits.hits.map( hit => {
+        		return hit._source;
+      		})
+    	};
+  	}
 }
 
 exports.HealthStarsES = HealthStarsES;
@@ -169,7 +171,7 @@ exports.core = (kernel) => {
 				console.log('created ES item');
 				if(err) {
 					console.log(err)
-				};
+				}
 				done();
 			});
 		});

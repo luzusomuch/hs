@@ -94,6 +94,7 @@ class HealthStarsES {
 	}
 
 	populate(result) {
+		console.log(result);
     return {
       totalItem: result.hits.total,
       items: result.hits.hits.map( hit => {

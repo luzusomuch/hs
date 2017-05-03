@@ -74,7 +74,7 @@ angular.module('healthStarsApp')
     }
   };
 })
-.filter('avatarUrl', function(){
+.filter('avatarUrl', function($http){
   return function(profile){
     let avatarUrl = '/assets/images/no-avatar.png';
     if(!profile || !profile.provider) {
@@ -82,6 +82,11 @@ angular.module('healthStarsApp')
     }
     switch(profile.provider) {
       case 'google':
+        // $http.get('https://picasaweb.google.com/data/entry/api/user/'+profile.google.id+'?alt=json').then(resp => {
+        //   avatarUrl = resp.data.entry.gphoto$thumbnail.$t;
+        // }).catch(err => {
+        //   avatarUrl = '/assets/images/no-avatar.png';
+        // });
         avatarUrl = (profile.google && profile.google.image) ? profile.google.image.url : '/assets/images/no-avatar.png';
         break;
       case 'facebook':

@@ -364,10 +364,38 @@ class UserController {
         return res.status(401).end();
       }
       user.lastAccess = new Date();
-      user.save().then(() => {
-        res.json(user);
-      }).catch(err => {
-        next(err);
+      // update google avatar for google user
+      async.parallel([
+        (cb) => {
+          if (user.provider==='google') {
+            https.get('https://picasaweb.google.com/data/entry/api/user/'+user.google.id+'?alt=json', resp => {
+              let body;
+              resp.on('data', d => {
+                body += d;
+              });
+              resp.on('end', () => {
+                // remove undefined value
+                let undefinedString = body.substring(0, 9);
+                let result = body;
+                if (undefinedString==='undefined') {
+                  result = body.substring(9, body.length);
+                }
+                let parsed = JSON.parse(result);
+                
+                user.google.image.url = parsed.entry['gphoto$thumbnail']['$t'];
+                cb();
+              });
+            });
+          } else {
+            cb();
+          }
+        }
+      ], () => {
+        user.save().then(() => {
+          res.json(user);
+        }).catch(err => {
+          next(err);
+        });
       });
     }).catch(err => next(err));
   }
@@ -1164,7 +1192,7 @@ class UserController {
         let parsed = JSON.parse(result);
         return res.status(200).json(parsed);
       })
-    })
+    });
   }
 
   // check email used email

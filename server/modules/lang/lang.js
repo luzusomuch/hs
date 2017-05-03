@@ -814,7 +814,7 @@ let Language = {
 		REJECT_REQUEST: 'Ablehnen Anfrage',
 		ALLOWANCE_TO_GRANT_THE_AWARD: 'Berechtigung die Auszeichnung zu gewähren',
 		CO_OPERATION_EVENTS: 'Events von Unternehmen',
-		MORE_FILTER: 'Sortieren Nach',
+		MORE_FILTER: 'Sortieren nach',
 		LIMIT_NUMBER_OF_PARTICIPANTS: 'Teilnehmerzahl begrenzen',
 		NUMBER: 'Anzahl',
 		NUMBER_OF_PARTICIPANTS_IS_BETWEEN_0_99: 'Teilnehmerzahl zwischen 0 und 99',

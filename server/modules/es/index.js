@@ -96,7 +96,8 @@ class HealthStarsES {
 	populate(result) {
 		console.log(result);
 		console.log('failure items');
-		console.log(result.took._shards.failures);
+		console.log(result.took)
+		console.log(result._shards.failures);
     	return {
       		totalItem: result.hits.total,
       		items: result.hits.hits.map( hit => {

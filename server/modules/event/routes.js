@@ -2417,7 +2417,7 @@ module.exports = function(kernel) {
               }
 
               // send email to new admin
-              kernel.queue.create('SEND_EMAIL', {
+              kernel.queue.create('SEND_MAIL', {
                 template: 'admin-passed-role.html',
                 subject: 'Admin role in event '+saved.name+' has passed to you',
                 data: {

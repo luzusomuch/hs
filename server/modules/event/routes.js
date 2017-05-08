@@ -2400,7 +2400,37 @@ module.exports = function(kernel) {
               element: saved
             }).save();
 
-            return res.status(200).end();
+            // send email to new event admin
+            async.parallel([
+              cb => {
+                //get the new admin user object
+                kernel.model.User.findById(saved.adminId).then(user => {
+                  if (!user) {
+                    return cb('Admin user object not found');
+                  }
+                  cb(null, user);
+                }).catch(cb);
+              }
+            ], (err, result) => {
+              if (err) {
+                return res.status(500).end();
+              }
+
+              // send email to new admin
+              kernel.queue.create('SEND_EMAIL', {
+                template: 'admin-passed-role.html',
+                subject: 'Admin role in event '+saved.name+' has passed to you',
+                data: {
+                  user: req.user, 
+                  newAdminUser: result[0],
+                  event: saved,
+                  url: kernel.config.baseUrl + 'event/detail/' + saved._id
+                },
+                to: result[0].email
+              }).save();
+              
+              return res.status(200).end();
+            });
           }).catch(err => {
             return res.status(500).json({type: 'SERVER_ERROR'});
           });

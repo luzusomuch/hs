@@ -70,6 +70,7 @@ class HomeCtrl {
     }, 3000);
 
     $scope.$watch('[vm.searchParams, geoLocation, timeout]', (nv) => {
+      // remove selected category when have search keyword
       if(nv[1]) {
         $scope.timeout = true;
       }

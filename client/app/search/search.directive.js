@@ -87,6 +87,7 @@ angular.module('healthStarsApp')
 			scope.$watch('items', (nv) => {
 				if(!first) {
 					SearchParams.params.keywords = nv.join(',');
+					SearchParams.params.category = '';
 					$state.go('home');
 				}
 				first = false;
@@ -94,6 +95,7 @@ angular.module('healthStarsApp')
 
 			scope.search = () => {
 				SearchParams.params.keywords = scope.items.join(',');
+				SearchParams.params.category = '';
 				$state.go('home');
 			};
 		}

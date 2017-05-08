@@ -976,6 +976,7 @@ module.exports = function(kernel) {
       if (!event) {
        return res.status(404).json({type: 'EVENT_NOT_FOUND', message: 'Event not found'}); 
       }
+
       if (event.ownerId.toString()===req.user._id.toString() || req.user.role==='admin' || event.adminId.toString()===req.user._id.toString()) {
         let bannerName;
         let storage = multer.diskStorage({
@@ -1031,6 +1032,16 @@ module.exports = function(kernel) {
             } else if (category.type==='action') {
               req.body.event.location = (req.body.event.location.fullAddress) ? req.body.event.location : {coordinates: [0,0], type: 'Point'};
             }
+
+            // convert location coordinate to array of number
+            req.body.event.location.coordinates = [Number(req.body.event.location.coordinates[0]), Number(req.body.event.location.coordinates[1])];
+
+            // set flag for send email notification when location/timing change
+            var sendNotification = false;
+            if (JSON.stringify(event.location.coordinates) !== JSON.stringify(req.body.event.location.coordinates) || !moment(moment(event.startDateTime).format('YYYY-MM-DD')).isSame(moment(req.body.event.startDateTime).format('YYYY-MM-DD')) || !moment(moment(event.endDateTime).format('YYYY-MM-DD')).isSame(moment(req.body.event.endDateTime).format('YYYY-MM-DD'))) {
+              sendNotification = true;
+            }
+
             var data = {
               name: req.body.event.name,
               description: req.body.event.description,
@@ -1300,7 +1311,38 @@ module.exports = function(kernel) {
                   }).save().then(callback).catch(callback);
                 }, () => {
                   kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
-                  return res.status(200).json({type: 'EVENT_UPDATE_SUCCESS', message: 'Event updated'});
+                  // send email to participants/waiting list/ liked event when location or timing change
+                  if (sendNotification) {
+                    let usersList = [];
+                    async.waterfall([
+                      cb => {
+                        //get liked users
+                        kernel.model.Like.find({objectId: event._id}).then(likedPeople => {
+                          return cb(null, _.map(likedPeople, item => {
+                            return item.ownerId;
+                          }));
+                        }).catch(cb);
+                      },
+                      (usersId, cb) => {
+                        // join participants and waiting list
+                        let eventUsersId = _.union(event.participantsId, event.waitingParticipantIds);
+                        // return uniq value
+                        _.each(eventUsersId, id => {
+                          if (usersId.indexOf(id) === -1) {
+                            usersId.push(id);
+                          }
+                        });
+                      }
+                    ], (err, result) => {
+                      if (err) {
+                        return res.status(200).json({type: 'EVENT_UPDATE_SUCCESS', message: 'Event updated'});
+                      }
+                      // TODO send email
+                      return res.status(200).json({type: 'EVENT_UPDATE_SUCCESS', message: 'Event updated'});
+                    });
+                  } else {
+                    return res.status(200).json({type: 'EVENT_UPDATE_SUCCESS', message: 'Event updated'});
+                  }
                 });
               }).catch(err => {
                 return res.status(500).json({type: 'SERVER_ERROR'});
@@ -2428,7 +2470,7 @@ module.exports = function(kernel) {
                 },
                 to: result[0].email
               }).save();
-              
+
               return res.status(200).end();
             });
           }).catch(err => {

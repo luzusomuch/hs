@@ -572,10 +572,17 @@
     }
 
 }
-@media all and (min-width: 1024px) and (max-width: 1380px) {
+@media all and (min-width: 1201px) and (max-width: 1380px) {
+    .grid-sizer, .grid-item {
+        width: 25%;
+    }
+}
+@media all and (min-width: 1025px) and (max-width: 1200px) {
     .grid-sizer, .grid-item {
         width: 33.33%;
     }
+}
+@media all and (min-width: 1024px) and (max-width: 1380px) {
     .menu-account li a {
         padding: 20px 18px;
     }

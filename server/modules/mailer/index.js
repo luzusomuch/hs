@@ -41,7 +41,7 @@ Mailer.prototype.sendMail = function(template, emails, options, callback) {
 
     if (err) { return callback(err); }
     self.send({
-      from: 'postmaster@mg.healthstars.online',
+      from: 'Team Healthstars <postmaster@mg.healthstars.online>',
       to : emails,
       subject : options.subject,
       html : output
@@ -75,7 +75,7 @@ exports.config = {
       domain: 'mg.healthstars.online'
     }
   },
-  EMAIL_FROM: 'postmaster@mg.healthstars.online'
+  EMAIL_FROM: 'Team Healthstars <postmaster@mg.healthstars.online>'
 };
 
 exports.core = (kernel) => {

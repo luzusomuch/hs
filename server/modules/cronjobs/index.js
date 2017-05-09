@@ -6,7 +6,6 @@ import es from './../../modules/es';
 import Mapping from './../../modules/es/mapping';
 
 let config = require('./../../config/environment');
-console.log(config);
 let kernel = new KernelFactory(config);
 let m = new Mapping(es.config.ES);
 kernel.ES = new es.HealthStarsES(es.config.ES, m.mapping);

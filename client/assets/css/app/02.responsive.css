@@ -8,6 +8,8 @@
         height: 550px;
     }
 }
+@media all and (min-width: 1024px) and (max-width: 1400px) {
+}
 @media all and (min-width: 1300px) and (max-width: 1599px) {
     .img-timline {
         height: 400px;
@@ -393,8 +395,30 @@
     .dashboard-right-item {
         float: none;
     }
+    .venue-box .location-dropdown {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
 }
-
+@media all and (min-width: 320px) and (max-width: 1024px) {
+    .venue-box .location-dropdown {
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-right: 0px;
+    }
+    .search-top span.title-search {
+        float: none;
+        text-align: right;
+        width: auto;
+        position: relative;
+        right: 0px;
+        display: block;
+        margin: 0px;
+    }
+    .search-input {
+        float: none;
+    }
+}
 @media all and (min-width: 768px) and (max-width: 1024px) {
     .action-user-detail .btn {
         padding-left: 5px;
@@ -436,7 +460,6 @@
     }
     .search-top {
         padding: 0px;
-        width: 90%;
         margin: auto;
     }
     .box-search {
@@ -522,6 +545,7 @@
     .calendar-home th, .calendar-home td button {
         font-size: 12px;
     }
+    
 }
 @media all and (min-width: 320px) and (max-width: 1100px) {
     .action-event span {
@@ -546,6 +570,7 @@
     .bottom-li-event .row {
         margin: 0px -5px;
     }
+
 }
 @media all and (min-width: 1024px) and (max-width: 1380px) {
     .grid-sizer, .grid-item {
@@ -563,3 +588,4 @@
 @media screen and (min-width: 769px) {
     
 }
+

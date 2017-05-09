@@ -11,48 +11,49 @@ class MyCalendarCtrl {
 		this.localEvents = {};
 
   		this.eventSources = [];
-		this.uiConfig = {
-			calendarConfig: {
-		        height: 450,
-		        header:{
-		      		left: 'prev,next',
-		      		center: 'title',
-		      		right: 'agendaWeek month'
-		        },
-		        allDayText: ($localStorage.language==='en') ? 'All day' : 'Ganztägig',
-		        buttonText: {
-		        	month: ($localStorage.language==='en') ? 'Month' : 'Monat',
-		        	week: ($localStorage.language==='en') ? 'Week' : 'Woche'
-		        },
-		        monthNames: $localStorage.language==='en' ? ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] : ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
-		        eventRender: (event, element) => {
-		        	event.allDay = false;
 
-		        	let photoUrl = 'assets/images/img.jpg';
-		        	if (event.photo) {
-		      			photoUrl = (event.photo.metadata.small) ? event.photo.metadata.small : 'assets/photos/'+event.photo.metadata.tmp;
-		        	} else if (event.type==='google') {
-		        		photoUrl = 'assets/images/google-logo.jpg';
-		        	} else if (event.type==='facebook') {
-		        		photoUrl = 'assets/images/FB-logo.png';
-		        	}
+  		$timeout(() => {
+			this.uiConfig = {
+				calendarConfig: {
+			        height: 450,
+			        header:{
+			      		left: 'prev,next',
+			      		center: 'title',
+			      		right: 'agendaWeek month'
+			        },
+			        allDayText: ($localStorage.language==='en') ? 'All day' : 'Ganztägig',
+			        buttonText: {
+			        	month: ($localStorage.language==='en') ? 'Month' : 'Monat',
+			        	week: ($localStorage.language==='en') ? 'Week' : 'Woche'
+			        },
+			        monthNames: $localStorage.language==='en' ? ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] : ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+			        eventRender: (event, element) => {
+			        	event.allDay = false;
 
-		      		$(element).find('span:first').html('<img width="30" src='+photoUrl+'> '+moment(event.start).format('HH:mm')+'-'+moment(event.end).format('HH:mm'));
-		      		$(element).find('fc-event-title').html(event.title);
+			        	let photoUrl = 'assets/images/img.jpg';
+			        	if (event.photo) {
+			      			photoUrl = (event.photo.metadata.small) ? event.photo.metadata.small : 'assets/photos/'+event.photo.metadata.tmp;
+			        	} else if (event.type==='google') {
+			        		photoUrl = 'assets/images/google-logo.jpg';
+			        	} else if (event.type==='facebook') {
+			        		photoUrl = 'assets/images/FB-logo.png';
+			        	}
+			      		$(element).find('.fc-event-inner').html('<img width="30" src='+photoUrl+'><span class="fc-event-time">'+moment(event.start).format('HH:mm')+'-'+moment(event.end).format('HH:mm')+'</span><span class="fc-event-title">'+event.title+'</span>');
 
-		      		if ((event.liked && event.participants.indexOf(this.authUser._id) === -1) || event.repeatEvent) {
-		      			$(element).css('opacity', 0.6);
-		      		}
-		        },
-		        eventClick: (event) => {
-		        	if (event.type==='local') {
-		        		$state.go('event.detail', {id: event.id});
-		        	} else {
-		        		window.open(event.link, '_blank');
-		        	}
-		        }
-	    	}
-		};
+			      		if ((event.liked && event.participants.indexOf(this.authUser._id) === -1) || event.repeatEvent) {
+			      			$(element).css('opacity', 0.6);
+			      		}
+			        },
+			        eventClick: (event) => {
+			        	if (event.type==='local') {
+			        		$state.go('event.detail', {id: event.id});
+			        	} else {
+			        		window.open(event.link, '_blank');
+			        	}
+			        }
+		    	}
+			};
+  		}, 500);
 
   		this.loadEvents();
 	}

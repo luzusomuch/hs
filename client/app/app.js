@@ -58,6 +58,7 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
     // set language via location
     let lang;
     navigator.geolocation.getCurrentPosition( position => {
+      // $http.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=52.1939212,10.042791&sensor=true').then(resp => {
       $http.get('https://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+','+position.coords.longitude+'&sensor=true').then(resp => {
         if (resp.data.status==='OK' && resp.data.results.length > 0) {
           let country = 'en';
@@ -67,15 +68,19 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
             }
           });
           if (country==='de') {
+            $localStorage.language = 'de';
             Language.set('de');
           } else {
+            $localStorage.language = 'en';
             Language.set('en');  
           }
         } else {
+          $localStorage.language = 'en';
           Language.set('en');
         }
       });
     }, () => {
+      $localStorage.language = 'en';
       Language.set('en');
     });
     

@@ -172,7 +172,9 @@ angular.module('healthStarsApp')
 			};
 
 			scope.updateRadius = () => {
-				scope.radius = scope.radius + ' km';
+				if (scope.radius.indexOf('km') === -1) {
+					scope.radius = scope.radius + ' km';
+				}
 				$rootScope.radius = angular.copy(scope.radius);
 			};
 

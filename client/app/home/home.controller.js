@@ -118,7 +118,7 @@ class HomeCtrl {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
-        this.searchParams.radius = 100;
+        this.searchParams.radius = 1000;
         $scope.geoLocation = true;
         $scope.$$phase || $scope.$apply();
       }, (err) => {

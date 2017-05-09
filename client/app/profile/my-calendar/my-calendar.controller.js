@@ -28,9 +28,6 @@ class MyCalendarCtrl {
 		        eventRender: (event, element) => {
 		        	event.allDay = false;
 
-		        	// event.start = new Date(event.start).setHours(moment(new Date(event.start)).hours(), moment(new Date(event.start)).minutes());
-		        	// event.end = new Date(event.end).setHours(moment(new Date(event.end)).hours(), moment(new Date(event.end)).minutes());
-
 		        	let photoUrl = 'assets/images/img.jpg';
 		        	if (event.photo) {
 		      			photoUrl = (event.photo.metadata.small) ? event.photo.metadata.small : 'assets/photos/'+event.photo.metadata.tmp;
@@ -44,8 +41,6 @@ class MyCalendarCtrl {
 		      		if ((event.liked && event.participants.indexOf(this.authUser._id) === -1) || event.repeatEvent) {
 		      			$(element).css('opacity', 0.6);
 		      		}
-
-		      		console.log(event);
 		        },
 		        eventClick: (event) => {
 		        	if (event.type==='local') {

@@ -1313,7 +1313,6 @@ module.exports = function(kernel) {
                   kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
                   // send email to participants/waiting list/ liked event when location or timing change
                   if (sendNotification) {
-                    let usersList = [];
                     async.waterfall([
                       cb => {
                         //get liked users
@@ -1324,6 +1323,9 @@ module.exports = function(kernel) {
                         }).catch(cb);
                       },
                       (usersId, cb) => {
+                        if (!usersId) {
+                          return cb();
+                        }
                         // join participants and waiting list
                         let eventUsersId = _.union(event.participantsId, event.waitingParticipantIds);
                         // return uniq value
@@ -1332,10 +1334,27 @@ module.exports = function(kernel) {
                             usersId.push(id);
                           }
                         });
-                        cb();
+                        async.each(usersId, (id, callback) => {
+                          kernel.model.User.findById(id).then(user => {
+                            if (!user) {
+                              return callback();
+                            }
+                            // send mail to users
+                            kernel.queue.create('SEND_MAIL', {
+                              template: 'event-location-or-timing-updated.html',
+                              subject: 'Event ' + event.name + ' was updated',
+                              data: {
+                                user: user, 
+                                event: event,
+                                url: kernel.config.baseUrl + 'event/detail/' + event._id
+                              },
+                              to: user.email
+                            }).save();
+                            return callback();
+                          }).catch(callback);
+                        }, cb);
                       }
                     ], () => {
-                      // TODO send email to usersList via queue
                       return res.status(200).json({type: 'EVENT_UPDATE_SUCCESS', message: 'Event updated'});
                     });
                   } else {

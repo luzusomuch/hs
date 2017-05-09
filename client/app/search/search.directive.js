@@ -109,7 +109,7 @@ angular.module('healthStarsApp')
 		replace: true,
 		link: function(scope, element) {
 			scope.addresses = [];
-			scope.radius = SearchParams.params.radius = $rootScope.radius || '100 km';
+			scope.radius = SearchParams.params.radius = $rootScope.radius || '1000 km';
 
 			scope.params = {
 				address: SearchParams.params.address,
@@ -150,7 +150,6 @@ angular.module('healthStarsApp')
 				if (temp[1] && temp[1]==='km') {
 					radius = temp[0];
 				}
-
 				SearchParams.params = _.assign(SearchParams.params, {address: address, radius: radius});
 				angular.element('body').trigger('click');
 				scope.style={'background-color': '#3598dc', color: '#fff'};

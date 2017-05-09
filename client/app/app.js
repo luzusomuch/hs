@@ -52,10 +52,33 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
   		}
   	};
   })
-  .run(function($rootScope, $state, Auth, AppSettings, $localStorage, Language, $window) {
+  .run(function($rootScope, $state, Auth, AppSettings, $localStorage, Language, $window, $http) {
     $rootScope.backgroundAvailable = ['login', 'register', 'verifyAccount', 'forgotPw', 'resetPw', 'terms'];
-    let lang = $localStorage.language || 'en';
-    Language.set(lang);
+
+    // set language via location
+    let lang;
+    navigator.geolocation.getCurrentPosition( position => {
+      $http.get('http://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+','+position.coords.longitude+'&sensor=true').then(resp => {
+        if (resp.data.status==='OK' && resp.data.results.length > 0) {
+          let country = 'en';
+          _.each(resp.data.results[0].address_components, item => {
+            if (item.types[0]==='country') {
+              country = item.short_name.toLowerCase();
+            }
+          });
+          if (country==='de') {
+            Language.set('de');
+          } else {
+            Language.set('en');  
+          }
+        } else {
+          Language.set('en');
+        }
+      });
+    }, () => {
+      Language.set('en');
+    });
+    
 
     window.fbAsyncInit = function() {
       FB.init({

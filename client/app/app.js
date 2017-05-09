@@ -58,7 +58,7 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
     // set language via location
     let lang;
     navigator.geolocation.getCurrentPosition( position => {
-      $http.get('http://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+','+position.coords.longitude+'&sensor=true').then(resp => {
+      $http.get('https://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+','+position.coords.longitude+'&sensor=true').then(resp => {
         if (resp.data.status==='OK' && resp.data.results.length > 0) {
           let country = 'en';
           _.each(resp.data.results[0].address_components, item => {

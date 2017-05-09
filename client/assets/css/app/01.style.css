@@ -1455,6 +1455,19 @@ label {
     float: right;
     margin-top: 4px;
 }
+.venue-box-search {
+    position: relative;
+    text-align: center;
+}
+.venue-box-search > a {
+    position: relative;
+    text-align: left;
+    padding: 8px 10px ;
+}
+.venue-box-search > a i {
+    float: right;
+    margin-top: 4px;
+}
 .venue-dropdow {
     position: absolute;
     width: 250px;
@@ -2325,10 +2338,24 @@ span.country-name {
 .search-input .bootstrap-tagsinput {
     width: 100%;
 }
-.venue-box .location-dropdown {
+.venue-box {
     position: relative;
     padding-left: 28%;
     margin-right: 25%;
+}
+.venue-box-search {
+    position: relative;
+}
+.location-dropdown-search {
+    position: relative;
+}
+.venue-box-search .location-dropdown-search ul.dropdown-menu{
+    display: block;
+    width: 100%;
+}
+.venue-box-search .location-dropdown-search ul.dropdown-menu li a{
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 div.menu-tab > ul {
     border-bottom: 1px solid rgba(255,255,255,0.1) !important;

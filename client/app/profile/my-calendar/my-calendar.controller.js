@@ -36,7 +36,7 @@ class MyCalendarCtrl {
 		        	} else if (event.type==='facebook') {
 		        		photoUrl = 'assets/images/FB-logo.png';
 		        	}
-		      		$(element).find('span:first').prepend('<img width="30" src='+photoUrl+'>');
+		      		$(element).find('span:first').html('<img width="30" src='+photoUrl+'> '+moment(event.start).format('HH:mm')+'-'+moment(event.end).format('HH:mm'));
 
 		      		if ((event.liked && event.participants.indexOf(this.authUser._id) === -1) || event.repeatEvent) {
 		      			$(element).css('opacity', 0.6);

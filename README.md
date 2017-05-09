@@ -87,13 +87,13 @@ back to root then run ./build.sh
 Please use ./build.sh to run our server.
 
 #### Setup cron tabs 
-crontab -e
+sudo crontab -e
 
 ###run job every 4 hours for backup DB will be run at our DB server instance
 0 */4 * * * sudo chmod +x /home/ubuntu/healthstars-backend/mongodb_backup.sh && /bin/sh /home/ubuntu/healthstars-backend/mongodb_backup.sh
 
 ###run job every 1 hour for create repeating events (only need to run in 1 instance not both)
-0 */1 * * * node /home/ubuntu/healthstars-backend/server/cron.js > /tmp/out.log 2> /tmp/err.log
+0 */1 * * * export NODE_ENV=production && node /home/ubuntu/healthstars-backend/dist/server/cron.js > /tmp/out.log 2> /tmp/err.log
 
 
 ####Nginx config
@@ -110,8 +110,6 @@ Open port 27017, 6379, 9200 by IPTABLE
 You need to bind IP to 0.0.0.0 for redis https://redis.io/topics/security
 You need to bind IP to 0.0.0.0 for mongodb http://stackoverflow.com/questions/34963522/unable-to-connect-to-mongo-on-remote-server
 Set timezone by using sudo timedatectl set-timezone Europe/Berlin
-
-###REMEBER TO CONFIG REDIS SERVER IN SERVER IP 35.157.152.138
 
 #### For websites
 We have 2 websites running the same time, so once update code we need rebuild code for them

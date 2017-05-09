@@ -123,6 +123,20 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
           AppSettings.set('pageTitle', 'HealthStars | Einstellungen');
         }
       }
+
+      // show error toast when user not install Adblock ext
+      let adBlockEnabled = false;
+      let testAd = angular.element('div#detect')[0];
+      testAd.innerHTML = '&nbsp;';
+      testAd.className = 'adsbox';
+      angular.element('body')[0].appendChild(testAd);
+      window.setTimeout(function() {
+        if (testAd.offsetHeight === 0) {
+          adBlockEnabled = true;
+        }
+        testAd.remove();
+        
+      }, 100);
     });
 
     $rootScope.pageWidth = $window.innerWidth;

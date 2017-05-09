@@ -1332,12 +1332,10 @@ module.exports = function(kernel) {
                             usersId.push(id);
                           }
                         });
+                        cb();
                       }
-                    ], (err, result) => {
-                      if (err) {
-                        return res.status(200).json({type: 'EVENT_UPDATE_SUCCESS', message: 'Event updated'});
-                      }
-                      // TODO send email
+                    ], () => {
+                      // TODO send email to usersList via queue
                       return res.status(200).json({type: 'EVENT_UPDATE_SUCCESS', message: 'Event updated'});
                     });
                   } else {

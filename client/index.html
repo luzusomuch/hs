@@ -44,6 +44,11 @@
   </head>
   <body ng-class="{'pagenote': backgroundAvailable.indexOf(currentState)!==-1, 'pagenode1': backgroundAvailable.indexOf(currentState)===-1}" class="{{appSettings.get('bodyClass')}}">
     <div growl></div>
+
+    <!-- adblock checking -->
+    <div id="detect" class="ads ad adsbox doubleclick ad-placement carbon-ads" style="height:1px;width:1px;position: absolute;left:-999px;top:-999px;">&nbsp;</div>
+    <!-- end adblock checking -->
+
     <!--[if lt IE 7]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->

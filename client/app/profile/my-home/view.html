@@ -75,9 +75,12 @@
                             </div>
                         </div>
 
-                        <div ng-show="item.type==='friend-request'">
-                            <a ng-click="vm.friendAccept(item.element)" href="#" class="btn btn-success btn-radius-20">{{'ACCEPT' | translate}}</a>
-                            <a ng-click="vm.friendReject(item.element)" class="btn btn-danger btn-radius-20">{{'DECLINE' | translate}}</a>
+                        <div class="row" ng-show="item.type==='friend-request'">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-8">
+                                <a ng-click="vm.friendAccept(item.element)" href="#" class="btn btn-success btn-radius-20">{{'ACCEPT' | translate}}</a>
+                                <a ng-click="vm.friendReject(item.element)" class="btn btn-danger btn-radius-20">{{'DECLINE' | translate}}</a>
+                            </div>
                         </div>
 
                         <div class="row" ng-show="vm.eventTypes.indexOf(item.type)!==-1">

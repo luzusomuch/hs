@@ -327,7 +327,6 @@ class CreateEventCtrl {
   }
 
   select($files, type) {
-    console.log($files[0]);
     if (type==='banner' && $files[0]) {
       this.$uibModal.open({
         animation: true,
@@ -344,8 +343,6 @@ class CreateEventCtrl {
           imageSize: () => {
             let height = ($files[0].$ngfHeight > 300) ? $files[0].$ngfHeight : 300; 
             let width = height * 3;
-            console.log(height);
-            console.log(width);
             return {width: width, height: height};
           },
           isBanner: () => {

@@ -55,8 +55,6 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
   .run(function($rootScope, $state, Auth, AppSettings, $localStorage, Language, $window, $http) {
     $rootScope.backgroundAvailable = ['login', 'register', 'verifyAccount', 'forgotPw', 'resetPw', 'terms'];
 
-    console.log($localStorage.manualSelectedLanguage);
-    console.log($localStorage.language);
     if ($localStorage.manualSelectedLanguage) {
       Language.set($localStorage.language);
     } else {

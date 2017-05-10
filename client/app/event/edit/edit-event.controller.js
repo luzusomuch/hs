@@ -372,7 +372,9 @@ class EditEventCtrl {
             return 'rectangle';
           },
           imageSize: () => {
-            return {width: $files[0].$ngfWidth, height: $files[0].$ngfHeight};
+            let height = ($files[0].$ngfHeight > 300) ? $files[0].$ngfHeight : 300; 
+            let width = height * 3;
+            return {width: width, height: height};
           },
           isBanner: () => {
             return true;

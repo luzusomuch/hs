@@ -55,35 +55,40 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
   .run(function($rootScope, $state, Auth, AppSettings, $localStorage, Language, $window, $http) {
     $rootScope.backgroundAvailable = ['login', 'register', 'verifyAccount', 'forgotPw', 'resetPw', 'terms'];
 
-    // set language via location
-    let lang;
-    navigator.geolocation.getCurrentPosition( position => {
-      // $http.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=52.1939212,10.042791&sensor=true').then(resp => {
-      $http.get('https://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+','+position.coords.longitude+'&sensor=true').then(resp => {
-        if (resp.data.status==='OK' && resp.data.results.length > 0) {
-          let country = 'en';
-          _.each(resp.data.results[0].address_components, item => {
-            if (item.types[0]==='country') {
-              country = item.short_name.toLowerCase();
+    console.log($localStorage.manualSelectedLanguage);
+    console.log($localStorage.language);
+    if ($localStorage.manualSelectedLanguage) {
+      Language.set($localStorage.language);
+    } else {
+      // set language via location
+      let lang;
+      navigator.geolocation.getCurrentPosition( position => {
+        // $http.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=52.1939212,10.042791&sensor=true').then(resp => {
+        $http.get('https://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+','+position.coords.longitude+'&sensor=true').then(resp => {
+          if (resp.data.status==='OK' && resp.data.results.length > 0) {
+            let country = 'en';
+            _.each(resp.data.results[0].address_components, item => {
+              if (item.types[0]==='country') {
+                country = item.short_name.toLowerCase();
+              }
+            });
+            if (country==='de') {
+              $localStorage.language = 'de';
+              Language.set('de');
+            } else {
+              $localStorage.language = 'en';
+              Language.set('en');  
             }
-          });
-          if (country==='de') {
-            $localStorage.language = 'de';
-            Language.set('de');
           } else {
             $localStorage.language = 'en';
-            Language.set('en');  
+            Language.set('en');
           }
-        } else {
-          $localStorage.language = 'en';
-          Language.set('en');
-        }
+        });
+      }, () => {
+        $localStorage.language = 'en';
+        Language.set('en');
       });
-    }, () => {
-      $localStorage.language = 'en';
-      Language.set('en');
-    });
-    
+    }
 
     window.fbAsyncInit = function() {
       FB.init({

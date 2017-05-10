@@ -38,6 +38,7 @@ class MySettingCtrl {
 		$scope.$watch('vm.language', (nv) => {
 			if (nv && nv!==$localStorage.language) {
 				this.$localStorage.language = nv;
+				this.$localStorage.manualSelectedLanguage = true;
 				window.location.reload();
 			}
 		});

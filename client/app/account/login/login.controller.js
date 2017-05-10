@@ -13,6 +13,7 @@ class LoginCtrl {
     $scope.$watch('vm.language', (nv) => {
       if (nv && nv!==$localStorage.language) {
         $localStorage.language = nv;
+        $localStorage.manualSelectedLanguage = true;
         window.location.reload();
       }
     });

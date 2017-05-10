@@ -63,6 +63,7 @@ class HsHeaderCtrl {
 
 	changeLanguage(value) {
 		this.$localStorage.language = value;
+		this.$localStorage.manualSelectedLanguage = true;
 		window.location.reload();
 	}
 }

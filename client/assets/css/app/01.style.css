@@ -468,10 +468,10 @@ label .note-form {
 .search-top span.title-search {
     margin-top: 12px;
     width: 35%;
-    text-align: center;
+    text-align: left;
     position: absolute;
     top: 0px;
-    right: -35%;
+    right: -37%;
 }
 .search-top button {
     position: absolute;

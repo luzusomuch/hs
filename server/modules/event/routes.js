@@ -1695,7 +1695,7 @@ module.exports = function(kernel) {
     let page = parseInt(req.body.page);
     let limit = parseInt(req.body.page);
     page = (page === 'NaN' || !page) ? 1 : page;
-    limit = (limit === 'NaN' || !limit || limit < 8 || limit > 100) ? 8 : limit;
+    limit = (limit === 'NaN' || !limit || limit < 10 || limit > 100) ? 10 : limit;
     let skip = (page - 1) * limit;
 
     let term = [];

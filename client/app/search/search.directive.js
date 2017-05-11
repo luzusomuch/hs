@@ -109,7 +109,17 @@ angular.module('healthStarsApp')
 		replace: true,
 		link: function(scope, element) {
 			scope.addresses = [];
-			scope.radius = SearchParams.params.radius = $rootScope.radius || '1000 km';
+			scope.radius = SearchParams.params.radius = $rootScope.radius || '10 km';
+
+			$rootScope.$watch('radius', function() {
+				if ($rootScope.radius) {
+					if (typeof $rootScope.radius === 'string' && $rootScope.radius.indexOf('km') !== -1) {
+						scope.radius = $rootScope.radius;
+					} else {
+						scope.radius = $rootScope.radius + ' km';
+					}
+				}
+			});
 
 			scope.params = {
 				address: SearchParams.params.address,
@@ -151,6 +161,7 @@ angular.module('healthStarsApp')
 					radius = temp[0];
 				}
 				SearchParams.params = _.assign(SearchParams.params, {address: address, radius: radius});
+				$rootScope.isSearchFromLocation = true;
 				angular.element('body').trigger('click');
 				scope.style={'background-color': '#3598dc', color: '#fff'};
 			};
@@ -172,10 +183,10 @@ angular.module('healthStarsApp')
 			};
 
 			scope.updateRadius = () => {
+				$rootScope.radius = angular.copy(scope.radius);
 				if (scope.radius.indexOf('km') === -1) {
 					scope.radius = scope.radius + ' km';
 				}
-				$rootScope.radius = angular.copy(scope.radius);
 			};
 
 			var ttl;

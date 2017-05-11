@@ -49,23 +49,14 @@ class HealthStarsES {
 	}
 
 	create(params, cb) {
-		console.log(params);
 		return this.es.create(this.indexName, {
 			type: params.type,
 			id: params.id,
 			data: params.data 
 		}, (err, data) => {
-			console.log('errrrr');
-			console.log(err);
-			console.log('success');
-			console.log(data);
 			if (err) {
-				console.log('errrr');
-				console.log(err);
 				cb(err);
 			} else {
-				console.log('data');
-				console.log(data);
 				cb(data);
 			}
 		});
@@ -94,8 +85,6 @@ class HealthStarsES {
 	}
 
 	populate(result) {
-		console.log('failure items');
-		console.log(result._shards.failures);
     	return {
       		totalItem: result.hits.total,
       		items: result.hits.hits.map( hit => {

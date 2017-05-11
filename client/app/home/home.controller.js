@@ -38,6 +38,7 @@ class HomeCtrl {
           break;
       }
     });
+    this.$rootScope.isSearchFromLocation = false;
     this.categories = categories;
     this.searchParams = SearchParams.params;
     //this.searchParams.categories = _.map(categories, '_id');
@@ -118,7 +119,7 @@ class HomeCtrl {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
-        this.searchParams.radius = 1000;
+        this.searchParams.radius = 10;
         $scope.geoLocation = true;
         $scope.$$phase || $scope.$apply();
       }, (err) => {
@@ -204,13 +205,52 @@ class HomeCtrl {
       params.location = angular.copy(params.address.geometry.location);
     }
     delete params.address;
-  	this.EventService.search(params).then(res => {
-  		this.events = res.data;
+
+    let callback = (res) => {
+      this.events = res.data;
       this.locations = _.map(res.data.items, (item) => {
         return _.assign({title: item.name}, item.location || {});
       });
-  		this.loading = false;
+      this.loading = false;
       this.loaded = true;
+    };
+
+    this.EventService.search(params).then(res => {
+      // if user search via location dropdown then use dropdown radius
+      if (this.$rootScope.isSearchFromLocation) {
+        callback(res);
+      } else {
+        // auto increase the radius
+        // apply radius to rootscope to update it in the search location
+        this.$rootScope.radius = 10;
+        if (res.data.items.length >= 10) {
+          // search in 10km if more than 10 events
+      	 callback(res);	
+        } else {
+          // if less than 10 events
+          params.radius = 100;
+          this.$rootScope.radius = 100;
+          this.EventService.search(params).then(res => {
+            if (res.data.items.length >= 10) {
+              // search in 100km if more than 10 events
+              callback(res);
+            } else {
+              // if less than 10 events
+              params.radius = 1000;
+              this.$rootScope.radius = 1000;
+              this.EventService.search(params).then(res => {
+                // show all results
+                callback(res);
+                return;
+              }).catch(() => {
+                this.loading = false
+              });
+            }
+          }).catch(() => {
+            this.loading = false
+          });
+        }
+      }
   	}, () => this.loading = false);
   }
 
@@ -222,6 +262,7 @@ class HomeCtrl {
     this.page++;
     let params = angular.copy(this.searchParams);
     params.page = this.page;
+    params.radius = this.$rootScope.radius || params.radius;
     if(params.address && params.address.geometry && params.address.geometry.location) {
       params.location = angular.copy(params.address.geometry.location);
     }

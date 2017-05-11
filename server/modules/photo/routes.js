@@ -168,7 +168,7 @@ module.exports = function(kernel) {
 		];
 		let query = {type: {$in: types}};
 		if (req.query.type) {
-			query = {type: req.query.type}
+			query = {type: req.query.type, blocked: false}
 		}
 		kernel.model.Photo.find(query).then(photos => {
 			return res.status(200).json({items: photos});

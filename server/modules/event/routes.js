@@ -440,7 +440,35 @@ module.exports = function(kernel) {
             }).catch(callback);
           }).catch(callback);
         }, (err) => {
-          return res.status(200).json(results);
+          // check that if user call via my calendar or in user detail
+          if (req.query.userId && !req.query.getAll) {
+            // check if current user is friend of selected user or current user is the owner of selected user page
+            if (req.query.userId.toString()===req.user._id.toString()) {
+              // if current user is owner of selected user page
+              return res.status(200).json(results);  
+            } else {
+              // check current user is friend of selected user page
+              kernel.model.Relation.findOne({
+                $or: [{
+                  fromUserId: req.user._id, toUserId: req.query.userId
+                }, {
+                  fromUserId: req.query.userId, toUserId: req.user._id
+                }],
+                type: 'friend',
+                status: 'completed'
+              }).then(relation => {
+                console.log(relation);
+                if (!relation) {
+                  return res.status(200).json({items: [], totalItem: 0});
+                }
+                return res.status(200).json(results);    
+              }).catch(err => {
+                return res.status(500).end();
+              });
+            }
+          } else {
+            return res.status(200).json(results);
+          }
         });
       });
     });

@@ -4,11 +4,19 @@
 
 <div class="modal-body">
     <ul class="list-my-event">
-        <li ng-repeat="event in events.items">
-            <p><a ui-sref="event.detail({id: event._id})">{{event.name}}</a></p>
-            {{event.endDateTime | date: 'MMMM dd,yyyy'}} / {{'COMMENTS' | translate}} {{event.totalComment || 0}}
+        <li class="row" ng-repeat="event in events.items">
+            <a ui-sref="event.detail({id: event._id})">
+                    <div class="col-sm-3">
+                        <img style="width:100%" src="{{event | eventThumbnail}}">
+                    </div>
+                    <div class="col-sm-9">
+                        <p>{{event.name}}</p>
+                        {{event.endDateTime | date: 'MMMM dd,yyyy'}} / {{'COMMENTS' | translate}} {{event.totalComment || 0}}
+                    </div>
+                </a>
+            </li>
         </li>
-        <li ng-show="events.items.length < events.totalItem">
+        <li class="row" ng-show="events.items.length < events.totalItem">
         	<a ng-click="getUserEvents()" href="#">{{'LOAD_MORE_EVENTS' | translate}}</a>
         </li>
     </ul>

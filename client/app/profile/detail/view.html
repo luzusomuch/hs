@@ -161,9 +161,16 @@
                 <div class="box-blue p15">
                     <div class="title-blue">{{'EVENTS_OF' | translate}} {{vm.user.name}}  <a ng-click="vm.showAllEvents()" href="#" class="show-all-box">{{'SHOW_ALL' | translate}}</a></div>
                     <ul class="list-my-event">
-                        <li ng-repeat="event in vm.events.items">
-                            <p><a ui-sref="event.detail({id: event._id})">{{event.name}}</a></p>
-                            {{event.endDateTime | date: 'MMMM dd,yyyy'}} / {{'COMMENTS' | translate}} {{event.totalComment || 0}}
+                        <li class="row" ng-repeat="event in vm.events.items">
+                            <a ui-sref="event.detail({id: event._id})">
+                                <div class="col-sm-3">
+                                    <img style="width:100%" src="{{event | eventThumbnail}}">
+                                </div>
+                                <div class="col-sm-9">
+                                    <p>{{event.name}}</p>
+                                    {{event.endDateTime | date: 'MMMM dd,yyyy'}} / {{'COMMENTS' | translate}} {{event.totalComment || 0}}
+                                </div>
+                            </a>
                         </li>
                     </ul>
                 </div>

@@ -4,9 +4,16 @@
     	<!-- <a href="#" class="show-all-box">{{'SHOW_ALL' | translate}}</a> -->
 	</div>
     <ul class="list-my-event">
-        <li ng-repeat="event in vm.events">
-            <p><a ui-sref="event.detail({id: event._id})">{{event.name}}</a></p>
-            {{event.createdAt | hsDate: 'MMMM DD, YYYY'}} / {{'COMMENTS' | translate}} {{event.totalComment || 0}}
+        <li class="row" ng-repeat="event in vm.events">
+            <a ui-sref="event.detail({id: event._id})">
+                <div class="col-sm-3">
+                    <img style="width:100%" src="{{event | eventThumbnail}}">
+                </div>
+                <div class="col-sm-9">
+                    <p>{{event.name}}</p>
+                    {{event.createdAt | hsDate: 'MMMM DD, YYYY'}} / {{'COMMENTS' | translate}} {{event.totalComment || 0}}
+                </div>
+            </a>
         </li>
     </ul>
 </div>

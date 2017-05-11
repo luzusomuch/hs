@@ -1390,11 +1390,11 @@ module.exports = function(kernel) {
     kernel.model.Event.findById(req.params.id).then(
       event => {
         if(!event) {
-          return res.status(500).json({type: 'EVENT_NOT_FOUND'});
+          return res.status(404).json({type: 'EVENT_NOT_FOUND'});
         }
          async.waterfall([
           (cb) => {
-             kernel.model.Event.find({
+            kernel.model.Event.find({
               _id: { $ne: event._id },
               categoryId: event.categoryId,
               createAt: { $lte: event.createAt },
@@ -1405,6 +1405,8 @@ module.exports = function(kernel) {
                 { private: false }
               ]
             })
+            .populate('categoryId')
+            .populate('photosId')
             .sort({ createdAt: -1 })
             .limit(5)
             .exec(cb);
@@ -1697,7 +1699,6 @@ module.exports = function(kernel) {
     page = (page === 'NaN' || !page) ? 1 : page;
     limit = (limit === 'NaN' || !limit || limit < 10 || limit > 100) ? 10 : limit;
     let skip = (page - 1) * limit;
-    console.log(limit);
 
     let term = [];
     let must = [];

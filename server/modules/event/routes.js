@@ -1697,6 +1697,7 @@ module.exports = function(kernel) {
     page = (page === 'NaN' || !page) ? 1 : page;
     limit = (limit === 'NaN' || !limit || limit < 10 || limit > 100) ? 10 : limit;
     let skip = (page - 1) * limit;
+    console.log(limit);
 
     let term = [];
     let must = [];

@@ -150,9 +150,11 @@ class EventDetailCtrl {
 		this.errors = {};
 		if (_.filter(this.files, {nude: true}).length > 0) {
 			this.errors.file = true;
-			return false;
 		}
-		if (feed.content && feed.content.trim().length > 0) {
+		if (this.files.length === 0 && (!feed.content || (feed.content && feed.content.trim().length===0))) {
+			this.errors.content = true;
+		}
+		if (Object.keys(this.errors).length===0) {
 			feed.eventId = this.$stateParams.id;
 			this.Upload.upload({
 	      		url: '/api/v1/feeds',
@@ -169,7 +171,7 @@ class EventDetailCtrl {
 		    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		    });
 		} else {
-			this.errors.content = true;
+			this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
 		}
 	}
 

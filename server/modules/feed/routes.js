@@ -80,27 +80,31 @@ module.exports = function(kernel) {
         })
       });
 
-      var result = Joi.validate(data, schema, {
-        stripUnknown: true,
-        abortEarly: false,
-        allowUnknown: true
-      });
+      // only validate content if empty photo
+      if (req.files && req.files.length===0) {
+        var result = Joi.validate(data, schema, {
+          stripUnknown: true,
+          abortEarly: false,
+          allowUnknown: true
+        });
 
-      if (result.error) {
-      	let errors = [];
-      	result.error.details.forEach(error => {
-      		let type;
-      		switch (error.type) {
-      			case 'string.content':
-      				type = 'FEED_CONTENT_REQUIRED';
-      				break;
-      			default:
-      				break;
-      		}
-      		errors.push({type: type, path: error.path, message: error.message});
-      	});
-      	return res.status(422).json(errors);
-      }
+        if (result.error) {
+        	let errors = [];
+        	result.error.details.forEach(error => {
+        		let type;
+        		switch (error.type) {
+        			case 'string.content':
+        				type = 'FEED_CONTENT_REQUIRED';
+        				break;
+        			default:
+        				break;
+        		}
+        		errors.push({type: type, path: error.path, message: error.message});
+        	});
+        	return res.status(422).json(errors);
+        }
+      }      
+
       async.parallel([
         (cb) => {
           if (data.eventId) {

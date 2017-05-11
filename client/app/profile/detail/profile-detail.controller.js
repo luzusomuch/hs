@@ -151,11 +151,12 @@ class ProfileDetailCtrl {
 		this.submitted = true;
 		this.errors = {};
 		if (_.filter(this.files, {nude: true}).length > 0) {
-			this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
 			this.errors.file = true;
-			return false;
 		}
-		if (feed.content && feed.content.trim().length > 0) {
+		if (this.files.length === 0 && (!feed.content || (feed.content && feed.content.trim().length===0))) {
+			this.errors.content = true;
+		}
+		if (Object.keys(this.errors).length===0) {
 			feed.userId = this.user._id;
 			feed.userFeed = true;
 			this.Upload.upload({
@@ -172,7 +173,6 @@ class ProfileDetailCtrl {
 		    	this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
 		    });
 		} else {
-			this.errors.content = true;
 			this.growl.error(`<p>{{'PLEASE_CHECK_YOUR_INPUT' | translate}}</p>`);
 		}
 	}

@@ -157,6 +157,8 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
 
       // show error toast when user not install Adblock ext
       let adBlockEnabled = false;
+      // add persudo div element
+      angular.element('body').prepend('<div id="detect"></div>');
       let testAd = angular.element('div#detect')[0];
       testAd.innerHTML = '&nbsp;';
       testAd.className = 'adsbox';
@@ -166,7 +168,6 @@ angular.module('healthStarsApp', ['healthStarsApp.auth', 'healthStarsApp.constan
           adBlockEnabled = true;
         }
         testAd.remove();
-        
       }, 100);
     });
 

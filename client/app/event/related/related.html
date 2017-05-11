@@ -6,8 +6,8 @@
     <ul class="list-my-event">
         <li class="row" ng-repeat="event in vm.events">
             <a ui-sref="event.detail({id: event._id})">
-                <div class="col-sm-3">
-                    <img style="width:100%" src="{{event | eventThumbnail}}">
+                <div class="col-sm-3 text-align-center">
+                    <img src="{{event | eventThumbnail}}">
                 </div>
                 <div class="col-sm-9">
                     <p>{{event.name}}</p>

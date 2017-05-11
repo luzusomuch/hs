@@ -2642,3 +2642,29 @@ span.total-notification {
     background-size: cover;
     background-repeat: no-repeat;
 }
+.text-align-center {
+    text-align: center;
+}
+.event-detail-award img {
+    width: 50%;
+}
+.list-my-event img {
+    width: 100%;
+}
+.list-my-event p {
+    word-break: break-all;
+}
+.mobile-footer {
+    text-align: center;
+    padding: 10px 0px;
+}
+.mobile-footer a{
+    text-transform: uppercase;
+    color: #fff;
+}
+.mobile-footer-button {
+    margin: 20px;
+}
+.mobile-footer-button a{
+    margin: 10px;
+}

@@ -30,6 +30,9 @@
     }
 }
 @media all and (min-width: 320px) and (max-width: 767px) {
+    .list-my-event img {
+        width: 40%;
+    }
     .event-detail-header-button {
         text-align: left;
     }

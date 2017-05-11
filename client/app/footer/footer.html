@@ -1,5 +1,5 @@
-<div class="footer box-blue">
-    <div class="container">
+<div class="footer box-blue pc-show">
+    <div class="container pc-show">
         <a ui-sref="home">
             <img src="/assets/images/logo.png">
         </a>
@@ -14,4 +14,22 @@
         </ul>
         <span class="all-right-reserved-text">2017 {{'ALL_RIGHT_RESERVED' | translate}}</span>
     </div>
+</div>
+
+<div class="box-blue mobile-show mobile-footer">
+    <a class="footer-logo" ui-sref="home">
+        <img src="/assets/images/logo.png">
+    </a>
+    <div class="mobile-footer-button">
+        <a ui-sref="terms">{{'TERMS' | translate}}</a>
+        <a ui-sref="privacy"><span ng-bind-html="'PRIVACY' | translate | html"></span></a>
+        <a ui-sref="contact"><span ng-bind-html="'CONTACT' | translate | html"></span></a>
+        <a ui-sref="about"><span ng-bind-html="'MENU_ABOUT' | translate | html"></span></a>
+    </div>
+    <ul class="list-social" ng-hide="currentState==='login' || currentState==='register'">
+        <li><a href="https://twitter.com/HealthstarsMe" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a href="https://www.facebook.com/Healthstars-1375972539119944/?fref=ts" target="_blank"><i class="fa fa-facebook"></i></a></li>
+        <li><a href="https://plus.google.com/112802106314473057477" target="_blank"><i class="fa fa-google-plus"></i></a></li>
+    </ul>
+    <span class="all-right-reserved-text">2017 {{'ALL_RIGHT_RESERVED' | translate}}</span>
 </div>

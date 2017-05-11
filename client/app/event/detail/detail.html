@@ -51,7 +51,9 @@
             <div class="event-award box-blue p15">
                 <div class="title-blue">{{'AWARD_DETAIL' | translate}}</div>
                 <p>{{vm.event.awardId.objectName}}</p>
-                <img width="100%" src="{{vm.event.awardId | eventAwardImageUrl: 'small'}}">
+                <div class="event-detail-award text-align-center">
+                    <img src="{{vm.event.awardId | eventAwardImageUrl: 'small'}}">
+                </div>
                 <p>
                     <span ng-bind-html="'AWARD_TYPE' | translate | html"></span>: <span ng-bind-html="vm.event.awardId.type.toUpperCase() | translate | html"></span>
                 </p>

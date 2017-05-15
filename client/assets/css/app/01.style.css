@@ -2683,3 +2683,21 @@ span.total-notification {
 .weather-header .weather-temperature {
     margin-top: 20%;
 }
+ul.uib-datepicker-popup {
+    background-color: #273141;
+}
+ul.uib-datepicker-popup button span.text-info {
+    color: rgba(255,255,255,0.7);
+}
+ul.uib-datepicker-popup .uib-monthpicker button, ul.uib-datepicker-popup .uib-yearpicker button {
+    background-color: #273141;
+    color: rgba(255,255,255,0.7);
+    border: none;
+}
+ul.uib-datepicker-popup .uib-daypicker button {
+    background-color: #273141;
+    color: rgba(255,255,255,0.7);
+}
+ul.uib-datepicker-popup .uib-daypicker .uib-day button.active, ul.uib-datepicker-popup .uib-monthpicker .uib-month button.active, ul.uib-datepicker-popup .uib-yearpicker .uib-year button.active {
+    background: #2fcc71;
+}

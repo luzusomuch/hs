@@ -654,6 +654,28 @@ module.exports = function(kernel) {
               }).catch(cb);
             }, 
             (result, cb) => {
+              let photos = [];
+              async.each(result.photosId, (id, callback) => {
+                kernel.model.Photo.findById(id).then(photo => {
+                  if (!photo) {
+                    return callback(null);
+                  }
+                  if (photo.blocked) {
+                    return callback(null);
+                  }
+                  photos.push(photo);
+                  return callback(null, photos);
+                }).catch(callback);
+              }, err => {
+                if (err) {
+                  cb(err);
+                } else {
+                  result.photosId = photos;
+                  cb(null, result);
+                }
+              });
+            },
+            (result, cb) => {
               kernel.model.User.findById(result.ownerId, '-password -salt')
               .populate('avatar').exec().then(owner => {
                 if (!owner) {

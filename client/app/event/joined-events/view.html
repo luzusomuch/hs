@@ -2,25 +2,30 @@
   <div class="title-box-1" ng-bind-html="'MY_UPCOMING_EVENTS' | translate | html"></div>
   <div class="body-box-1 event-home-right">
   	<ul class="event-list">
-  		<li ng-class="{'opacity06': event.liked && !checkParticipants(event.participantsId, event.ownerId)}" ng-show="!search" class="{{event.categoryId | categoryClass}}" ng-repeat="event in friendsEvents.items">
-  			<div class="top-li-event">
-          <a ui-sref="profile.detail({id: event.ownerId._id})"><img src="{{event.ownerId | avatarUrl}}"></a>
-          <h4><a ui-sref="profile.detail({id: event.ownerId._id})">{{event.ownerId.name}} &nbsp;</a></h4>
-          <i class="fa fa-clock-o"></i> {{event.createdAt | fromNow | fromNowNumber}} {{event.createdAt | fromNow | fromNowTranslate | translate}}
-          <div class="arward-li-top">
-            <span>{{event.ownerId.totalAwards || 0}}</span>
-            <i class="fa fa-trophy"></i>
-          </div>
+  		<li ng-class="{'opacity06': event.liked && !checkParticipants(event.participantsId, event.ownerId)}" ng-show="!search" class="{{event.categoryId | categoryClass}} row" ng-repeat="event in friendsEvents.items" style="margin: 0px">
+        <div class="image-li-event col-xs-4 col-sm-12">
+          <img width="100%" src="{{event | eventThumbnail}}">
         </div>
-        <div class="text-li-event">
-          <h3 style="cursor:pointer" ng-click="openEventDetail(event)">{{event.name}}</h3>
-          <i class="fa fa-calendar"></i> {{event.startDateTime | date : 'dd.MM.yyyy'}}  <i class="fa fa-clock-o"></i> {{event.startDateTime | date: 'HH:mm'}}<br>
-          <div class="li-friend-event">
-            <i class="fa fa-user-plus"></i>
-            <ul>
-                <li ng-repeat="participant in event.participantsId | limitTo: 5"><a ui-sref="profile.detail({id: participant._id})"><img src="{{participant | avatarUrl}}"></a></li>
-                <li ng-show="event.participantsId.length - 5 > 0"><a href="#" class="number-friend-event">+{{event.participantsId.length -5}}</a></li>
-            </ul>
+        <div class="col-xs-8 col-sm-12">
+    			<div class="top-li-event">
+            <a ui-sref="profile.detail({id: event.ownerId._id})"><img src="{{event.ownerId | avatarUrl}}"></a>
+            <h4><a ui-sref="profile.detail({id: event.ownerId._id})">{{event.ownerId.name}} &nbsp;</a></h4>
+            <i class="fa fa-clock-o"></i> {{event.createdAt | fromNow | fromNowNumber}} {{event.createdAt | fromNow | fromNowTranslate | translate}}
+            <div class="arward-li-top">
+              <span>{{event.ownerId.totalAwards || 0}}</span>
+              <i class="fa fa-trophy"></i>
+            </div>
+          </div>
+          <div class="text-li-event">
+            <h3 style="cursor:pointer" ng-click="openEventDetail(event)">{{event.name}}</h3>
+            <i class="fa fa-calendar"></i> {{event.startDateTime | date : 'dd.MM.yyyy'}}  <i class="fa fa-clock-o"></i> {{event.startDateTime | date: 'HH:mm'}}<br>
+            <div class="li-friend-event">
+              <i class="fa fa-user-plus"></i>
+              <ul>
+                  <li ng-repeat="participant in event.participantsId | limitTo: 5"><a ui-sref="profile.detail({id: participant._id})"><img src="{{participant | avatarUrl}}"></a></li>
+                  <li ng-show="event.participantsId.length - 5 > 0"><a href="#" class="number-friend-event">+{{event.participantsId.length -5}}</a></li>
+              </ul>
+            </div>
           </div>
         </div>
   		</li>
@@ -28,25 +33,30 @@
         <a class="white-color" href="#" ng-click="loadMore()">{{'LOAD_MORE_EVENTS' | translate}}</a>
       </li>
 
-      <li ng-show="search" class="{{event.categoryId | categoryClass}}" ng-repeat="event in searchItems.items">
-        <div class="top-li-event">
-          <a ui-sref="profile.detail({id: event.ownerId._id})"><img src="{{event.ownerId | avatarUrl}}"></a>
-          <h4><a ui-sref="profile.detail({id: event.ownerId._id})">{{event.ownerId.name}} &nbsp;</a></h4>
-          <i class="fa fa-clock-o"></i> {{event.createdAt | fromNow}}
-          <div class="arward-li-top">
-            <span>{{event.ownerId.totalAwards || 0}}</span>
-            <i class="fa fa-trophy"></i>
-          </div>
+      <li ng-show="search" class="{{event.categoryId | categoryClass}}" ng-repeat="event in searchItems.items" style="margin: 0px">
+        <div class="image-li-event col-xs-4 col-sm-12">
+          <img width="100%" src="{{event | eventThumbnail}}">
         </div>
-        <div class="text-li-event">
-          <h3 style="cursor:pointer" ng-click="openEventDetail(event)">{{event.name}}</h3>
-          <i class="fa fa-calendar"></i> {{event.startDateTime | date : 'dd.MM.yyyy'}}  <i class="fa fa-clock-o"></i> {{event.startDateTime | date: 'HH:mm'}}<br>
-          <div class="li-friend-event">
-            <i class="fa fa-user-plus"></i>
-            <ul>
-                <li ng-repeat="participant in event.participantsId | limitTo: 5"><a ui-sref="profile.detail({id: participant._id})"><img src="{{participant | avatarUrl}}"></a></li>
-                <li ng-show="event.participantsId.length - 5 > 0"><a href="#" class="number-friend-event">+{{event.participantsId.length -5}}</a></li>
-            </ul>
+        <div class="col-xs-8 col-sm-12">
+          <div class="top-li-event">
+            <a ui-sref="profile.detail({id: event.ownerId._id})"><img src="{{event.ownerId | avatarUrl}}"></a>
+            <h4><a ui-sref="profile.detail({id: event.ownerId._id})">{{event.ownerId.name}} &nbsp;</a></h4>
+            <i class="fa fa-clock-o"></i> {{event.createdAt | fromNow}}
+            <div class="arward-li-top">
+              <span>{{event.ownerId.totalAwards || 0}}</span>
+              <i class="fa fa-trophy"></i>
+            </div>
+          </div>
+          <div class="text-li-event">
+            <h3 style="cursor:pointer" ng-click="openEventDetail(event)">{{event.name}}</h3>
+            <i class="fa fa-calendar"></i> {{event.startDateTime | date : 'dd.MM.yyyy'}}  <i class="fa fa-clock-o"></i> {{event.startDateTime | date: 'HH:mm'}}<br>
+            <div class="li-friend-event">
+              <i class="fa fa-user-plus"></i>
+              <ul>
+                  <li ng-repeat="participant in event.participantsId | limitTo: 5"><a ui-sref="profile.detail({id: participant._id})"><img src="{{participant | avatarUrl}}"></a></li>
+                  <li ng-show="event.participantsId.length - 5 > 0"><a href="#" class="number-friend-event">+{{event.participantsId.length -5}}</a></li>
+              </ul>
+            </div>
           </div>
         </div>
       </li>

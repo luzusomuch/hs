@@ -2668,3 +2668,18 @@ span.total-notification {
 .mobile-footer-button a{
     margin: 10px;
 }
+.weather-list {
+    margin: 0px;
+}
+.weather-list .weather-item img {
+    width: 100%;
+}
+.weather-item .day-name {
+    margin-top: 10px;
+}
+.min-temperature {
+    color: #0080e5;
+}
+.weather-header .weather-temperature {
+    margin-top: 20%;
+}

@@ -403,6 +403,12 @@
         padding-left: 0px !important;
         padding-right: 0px !important;
     }
+    .weather-item .day-name {
+        margin-top: 0px;
+    }
+    .weather-item .day-icon {
+        margin-top: -35px;
+    }
 }
 @media all and (min-width: 320px) and (max-width: 1024px) {
     .venue-box .location-dropdown {
@@ -424,6 +430,9 @@
     }
 }
 @media all and (min-width: 768px) and (max-width: 1024px) {
+    .weather-item .day-name {
+        margin-top: 0px;
+    }
     .action-user-detail .btn {
         padding-left: 5px;
         padding-right: 5px;

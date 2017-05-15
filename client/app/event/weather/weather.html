@@ -15,7 +15,7 @@
     </div> -->
 
     <div class="body-box-1" ng-if="valid">
-        <div class="box-weather">
+        <!-- <div class="box-weather">
             <div class="icon-weather">
                 <img class="weather-icon" src="{{ weathers.data[$weatherIndex] | weatherIconDarkSkyWithPng }}">
             </div>
@@ -24,6 +24,30 @@
                 <span class="next-wea" ng-click="previous()"><i class="fa fa-angle-left"></i></span>
                 {{moment(weathers.data[$weatherIndex].time*1000).format('dddd') | weatherDayFilter}}
                 <span class="prev-wea" ng-click="next()"><i class="fa fa-angle-right"></i></span>
+            </div>
+        </div> -->
+        <!-- weather list items -->
+        <div class="row weather-list">
+            <div class="weather-header">
+                <div class="col-xs-8">
+                    <img class="" src="{{ weathers.data[$weatherIndex] | weatherIconDarkSkyWithPng }}">
+                </div>
+                <div class="col-xs-4 weather-temperature">
+                    <span>{{weathers.data[$weatherIndex].temperatureMax | weatherTemperatureConverter}}<sup>o</sup></span>
+                    <span class="min-temperature">{{weathers.data[$weatherIndex].temperatureMin | weatherTemperatureConverter}}<sup>o</sup></span>
+                </div>
+            </div>
+            <div class="weather-item" ng-repeat="item in weathers.data">
+                <div class="col-xs-5 day-name">
+                    {{moment(item.time*1000).format('dddd') | weatherDayFilter}}
+                </div>
+                <div class="col-xs-4 day-icon">
+                    <img src="{{item | weatherIconDarkSkyWithPng}}">
+                </div>
+                <div class="col-xs-3">
+                    <span>{{item.temperatureMax | weatherTemperatureConverter}}<sup>o</sup></span>
+                    <span class="min-temperature">{{item.temperatureMin | weatherTemperatureConverter}}<sup>o</sup></span>
+                </div>
             </div>
         </div>
     </div>

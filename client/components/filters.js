@@ -582,14 +582,19 @@ angular.module('healthStarsApp')
   return post => {
     post = Number(post);
     let link;
-    if (post >=100 && post < 500) {
+    if (post < 100) {
       link = '/assets/images/fan_star.png';
-    } else if (post >= 500 && post < 2000) {
+    } else if (post < 500) {
       link = '/assets/images/bronze_star.png';
-    } else if (post >= 2000 && post < 5000) {
+    } else if (post < 2000) {
       link = '/assets/images/silver_star.png';
-    } else if (post >= 5000) {
+    } else if (post < 5000) {
       link = '/assets/images/gold_star.png';
+    } else if (post < 10000) {
+      // todo ask for platinum star
+      link = '/assets/images/silver_star.png';
+    } else {
+      link = '/assets/images/create_event_btn.png';
     }
     return link;
   };

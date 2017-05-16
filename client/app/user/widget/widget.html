@@ -13,19 +13,19 @@
     
     <div class="bottom-user-main">
         <div class="row user-action-post">
-            <div ng-class="{'col-xs-4': vm.user.posts > 99, 'col-xs-6': vm.user.posts <= 99}">
+            <div class="col-xs-4">
                 <div class="box-action-user">
                     <label>{{'EVENT_PARTICIPATIONS' | translate}}</label>
                     <h2>{{vm.user.posts | countAward}}</h2>
                 </div>
             </div>
-            <div ng-show="vm.user.posts > 99" class="col-xs-4">
+            <div class="col-xs-4">
                 <div class="box-action-user">
                     <label> {{vm.user.posts | hsStatus}} {{'STATUS' | translate}}</label>
                     <img width="100%" src="{{vm.user.posts | hsStatusStar}}">
                 </div>
             </div>
-            <div ng-class="{'col-xs-4': vm.user.posts > 99, 'col-xs-6': vm.user.posts <= 99}">
+            <div class="col-xs-4">
                 <div class="box-action-user">
                     <label>{{'FOLLOWERS' | translate}}</label>
                     <h2>{{vm.user.followers}}</h2>

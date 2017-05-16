@@ -73,7 +73,6 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 							return moment(item.time * 1000).days() === moment().days();
 						});
 						scope.valid = true;
-						console.log(scope.weathers);
 					});
 				}
 			});

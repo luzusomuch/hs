@@ -40,16 +40,21 @@ sudo service elasticsearch restart
 - [MongoDB](https://www.mongodb.org/) - Keep a running daemon with `mongod`
 - [Elasticsearch](https://www.elasticsearch.com/) - version 1.7 - run elasticsearch
 - [GraphicMagick](http://www.graphicsmagick.org/) - keep in the path - sudo apt-get install graphicsmagick
+- [Redis](https://redis.io/) - https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-redis-on-ubuntu-16-04
 
 ### Developing
 
-1. Run `npm install` to install server dependencies.
+1. Run `npm install` to install server dependencies. When run 'npm install' there will be some error bc some node-modules have been deprecated. So I think you should download full node-module here https://drive.google.com/file/d/0B3xnw1f4asVcaEY3TF9ib0xFbEE/view
 
 2. Run `bower install` to install front-end dependencies.
 
 3. Run `mongod` in a separate shell to keep an instance of the MongoDB Daemon running
 
-4. Run `gulp serve` to start the development server. It should automatically open the client in your browser when ready.
+4. Start Redis
+
+5. Start Elasticsearch
+
+6. Run `gulp serve` to start the development server. It should automatically open the client in your browser when ready.
 
 
 ## Testing

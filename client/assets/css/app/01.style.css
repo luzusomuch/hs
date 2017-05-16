@@ -2672,16 +2672,25 @@ span.total-notification {
     margin: 0px;
 }
 .weather-list .weather-item img {
-    width: 100%;
+    width: 50px;
 }
 .weather-item .day-name {
-    margin-top: 10px;
+    margin-top: 15px;
+}
+.weather-item .day-temperature {
+    margin-top: 8px;
 }
 .min-temperature {
     color: #0080e5;
 }
 .weather-header .weather-temperature {
-    margin-top: 20%;
+    text-align: right;
+}
+.weather-header img {
+    position: absolute;
+    left: 40%;
+    top: -33px;
+    width: 80px;
 }
 ul.uib-datepicker-popup {
     background-color: #273141;
@@ -2700,4 +2709,17 @@ ul.uib-datepicker-popup .uib-daypicker button {
 }
 ul.uib-datepicker-popup .uib-daypicker .uib-day button.active, ul.uib-datepicker-popup .uib-monthpicker .uib-month button.active, ul.uib-datepicker-popup .uib-yearpicker .uib-year button.active {
     background: #2fcc71;
+}
+.weather-hourly {
+    text-align: center;
+    overflow: hidden;
+    background: rgba(0,0,0,0.2);
+    padding: 5px 0px;
+}
+.weather-hourly-detail img {
+    width: 50px;
+    margin-top: -10px;
+}
+.weather-forecast {
+    position: relative;
 }

@@ -1,5 +1,5 @@
-<div class="box-1 m20">
-    <div class="title-box-1">{{'WEATHER' | translate}}</div>
+<div class="box-1 m20 weather-forecast">
+    <!-- <div class="title-box-1">{{'WEATHER' | translate}}</div> -->
     <!-- <div class="body-box-1" ng-if="valid">
         <div class="box-weather">
             <div class="icon-weather">
@@ -29,24 +29,43 @@
         <!-- weather list items -->
         <div class="row weather-list">
             <div class="weather-header">
-                <div class="col-xs-8">
-                    <img class="" src="{{ weathers.data[$weatherIndex] | weatherIconDarkSkyWithPng }}">
+                <img class="" src="{{ weathers.data[$weatherIndex] | weatherIconDarkSkyWithPng }}">
+                <div class="col-xs-6">
+                    <h4>{{moment(weathers.data[$weatherIndex].time*1000).format('dddd') | weatherDayFilter}}</h4>
                 </div>
-                <div class="col-xs-4 weather-temperature">
-                    <span>{{weathers.data[$weatherIndex].temperatureMax | weatherTemperatureConverter}}<sup>o</sup></span>
-                    <span class="min-temperature">{{weathers.data[$weatherIndex].temperatureMin | weatherTemperatureConverter}}<sup>o</sup></span>
+                <div class="col-xs-6 weather-temperature">
+                    <h3>{{weathers.data[$weatherIndex].temperatureMax | weatherTemperatureConverter}}<sup>o</sup></h3>
+                    <span>H: {{weathers.data[$weatherIndex].temperatureMax | weatherTemperatureConverter}}</span>
+                    <span class="min-temperature">L: {{weathers.data[$weatherIndex].temperatureMin | weatherTemperatureConverter}}</span>
                 </div>
             </div>
-            <div class="weather-item" ng-repeat="item in weathers.data">
-                <div class="col-xs-5 day-name">
-                    {{moment(item.time*1000).format('dddd') | weatherDayFilter}}
+            <div class="clear"></div>
+            <div class="weather-hourly">
+                <div class="weather-hourly-detail col-xs-4" ng-repeat="item in hourly.data | limitTo: 3">
+                    <div>
+                        {{moment(item.time*1000).format('hh a')}}
+                    </div>
+                    <div>
+                        <img src="{{item | weatherIconDarkSkyWithPng}}">    
+                    </div>
+                    <div>
+                        <span>{{item.temperature | weatherTemperatureConverter}}<sup>o</sup></span>    
+                    </div>
                 </div>
-                <div class="col-xs-4 day-icon">
-                    <img src="{{item | weatherIconDarkSkyWithPng}}">
-                </div>
-                <div class="col-xs-3">
-                    <span>{{item.temperatureMax | weatherTemperatureConverter}}<sup>o</sup></span>
-                    <span class="min-temperature">{{item.temperatureMin | weatherTemperatureConverter}}<sup>o</sup></span>
+            </div>
+            <div class="clear"></div>
+            <div class="weather-daily">
+                <div class="weather-item" ng-repeat="item in weathers.data | limitTo: 4" ng-show="$index !== 0">
+                    <div class="col-xs-5 day-name">
+                        {{moment(item.time*1000).format('dddd') | weatherDayFilter}}
+                    </div>
+                    <div class="col-xs-4 day-icon">
+                        <img src="{{item | weatherIconDarkSkyWithPng}}">
+                    </div>
+                    <div class="col-xs-3 day-temperature">
+                        <span>{{item.temperatureMax | weatherTemperatureConverter}}<sup>o</sup></span>
+                        <span class="min-temperature">{{item.temperatureMin | weatherTemperatureConverter}}<sup>o</sup></span>
+                    </div>
                 </div>
             </div>
         </div>

@@ -24,6 +24,7 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 			};
 			// scope.data = [];
 			scope.weathers = [];
+			scope.hourly = [];
 			scope.moment = moment;
 			// scope.$index = -1;
 			scope.$weatherIndex = -1;
@@ -67,10 +68,12 @@ angular.module('healthStarsApp').directive('hsWeather', (AppSettings, WeatherAPI
 					// });
 					WeatherAPI.getUserLocationWeather([params.lat, params.lon].toString()).then(resp => {
 						scope.weathers = resp.data.daily;
+						scope.hourly = resp.data.hourly;
 						$rootScope.$weatherIndex = scope.$weatherIndex = _.findIndex(scope.weathers.data, function(item) {
 							return moment(item.time * 1000).days() === moment().days();
 						});
 						scope.valid = true;
+						console.log(scope.weathers);
 					});
 				}
 			});

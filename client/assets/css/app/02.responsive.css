@@ -404,10 +404,11 @@
         padding-right: 0px !important;
     }
     .weather-item .day-name {
-        margin-top: 0px;
+        margin-top: 15px;
     }
-    .weather-item .day-icon {
-        margin-top: -35px;
+    .weather-item .day-temperature {
+        margin-top: 15px;
+        padding: 0px;
     }
 }
 @media all and (min-width: 320px) and (max-width: 1024px) {

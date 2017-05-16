@@ -106,9 +106,8 @@ crontab -e
 Please read nginx-config.txt file then copy the content of it to /etc/nginx/sites-available/default
 After config nginx please restart nginx service
 
-### For config max upload file size please read here https://easyengine.io/tutorials/php/increase-file-upload-size-limit/
-
-
+### For config max upload file size 
+please read here https://easyengine.io/tutorials/php/increase-file-upload-size-limit/
 
 ####For DB server
 We need mongodb, redis, elasticsearch
@@ -116,6 +115,17 @@ Open port 27017, 6379, 9200 by IPTABLE
 You need to bind IP to 0.0.0.0 for redis https://redis.io/topics/security
 You need to bind IP to 0.0.0.0 for mongodb http://stackoverflow.com/questions/34963522/unable-to-connect-to-mongo-on-remote-server
 Set timezone by using sudo timedatectl set-timezone Europe/Berlin
+
+##Update mapping or Sync data again
+#First you need to remove current elasticsearch data by using Postman with delete method
+For local: localhost:9200/health-stars
+For running instance: 35.157.226.188:9200/health-stars
+
+#Second you have to run sync data again by:
+sudo su
+export NODE_ENV=production
+node server/syncData.js
+
 
 #### For websites
 We have 2 websites running the same time, so once update code we need rebuild code for them

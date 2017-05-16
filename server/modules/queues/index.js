@@ -167,6 +167,10 @@ exports.core = (kernel) => {
 
   /*Grant award to specific user*/
   kernel.queue.process('GRANT_AWARD_FOR_USER', (job, done) => {
+    // check event if it have limitation of participants and participants greater than min participant
+    if (job.data.event.limitNumberOfParticipate && job.data.event.participantsId.length < job.data.event.minParticipants) {
+      return done();
+    }
     // receive event and user detail
     kernel.model.Award.findById(job.data.event.awardId).then(award => {
       if (!award) {

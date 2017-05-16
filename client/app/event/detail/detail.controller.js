@@ -9,6 +9,11 @@ class EventDetailCtrl {
 			this.growl.error(`<p>{{'THIS_EVENT_HAS_BLOCKED' | translate}}</p>`);
 			$state.go('home');
 		}
+
+		if (event.limitNumberOfParticipate && event.participantsId.length < event.minParticipants) {
+	        this.growl.error(`<p>{{'NUMBER_OF_PARTICIPANTS_DID_NOT_REACH_MINIMUM_PARTICIPANTS' | translate}}</p>`);
+      	}
+      	
 		this.$scope = $scope;
 
 		if (event.repeat && event.repeat.type) {

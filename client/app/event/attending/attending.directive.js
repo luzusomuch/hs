@@ -60,6 +60,9 @@ class EventAttendingCtrl {
 	}
 
 	grantAward(user) {
+		if (this.$scope.event.limitNumberOfParticipate && this.$scope.event.participantsId.length < this.$scope.event.minParticipants) {
+	        return this.growl.error(`<p>{{'NUMBER_OF_PARTICIPANTS_DID_NOT_REACH_MINIMUM_PARTICIPANTS' | translate}}</p>`);
+      	}
 		if (this.isEventOwner && !user.isGrantedAward && this.eAward.type==='organizer') {
 			this.EventService.grantAward(this.$state.params.id, user._id).then(() => {
 				user.isGrantedAward = true;
@@ -95,6 +98,7 @@ angular.module('healthStarsApp').directive('hsEventAttending', () => {
 	return {
 		restrict: 'E',
 		scope: {
+			event: '=',
 			eId : '=',
 			eOwner: '=',
 			eAward: '=',

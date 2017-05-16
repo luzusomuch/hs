@@ -2317,6 +2317,10 @@ module.exports = function(kernel) {
       if (!event) {
         return res.status(404).end();
       }
+      // check event if it have limitation of participants and participants greater than min participant
+      if (event.limitNumberOfParticipate && event.participantsId.length < event.minParticipants) {
+        return res.status(400).json({type: 'BAD_REQUEST'});
+      }
       kernel.model.Award.findById(event.awardId).then(award => {
         if (!award) {
           return res.status(404).end();   

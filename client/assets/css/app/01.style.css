@@ -2723,3 +2723,6 @@ ul.uib-datepicker-popup .uib-daypicker .uib-day button.active, ul.uib-datepicker
 .weather-forecast {
     position: relative;
 }
+.event-detail-max-participants-number {
+    float: right;
+}

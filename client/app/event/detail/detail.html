@@ -79,6 +79,14 @@
                         <div class="col-md-3">
                             <p ng-show="vm.event.costOfEvent" style="margin-bottom: 0px"><i class="fa fa-money"></i> {{vm.event.amount}} {{vm.event.currency}}</p>
                             <p ng-show="vm.event.repeat.type && vm.event.repeat.type!=='none'"><i class="fa fa-refresh"></i> <span ng-bind-html="vm.event.repeat.type + '_REPEATING' | translate | html"></span></p>
+                            <!-- show limitation of participate -->
+                            <div ng-show="vm.event.limitNumberOfParticipate">
+                                <p ng-bind-html="'PARTICIPANTS_LIMITATIONS' | translate | html"></p>
+                                <div>
+                                    <span>Min: {{vm.event.minParticipants}}</span>
+                                    <span class="event-detail-max-participants-number">Max: {{vm.event.numberParticipants}}</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <p>

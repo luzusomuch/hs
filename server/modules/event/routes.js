@@ -77,6 +77,7 @@ module.exports = function(kernel) {
           costOfEvent: (req.body.event.costOfEvent==='true') ? true : false,
         };
         data.numberParticipants = (data.limitNumberOfParticipate) ? Number(req.body.event.numberParticipants) : 0;
+        data.minParticipants = (data.limitNumberOfParticipate) ? Number(req.body.event.minParticipants) : 0;
         data.amount = (data.costOfEvent) ? Number(req.body.event.amount) : 0;
         data.currency = (data.costOfEvent) ? req.body.event.currency : null;
         data.ownerId = req.user._id;
@@ -1243,6 +1244,7 @@ module.exports = function(kernel) {
               event.location = req.body.event.location;
               event.limitNumberOfParticipate = (req.body.event.limitNumberOfParticipate==='true') ? true : false;
               event.numberParticipants = (event.limitNumberOfParticipate) ? Number(req.body.event.numberParticipants) : 0;
+              event.minParticipants = (event.limitNumberOfParticipate) ? Number(req.body.event.minParticipants) : 0;
               event.costOfEvent = (req.body.event.costOfEvent==='true') ? true : false;
               event.amount = (event.costOfEvent) ? Number(req.body.event.amount) : 0;
               event.currency = (event.costOfEvent) ? req.body.event.currency : null;

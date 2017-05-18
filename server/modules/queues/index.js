@@ -1,5 +1,6 @@
 'use strict';
 import {S3, GM, EventBus} from './../../components';
+import {PhotoHelper} from './../../helpers';
 import fs from 'fs';
 import path from 'path';
 import async from 'async';
@@ -516,13 +517,17 @@ exports.core = (kernel) => {
   */
   kernel.queue.process('INVITE_FRIEND', (job, done) => {
     kernel.model.Relation.findById(job.data)
-    .populate('fromUserId')
+    .populate({
+      path: 'fromUserId',
+      populate: {path: 'avatar', model: 'User'}
+    })
     .exec().then(relation => {
       // we just need relation type is friend
       if (!relation || relation.type==='follow') {
         return done();
       }
-      kernel.model.User.findById(relation.toUserId).then(user => {
+      kernel.model.User.findById(relation.toUserId)
+      .populate('avatar').exec().then(user => {
         // don't send email to blocked or deleted user
         if (!user || (user.blocked && user.blocked.status) || (user.deleted && user.deleted.status)) {
           return done();
@@ -532,8 +537,11 @@ exports.core = (kernel) => {
           subject: 'New friend request',
           data: {
             user: user, 
-            fromUser: relation.fromUserId,
-            url: kernel.config.baseUrl + 'profile/'
+            userAvatar: PhotoHelper.getUserAvatar(user),
+            owner: relation.fromUserId,
+            ownerAvatar: PhotoHelper.getUserAvatar(relation.fromUserId),
+            url: kernel.config.baseUrl + 'profile/',
+            language: user.language || 'en'
           },
           to: user.email
         });

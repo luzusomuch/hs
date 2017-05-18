@@ -833,7 +833,7 @@ angular.module('healthStarsApp')
     if ($localStorage.language==='en') {
       return hour;
     } else {
-      let text = hour.split(' ')[0] + ' Urh';
+      let text = hour.split(' ')[0] + ' Uhr';
       return text;
     }
   };

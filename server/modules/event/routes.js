@@ -1365,8 +1365,33 @@ module.exports = function(kernel) {
                   kernel.queue.create(kernel.config.ES.events.UPDATE, {type: kernel.config.ES.mapping.eventType, id: event._id.toString(), data: event}).save();
                   // send email to participants/waiting list/ liked event when location or timing change
                   if (sendNotification) {
+                    let owner, ownerAvatar, eventThumbnail;
                     async.waterfall([
                       cb => {
+                        // get owner detail
+                        kernel.model.User.findById(event.ownerId).populate('avatar').exec().then(user => {
+                          if (!user) {
+                            return cb('owner not found');
+                          }
+                          owner = user;
+                          ownerAvatar = PhotoHelper.getUserAvatar(user);
+                          return cb();
+                        }).catch(cb);
+                      },
+                      (cb) => {
+                        // get event thumbnail
+                        kernel.model.Event.findById(event._id)
+                        .populate('categoryId')
+                        .populate('photosId')
+                        .exec().then(populatedEvent => {
+                          if (!populatedEvent) {
+                            return cb('event not found');
+                          }
+                          eventThumbnail = PhotoHelper.getEventThumbnail(populatedEvent);
+                          return cb();
+                        }).catch(cb);
+                      },
+                      (cb) => {
                         //get liked users
                         kernel.model.Like.find({objectId: event._id}).then(likedPeople => {
                           return cb(null, _.map(likedPeople, item => {
@@ -1387,18 +1412,27 @@ module.exports = function(kernel) {
                           }
                         });
                         async.each(usersId, (id, callback) => {
-                          kernel.model.User.findById(id).then(user => {
+                          kernel.model.User.findById(id).populate('avatar').exec().then(user => {
                             if (!user) {
                               return callback();
                             }
-                            // send mail to users
+                            // set avatar for user
+                            let userAvatar = PhotoHelper.getUserAvatar(user);
+
+                            // send mail to user
                             kernel.queue.create('SEND_MAIL', {
                               template: 'event-location-or-timing-updated.html',
                               subject: 'Event ' + event.name + ' was updated',
                               data: {
                                 user: user, 
+                                userAvatar: userAvatar,
+                                owner: owner,
+                                ownerAvatar: ownerAvatar,
+                                eventThumbnail: eventThumbnail,
                                 event: event,
-                                url: kernel.config.baseUrl + 'event/detail/' + event._id
+                                eventDateTime: moment(new Date(event.endDateTime)).format('DD/MM/YYY') + ' at ' + moment(new Date(event.endDateTime)).format('HH:mm'),
+                                url: kernel.config.baseUrl + 'event/detail/' + event._id,
+                                language: user.language || 'en'
                               },
                               to: user.email
                             }).save();

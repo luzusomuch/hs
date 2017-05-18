@@ -3,7 +3,7 @@
 
 import fs from 'fs';
 import gm from 'gm';
-import cb2Promise from 'cb-to-promise';
+// import cb2Promise from 'cb-to-promise';
 import os from 'os';
 import path from 'path';
 import { StringHelper } from '../helpers';
@@ -15,13 +15,13 @@ const TMP_DIR = config.tmpFolder || os.tmpdir();
  * @param  {String}   filePath absolute path
  * @param  {Function} cb       callback function
  */
-exports.identify = (filePath, cb) => {
-  if (cb) {
-    return gm(filePath).identify(cb);
-  }
-  //create promise
-  return cb2Promise(gm(filePath).identify)();
-};
+// exports.identify = (filePath, cb) => {
+//   if (cb) {
+//     return gm(filePath).identify(cb);
+//   }
+//   //create promise
+//   return cb2Promise(gm(filePath).identify)();
+// };
 
 /**
  * extract exif data as spec
@@ -29,42 +29,42 @@ exports.identify = (filePath, cb) => {
  * @param  {Function} cb
  * @return {void}
  */
-exports.getExif = (filePath, cb) => {
-  gm(filePath).identify((err, data) => {
-    if (err) { return cb(err); }
+// exports.getExif = (filePath, cb) => {
+//   gm(filePath).identify((err, data) => {
+//     if (err) { return cb(err); }
 
-    let defaultObj = {
-      cameraBrand: '',
-      cameraModel: '',
-      lensBrand: '',
-      lensModel: '',
-      aperture: '', //Max Aperture Value
-      angle: '',
-      shutterSpeed: '',
-      iso: '',
-      takenDate: '',
-      takenTime: '',
-      flash: ''
-    };
+//     let defaultObj = {
+//       cameraBrand: '',
+//       cameraModel: '',
+//       lensBrand: '',
+//       lensModel: '',
+//       aperture: '', //Max Aperture Value
+//       angle: '',
+//       shutterSpeed: '',
+//       iso: '',
+//       takenDate: '',
+//       takenTime: '',
+//       flash: ''
+//     };
 
-    if (!data['Profile-EXIF']) { return cb(null, defaultObj); }
-    let exif = data['Profile-EXIF'];
-    let dateArr = exif['Date Time'] ? exif['Date Time'].split(' ') : [];
-    return cb(null, {
-      cameraBrand: exif.Make || '',
-      cameraModel: exif.Model ||'',
-      lensBrand: '', //dont see option for now
-      lensModel: '', //dont see option for now
-      aperture: exif['Max Aperture Value'], //Max Aperture Value
-      angle: '',
-      shutterSpeed: '',
-      iso: exif['ISO Speed Ratings'],
-      takenDate: dateArr.length ? dateArr[0] : '',
-      takenTime: dateArr.length === 2 ? dateArr[1] : '',
-      flash: exif.Flash
-    })
-  });
-};
+//     if (!data['Profile-EXIF']) { return cb(null, defaultObj); }
+//     let exif = data['Profile-EXIF'];
+//     let dateArr = exif['Date Time'] ? exif['Date Time'].split(' ') : [];
+//     return cb(null, {
+//       cameraBrand: exif.Make || '',
+//       cameraModel: exif.Model ||'',
+//       lensBrand: '', //dont see option for now
+//       lensModel: '', //dont see option for now
+//       aperture: exif['Max Aperture Value'], //Max Aperture Value
+//       angle: '',
+//       shutterSpeed: '',
+//       iso: exif['ISO Speed Ratings'],
+//       takenDate: dateArr.length ? dateArr[0] : '',
+//       takenTime: dateArr.length === 2 ? dateArr[1] : '',
+//       flash: exif.Flash
+//     })
+//   });
+// };
 
 /**
  * resize image

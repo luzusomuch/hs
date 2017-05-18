@@ -3,7 +3,7 @@ import {StringHelper} from '../helpers';
 import path from 'path';
 import fs from 'fs';
 import AWS from 'aws-sdk';
-import cb2Promise from 'cb-to-promise';
+// import cb2Promise from 'cb-to-promise';
 import _ from 'lodash';
 
 AWS.config.region = config.AWS.region;
@@ -106,12 +106,12 @@ function deleteFile(keys, cb) {
       })
     }
   };
-
-  if (cb) {
-    s3.deleteObjects(params, cb);
-  } else {
-    return cb2Promise(s3.deleteObjects)(params);
-  }
+  s3.deleteObjects(params, cb);
+  // if (cb) {
+  //   s3.deleteObjects(params, cb);
+  // } else {
+  //   return cb2Promise(s3.deleteObjects)(params);
+  // }
 }
 
 function getPublicUrl(key) {

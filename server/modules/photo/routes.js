@@ -69,9 +69,7 @@ module.exports = function(kernel) {
 		kernel.model.Photo.find({_id: {$in: req.body.filesId}}).then(photos => {
 			async.each(photos, (photo, callback) => {
 				photo.remove().then(() => {
-					if (photo.filename && !photo.metadata.tmp) {
-						kernel.queue.create('REMOVE_AWS_FILE', {filename: photo.filename}).save();
-					}
+					kernel.queue.create('DELETE_PHOTO', photo).save();
 					callback();
 				}).catch(callback);
 			}, (err) => {
@@ -493,7 +491,7 @@ module.exports = function(kernel) {
 			}
 			if (photo.ownerId.toString()===req.user._id.toString()) {
 				photo.remove().then(() => {
-					//kernel.queue.create('DELETE_PHOTO', photo).save();
+					kernel.queue.create('DELETE_PHOTO', photo).save();
 					return res.status(200).end();
 				}).catch(err => {
 					return res.status(500).json({type: 'SERVER_ERROR'});

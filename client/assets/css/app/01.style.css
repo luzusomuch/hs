@@ -2689,7 +2689,7 @@ span.total-notification {
 .weather-header img {
     position: absolute;
     left: 40%;
-    top: -33px;
+    top: -20px;
     width: 80px;
 }
 ul.uib-datepicker-popup {

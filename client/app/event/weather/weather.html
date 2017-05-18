@@ -32,6 +32,7 @@
                 <img class="" src="{{ weathers.data[$weatherIndex] | weatherIconDarkSkyWithPng }}">
                 <div class="col-xs-6">
                     <h4>{{moment(weathers.data[$weatherIndex].time*1000).format('dddd') | weatherDayFilter}}</h4>
+                    <span>{{moment(weathers.data[$weatherIndex].time*1000).format('DD')}} {{moment(weathers.data[$weatherIndex].time*1000).format('MMM') | datePickerFilter}} {{moment(weathers.data[$weatherIndex].time*1000).format('YYYY')}}</span>
                 </div>
                 <div class="col-xs-6 weather-temperature">
                     <h3>{{weathers.data[$weatherIndex].temperatureMax | weatherTemperatureConverter}}<sup>o</sup></h3>
@@ -43,7 +44,7 @@
             <div class="weather-hourly">
                 <div class="weather-hourly-detail col-xs-4" ng-repeat="item in hourly.data | limitTo: 3">
                     <div>
-                        {{moment(item.time*1000).format('hh a')}}
+                        {{moment(item.time*1000).format('HH a') | amAndPmFilter}}
                     </div>
                     <div>
                         <img src="{{item | weatherIconDarkSkyWithPng}}">    

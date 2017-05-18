@@ -598,14 +598,18 @@ angular.module('healthStarsApp')
   return post => {
     post = Number(post);
     let text;
-    if (post >=100 && post < 500) {
+    if (post < 100) {
       text = 'Fan';
-    } else if (post >= 500 && post < 2000) {
+    } else if (post < 500) {
       text = 'Bronze';
-    } else if (post >= 2000 && post < 5000) {
+    } else if (post < 2000) {
       text = 'Silver';
-    } else if (post >= 5000) {
+    } else if (post < 5000) {
       text = 'Gold';
+    } else if (post < 1000) {
+      text = 'Platinum';
+    } else {
+      text = 'The Healthstars'
     }
     return text;
   };
@@ -820,6 +824,16 @@ angular.module('healthStarsApp')
         default:
           break;
       }
+      return text;
+    }
+  };
+})
+.filter('amAndPmFilter', ($localStorage) => {
+  return hour => {
+    if ($localStorage.language==='en') {
+      return hour;
+    } else {
+      let text = hour.split(' ')[0] + ' Urh';
       return text;
     }
   };

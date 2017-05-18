@@ -5,9 +5,9 @@
 <!-- english section -->
 {% if language==='en' %}
 <div>
-	<p>Hello <%= user.name%> <img style="border-radius: 50px" width="30px" src="<%= userAvatar %>">, you received a new message</p>
+	<p>Hello <%= user.name%> <img style="border-radius: 50px; vertical-align: middle" width="30px" src="<%= userAvatar %>">, you received a new message</p>
 	
-	<p>The event admin <img style="border-radius: 50px" width="30px" src="<%= ownerAvatar %>"> changed the timing or location of the following event:</p>
+	<p>The event admin <img style="border-radius: 50px; vertical-align: middle" width="30px" src="<%= ownerAvatar %>"> changed the timing or location of the following event:</p>
 
 	<div>
 		<div style="width: 50%; float: left; text-align: center">
@@ -33,9 +33,9 @@
 <!-- german section -->
 {% if language==='de' %}
 <div>
-	<p>Hallo <%= user.name%> <img style="border-radius: 50px" width="30px" src="<%= userAvatar %>">, du hast eine neue Nachricht</p>
+	<p>Hallo <%= user.name%> <img style="border-radius: 50px; vertical-align: middle" width="30px" src="<%= userAvatar %>">, du hast eine neue Nachricht</p>
 	
-	<p>The event admin <img style="border-radius: 50px" width="30px" src="<%= ownerAvatar %>"> Änderte das Timing oder den Ort des folgenden Ereignisses:</p>
+	<p>The event admin <img style="border-radius: 50px; vertical-align: middle" width="30px" src="<%= ownerAvatar %>"> Änderte das Timing oder den Ort des folgenden Ereignisses:</p>
 
 	<div>
 		<div style="width: 50%; float: left; text-align: center">

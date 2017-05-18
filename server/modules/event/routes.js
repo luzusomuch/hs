@@ -2552,14 +2552,39 @@ module.exports = function(kernel) {
             }).save();
 
             // send email to new event admin
+            let ownerAvatar, userAvatar, eventThumbnail;
             async.parallel([
               cb => {
                 //get the new admin user object
-                kernel.model.User.findById(saved.adminId).then(user => {
+                kernel.model.User.findById(saved.adminId).populate('avatar').exec().then(user => {
                   if (!user) {
                     return cb('Admin user object not found');
                   }
+                  userAvatar = PhotoHelper.getUserAvatar(user);
                   cb(null, user);
+                }).catch(cb);
+              },
+              cb => {
+                // get owner avatar
+                kernel.model.User.findById(req.user._id).populate('avatar').exec().then(owner => {
+                  if (!owner) {
+                    return cb('Owner not found');
+                  }
+                  ownerAvatar = PhotoHelper.getUserAvatar(owner);
+                  return cb();
+                }).catch(cb);
+              },
+              cb => {
+                // get event thumbnail
+                kernel.model.Event.findById(event._id)
+                .populate('categoryId')
+                .populate('photosId')
+                .exec().then(populatedEvent => {
+                  if (!populatedEvent) {
+                    return cb('Event not found');
+                  }
+                  eventThumbnail = PhotoHelper.getEventThumbnail(populatedEvent);
+                  return cb();
                 }).catch(cb);
               }
             ], (err, result) => {
@@ -2572,10 +2597,15 @@ module.exports = function(kernel) {
                 template: 'admin-passed-role.html',
                 subject: 'Admin role in event '+saved.name+' has passed to you',
                 data: {
-                  user: req.user, 
-                  newAdminUser: result[0],
+                  owner: req.user, 
+                  ownerAvatar: ownerAvatar,
+                  user: result[0],
+                  userAvatar: userAvatar,
                   event: saved,
-                  url: kernel.config.baseUrl + 'event/detail/' + saved._id
+                  eventThumbnail: eventThumbnail,
+                  eventDateTime: moment(new Date(saved.endDateTime)).format('DD/MM/YYY') + ' at ' + moment(new Date(saved.endDateTime)).format('HH:mm'),
+                  url: kernel.config.baseUrl + 'event/detail/' + saved._id,
+                  language: result[0].language || 'en'
                 },
                 to: result[0].email
               }).save();

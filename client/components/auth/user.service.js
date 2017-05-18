@@ -49,6 +49,10 @@
         return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/add-social-account`, data);
       },
 
+      changeLanguage: (data) => {
+        return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/change-language`, data);
+      },
+
       blockUser: (id) => {
         return $http.put(`${APP_CONFIG.baseUrl}api/${APP_CONFIG.apiVer}/users/${id}/block`);
       },

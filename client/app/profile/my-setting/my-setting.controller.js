@@ -37,9 +37,13 @@ class MySettingCtrl {
 
 		$scope.$watch('vm.language', (nv) => {
 			if (nv && nv!==$localStorage.language) {
-				this.$localStorage.language = nv;
-				this.$localStorage.manualSelectedLanguage = true;
-				window.location.reload();
+				User.changeLanguage({language: nv}).then(() => {
+					this.$localStorage.language = nv;
+					this.$localStorage.manualSelectedLanguage = true;
+					window.location.reload();
+				}).catch(() => {
+					this.growl.error(`<p>{{'SOMETHING_WENT_WRONG' | translate}}</p>`);
+				});
 			}
 		});
 	}

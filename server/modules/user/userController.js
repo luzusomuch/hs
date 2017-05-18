@@ -54,6 +54,7 @@ class UserController {
     this.updateUserPopupStarInfoStatus = this.updateUserPopupStarInfoStatus.bind(this);
     this.getUserLocationWeather = this.getUserLocationWeather.bind(this);
     this.checkEmailInUsed = this.checkEmailInUsed.bind(this);
+    this.changeLanguage = this.changeLanguage.bind(this);
   }
 
   hotmailContacts(req, res) {
@@ -1208,6 +1209,20 @@ class UserController {
       return res.status(200).json({valid: false});
     }).catch(err => {
       return res.status(500).json(err);
+    });
+  }
+
+  // change user language
+  changeLanguage(req, res) {
+    if (!req.body.language) {
+      return res.status(422).end();
+    }
+    let user = req.user;
+    user.language = req.body.language;
+    user.save().then(() => {
+      return res.status(200).end();
+    }).catch(err => {
+      return res.status(200).json(err);
     });
   }
 

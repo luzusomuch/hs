@@ -37,15 +37,43 @@ angular.module('healthStarsApp').directive('hsEventMap', ($interval) => {
 		      			scope.address = locations[0].fullAddress;
 		      		}
       				var bounds = new google.maps.LatLngBounds();
-      				console.log(locations);
 		      		_.each(locations, function(location) {
 			      		let pos = (typeof location === 'object' &&  location.coordinates)? location.coordinates : null;
+			      		var markerColor = 'red';
+			      		// apply color for marker
+			      		if (location.category) {
+				      		switch (location.category.type) {
+								case 'action':
+									markerColor = 'purple';
+									break;
+								case 'food':
+									markerColor = 'red';
+									break;
+								case 'eco':
+									markerColor = 'green';
+									break;
+								case 'social':
+									markerColor = 'yellow';
+									break;
+								case 'internation':
+									markerColor = 'blue';
+									break;
+								default:
+									break;
+							}
+			      		}
+
 			      		if(pos) {
 			      			var latLng = new google.maps.LatLng(pos[1], pos[0]);
 					        var marker = new google.maps.Marker({
 					            map: map,
 					            position: latLng,
-					            _id: location._id
+					            _id: location._id,
+					            icon: {
+							        path: google.maps.SymbolPath.CIRCLE,
+							        strokeColor: markerColor,
+							        scale: 3
+							    },
 					        });
 					        markers.push(marker);
 					        bounds.extend(latLng);

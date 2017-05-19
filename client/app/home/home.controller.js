@@ -209,7 +209,7 @@ class HomeCtrl {
     let callback = (res) => {
       this.events = res.data;
       this.locations = _.map(res.data.items, (item) => {
-        return _.assign({title: item.name}, item.location || {});
+        return _.assign({title: item.name, _id: item._id, category: item.categoryId}, item.location || {});
       });
       this.loading = false;
       this.loaded = true;

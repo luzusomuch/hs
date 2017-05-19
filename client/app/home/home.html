@@ -47,7 +47,7 @@
             <div class="m20 pc-show">
                 <search-location></search-location>
             </div>
-            <hs-event-map locations="vm.locations" title="{{'CITY_EVENT_MAP' | translate}}"></hs-event-map>
+            <hs-event-map radius="vm.$rootScope.radius" locations="vm.locations" title="{{'CITY_EVENT_MAP' | translate}}"></hs-event-map>
             <hs-weather location="vm.searchParams.address.geometry.location"></hs-weather> 
             <div class="box-1 m20 p15">
                 <hs-user-friends u-id="vm.authUser._id" hide-description="true"></hs-user-friends>

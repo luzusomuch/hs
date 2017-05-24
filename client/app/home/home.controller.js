@@ -59,7 +59,8 @@ class HomeCtrl {
 
     this.countNewEvent = 0;
      // tracking count new event in realtime
-    socket.socket.on('tracking:count-new-event', () => {
+    socket.socket.on('tracking:count-new-event', (event) => {
+      console.log("==> Tracking new event sir",event);
       this.countNewEvent +=1;
     });
 
@@ -124,6 +125,18 @@ class HomeCtrl {
         $scope.$$phase || $scope.$apply();
       }, (err) => {
         console.log(err);
+        if(this.authUser.location.coordinates){
+          this.searchParams.address.geometry = {
+            location: {
+              lat: this.authUser.location.coordinates[0],
+              lng: this.authUser.location.coordinates[1]
+            }
+          };
+          $rootScope.location = {
+            lat: this.authUser.location.coordinates[0],
+            lng: this.authUser.location.coordinates[1]
+          };
+        }
         $scope.geoLocation = true;
         this.growl.error(`<p>{{'CANNOT_TRACKING_YOUR_LOCATION' | translate}}</p>`);
         $scope.$$phase || $scope.$apply();

@@ -59,7 +59,8 @@ class HomeCtrl {
 
     this.countNewEvent = 0;
      // tracking count new event in realtime
-    socket.socket.on('tracking:count-new-event', () => {
+    socket.socket.on('tracking:count-new-event', (event) => {
+      console.log("==> Tracking new event sir",event);
       this.countNewEvent +=1;
     });
 

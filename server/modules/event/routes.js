@@ -77,7 +77,7 @@ module.exports = function(kernel) {
           costOfEvent: (req.body.event.costOfEvent==='true') ? true : false,
         };
         data.numberParticipants = (data.limitNumberOfParticipate) ? Number(req.body.event.numberParticipants) - 1 : 0;
-        data.minParticipants = (data.limitNumberOfParticipate) ? Number(req.body.event.minParticipants) : 0;
+        data.minParticipants = (data.limitNumberOfParticipate) ? Number(req.body.event.minParticipants) - 1 : 0;
         data.amount = (data.costOfEvent) ? Number(req.body.event.amount) : 0;
         data.currency = (data.costOfEvent) ? req.body.event.currency : null;
         data.ownerId = req.user._id;

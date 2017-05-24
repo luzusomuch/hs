@@ -4,7 +4,7 @@ class EventMapCtrl {
 	constructor() {}
 }
 
-angular.module('healthStarsApp').directive('hsEventMap', ($interval) => {
+angular.module('healthStarsApp').directive('hsEventMap', ($interval, $uibModal) => {
 	return {
 		restrict: 'E',
 		scope: {
@@ -23,6 +23,14 @@ angular.module('healthStarsApp').directive('hsEventMap', ($interval) => {
 			var map, google;
 	    	var mapElm = angular.element(elm).find('.event-map');
 	    	var markers = [];
+	    	var circle;
+
+	    	var openBiggerMap = function(map) {
+	    		$uibModal.open({
+			    	animation: true,
+			    	templateUrl: 'app/event/map/bigger-map.html',
+			    });
+	    	};
 	    	
 	    	var initMap = function(locations, center) {
 	    		center = center || {lat: 52.511, lng: 13.447};
@@ -98,7 +106,7 @@ angular.module('healthStarsApp').directive('hsEventMap', ($interval) => {
 					}
 					// write circle
 					if (scope.radius) {
-						new google.maps.Circle({
+						var circle = new google.maps.Circle({
 				            strokeColor: '#FF0000',
 				            strokeOpacity: 0.8,
 				            strokeWeight: 2,
@@ -108,10 +116,17 @@ angular.module('healthStarsApp').directive('hsEventMap', ($interval) => {
 				            center: bounds.getCenter(),
 				            radius: Number(scope.radius)*1000
 			          	});
+			          	// open modal with bigger google map when clicked on circle
+					  	google.maps.event.addListener(circle, 'click', function() {
+					  		console.log('circle clicked');
+				        });
 					}
 	      		}
 
-
+	      		// open modal with bigger google map when clicked on map
+	      		map.addListener('click', function() {
+				    console.log('map clicked');
+			  	});
 	   		};
 
 		    scope.$watch('locations', (nv) => {
